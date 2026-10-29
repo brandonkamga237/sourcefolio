@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "eslint",
     "typecheck": "next typegen && tsc --noEmit && node scripts/check-messages.mjs",
-    "icons": "svgr --config-file svgr.config.js --out-dir components/icons icons"
+    "icons": "svgr --config-file svgr.config.js --out-dir components/icons icons",
+    "api:types": "openapi-typescript ${API_DOCS_URL:-http://localhost:8080/v3/api-docs} -o lib/api/schema.d.ts"
   },
   "dependencies": {
     "next": "16.4.3",
@@ -24,6 +25,7 @@
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "16.4.3",
+    "openapi-typescript": "^7.13.0",
     "tailwindcss": "^4",
     "typescript": "^5"
   },
