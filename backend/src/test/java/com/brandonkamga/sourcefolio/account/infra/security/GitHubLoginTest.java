@@ -9,6 +9,7 @@ import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.web.bind.annotation.RestController;
 
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.containsString;
@@ -18,9 +19,15 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest(properties = {"app.github.client-id=test-client", "app.github.client-secret=test-secret"})
-@Import({GitHubLogin.class, SecurityTestConfig.class})
+@WebMvcTest(controllers = GitHubLoginTest.NoController.class, properties = {"app.github.client-id=test-client", "app.github.client-secret=test-secret"})
+@Import({GitHubLoginTest.NoController.class, GitHubLogin.class, SecurityTestConfig.class})
 class GitHubLoginTest {
+
+    // These tests exercise security filters, not controllers: an empty controller of their own
+    // keeps the slice from loading every controller of the application.
+    @RestController
+    static class NoController {
+    }
 
     @Autowired
     private MockMvc mvc;
