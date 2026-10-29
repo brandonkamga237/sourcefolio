@@ -10,3 +10,8 @@ jobrunr:
   dashboard:
     enabled: true
     port: 8000
+
+# Next.js rewrites /oauth2 and /login/oauth2 to this process: the GitHub callback URL must be
+# built from the browser's address (localhost:3000), which arrives in X-Forwarded-Host.
+server:
+  forward-headers-strategy: framework
