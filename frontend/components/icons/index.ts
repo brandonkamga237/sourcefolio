@@ -1,0 +1,11 @@
+export { default as IconClose } from "./Close";
+export { default as IconCode } from "./Code";
+export { default as IconDiscover } from "./Discover";
+export { default as IconDiscoverActive } from "./DiscoverActive";
+export { default as IconExternal } from "./External";
+export { default as IconFilters } from "./Filters";
+export { default as IconHeart } from "./Heart";
+export { default as IconLogoMark } from "./LogoMark";
+export { default as IconMe } from "./Me";
+export { default as IconPortfolio } from "./Portfolio";
+export { default as IconSearch } from "./Search";

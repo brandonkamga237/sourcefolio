@@ -30,6 +30,7 @@ Serwist PWA).
 | `backend/` | `./mvnw verify` | also the `*IT` suite on PostgreSQL via Testcontainers (Docker) |
 | `frontend/` | `pnpm install`, `pnpm dev` | Next.js on :3000, rewrites `/api` and `/oauth2` to :8080 |
 | `frontend/` | `pnpm typecheck`, `pnpm lint`, `pnpm build` | the checks CI runs |
+| `frontend/` | `pnpm icons` | regenerates `components/icons/` from `icons/*.svg` (SVGR) |
 | `frontend/` | `pnpm api:types` | regenerates `lib/api/schema.d.ts` from the running API's OpenAPI |
 | `frontend/` | `pnpm test:e2e` | Playwright end-to-end tests |
 
