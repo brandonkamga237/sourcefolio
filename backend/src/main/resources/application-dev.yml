@@ -1,0 +1,12 @@
+# Only what differs from application.yaml: every value there already has a dev default.
+logging:
+  level:
+    com.brandonkamga.sourcefolio: DEBUG
+    org.hibernate.SQL: DEBUG
+    org.hibernate.orm.jdbc.bind: TRACE
+
+# The dashboard shows queued, running and failed jobs: http://localhost:8000
+jobrunr:
+  dashboard:
+    enabled: true
+    port: 8000

@@ -1,0 +1,51 @@
+spring:
+  application:
+    name: sourcefolio
+  profiles:
+    active: ${SPRING_PROFILES_ACTIVE:dev}
+
+  datasource:
+    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${DB_NAME:sourcefolio}
+    username: ${DB_USERNAME:postgres}
+    password: ${DB_PASSWORD:postgres}
+
+  # Flyway owns the schema; Hibernate only checks that the entities match it.
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        jdbc:
+          batch_size: 50
+        order_inserts: true
+        order_updates: true
+
+  messages:
+    basename: messages
+    fallback-to-system-locale: false
+
+server:
+  port: ${SERVER_PORT:8080}
+
+app:
+  # Canonical origin, written into emails and links sent outside the site.
+  site:
+    url: ${SITE_URL:http://localhost:3000}
+
+# Jobs live in PostgreSQL (JobRunr creates its own jobrunr_* tables). Use cases are called
+# directly in tests, so the server that runs them is switched on per profile.
+jobrunr:
+  background-job-server:
+    enabled: true
+  dashboard:
+    enabled: false
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, info, prometheus
