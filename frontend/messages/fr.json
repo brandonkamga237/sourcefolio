@@ -51,5 +51,10 @@
     "system": "Système",
     "light": "Clair",
     "dark": "Sombre"
+  },
+  "notFound": {
+    "title": "Page introuvable",
+    "body": "Cette adresse ne mène à aucun portfolio. Il a peut-être changé d’adresse ou été retiré.",
+    "back": "Revenir à Découvrir"
   }
 }

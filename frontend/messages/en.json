@@ -51,5 +51,10 @@
     "system": "System",
     "light": "Light",
     "dark": "Dark"
+  },
+  "notFound": {
+    "title": "Page not found",
+    "body": "This address leads to no portfolio. It may have moved or been removed.",
+    "back": "Back to Discover"
   }
 }

@@ -5,6 +5,7 @@ import { routing } from "./i18n/routing";
 export default createMiddleware(routing);
 
 export const config = {
-  // The API and the GitHub sign-in belong to the backend; files keep their own path.
-  matcher: "/((?!api|oauth2|login|_next|_vercel|.*\\..*).*)",
+  // The API and the GitHub sign-in belong to the backend; files and the generated app icons
+  // keep their own path (the icons have no extension, so the dot rule does not catch them).
+  matcher: "/((?!api|oauth2|login|_next|_vercel|icon|apple-icon|.*\\..*).*)",
 };
