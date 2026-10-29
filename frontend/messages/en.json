@@ -1,0 +1,23 @@
+{
+  "meta": {
+    "title": "SourceFolio — portfolios you can read the code of",
+    "description": "Discover developer portfolios that are online and whose code is public, by country, specialty and technology."
+  },
+  "brand": {
+    "wordmark": "sourcefolio",
+    "tagline": "Portfolios you can read the code of."
+  },
+  "nav": {
+    "label": "Main navigation",
+    "discover": "Discover",
+    "search": "Search",
+    "portfolio": "My portfolio",
+    "me": "Me",
+    "publish": "Publish your portfolio"
+  },
+  "language": {
+    "label": "Language",
+    "fr": "FR",
+    "en": "EN"
+  }
+}
