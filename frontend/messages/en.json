@@ -34,7 +34,8 @@
       "stepsLabel": "How it works",
       "step1": "You sign in with GitHub.",
       "step2": "We find your portfolio among your public repositories.",
-      "step3": "You confirm, it is published. In under a minute."
+      "step3": "You confirm, it is published. In under a minute.",
+      "memberEmpty": "No portfolio published yet."
     },
     "me": {
       "title": "Me",
@@ -56,5 +57,10 @@
     "title": "Page not found",
     "body": "This address leads to no portfolio. It may have moved or been removed.",
     "back": "Back to Discover"
+  },
+  "account": {
+    "signedInAs": "Signed in as {login}",
+    "signOut": "Sign out",
+    "signOutFailed": "Signing out failed. Try again."
   }
 }

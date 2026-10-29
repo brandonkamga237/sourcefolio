@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
-import { GitHubSignIn } from "@/components/auth/GitHubSignIn";
+import { Suspense } from "react";
+import { AccountSection, AccountSectionSkeleton } from "@/components/auth/AccountSection";
 import { LanguageSwitch } from "@/components/layout/LanguageSwitch";
 import { ThemeChoice } from "@/components/theme/ThemeChoice";
 import { toLocale } from "@/i18n/routing";
@@ -15,8 +16,6 @@ export async function generateMetadata({ params }: PageProps<"/[locale]/me">): P
   };
 }
 
-// The visitor's version: once sign-in exists, a member sees their profile and notification
-// settings here instead of the sign-in block.
 export default async function MePage({ params }: PageProps<"/[locale]/me">) {
   const locale = toLocale((await params).locale);
   setRequestLocale(locale);
@@ -30,8 +29,9 @@ export default async function MePage({ params }: PageProps<"/[locale]/me">) {
 
       <section aria-labelledby="me-account" className="flex flex-col gap-3">
         <h2 id="me-account" className="text-[15px] font-semibold">{t("pages.me.account")}</h2>
-        <p className="text-sm leading-normal text-ink-body">{t("pages.me.accountHint")}</p>
-        <GitHubSignIn label={t("auth.signInWithGithub")} permission={t("auth.permission")} />
+        <Suspense fallback={<AccountSectionSkeleton />}>
+          <AccountSection locale={locale} />
+        </Suspense>
       </section>
 
       <section aria-labelledby="me-language" className="flex flex-col gap-3">

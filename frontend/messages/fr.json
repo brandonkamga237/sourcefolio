@@ -34,7 +34,8 @@
       "stepsLabel": "Comment ça marche",
       "step1": "Tu te connectes avec GitHub.",
       "step2": "On trouve ton portfolio parmi tes dépôts publics.",
-      "step3": "Tu confirmes, il est publié. En moins d’une minute."
+      "step3": "Tu confirmes, il est publié. En moins d’une minute.",
+      "memberEmpty": "Aucun portfolio publié pour l’instant."
     },
     "me": {
       "title": "Moi",
@@ -56,5 +57,10 @@
     "title": "Page introuvable",
     "body": "Cette adresse ne mène à aucun portfolio. Il a peut-être changé d’adresse ou été retiré.",
     "back": "Revenir à Découvrir"
+  },
+  "account": {
+    "signedInAs": "Connecté en tant que {login}",
+    "signOut": "Se déconnecter",
+    "signOutFailed": "La déconnexion a échoué. Réessaie."
   }
 }
