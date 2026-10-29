@@ -28,10 +28,28 @@
       "title": "Search"
     },
     "portfolio": {
-      "title": "My portfolio"
+      "title": "My portfolio",
+      "visitorTitle": "Publish your portfolio",
+      "visitorLead": "Sign in with GitHub: we look for your portfolio among your public repositories and you publish it in one click.",
+      "stepsLabel": "How it works",
+      "step1": "You sign in with GitHub.",
+      "step2": "We find your portfolio among your public repositories.",
+      "step3": "You confirm, it is published. In under a minute."
     },
     "me": {
-      "title": "Me"
+      "title": "Me",
+      "account": "Account",
+      "accountHint": "Sign in to publish your portfolio, get feedback and follow its visits."
     }
+  },
+  "auth": {
+    "signInWithGithub": "Sign in with GitHub",
+    "permission": "Access to your public profile only."
+  },
+  "theme": {
+    "label": "Theme",
+    "system": "System",
+    "light": "Light",
+    "dark": "Dark"
   }
 }

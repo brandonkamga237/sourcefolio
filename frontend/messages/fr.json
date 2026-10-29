@@ -28,10 +28,28 @@
       "title": "Rechercher"
     },
     "portfolio": {
-      "title": "Mon portfolio"
+      "title": "Mon portfolio",
+      "visitorTitle": "Publie ton portfolio",
+      "visitorLead": "Connecte-toi avec GitHub : on cherche ton portfolio dans tes dépôts publics et tu le publies en un clic.",
+      "stepsLabel": "Comment ça marche",
+      "step1": "Tu te connectes avec GitHub.",
+      "step2": "On trouve ton portfolio parmi tes dépôts publics.",
+      "step3": "Tu confirmes, il est publié. En moins d’une minute."
     },
     "me": {
-      "title": "Moi"
+      "title": "Moi",
+      "account": "Compte",
+      "accountHint": "Connecte-toi pour publier ton portfolio, recevoir des retours et suivre ses visites."
     }
+  },
+  "auth": {
+    "signInWithGithub": "Se connecter avec GitHub",
+    "permission": "Accès à ton profil public uniquement."
+  },
+  "theme": {
+    "label": "Thème",
+    "system": "Système",
+    "light": "Clair",
+    "dark": "Sombre"
   }
 }
