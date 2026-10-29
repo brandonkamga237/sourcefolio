@@ -54,6 +54,9 @@ app:
   github:
     client-id: ${GITHUB_CLIENT_ID:}
     client-secret: ${GITHUB_CLIENT_SECRET:}
+    api-url: https://api.github.com
+    # The platform's token for public data (portfolio detection). Optional in development.
+    api-token: ${GITHUB_API_TOKEN:}
 
 # Jobs live in PostgreSQL (JobRunr creates its own jobrunr_* tables). Use cases are called
 # directly in tests, so the server that runs them is switched on per profile.

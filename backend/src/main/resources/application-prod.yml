@@ -14,6 +14,7 @@ app:
   github:
     client-id: ${GITHUB_CLIENT_ID}
     client-secret: ${GITHUB_CLIENT_SECRET}
+    api-token: ${GITHUB_API_TOKEN}
 
 # The API description feeds the frontend's types at build time; production does not serve it.
 springdoc:
