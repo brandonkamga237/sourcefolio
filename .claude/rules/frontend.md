@@ -15,9 +15,15 @@ paths:
   from the backend's springdoc. Never hand-write a type the API already describes
 - `lib/api/http.ts` is the only fetch wrapper: on the server it calls `API_INTERNAL_URL`
   and forwards the session cookie, in the browser it calls the same-origin `/api`
-- Text on screen comes from `messages/{fr,en}.json` through next-intl (`useTranslations`,
-  `getTranslations`). No literal string in JSX, no `toLocaleDateString` without the locale:
-  use next-intl's `useFormatter`
+- Text on screen comes from `messages/{fr,en}.json` through next-intl's `getTranslations`, on
+  the server. Client components receive translated strings as props: no
+  `NextIntlClientProvider`, no `useTranslations` in the browser, because they ship the ICU
+  message parser to every visitor (measured: 149.9 → 136.5 KB of initial JS without it). No
+  literal string in JSX, no `toLocaleDateString` without the locale: format on the server with
+  `getFormatter`
+- Internal links are `next/link` with `localizedPath(locale, path)` from `i18n/paths.ts`; in a
+  client component, `withoutLocale(usePathname())` gives the path without its locale. Not
+  next-intl's navigation helpers (they need the client provider)
 - Tailwind only, with the tokens of the `design-system` skill (`bg-canvas`, `text-ink`,
   `bg-accent`…); never a raw hex in a class. No inline style unless the value is computed at
   runtime
