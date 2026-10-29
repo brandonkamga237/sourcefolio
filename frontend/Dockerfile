@@ -1,5 +1,5 @@
 # syntax=docker/dockerfile:1
-FROM node:24.19-alpine AS deps
+FROM node:24.21-alpine AS deps
 WORKDIR /app
 # Corepack installs the pnpm version pinned by "packageManager" in package.json, so the
 # image builds with the same pnpm as the developers and CI, never whatever is newest.
@@ -17,7 +17,7 @@ ENV NEXT_TELEMETRY_DISABLED=1
 # dependencies the app imports.
 RUN pnpm build
 
-FROM node:24.19-alpine AS runtime
+FROM node:24.21-alpine AS runtime
 WORKDIR /app
 ENV NODE_ENV=production NEXT_TELEMETRY_DISABLED=1 PORT=3000 HOSTNAME=0.0.0.0
 COPY --from=build --chown=node:node /app/.next/standalone ./
