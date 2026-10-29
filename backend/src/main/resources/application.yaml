@@ -24,17 +24,36 @@ spring:
         order_inserts: true
         order_updates: true
 
+  # Members stay signed in for 30 days without activity. Flyway creates the tables (V2).
+  session:
+    timeout: 30d
+    jdbc:
+      initialize-schema: never
+
   messages:
     basename: messages
     fallback-to-system-locale: false
 
 server:
   port: ${SERVER_PORT:8080}
+  servlet:
+    session:
+      timeout: 30d
+      # A persistent cookie, same lifetime as the session. Lax is what protects writes, with the
+      # CSRF token, since the site and the API share one origin.
+      cookie:
+        http-only: true
+        same-site: lax
+        max-age: 30d
 
 app:
   # Canonical origin, written into emails and links sent outside the site.
   site:
     url: ${SITE_URL:http://localhost:3000}
+  # GitHub OAuth App. Empty in development unless set: the API starts, signing in is off.
+  github:
+    client-id: ${GITHUB_CLIENT_ID:}
+    client-secret: ${GITHUB_CLIENT_SECRET:}
 
 # Jobs live in PostgreSQL (JobRunr creates its own jobrunr_* tables). Use cases are called
 # directly in tests, so the server that runs them is switched on per profile.

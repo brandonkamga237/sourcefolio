@@ -2,6 +2,7 @@ package com.brandonkamga.sourcefolio.shared.security;
 
 import com.brandonkamga.sourcefolio.shared.exception.ErrorCode;
 import com.brandonkamga.sourcefolio.shared.web.ApiError;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,14 +21,18 @@ import tools.jackson.databind.json.JsonMapper;
  * (Traefik routes /api to this process), so there is no CORS, and writes are protected by the
  * session cookie being SameSite=Lax plus the CSRF token the frontend echoes back.
  *
- * `/api/**` needs a session unless a route is opened here, method by method, above that line.
+ * `/api/**` needs a session unless a module opens a route through a {@link SecurityCustomizer}.
  */
 @Configuration
 @EnableMethodSecurity
 class SecurityConfig {
 
     @Bean
-    SecurityFilterChain apiSecurity(HttpSecurity http, AuthenticationEntryPoint unauthenticated) throws Exception {
+    SecurityFilterChain apiSecurity(HttpSecurity http, AuthenticationEntryPoint unauthenticated,
+                                    ObjectProvider<SecurityCustomizer> customizers) throws Exception {
+        for (SecurityCustomizer customizer : customizers.orderedStream().toList()) {
+            customizer.customize(http);
+        }
         http
                 .authorizeHttpRequests(routes -> routes
                         // The actuator port is internal (never routed by Traefik): health and metrics.

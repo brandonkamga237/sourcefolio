@@ -30,9 +30,10 @@ load it before any backend change. `ArchitectureTest` enforces the mechanical pa
 - Errors are thrown as `NotFoundException`, `BadRequestException`, `ForbiddenException`,
   `ConflictException` or `UnauthenticatedException`; `GlobalExceptionHandler` sets the status
   and returns a translation key plus the message in the request locale
-- Open routes are declared in `shared/security/SecurityConfig`. Members sign in with GitHub
-  (Spring Security OAuth2 Client, scope `read:user` only) and keep a server session cookie;
-  moderator methods carry `@PreAuthorize("hasRole('MODERATOR')")`
+- A module opens its routes with a `SecurityCustomizer` bean in `<module>/infra/security/`;
+  `shared/security/SecurityConfig` holds the general rules only. Members sign in with GitHub
+  (Spring Security OAuth2 Client, scope `read:user` only) and keep a server session stored by
+  Spring Session JDBC; moderator methods carry `@PreAuthorize("hasRole('MODERATOR')")`
 - Every endpoint shows up in springdoc: the frontend types are generated from it
 
 ## Persistence

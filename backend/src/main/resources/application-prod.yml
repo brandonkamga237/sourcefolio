@@ -11,6 +11,9 @@ spring:
 app:
   site:
     url: ${SITE_URL}
+  github:
+    client-id: ${GITHUB_CLIENT_ID}
+    client-secret: ${GITHUB_CLIENT_SECRET}
 
 # The API description feeds the frontend's types at build time; production does not serve it.
 springdoc:
@@ -22,6 +25,10 @@ springdoc:
 server:
   compression:
     enabled: true
+  servlet:
+    session:
+      cookie:
+        secure: true
   # Traefik terminates TLS, so Spring reads X-Forwarded-* to build https:// URLs.
   forward-headers-strategy: native
 
