@@ -19,5 +19,19 @@
     "label": "Language",
     "fr": "FR",
     "en": "EN"
+  },
+  "a11y": {
+    "skipToContent": "Skip to content"
+  },
+  "pages": {
+    "search": {
+      "title": "Search"
+    },
+    "portfolio": {
+      "title": "My portfolio"
+    },
+    "me": {
+      "title": "Me"
+    }
   }
 }
