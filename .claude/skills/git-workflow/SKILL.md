@@ -1,0 +1,116 @@
+---
+name: git-workflow
+description: Structure branches and commits on SourceFolio — the main/develop/feature model, committing progressively while coding, and message format. Use before starting to code, before every commit, and before opening a PR.
+---
+
+# Branches and commits
+
+## Before writing the first line
+
+Check where you are:
+```
+git branch --show-current
+```
+
+- On `main` or `develop` → **create a branch before changing anything**, without tracking
+  `develop` (a tracked branch makes a plain `git push` land on `develop`):
+  ```
+  git fetch origin
+  git switch -c feature/showcase-share --no-track origin/develop
+  git push -u origin feature/showcase-share
+  ```
+- Once per clone, enable the commit-msg hook: `git config core.hooksPath .githooks`
+- Already on a work branch that matches the task → keep going on it.
+
+Prefixes: `feature/` (new work), `fix/` (bug fix), `docs/` (documentation, README,
+CLAUDE.md), `chore/` (tooling), `hotfix/` (production emergency, branches off `main`).
+Short name, in English, kebab-case.
+
+PR target: `develop` — except `hotfix/`, which targets `main`. Into `develop` the PR is
+**squash-merged**: its title becomes the commit, so it follows the message format below.
+`develop` into `main` is a **merge commit**, never a squash (a squash commit on `main`
+does not exist on `develop`, and the branches drift apart).
+
+## Commit progressively
+
+**Do not pile the whole task into one final commit.** As soon as a coherent chunk is
+finished and verified, commit it. A typical split for a backend plus frontend feature:
+
+```
+feat(engagement): add feedback angle column   (Flyway migration + JPA mapping)
+feat(engagement): accept an angle on feedback (DTO + service + controller + SecurityConfig)
+feat(engagement): pick an angle in the sheet  (page + frontend service + messages)
+test(engagement): cover feedback angles      (tests)
+```
+
+Splitting rules:
+- One commit = **one logical change** that compiles and leaves the project healthy
+- Never mix in a single commit: a feature and a refactor, code and a large reformat,
+  two unrelated subjects
+- A rename or file move gets its own commit
+- Dependency changes (`pom.xml`, `package.json` + `pnpm-lock.yaml`) travel with the
+  code that uses them
+
+Run the checks for the area you touched before each commit:
+```
+cd backend  && ./mvnw test
+cd frontend && pnpm typecheck && pnpm lint
+```
+
+Always look at what you are about to include:
+```
+git status --short
+git diff --staged
+```
+Stage explicitly (`git add <files>`), never a blind `git add -A`: that is how a
+`.env`, a dump, a screenshot or a scratch file ends up in history.
+
+## Message format
+
+```
+type(scope): imperative description, in English
+```
+
+`type` ∈ `feat`, `fix`, `perf`, `refactor`, `docs`, `test`, `build`, `ci`, `chore`,
+`style`, `revert`. `scope` (optional, lowercase) = the domain or area touched (`account`,
+`showcase`, `checkup`, `ui`, `i18n`, `ci`, …). Header ≤ 100 characters; `!` marks a breaking change.
+`scripts/git/check-commit-msg.sh` enforces this in the hook and in CI — run it on a
+message file to check before committing. The full list of scopes is in `CONTRIBUTING.md`.
+
+A body is optional and reserved for the **why** and for non-obvious consequences (a
+migration to apply, an environment variable to add, changed behaviour). No exhaustive
+file list: the diff already provides one.
+
+## Never in a commit
+
+- **No mention of Claude, of AI, or of any generation tool.** No
+  `Co-Authored-By: Claude ...` trailer, no "Generated with …", no hint in the body or
+  in the PR description. The author of the commits is the user. The hook and the
+  `Conventions` CI job reject them; `.claude/settings.json` sets `attribution` to empty so
+  Claude Code never adds them. Only the exact strings `CLAUDE.md` and `.claude/` may appear: a `(claude)` scope is refused, use
+  `(tooling)` for changes to that setup.
+- No secrets and no `.env` (see `.gitignore`).
+- No `git push --force`, no `git reset --hard` on shared work, no rewriting of
+  history that has already been pushed.
+- No direct commit on `main` or `develop`: both are protected and only take pull requests.
+
+## Merging
+
+- Into `develop`: `scripts/git/merge-to-develop.sh <pr>` once the checks are green. It refuses
+  any base other than `develop`, then squash-merges and deletes the branch.
+- Into `main`: never. The user merges `develop` into `main` by hand (merge commit); the release
+  PR release-please opens then merges itself once its checks pass, and the version deploys.
+  Direct `gh pr merge` and pushes to `main` / `develop` are denied in `.claude/settings.json`.
+- Releases are cut by release-please from what reaches `main`: pick the commit type with the
+  version bump in mind (`fix` → patch, `feat` → minor, `!` → major). Never edit
+  `CHANGELOG.md`, `version.txt` or `.release-please-manifest.json`.
+
+## Before the PR
+
+```
+git fetch origin && git rebase origin/develop
+```
+Read the branch as a whole and check that it tells a legible story:
+```
+git log --oneline origin/develop..HEAD
+```

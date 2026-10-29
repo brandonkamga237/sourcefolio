@@ -1,0 +1,265 @@
+# Deploys one release (a vX.Y.Z tag) to the VPS.
+#
+#   - Release workflow: called right after release-please tags a new version.
+#   - By hand (Actions > Deploy > Run workflow): redeploy a version, or roll back by giving an
+#     earlier one. Images already on Docker Hub are reused as they are; missing ones are built
+#     from the tag.
+#
+# Images are tagged with the version, so production always runs a known, reproducible build.
+#
+# Secrets: DOCKER_USERNAME, DOCKER_TOKEN or DOCKER_PASSWORD, VPS_HOST, VPS_USER,
+#          VPS_SSH_KEY or VPS_SSH_KEY_griote
+name: Deploy
+
+on:
+  workflow_call:
+    inputs:
+      version:
+        type: string
+        required: true
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Release tag to deploy, e.g. v1.4.0 (an earlier one rolls back)"
+        type: string
+        required: true
+
+permissions:
+  contents: read
+
+# One deployment at a time, and never cancel one halfway through.
+concurrency:
+  group: production
+  cancel-in-progress: false
+
+env:
+  BACKEND_IMAGE:  brandoniscoding/sourcefolio-backend
+  FRONTEND_IMAGE: brandoniscoding/sourcefolio-frontend
+  # A secret rather than a value in this public file: GitHub masks it in the public run logs.
+  DEPLOY_PATH:    ${{ secrets.DEPLOY_PATH }}
+  VERSION:        ${{ inputs.version }}
+
+jobs:
+  plan:
+    name: Check the version
+    runs-on: ubuntu-latest
+    outputs:
+      build: ${{ steps.images.outputs.build }}
+    steps:
+      - name: Version is an existing release tag
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if ! [[ "$VERSION" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "::error::'$VERSION' is not a release tag (vX.Y.Z)."
+            exit 1
+          fi
+          gh api "repos/$GITHUB_REPOSITORY/git/ref/tags/$VERSION" --silent \
+            || { echo "::error::Tag $VERSION does not exist."; exit 1; }
+
+      - uses: docker/login-action@v4
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_TOKEN || secrets.DOCKER_PASSWORD }}
+
+      - name: Images already on Docker Hub
+        id: images
+        run: |
+          if docker manifest inspect "$BACKEND_IMAGE:$VERSION" >/dev/null 2>&1 &&
+             docker manifest inspect "$FRONTEND_IMAGE:$VERSION" >/dev/null 2>&1; then
+            echo "Images for $VERSION found: deploying them as they are."
+            echo "build=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "Images for $VERSION missing: building them from the tag."
+            echo "build=true" >> "$GITHUB_OUTPUT"
+          fi
+
+  build:
+    name: Build ${{ matrix.service }} image
+    runs-on: ubuntu-latest
+    needs: plan
+    if: needs.plan.outputs.build == 'true'
+    strategy:
+      matrix:
+        include:
+          - service: backend
+            image: brandoniscoding/sourcefolio-backend
+            target: prod
+          - service: frontend
+            image: brandoniscoding/sourcefolio-frontend
+            target: runtime
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: ${{ inputs.version }}
+
+      - uses: docker/setup-buildx-action@v4
+
+      - uses: docker/login-action@v4
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_TOKEN || secrets.DOCKER_PASSWORD }}
+
+      # latest only follows new releases: rebuilding an old tag by hand must not move it back.
+      - uses: docker/build-push-action@v7
+        with:
+          context: ./${{ matrix.service }}
+          target:  ${{ matrix.target }}
+          push:    true
+          tags: |
+            ${{ matrix.image }}:${{ inputs.version }}
+            ${{ github.event_name != 'workflow_dispatch' && format('{0}:latest', matrix.image) || '' }}
+          cache-from: type=gha,scope=${{ matrix.service }}
+          cache-to:   type=gha,scope=${{ matrix.service }},mode=max
+
+  deploy:
+    name: Deploy to production
+    runs-on: ubuntu-latest
+    needs: [plan, build]
+    if: |
+      always() &&
+      needs.plan.result == 'success' &&
+      (needs.build.result == 'success' || needs.build.result == 'skipped')
+    environment: production
+
+    steps:
+      # The compose file of the deployed version travels with it, so a rollback also rolls
+      # back the stack definition.
+      - uses: actions/checkout@v7
+        with:
+          ref: ${{ inputs.version }}
+
+      - name: Deployment directory is configured
+        run: |
+          [[ "$DEPLOY_PATH" == /* ]] || {
+            echo "::error::Secret DEPLOY_PATH is missing or not an absolute path."
+            exit 1
+          }
+
+      - name: Compose file is version-aware
+        run: |
+          grep -q 'IMAGE_TAG' docker-compose.prod.yml || {
+            echo "::error::$VERSION predates versioned images: its compose file always runs :latest."
+            exit 1
+          }
+
+      - name: Add VPS host key
+        env:
+          VPS_HOST: ${{ secrets.VPS_HOST }}
+        run: |
+          mkdir -p ~/.ssh
+          ssh-keyscan -H "$VPS_HOST" >> ~/.ssh/known_hosts 2>/dev/null || true
+
+      - name: Upload the stack definition
+        uses: appleboy/scp-action@v1.0.0
+        with:
+          host:      ${{ secrets.VPS_HOST }}
+          username:  ${{ secrets.VPS_USER }}
+          key:       ${{ secrets.VPS_SSH_KEY_griote || secrets.VPS_SSH_KEY }}
+          source:    "docker-compose.prod.yml,monitoring"
+          target:    "${{ env.DEPLOY_PATH }}/"
+          overwrite: true
+
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@v1.2.5
+        env:
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+          DOCKER_PASSWORD: ${{ secrets.DOCKER_TOKEN || secrets.DOCKER_PASSWORD }}
+        with:
+          host:            ${{ secrets.VPS_HOST }}
+          username:        ${{ secrets.VPS_USER }}
+          key:             ${{ secrets.VPS_SSH_KEY_griote || secrets.VPS_SSH_KEY }}
+          envs:            DOCKER_USERNAME,DOCKER_PASSWORD,VERSION
+          timeout:         60s
+          command_timeout: 20m
+          script: |
+            set -euo pipefail
+            cd ${{ env.DEPLOY_PATH }}
+
+            # Compose reads the image tag from here during this run; it is written to .env only
+            # once the new version is up, so a failed deploy leaves .env naming the last good one.
+            export IMAGE_TAG="$VERSION"
+
+            echo "══════════════════════════════════════════════════"
+            echo "  SourceFolio — Deployment $VERSION"
+            echo "  Date : $(date '+%Y-%m-%d %H:%M:%S UTC')"
+            echo "══════════════════════════════════════════════════"
+
+            # ── 1. Traefik network ────────────────────────────────
+            echo ""
+            echo "-> [1/4] Checking traefik-public network..."
+            docker network inspect traefik-public >/dev/null 2>&1 || \
+              docker network create traefik-public
+
+            # ── 2. Docker Hub auth + pull ─────────────────────────
+            echo ""
+            echo "-> [2/4] Docker Hub authentication + image pull..."
+            # The VPS must be logged in to pull the images (its stored creds can
+            # expire); authenticate every deploy so the pull never fails on auth.
+            echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+            docker compose -f docker-compose.prod.yml pull backend frontend
+
+            # ── 3. Database + backend ─────────────────────────────
+            echo ""
+            echo "-> [3/4] Starting PostgreSQL..."
+            docker compose -f docker-compose.prod.yml up -d --no-recreate postgres
+
+            echo "  Waiting for PostgreSQL..."
+            timeout 60 sh -c \
+              'until docker compose -f docker-compose.prod.yml exec -T postgres \
+                pg_isready -U "$DB_USERNAME" -d "$DB_NAME" >/dev/null 2>&1; \
+              do sleep 3; done'
+
+            echo "  Starting backend $VERSION (Flyway migrations, then the JobRunr workers)..."
+            docker compose -f docker-compose.prod.yml up -d backend --remove-orphans
+
+            wait_healthy() {
+              for i in $(seq 1 30); do
+                STATUS=$(docker inspect --format='{{.State.Health.Status}}' "$1" 2>/dev/null || echo "unknown")
+                if [ "$STATUS" = "healthy" ]; then
+                  echo "  $1 healthy (attempt $i)"
+                  return 0
+                fi
+                echo "  $1 attempt $i/30 - status: $STATUS, retrying in 10s..."
+                sleep 10
+              done
+              echo ""
+              echo "══════ ERROR: $1 not healthy after 5 min ══════"
+              docker logs --tail=100 "$1" 2>&1 || true
+              return 1
+            }
+
+            wait_healthy sourcefolio-backend
+
+            # ── 4. Frontend ───────────────────────────────────────
+            echo ""
+            echo "-> [4/4] Deploying frontend $VERSION..."
+            docker compose -f docker-compose.prod.yml up -d frontend --remove-orphans
+            wait_healthy sourcefolio-frontend
+
+            # ── Monitoring (kept running, recreated only when its definition changed)
+            docker compose -f docker-compose.prod.yml up -d \
+              postgres-exporter node-exporter cadvisor blackbox prometheus grafana loki alloy
+
+            # ── Remember the running version ──────────────────────
+            # A manual `docker compose up` on the VPS then keeps this version instead of :latest.
+            if grep -q '^IMAGE_TAG=' .env; then
+              sed -i "s/^IMAGE_TAG=.*/IMAGE_TAG=$VERSION/" .env
+            else
+              printf '\nIMAGE_TAG=%s\n' "$VERSION" >> .env
+            fi
+
+            # ── Cleanup ───────────────────────────────────────────
+            echo ""
+            echo "-> Pruning unused images..."
+            docker image prune -f --filter "until=24h" 2>/dev/null || true
+
+            # ── Final status ──────────────────────────────────────
+            echo ""
+            echo "-> Service status:"
+            docker compose -f docker-compose.prod.yml ps
+
+            echo ""
+            echo "══════════════════════════════════════════════════"
+            echo "  $VERSION deployed - $(date '+%H:%M:%S UTC')"
+            echo "══════════════════════════════════════════════════"

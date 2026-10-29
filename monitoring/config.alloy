@@ -1,0 +1,15 @@
+// Ships the backend log file to Loki. Alloy replaces Promtail, which is end of life.
+local.file_match "backend" {
+  path_targets = [{"__path__" = "/var/log/sourcefolio/*.log", "job" = "sourcefolio-backend"}]
+}
+
+loki.source.file "backend" {
+  targets    = local.file_match.backend.targets
+  forward_to = [loki.write.default.receiver]
+}
+
+loki.write "default" {
+  endpoint {
+    url = "http://loki:3100/loki/api/v1/push"
+  }
+}

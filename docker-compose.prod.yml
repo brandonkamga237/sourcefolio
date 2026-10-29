@@ -1,0 +1,283 @@
+# =============================================================================
+# SourceFolio — Production Stack
+# =============================================================================
+#
+# Services: PostgreSQL · Backend (Spring Boot, JobRunr workers, Playwright) ·
+#           Frontend (Next.js) · monitoring (Prometheus, Grafana, Loki, Alloy, exporters)
+# Object storage is Cloudflare R2, outside this stack (S3_* variables).
+#
+# Prerequisites on the server: Docker with the Compose plugin, Traefik on the external
+# network "traefik-public" with a "le" certificate resolver, and a .env next to this file
+# (copy .env.example, fill secrets).
+# =============================================================================
+
+services:
+
+  # ---------------------------------------------------------------------------
+  # PostgreSQL
+  # ---------------------------------------------------------------------------
+  postgres:
+    image: postgres:18-alpine
+    container_name: sourcefolio-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER:     ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB:       ${DB_NAME}
+    volumes:
+      - postgres_data:/var/lib/postgresql
+    healthcheck:
+      test:         ["CMD-SHELL", "pg_isready -U ${DB_USERNAME} -d ${DB_NAME}"]
+      interval:     10s
+      timeout:      5s
+      retries:      5
+      start_period: 15s
+    networks:
+      - sourcefolio-internal
+
+  # ---------------------------------------------------------------------------
+  # Backend API — Spring Boot (port 8080), same domain as the site:
+  # https://<APP_DOMAIN>/api, /oauth2 and /login/oauth2 land here.
+  # ---------------------------------------------------------------------------
+  backend:
+    image: brandoniscoding/sourcefolio-backend:${IMAGE_TAG:-latest}
+    container_name: sourcefolio-backend
+    restart: unless-stopped
+    env_file: .env
+    # Chromium needs more than Docker's 64 MB default for /dev/shm.
+    shm_size: 1gb
+    depends_on:
+      postgres:
+        condition: service_healthy
+    volumes:
+      - backend_logs:/var/log/sourcefolio
+    healthcheck:
+      test:         ["CMD-SHELL", "exec 3<>/dev/tcp/127.0.0.1/9090 && printf 'GET /actuator/health HTTP/1.1\\r\\nHost: localhost\\r\\nConnection: close\\r\\n\\r\\n' >&3 && grep -q UP <&3"]
+      interval:     30s
+      timeout:      10s
+      retries:      5
+      start_period: 90s
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.sourcefolio-api.rule=Host(`${APP_DOMAIN}`) && (PathPrefix(`/api`) || PathPrefix(`/oauth2`) || PathPrefix(`/login/oauth2`))"
+      # Above the frontend router's default priority (the length of its rule), so these
+      # paths never reach Next.js.
+      - "traefik.http.routers.sourcefolio-api.priority=100"
+      - "traefik.http.routers.sourcefolio-api.entrypoints=websecure"
+      - "traefik.http.routers.sourcefolio-api.tls.certresolver=le"
+      - "traefik.http.services.sourcefolio-api.loadbalancer.server.port=8080"
+    networks:
+      - sourcefolio-internal
+      - traefik-public
+
+  # ---------------------------------------------------------------------------
+  # Frontend — Next.js standalone server (port 3000)
+  # Site: https://<APP_DOMAIN> (www redirects to the apex)
+  # ---------------------------------------------------------------------------
+  frontend:
+    image: brandoniscoding/sourcefolio-frontend:${IMAGE_TAG:-latest}
+    container_name: sourcefolio-frontend
+    restart: unless-stopped
+    environment:
+      # Server Components call the API inside the Docker network, not through Traefik.
+      API_INTERNAL_URL: http://backend:8080
+      SITE_URL:         ${SITE_URL}
+    depends_on:
+      backend:
+        condition: service_healthy
+    healthcheck:
+      test:         ["CMD", "wget", "-qO-", "http://127.0.0.1:3000/robots.txt"]
+      interval:     30s
+      timeout:      10s
+      retries:      5
+      start_period: 30s
+    labels:
+      - "traefik.enable=true"
+      # ── HTTPS router ────────────────────────────────────────────────────────
+      - "traefik.http.routers.sourcefolio.rule=Host(`${APP_DOMAIN}`) || Host(`www.${APP_DOMAIN}`)"
+      - "traefik.http.routers.sourcefolio.entrypoints=websecure"
+      - "traefik.http.routers.sourcefolio.tls.certresolver=le"
+      - "traefik.http.services.sourcefolio.loadbalancer.server.port=3000"
+      - "traefik.http.middlewares.sourcefolio-www.redirectregex.regex=^https://www\\.(.*)"
+      - "traefik.http.middlewares.sourcefolio-www.redirectregex.replacement=https://$${1}"
+      - "traefik.http.middlewares.sourcefolio-www.redirectregex.permanent=true"
+      - "traefik.http.routers.sourcefolio.middlewares=sourcefolio-www"
+      # ── HTTP router (port 80) — Let's Encrypt HTTP-01 challenge, then HTTPS ──
+      - "traefik.http.routers.sourcefolio-http.rule=Host(`${APP_DOMAIN}`) || Host(`www.${APP_DOMAIN}`)"
+      - "traefik.http.routers.sourcefolio-http.entrypoints=web"
+      - "traefik.http.middlewares.sourcefolio-https-redirect.redirectscheme.scheme=https"
+      - "traefik.http.middlewares.sourcefolio-https-redirect.redirectscheme.permanent=true"
+      - "traefik.http.routers.sourcefolio-http.middlewares=sourcefolio-https-redirect"
+    networks:
+      - sourcefolio-internal
+      - traefik-public
+
+  # ---------------------------------------------------------------------------
+  # Postgres exporter - database metrics. Internal only: never routed.
+  # ---------------------------------------------------------------------------
+  postgres-exporter:
+    image: prometheuscommunity/postgres-exporter:v0.20.1
+    container_name: sourcefolio-postgres-exporter
+    restart: unless-stopped
+    environment:
+      DATA_SOURCE_NAME: postgresql://${DB_USERNAME}:${DB_PASSWORD}@postgres:5432/${DB_NAME}?sslmode=disable
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - sourcefolio-internal
+
+  # ---------------------------------------------------------------------------
+  # Node exporter - host CPU/RAM/disk/network of the VPS itself
+  # ---------------------------------------------------------------------------
+  node-exporter:
+    image: prom/node-exporter:v1.12.1
+    container_name: sourcefolio-node-exporter
+    restart: unless-stopped
+    command:
+      - '--path.rootfs=/host'
+    volumes:
+      - '/:/host:ro,rslave'
+    networks:
+      - sourcefolio-internal
+
+  # ---------------------------------------------------------------------------
+  # cAdvisor - per-container CPU, memory and restart churn (Chromium included)
+  # ---------------------------------------------------------------------------
+  cadvisor:
+    image: gcr.io/cadvisor/cadvisor:v0.55.1
+    container_name: sourcefolio-cadvisor
+    restart: unless-stopped
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:ro
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+      - /dev/disk/:/dev/disk:ro
+    devices:
+      - /dev/kmsg:/dev/kmsg
+    networks:
+      - sourcefolio-internal
+
+  # ---------------------------------------------------------------------------
+  # Blackbox exporter - probes the public endpoints the way a visitor reaches them
+  # ---------------------------------------------------------------------------
+  blackbox:
+    image: prom/blackbox-exporter:v0.29.1
+    container_name: sourcefolio-blackbox
+    restart: unless-stopped
+    command: ['--config.file=/etc/blackbox_exporter/config.yml']
+    volumes:
+      - ./monitoring/blackbox.yml:/etc/blackbox_exporter/config.yml:ro
+    networks:
+      - sourcefolio-internal
+
+  # ---------------------------------------------------------------------------
+  # Prometheus - metrics storage. Not exposed publicly; read by Grafana only.
+  # ---------------------------------------------------------------------------
+  prometheus:
+    image: prom/prometheus:v3.15.1
+    container_name: sourcefolio-prometheus
+    restart: unless-stopped
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--storage.tsdb.retention.time=15d'
+      - '--web.enable-lifecycle'
+    volumes:
+      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - ./monitoring/prometheus-rules.yml:/etc/prometheus/rules.yml:ro
+      - prometheus_data:/prometheus
+    networks:
+      - sourcefolio-internal
+
+  # ---------------------------------------------------------------------------
+  # Grafana - dashboards and alerting. URL: https://grafana.<APP_DOMAIN>
+  # ---------------------------------------------------------------------------
+  grafana:
+    image: grafana/grafana:13.2.5
+    container_name: sourcefolio-grafana
+    restart: unless-stopped
+    environment:
+      GF_SECURITY_ADMIN_USER:     ${GRAFANA_ADMIN_USER:-admin}
+      # Grafana is public: no fallback password.
+      GF_SECURITY_ADMIN_PASSWORD: ${GRAFANA_ADMIN_PASSWORD:?GRAFANA_ADMIN_PASSWORD must be set in .env}
+      GF_USERS_ALLOW_SIGN_UP: 'false'
+      GF_SERVER_ROOT_URL: 'https://grafana.${APP_DOMAIN}'
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./monitoring/grafana/datasources.yml:/etc/grafana/provisioning/datasources/datasources.yml:ro
+      - ./monitoring/grafana/dashboards:/etc/grafana/provisioning/dashboards:ro
+    depends_on:
+      - prometheus
+      - loki
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.sourcefolio-grafana.rule=Host(`grafana.${APP_DOMAIN}`)"
+      - "traefik.http.routers.sourcefolio-grafana.entrypoints=websecure"
+      - "traefik.http.routers.sourcefolio-grafana.tls.certresolver=le"
+      - "traefik.http.services.sourcefolio-grafana.loadbalancer.server.port=3000"
+      - "traefik.http.routers.sourcefolio-grafana-http.rule=Host(`grafana.${APP_DOMAIN}`)"
+      - "traefik.http.routers.sourcefolio-grafana-http.entrypoints=web"
+      - "traefik.http.routers.sourcefolio-grafana-http.middlewares=sourcefolio-https-redirect"
+    networks:
+      - sourcefolio-internal
+      - traefik-public
+
+  # ---------------------------------------------------------------------------
+  # Loki - log aggregation. Not exposed publicly; read by Grafana only.
+  # ---------------------------------------------------------------------------
+  loki:
+    image: grafana/loki:3.6.11
+    container_name: sourcefolio-loki
+    restart: unless-stopped
+    command: -config.file=/etc/loki/local-config.yaml
+    volumes:
+      - ./monitoring/loki.yml:/etc/loki/local-config.yaml:ro
+      - loki_data:/loki
+    networks:
+      - sourcefolio-internal
+
+  # ---------------------------------------------------------------------------
+  # Alloy - ships backend logs to Loki (Promtail's successor)
+  # ---------------------------------------------------------------------------
+  alloy:
+    image: grafana/alloy:v1.21.3
+    container_name: sourcefolio-alloy
+    restart: unless-stopped
+    command: ['run', '/etc/alloy/config.alloy', '--storage.path=/var/lib/alloy/data']
+    volumes:
+      - ./monitoring/config.alloy:/etc/alloy/config.alloy:ro
+      - backend_logs:/var/log/sourcefolio:ro
+    depends_on:
+      - loki
+      - backend
+    networks:
+      - sourcefolio-internal
+
+# =============================================================================
+# Volumes
+# =============================================================================
+volumes:
+  postgres_data:
+    name: sourcefolio_postgres_data
+  backend_logs:
+    name: sourcefolio_backend_logs
+  prometheus_data:
+    name: sourcefolio_prometheus_data
+  grafana_data:
+    name: sourcefolio_grafana_data
+  loki_data:
+    name: sourcefolio_loki_data
+
+# =============================================================================
+# Networks
+# =============================================================================
+networks:
+  sourcefolio-internal:
+    name: sourcefolio-internal
+    driver: bridge
+
+  traefik-public:
+    name: traefik-public
+    external: true

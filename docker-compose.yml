@@ -1,0 +1,115 @@
+# =============================================================================
+# SourceFolio - Local development stack
+# =============================================================================
+#
+# Production lives in docker-compose.prod.yml (deployed by CI).
+# This file is for local development only.
+#
+# Dependencies only (backend from the IDE / ./mvnw spring-boot:run, frontend with pnpm dev):
+#   docker compose up -d
+#
+# Backend in a container too:
+#   docker compose --profile app up -d --build
+#
+# No .env is required: every variable below has a development default.
+# A .env at the repo root, if present, overrides them.
+# =============================================================================
+
+services:
+
+  # ---------------------------------------------------------------------------
+  # PostgreSQL - localhost:5432
+  # ---------------------------------------------------------------------------
+  postgres:
+    image: postgres:18-alpine
+    container_name: sourcefolio-postgres-dev
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER:     ${DB_USERNAME:-postgres}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-postgres}
+      POSTGRES_DB:       ${DB_NAME:-sourcefolio}
+    ports:
+      - "${DB_PORT:-5432}:5432"
+    volumes:
+      # PostgreSQL 18 keeps its data in a versioned directory under this path.
+      - postgres_data:/var/lib/postgresql
+    healthcheck:
+      test:         ["CMD-SHELL", "pg_isready -U ${DB_USERNAME:-postgres} -d ${DB_NAME:-sourcefolio}"]
+      interval:     10s
+      timeout:      5s
+      retries:      5
+      start_period: 10s
+
+  # ---------------------------------------------------------------------------
+  # RustFS - S3-compatible storage for screenshots
+  # API localhost:9000, console localhost:9001 (rustfsadmin/rustfsadmin)
+  #
+  # Production uses Cloudflare R2; the backend only sees the S3_* variables, so the
+  # same code talks to both. MinIO images are no longer published on Docker Hub.
+  # ---------------------------------------------------------------------------
+  s3:
+    image: rustfs/rustfs:1.0.4
+    container_name: sourcefolio-s3-dev
+    restart: unless-stopped
+    environment:
+      RUSTFS_ACCESS_KEY: ${S3_ACCESS_KEY:-rustfsadmin}
+      RUSTFS_SECRET_KEY: ${S3_SECRET_KEY:-rustfsadmin}
+      RUSTFS_CONSOLE_ENABLE: "true"
+    ports:
+      - "${S3_PORT:-9000}:9000"
+      - "${S3_CONSOLE_PORT:-9001}:9001"
+    volumes:
+      - s3_data:/data
+
+  # ---------------------------------------------------------------------------
+  # Mailpit - catches every email: SMTP localhost:1025, inbox http://localhost:8025
+  # ---------------------------------------------------------------------------
+  mailpit:
+    image: axllent/mailpit:v1.32.0
+    container_name: sourcefolio-mailpit-dev
+    restart: unless-stopped
+    ports:
+      - "${MAIL_PORT:-1025}:1025"
+      - "${MAIL_UI_PORT:-8025}:8025"
+
+  # ---------------------------------------------------------------------------
+  # Spring Boot backend - localhost:8080, compose profile "app" only
+  # ---------------------------------------------------------------------------
+  backend:
+    profiles: ["app"]
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+      target: dev
+    container_name: sourcefolio-backend-dev
+    restart: unless-stopped
+    ports:
+      - "${SERVER_PORT:-8080}:8080"
+    environment:
+      SPRING_PROFILES_ACTIVE: dev
+      DB_HOST:       postgres
+      DB_PORT:       5432
+      DB_NAME:       ${DB_NAME:-sourcefolio}
+      DB_USERNAME:   ${DB_USERNAME:-postgres}
+      DB_PASSWORD:   ${DB_PASSWORD:-postgres}
+      S3_ENDPOINT:   http://s3:9000
+      S3_REGION:     ${S3_REGION:-us-east-1}
+      S3_BUCKET:     ${S3_BUCKET:-sourcefolio}
+      S3_ACCESS_KEY: ${S3_ACCESS_KEY:-rustfsadmin}
+      S3_SECRET_KEY: ${S3_SECRET_KEY:-rustfsadmin}
+      S3_PUBLIC_URL: ${S3_PUBLIC_URL:-http://localhost:9000/sourcefolio}
+      MAIL_HOST:     mailpit
+      MAIL_PORT:     1025
+      SITE_URL:      ${SITE_URL:-http://localhost:3000}
+      GITHUB_CLIENT_ID:     ${GITHUB_CLIENT_ID:-}
+      GITHUB_CLIENT_SECRET: ${GITHUB_CLIENT_SECRET:-}
+      GITHUB_API_TOKEN:     ${GITHUB_API_TOKEN:-}
+    depends_on:
+      postgres:
+        condition: service_healthy
+      s3:
+        condition: service_started
+
+volumes:
+  postgres_data:
+  s3_data:
