@@ -58,10 +58,11 @@ not here, take it from the mockup, never invent a near neighbour.
 Fonts are loaded with `next/font/google` (`Bricolage_Grotesque` 600/700, `Geist` 400/500/600,
 `Geist_Mono` 400/500) as CSS variables on `<html>`. Never a `<link>` to Google Fonts.
 
-Dark mode is not drawn yet. Define the same token names under `.dark` (`--color-canvas:
-#0E100E; --color-surface: #171917; --color-ink: #F2F2EC; --color-line: #2A2D29; --color-accent:
-#6E83FF`…), follow the system preference, and have the values validated before the first
-release. Components only ever use the token names, so the theme is one block of CSS.
+Dark mode is not drawn yet. `app/globals.css` redefines the same token names for
+`prefers-color-scheme: dark` (unless `<html data-theme="light">`) and for
+`<html data-theme="dark">`, the member's choice in "Moi". Its values are a proposal to validate
+before the first release. Components only ever use the token names, so the theme is one block
+of CSS.
 
 ## Type scale
 
@@ -116,8 +117,9 @@ focus-visible:outline-accent`).
 
 All icons are 24×24, `fill="none" stroke="currentColor" stroke-linecap="round"
 stroke-linejoin="round"`, drawn for this product. They live as files in
-`frontend/icons/<name>.svg` and become components through SVGR
-(`components/icons/Icon<Name>.tsx`, generated, never edited by hand). Stroke width is part
+`frontend/icons/<name>.svg` and `pnpm icons` turns them into components through SVGR
+(`components/icons/<Name>.tsx`, exported as `Icon<Name>` from `@/components/icons`; generated,
+never edited by hand, ignored by ESLint). Stroke width is part
 of the file: keep the mockup's.
 
 | File | Stroke | Content |
