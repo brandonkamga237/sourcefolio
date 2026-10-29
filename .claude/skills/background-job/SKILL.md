@@ -11,13 +11,21 @@ A job when the work calls the outside (a portfolio, GitHub, S3, SMTP), takes mor
 hundred milliseconds, must retry, or runs on a schedule. Not a job: anything the HTTP response
 needs to show right away.
 
-The three job families of the spec, each on its own JobRunr queue and worker count:
+The three job families of the spec. Open-source JobRunr has one pool of workers and no named
+queues (the `@Job` annotation offers `name`, `retries`, `labels` and `jobFilters` only; queues
+are a JobRunr Pro feature), so each family is a **label**, used to filter the dashboard and the
+metrics:
 
-| Family | Queue | What | Trigger |
+| Family | Label | What | Trigger |
 | --- | --- | --- | --- |
 | Check | `checks` | HTTP probe, fingerprint, health report, lifecycle decision | every 24 h per published showcase; +1 h and +6 h after a failure; every 6 h while `UNAVAILABLE`; right after publication |
 | Screenshot | `screenshots` | Playwright mobile (390×844) and desktop (1440×900) captures, WebP/AVIF variants to S3 | after a check whose fingerprint changed, or on publication |
 | GitHub sync | `github` | scan the member's public repos for candidates, refresh `detected_stack`, homepage and bio | right after sign-in, then daily |
+
+With one shared pool, a burst of screenshots must not starve the checks: the Playwright
+adapter limits concurrent captures itself (a semaphore sized by `app.screenshots.max-concurrency`,
+2 by default, since each Chromium page takes hundreds of megabytes), and the worker count
+(`jobrunr.background-job-server.worker-count`) stays above it.
 
 Plus recurring housekeeping: lifecycle timers (14 → `NEEDS_FIX`, 21 → `REMOVED`, removal
 notice 30 days before the 12-month deletion), the weekly author stats notification, the
@@ -29,7 +37,7 @@ optional weekly digest.
 <module>/application/CheckupService.check(ShowcaseId)      plain Java, idempotent
 <module>/infra/jobs/CheckShowcaseJob.java                  @Job adapter: ids in, one call out
 <module>/infra/jobs/CheckupScheduler.java                  implements domain/port/CheckScheduler
-<module>/infra/config/CheckupJobs.java                     recurring jobs, queue settings
+<module>/infra/config/CheckupJobs.java                     recurring jobs
 ```
 
 - The use case never imports JobRunr. When it must schedule something (retry at +1 h), it
