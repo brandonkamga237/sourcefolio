@@ -15,20 +15,24 @@ public class SignInServiceImpl implements SignInService {
 
     private final UserStore users;
     private final AuthIdentityStore identities;
+    private final AccountEvents events;
     private final Clock clock;
 
-    public SignInServiceImpl(UserStore users, AuthIdentityStore identities, Clock clock) {
+    public SignInServiceImpl(UserStore users, AuthIdentityStore identities, AccountEvents events, Clock clock) {
         this.users = users;
         this.identities = identities;
+        this.events = events;
         this.clock = clock;
     }
 
     @Override
     public Member signIn(ExternalIdentity external) {
         Instant now = clock.instant();
-        return identities.find(external.provider(), external.providerUserId())
+        Member member = identities.find(external.provider(), external.providerUserId())
                 .map(identity -> returning(identity, external.login(), now))
                 .orElseGet(() -> registering(external, now));
+        events.memberSignedIn(new MemberSignedIn(member.id().value(), member.login()));
+        return member;
     }
 
     @Override
