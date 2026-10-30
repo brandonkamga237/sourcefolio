@@ -6,6 +6,7 @@ import { localizedPath } from "@/i18n/paths";
 import type { Locale } from "@/i18n/routing";
 import { getCatalogFirstPage, type CatalogPage, type CatalogSort } from "@/services/catalog";
 import { CatalogFeed } from "./CatalogFeed";
+import { DiscoverIntro } from "./DiscoverIntro";
 
 interface CatalogScreenProps {
   locale: Locale;
@@ -28,8 +29,8 @@ async function SortTabs({ locale, sort }: CatalogScreenProps) {
           key={item.sort}
           href={localizedPath(locale, item.path)}
           aria-current={item.sort === sort ? "page" : undefined}
-          className={`flex h-11 items-center rounded-full px-3.5 text-sm font-semibold ${
-            item.sort === sort ? "bg-ink text-ink-inverse" : "border border-line bg-surface text-ink"
+          className={`press flex h-11 items-center rounded-full px-3.5 text-sm font-semibold transition-colors duration-150 ${
+            item.sort === sort ? "bg-ink text-ink-inverse" : "border border-line bg-surface text-ink hover:border-ink-muted"
           }`}
         >
           {t(item.sort)}
@@ -63,7 +64,7 @@ async function Feed({ locale, sort }: CatalogScreenProps) {
       <section aria-labelledby="catalog-empty" className="flex flex-col gap-2 rounded-card border border-line bg-surface p-4">
         <h2 id="catalog-empty" className="text-[15px] font-semibold">{t("emptyTitle")}</h2>
         <p className="text-sm leading-normal text-ink-body">{t("emptyLead")}</p>
-        <Link href={localizedPath(locale, "/me")} className="flex h-11 w-fit items-center rounded-control bg-accent px-4 text-sm font-semibold text-white">
+        <Link href={localizedPath(locale, "/me")} className="press flex h-11 w-fit items-center rounded-control bg-accent px-4 text-sm font-semibold text-white">
           {t("emptyLink")}
         </Link>
       </section>
@@ -72,7 +73,7 @@ async function Feed({ locale, sort }: CatalogScreenProps) {
 
   return (
     <div className="flex flex-col gap-4">
-      <p className="font-mono text-xs text-ink-muted sm:text-[13px]">
+      <p className="-mt-1 font-mono text-xs text-ink-muted sm:text-[13px]">
         {t("count", { count: firstPage.total })} · {t(sort === "discover" ? "orderShuffled" : "orderRecent")}
       </p>
       <CatalogFeed
@@ -90,7 +91,7 @@ async function Feed({ locale, sort }: CatalogScreenProps) {
           openPage: t("panel.openPage"),
           sourceRepo: t("panel.sourceRepo"),
           publishedOn: t.raw("panel.publishedOn") as string,
-          likes: { like: tl.raw("like") as string, unlike: tl.raw("unlike") as string, failed: tl("failed") },
+          likes: { like: tl.raw("like") as string, unlike: tl.raw("unlike") as string, own: tl.raw("own") as string, failed: tl("failed") },
         },
       }}
       />
@@ -111,9 +112,14 @@ function FeedSkeleton() {
 export async function CatalogScreen({ locale, sort }: CatalogScreenProps) {
   const t = await getTranslations({ locale });
   return (
-    <div className="flex flex-col gap-4 px-4 py-5 lg:px-8 lg:py-7">
-      <div className="flex flex-wrap items-end justify-between gap-3">
-        <h1 className="font-display text-[24px] leading-none font-bold tracking-[-0.035em] sm:text-[30px] lg:text-[40px]">{t("brand.tagline")}</h1>
+    <div className="flex flex-col gap-4 px-4 py-4 sm:gap-5 lg:px-8 lg:py-7">
+      {sort === "discover" ? <DiscoverIntro locale={locale} /> : null}
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        {sort === "discover" ? (
+          <h2 className="font-display text-[20px] leading-none font-bold tracking-[-0.03em] sm:text-[24px]">{t("catalog.feedTitle")}</h2>
+        ) : (
+          <h1 className="font-display text-[24px] leading-none font-bold tracking-[-0.035em] sm:text-[30px] lg:text-[40px]">{t("catalog.recentTitle")}</h1>
+        )}
         <SortTabs locale={locale} sort={sort} />
       </div>
       <Suspense fallback={<FeedSkeleton />}>

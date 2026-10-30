@@ -34,7 +34,7 @@ export function Preview({ slug, siteUrl, imageUrl, videoUrl, size = "card", aspe
       }}
       onMouseLeave={() => video.current?.pause()}
     >
-      <Image src={imageUrl} alt="" fill sizes={sizes} priority={priority} className="object-cover object-top" />
+      <Image src={imageUrl} alt="" fill sizes={sizes} priority={priority} className="object-cover object-top transition-transform duration-500 ease-out-soft group-hover:scale-[1.04]" />
       {videoUrl && size !== "thumb" ? (
         <video
           ref={video}

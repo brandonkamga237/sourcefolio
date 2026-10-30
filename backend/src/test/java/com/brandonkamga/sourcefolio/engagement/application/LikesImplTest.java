@@ -63,8 +63,8 @@ class LikesImplTest {
     @Test
     @DisplayName("a like counts once however many times it is sent, and the new count is announced once")
     void likeIsIdempotent() {
-        assertThat(likes.like(FAN, "nekwalla")).isEqualTo(new LikeState(1, true));
-        assertThat(likes.like(FAN, "nekwalla")).isEqualTo(new LikeState(1, true));
+        assertThat(likes.like(FAN, "nekwalla")).isEqualTo(new LikeState(1, true, false));
+        assertThat(likes.like(FAN, "nekwalla")).isEqualTo(new LikeState(1, true, false));
 
         assertThat(announced).containsExactly(new ShowcaseLikesChanged(SHOWCASE.id().value(), 1));
     }
@@ -74,8 +74,8 @@ class LikesImplTest {
     void unlike() {
         likes.like(FAN, "nekwalla");
 
-        assertThat(likes.unlike(FAN, "nekwalla")).isEqualTo(new LikeState(0, false));
-        assertThat(likes.unlike(FAN, "nekwalla")).isEqualTo(new LikeState(0, false));
+        assertThat(likes.unlike(FAN, "nekwalla")).isEqualTo(new LikeState(0, false, false));
+        assertThat(likes.unlike(FAN, "nekwalla")).isEqualTo(new LikeState(0, false, false));
         assertThat(announced).extracting(ShowcaseLikesChanged::count).containsExactly(1, 0);
     }
 
@@ -84,8 +84,16 @@ class LikesImplTest {
     void state() {
         likes.like(FAN, "nekwalla");
 
-        assertThat(likes.findState(null, "nekwalla")).isEqualTo(new LikeState(1, false));
-        assertThat(likes.findState(FAN, "nekwalla")).isEqualTo(new LikeState(1, true));
+        assertThat(likes.findState(null, "nekwalla")).isEqualTo(new LikeState(1, false, false));
+        assertThat(likes.findState(FAN, "nekwalla")).isEqualTo(new LikeState(1, true, false));
+    }
+
+    @Test
+    @DisplayName("the author is told the portfolio is theirs, so the page can show the count without a button")
+    void authorSeesOwn() {
+        likes.like(FAN, "nekwalla");
+
+        assertThat(likes.findState(OWNER, "nekwalla")).isEqualTo(new LikeState(1, false, true));
     }
 
     @Test

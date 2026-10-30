@@ -57,7 +57,7 @@ export async function PublishedShowcase({ locale, showcase }: PublishedShowcaseP
               copiedLabel={t("shareCopied")}
             />
           ) : null}
-          <Link href={pagePath} className="flex h-11 items-center rounded-control border border-ink px-3.5 text-sm font-semibold text-ink">
+          <Link href={pagePath} className="press flex h-11 items-center rounded-control border border-ink px-3.5 text-sm font-semibold text-ink">
             {t("viewPage")}
           </Link>
           <a href={showcase.siteUrl} target="_blank" rel="noopener noreferrer" aria-label={t("visitSite")} title={t("visitSite")} className={iconLink}>

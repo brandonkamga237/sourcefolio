@@ -11,6 +11,7 @@ import { countryOptions } from "@/lib/countries";
 import { getMe } from "@/services/me";
 import { getMyAnswers } from "@/services/profile";
 import { getMyShowcase } from "@/services/showcases";
+import { JourneyCard } from "./JourneyCard";
 import { MePreferences } from "./MePreferences";
 
 interface MeScreenProps {
@@ -21,8 +22,9 @@ const sectionTitle = "text-[13px] font-semibold tracking-wide text-ink-muted upp
 // Two columns on a wide screen: the portfolio, what members come for, then account matters.
 const columns = "grid items-start gap-6 lg:grid-cols-[minmax(0,1fr)_340px]";
 
-// Everything about the member in one place (spec: the Me tab): who they are, their portfolio,
-// their profile answers, their preferences. A visitor gets one action, signing in with GitHub,
+// Everything about the member in one place (spec: the Me tab): where they stand and what to do
+// next, their portfolio and its preview, their profile answers, then account matters folded
+// away. A visitor gets one action, signing in with GitHub,
 // which starts the detection of their portfolio. Reads the session, so it renders inside a
 // Suspense boundary.
 export async function MeScreen({ locale }: MeScreenProps) {
@@ -65,6 +67,8 @@ export async function MeScreen({ locale }: MeScreenProps) {
     { label: t("profile.emailLabel"), value: answers?.email ?? null },
   ];
   const profileIncomplete = answers !== null && (!answers.country || !answers.specialty);
+  // Scrolled to from the journey card: clear of the sticky top bar on a phone.
+  const anchored = "scroll-mt-20";
 
   return (
     <div className={columns}>
@@ -81,29 +85,33 @@ export async function MeScreen({ locale }: MeScreenProps) {
           </div>
         </header>
 
-        <section aria-labelledby="me-portfolio" className="flex flex-col gap-3">
-          <h2 id="me-portfolio" className={sectionTitle}>{t("me.portfolioTitle")}</h2>
+        <JourneyCard locale={locale} showcase={showcase} profileComplete={!profileIncomplete} />
+
+        <section id="me-portfolio" aria-labelledby="me-portfolio-title" className={`flex flex-col gap-3 ${anchored}`}>
+          <h2 id="me-portfolio-title" className={sectionTitle}>{t("me.portfolioTitle")}</h2>
           {showcase ? (
             <>
               <PublishedShowcase locale={locale} showcase={showcase} />
-              <PreviewEditor
-                hasImage={showcase.previewImageUrl !== null}
-                hasVideo={showcase.previewVideoUrl !== null}
-                labels={{
-                  title: t("preview.title"),
-                  lead: t("preview.lead"),
-                  imageLabel: t("preview.imageLabel"),
-                  imageHint: t("preview.imageHint"),
-                  videoLabel: t("preview.videoLabel"),
-                  videoHint: t("preview.videoHint"),
-                  choose: t("preview.choose"),
-                  change: t("preview.change"),
-                  remove: t("preview.remove"),
-                  sending: t("preview.sending"),
-                  tooBig: t("preview.tooBig"),
-                  failed: t("preview.failed"),
-                }}
-              />
+              <div id="me-preview" className={anchored}>
+                <PreviewEditor
+                  hasImage={showcase.previewImageUrl !== null}
+                  hasVideo={showcase.previewVideoUrl !== null}
+                  labels={{
+                    title: t("preview.title"),
+                    lead: t("preview.lead"),
+                    imageLabel: t("preview.imageLabel"),
+                    imageHint: t("preview.imageHint"),
+                    videoLabel: t("preview.videoLabel"),
+                    videoHint: t("preview.videoHint"),
+                    choose: t("preview.choose"),
+                    change: t("preview.change"),
+                    remove: t("preview.remove"),
+                    sending: t("preview.sending"),
+                    tooBig: t("preview.tooBig"),
+                    failed: t("preview.failed"),
+                  }}
+                />
+              </div>
             </>
           ) : (
             <>
@@ -118,7 +126,7 @@ export async function MeScreen({ locale }: MeScreenProps) {
         <section aria-labelledby="me-profile" className="flex flex-col gap-3">
           <div className="flex items-center justify-between gap-3">
             <h2 id="me-profile" className={sectionTitle}>{t("profile.summaryTitle")}</h2>
-            <Link href={localizedPath(locale, "/me/profile")} className="flex h-11 items-center text-sm font-semibold text-accent-ink">
+            <Link href={localizedPath(locale, "/me/profile")} className="press flex h-11 items-center text-sm font-semibold text-accent-ink">
               {profileIncomplete ? t("profile.reminderLink") : t("profile.edit")}
             </Link>
           </div>
@@ -131,8 +139,17 @@ export async function MeScreen({ locale }: MeScreenProps) {
             ))}
           </dl>
         </section>
-        <MePreferences locale={locale} />
-        <SignOutButton label={t("account.signOut")} failedMessage={t("account.signOutFailed")} />
+        {/* Settings are visited rarely: folded, so the portfolio keeps the attention. */}
+        <details className="group/account rounded-card border border-line bg-surface [&_summary::-webkit-details-marker]:hidden">
+          <summary className="flex h-12 cursor-pointer list-none items-center justify-between gap-3 px-4 text-sm font-semibold select-none">
+            {t("me.accountTitle")}
+            <span aria-hidden="true" className="size-2 rotate-45 border-r-2 border-b-2 border-ink-muted transition-transform duration-200 group-open/account:-rotate-135" />
+          </summary>
+          <div className="flex flex-col gap-4 border-t border-line-soft p-4">
+            <MePreferences locale={locale} />
+            <SignOutButton label={t("account.signOut")} failedMessage={t("account.signOutFailed")} />
+          </div>
+        </details>
       </div>
     </div>
   );

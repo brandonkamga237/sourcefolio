@@ -53,7 +53,7 @@ function jsonLd(showcase: PublicShowcase): string {
 }
 
 const secondaryLink =
-  "flex h-11 items-center justify-center gap-1.5 rounded-control border border-line bg-surface px-4 text-sm font-semibold text-ink";
+  "press flex h-11 items-center justify-center gap-1.5 rounded-control border border-line bg-surface px-4 text-sm font-semibold text-ink";
 
 // The page most visitors land on first, from a shared link on a phone. One main action, the
 // site; the code next to it is the promise of SourceFolio. External sites open in a new tab.
@@ -118,7 +118,7 @@ export default async function ShowcasePage({ params }: PageProps<"/[locale]/p/[s
           href={showcase.siteUrl}
           target="_blank"
           rel="noopener noreferrer"
-          className="flex h-12 items-center justify-center gap-2 rounded-control bg-accent px-5 text-[15px] font-semibold text-white"
+          className="press flex h-12 items-center justify-center gap-2 rounded-control bg-accent px-5 text-[15px] font-semibold text-white"
         >
           {t("visitSite")}
           <IconExternal className="size-4" />
@@ -132,7 +132,7 @@ export default async function ShowcasePage({ params }: PageProps<"/[locale]/p/[s
             <LikeButton
               slug={showcase.slug}
               showCount
-              labels={{ like: tl.raw("like") as string, unlike: tl.raw("unlike") as string, failed: tl("failed") }}
+              labels={{ like: tl.raw("like") as string, unlike: tl.raw("unlike") as string, own: tl.raw("own") as string, failed: tl("failed") }}
             />
           </Suspense>
         </div>
@@ -141,7 +141,7 @@ export default async function ShowcasePage({ params }: PageProps<"/[locale]/p/[s
       <aside className="mt-4 flex flex-col gap-2 rounded-card border border-line bg-surface p-4">
         <h2 className="text-[15px] font-semibold">{t("ctaTitle")}</h2>
         <p className="text-sm leading-normal text-ink-body">{t("ctaLead")}</p>
-        <Link href={localizedPath(locale, "/me")} className="flex h-11 w-fit items-center rounded-control border border-ink px-4 text-sm font-semibold text-ink">
+        <Link href={localizedPath(locale, "/me")} className="press flex h-11 w-fit items-center rounded-control border border-ink px-4 text-sm font-semibold text-ink">
           {t("ctaLink")}
         </Link>
       </aside>

@@ -11,7 +11,7 @@ export function GitHubSignIn({ label, permission }: GitHubSignInProps) {
       {/* eslint-disable-next-line @next/next/no-html-link-for-pages -- /oauth2 is a backend route: it needs a full page load */}
       <a
         href="/oauth2/authorization/github"
-        className="flex h-[46px] items-center justify-center rounded-control bg-ink px-5 text-[15px] font-semibold text-ink-inverse"
+        className="press flex h-[46px] items-center justify-center rounded-control bg-ink px-5 text-[15px] font-semibold text-ink-inverse"
       >
         {label}
       </a>

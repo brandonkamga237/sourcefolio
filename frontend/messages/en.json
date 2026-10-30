@@ -12,7 +12,8 @@
     "discover": "Discover",
     "me": "Me",
     "publish": "Publish your portfolio",
-    "ranking": "Ranking"
+    "ranking": "Ranking",
+    "publishShort": "Publish"
   },
   "language": {
     "label": "Language",
@@ -136,6 +137,16 @@
       "openPage": "Open the full page",
       "sourceRepo": "Source repository",
       "publishedOn": "Published on {date}"
+    },
+    "feedTitle": "Portfolios",
+    "recentTitle": "Latest published",
+    "intro": {
+      "lead": "Open a portfolio, visit the site, then read the code that runs it. Every portfolio here has a public repository.",
+      "cta": "Publish mine",
+      "ctaHint": "Free, with your GitHub account.",
+      "step1": "Connect GitHub",
+      "step2": "Pick your repository",
+      "step3": "Share your link"
     }
   },
   "profile": {
@@ -175,7 +186,8 @@
   },
   "me": {
     "portfolioTitle": "My portfolio",
-    "preferencesTitle": "Preferences"
+    "preferencesTitle": "Preferences",
+    "accountTitle": "Account and preferences"
   },
   "ranking": {
     "title": "Ranking",
@@ -187,7 +199,8 @@
   "likes": {
     "like": "Like this portfolio ({count})",
     "unlike": "Take back my like ({count})",
-    "failed": "Your like could not be saved. Try again."
+    "failed": "Your like could not be saved. Try again.",
+    "own": "This is your portfolio: {count} like(s)"
   },
   "preview": {
     "title": "Your card preview",
@@ -202,5 +215,29 @@
     "sending": "Sending…",
     "tooBig": "This file is too large: 5 MB at most for an image, 8 MB for a video.",
     "failed": "The upload did not go through. Try again in a moment."
+  },
+  "journey": {
+    "title": "Your portfolio on SourceFolio",
+    "doneTitle": "All set",
+    "progress": "{done} of {total} steps",
+    "stateDone": "Done:",
+    "stateTodo": "To do:",
+    "steps": {
+      "account": "GitHub",
+      "publish": "Published",
+      "preview": "Image",
+      "profile": "Profile"
+    },
+    "next": {
+      "publish": "Pick your portfolio’s repository: it shows up in Discover as soon as it is published.",
+      "preview": "Add an image (and a short video if you like): it is what your card shows.",
+      "profile": "Tell us your country and specialty so people find you more easily."
+    },
+    "actions": {
+      "publish": "Pick my repository",
+      "preview": "Add an image",
+      "profile": "Complete my profile"
+    },
+    "doneLead": "Your portfolio is live. Share the link to get visits and likes."
   }
 }

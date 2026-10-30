@@ -26,8 +26,8 @@ export function SidebarNav({ locale, labels }: SidebarNavProps) {
             aria-current={active ? "page" : undefined}
             className={
               active
-                ? "flex h-11 items-center gap-3 rounded-control bg-accent-soft px-3 text-[15px] font-semibold text-accent-ink"
-                : "flex h-11 items-center gap-3 rounded-control px-3 text-[15px] font-medium text-ink-soft hover:bg-surface-sunken"
+                ? "press flex h-11 items-center gap-3 rounded-control bg-accent-soft px-3 text-[15px] font-semibold text-accent-ink"
+                : "press flex h-11 items-center gap-3 rounded-control px-3 text-[15px] font-medium text-ink-soft transition-colors duration-150 hover:bg-surface-sunken hover:text-ink"
             }
           >
             <Icon className="size-5 shrink-0" />

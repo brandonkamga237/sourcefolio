@@ -36,7 +36,7 @@ export function PreviewArt({ slug, siteUrl, size = "card", aspectClass = "aspect
   return (
     <div
       aria-hidden="true"
-      className={`flex ${aspectClass} flex-col overflow-hidden ${size === "thumb" ? "justify-end p-2.5" : "justify-between"} ${
+      className={`relative flex ${aspectClass} flex-col overflow-hidden ${size === "thumb" ? "justify-end p-2.5" : "justify-between"} ${
         size === "large" ? "p-5" : size === "card" ? "p-3 sm:p-4" : ""
       } ${tintOf(slug)}`}
     >
@@ -46,7 +46,13 @@ export function PreviewArt({ slug, siteUrl, size = "card", aspectClass = "aspect
           <span className="truncate font-mono text-[10px] opacity-70 sm:text-[11px]">{siteLabel(siteUrl)}</span>
         </span>
       )}
-      <span className={`font-display leading-[0.92] font-bold tracking-[-0.045em] ${nameSize[size]}`}>{name}</span>
+      <span
+        className={`font-display leading-[0.92] font-bold tracking-[-0.045em] transition-transform duration-500 ease-out-soft group-hover:translate-x-1 ${nameSize[size]}`}
+      >
+        {name}
+      </span>
+      {/* A soft ring in the corner, so a card without an image still has some depth. */}
+      <span className="pointer-events-none absolute -right-8 -bottom-10 size-32 rounded-full border-[14px] border-current opacity-[0.08] transition-transform duration-700 ease-out-soft group-hover:scale-110 sm:size-40" />
     </div>
   );
 }

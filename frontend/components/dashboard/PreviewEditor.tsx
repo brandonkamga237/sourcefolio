@@ -74,7 +74,7 @@ export function PreviewEditor({ hasImage, hasVideo, labels }: PreviewEditorProps
             </div>
             <div className="flex flex-wrap gap-2">
               <label
-                className={`flex h-11 cursor-pointer items-center rounded-control px-4 text-sm font-semibold ${
+                className={`press flex h-11 cursor-pointer items-center rounded-control px-4 text-sm font-semibold ${
                   row.present ? "border border-ink bg-surface text-ink" : "bg-ink text-ink-inverse"
                 } ${busy ? "pointer-events-none opacity-60" : ""}`}
               >
@@ -86,7 +86,7 @@ export function PreviewEditor({ hasImage, hasVideo, labels }: PreviewEditorProps
                   type="button"
                   onClick={() => void run(row.kind, () => removePreview(row.kind))}
                   disabled={busy !== null}
-                  className="flex h-11 items-center px-2 text-sm font-semibold text-ink-muted disabled:opacity-60"
+                  className="press flex h-11 items-center px-2 text-sm font-semibold text-ink-muted disabled:opacity-60"
                 >
                   {labels.remove}
                 </button>
