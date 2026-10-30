@@ -18,8 +18,8 @@ Promesse : *Des portfolios dont tu peux lire le code* / *Portfolios you can read
 | Communauté (pays, école) | Vitrine collective partageable | Pages pays et espaces communauté (V1.x) |
 
 Règle de conception : une action principale par écran, le reste en divulgation progressive. Le
-produit crée l'habitude par l'utilité (stats, retours, alertes), jamais par des séries, points
-ou classements.
+produit crée l'habitude par l'utilité (stats, retours, alertes) et par un classement public des
+portfolios les plus appréciés ; pas de séries ni de points.
 
 ## Décisions tranchées
 
@@ -35,7 +35,7 @@ Chaque question ouverte a une réponse par défaut ; elle peut être revue aprè
 | Changement d'URL | Même dépôt source → même portfolio, retours conservés. Nouveau dépôt → nouveau portfolio, l'ancien est archivé avec ses retours. | Règle explicite demandée par la spec initiale. |
 | Organisation GitHub comme auteur ? | Non. Dépôts personnels publiés automatiquement ; dépôt d'organisation → vérification manuelle. | Pas de scope read:org à demander. |
 | E-mail | Facultatif, demandé à l'étape de publication, prérempli avec l'e-mail public GitHub s'il existe. Texte : « pour être prévenu si ton site tombe ». | Seul moyen fiable d'avertir avant un retrait, sans permission GitHub supplémentaire. |
-| Nombre d'appréciations public ? | Caché sur les cartes et la fiche ; visible par l'auteur dans son tableau de bord. | Empêche la popularité de décider de la visibilité. |
+| Nombre d'appréciations public ? | Oui : affiché sur la fiche et dans l'onglet Classement, qui ordonne les portfolios publiés par appréciations. Le flux Découvrir reste mélangé chaque jour. | Décision du 30/10/2026, qui remplace la règle initiale « caché, visible par l'auteur seul ». Le classement donne une raison de revenir ; Découvrir garde l'exposition équitable des nouveaux. la visibilité. |
 | Tri par défaut | Découvrir : mélange aléatoire renouvelé chaque jour, avec 1 carte sur 5 réservée aux portfolios de moins de 14 jours. Tri Récents disponible. Pas de tri Populaires. | Exposition équitable mesurable. |
 | Publication automatique | Oui si : dépôt appartenant au membre connecté, champ homepage du dépôt égal à l'URL (ou GitHub Pages du membre), site qui répond. Sinon file de vérification manuelle. | Le manuel ne passe pas à l'échelle pour une petite équipe. |
 | Langue par défaut | Langue du navigateur ; à défaut, anglais. Choix mémorisé par compte. | Portée internationale, français natif. |
@@ -47,14 +47,13 @@ Le mobile est conçu en premier et doit avoir le niveau d'une app native : envir
 premières visites viendront d'un téléphone, souvent via un lien partagé sur WhatsApp. Le web
 desktop reprend la même architecture, adaptée à l'écran large.
 
-### Architecture : 4 onglets
+### Architecture : 3 onglets
 
 | Onglet | Contenu | Visiteur non connecté |
 | --- | --- | --- |
-| Découvrir | Flux de cartes, puces de filtres rapides, cloche de notifications en haut à droite | Identique, sans cloche |
-| Rechercher | Champ de recherche, filtres complets, recherches récentes | Identique |
-| Mon portfolio | Tableau de bord auteur : état, stats, retours, bilan de santé | Écran « Publie ton portfolio » + connexion GitHub |
-| Moi | Profil, langue, thème, notifications, déconnexion | Langue, thème, connexion |
+| Découvrir | Recherche, puces de filtres, flux de cartes ; sur desktop la fiche s'ouvre en panneau latéral | Identique |
+| Classement | Portfolios publiés ordonnés par appréciations, avec leur nombre | Identique |
+| Moi | Tout le compte au même endroit : son portfolio (publication, aperçu image ou vidéo, état, stats, retours), son profil, langue, thème, déconnexion | Écran « Publie ton portfolio » + connexion GitHub, langue, thème |
 
 Sur mobile : barre d'onglets en bas, dans la zone du pouce. Sur desktop (≥ 1024 px) : barre
 latérale gauche, grille de 3 à 4 colonnes, fiche ouverte en panneau latéral sans quitter le
@@ -62,8 +61,11 @@ catalogue.
 
 ### Écrans clés
 
-- **Carte** : capture du rendu mobile du portfolio sur téléphone, rendu desktop sur ordinateur ;
-  nom, spécialité, drapeau du pays, 3 technologies maximum.
+- **Carte** : aperçu choisi par l'auteur (image envoyée, ou capture automatique du site à défaut ;
+  vidéo courte facultative, lue au survol ou au toucher, jamais en lecture automatique sur
+  mobile) ; nom, spécialité, drapeau du pays, 3 technologies maximum.
+- **Aperçu** : une image (JPEG, PNG ou WebP, 5 Mo maximum) et une vidéo facultative (MP4,
+  15 s et 8 Mo maximum), stockées dans le bucket S3 de la plateforme.
 - **Filtres** : rangée de puces défilante sous la recherche ; « Filtres » ouvre une feuille en
   bas d'écran avec le compteur en direct (« Voir 124 portfolios »).
 - **Fiche** : capture en grand, puis barre d'actions fixée en bas : Voir le site (principal),
@@ -138,7 +140,8 @@ GitHub, sans formulaire.
 ## Boucles de valeur
 
 L'auteur revient parce que la plateforme l'informe sur son portfolio ; le visiteur revient parce
-que le catalogue change. Aucune mécanique de points, séries ou classements.
+que le catalogue change. Le classement par appréciations est la seule mécanique de popularité ;
+pas de points ni de séries.
 
 | Boucle | Déclencheur | Ce que voit le membre | Version |
 | --- | --- | --- | --- |
@@ -256,5 +259,5 @@ Indicateur principal : nombre d'auteurs ayant reçu au moins un retour utile dan
 - [ ] LCP inférieur à 2,5 s en 4G sur un Android d'entrée de gamme.
 - [ ] Un portfolio dont le contenu change radicalement passe en À corriger et sort du catalogue.
 - [ ] Un portfolio redevenu accessible est republié automatiquement avec ses retours.
-- [ ] Le nombre d'appréciations n'est visible que par l'auteur.
+- [ ] Le nombre d'appréciations est public et le Classement l'ordonne ; Découvrir ne trie jamais par popularité.
 - [ ] L'auteur voit ses vues, clics vers le site et clics vers le code.

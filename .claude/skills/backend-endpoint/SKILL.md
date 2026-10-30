@@ -19,8 +19,8 @@ Everything lives under `<module>/` (`account`, `profile`, `showcase`, `checkup`,
    an entity.
    - A request translates itself into a command: `public PostFeedback toCommand(UserId author)`.
    - A response builds itself from the read model: `public static ShowcaseCardResponse of(CatalogEntry e)`.
-   - A like count is never in a public response; it appears only in the author's dashboard
-     responses.
+   - Like counts are public (the Ranking tab orders by them), but Discover and Recent never
+     sort by them.
 
 2. **Command** — `<module>/application/Xxx.java`, a record with only what the use case
    needs. No validation annotation, no JSON concern.
