@@ -6,6 +6,7 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 import { AppShell } from "@/components/layout/AppShell";
 import { QueryProvider } from "@/components/providers/QueryProvider";
 import { themeBootScript } from "@/components/theme/theme";
+import { ThemeKeeper } from "@/components/theme/ThemeKeeper";
 import { routing, toLocale } from "@/i18n/routing";
 import "../globals.css";
 
@@ -71,6 +72,7 @@ export default async function LocaleLayout({ children, params }: LayoutProps<"/[
         <script dangerouslySetInnerHTML={{ __html: themeBootScript }} />
       </head>
       <body className="min-h-full">
+        <ThemeKeeper />
         <QueryProvider>
           <AppShell>{children}</AppShell>
         </QueryProvider>

@@ -17,6 +17,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import java.time.Instant;
+import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -55,6 +57,32 @@ class JpaLikeStoreIT extends PostgresIT {
         assertThat(likes.remove(fan, showcase)).isTrue();
         assertThat(likes.remove(fan, showcase)).isFalse();
         assertThat(likes.count(showcase)).isEqualTo(1);
+    }
+
+    @Test
+    @DisplayName("removing all of a member's likes returns the showcases that lost one; counts come grouped in one query")
+    void removeAllAndCount() {
+        UUID fan = member();
+        UUID other = member();
+        UUID first = showcase(member());
+        UUID second = showcase(member());
+        UUID untouched = showcase(member());
+        likes.add(fan, first, NOW);
+        likes.add(fan, second, NOW);
+        likes.add(other, first, NOW);
+
+        assertThat(likes.removeAllBy(fan)).containsExactlyInAnyOrder(first, second);
+        assertThat(likes.removeAllBy(fan)).isEmpty();
+
+        assertThat(likes.counts(List.of(first, second, untouched))).isEqualTo(Map.of(first, 1));
+        assertThat(likes.counts(List.of())).isEmpty();
+    }
+
+    private UUID showcase(UUID owner) {
+        String key = owner.toString().substring(0, 8);
+        return showcases.save(Showcase.publishVerified(owner, new ShowcaseSlug("s-" + key),
+                new ShowcaseCandidate(new RepositoryCoordinates("o" + key, "portfolio"),
+                        new SiteUrl("https://" + key + ".example.org/"), CandidateReason.NAMED_REPOSITORY), NOW)).id().value();
     }
 
     private UUID member() {

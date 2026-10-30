@@ -40,6 +40,7 @@ class SourceRepoEntity {
         this.isPublic = isPublic;
     }
 
+    UUID getShowcaseId() { return showcaseId; }
     String getProvider() { return provider; }
     String getOwner() { return owner; }
     String getName() { return name; }

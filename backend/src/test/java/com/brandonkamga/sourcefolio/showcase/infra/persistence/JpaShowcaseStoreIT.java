@@ -130,6 +130,28 @@ class JpaShowcaseStoreIT extends PostgresIT {
     }
 
     @Test
+    @DisplayName("deleting a member's showcases returns them as they were and frees their repository; others stay")
+    void deleteAllByOwner() {
+        UUID member = member();
+        UUID other = member();
+        Showcase mine = showcases.save(Showcase.publishVerified(member, slug("deleted"), candidate("nekwalla", "deleted"), NOW)
+                .withPreviewImage(new PreviewMedia("previews/c.webp", "https://media.test/previews/c.webp")));
+        Showcase theirs = showcases.save(Showcase.publishVerified(other, slug("kept"), candidate("ayo", "kept"), NOW));
+        entityManager.flush();
+        entityManager.clear();
+
+        List<Showcase> removed = showcases.deleteAllByOwner(member);
+        entityManager.flush();
+        entityManager.clear();
+
+        assertThat(removed).containsExactly(mine.stored());
+        assertThat(showcases.findByOwner(member)).isEmpty();
+        assertThat(showcases.existsByRepository(RepositoryProvider.GITHUB, new RepositoryCoordinates("nekwalla", "deleted"))).isFalse();
+        assertThat(showcases.findByOwner(other)).contains(theirs);
+        assertThat(showcases.deleteAllByOwner(member)).isEmpty();
+    }
+
+    @Test
     @DisplayName("a member who never published has no showcase")
     void noShowcase() {
         assertThat(showcases.findByOwner(member())).isEmpty();

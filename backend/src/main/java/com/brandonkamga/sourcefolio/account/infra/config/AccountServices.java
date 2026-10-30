@@ -1,5 +1,7 @@
 package com.brandonkamga.sourcefolio.account.infra.config;
 
+import com.brandonkamga.sourcefolio.account.application.AccountDeletion;
+import com.brandonkamga.sourcefolio.account.application.AccountDeletionImpl;
 import com.brandonkamga.sourcefolio.account.application.AccountSettings;
 import com.brandonkamga.sourcefolio.account.application.AccountSettingsImpl;
 import com.brandonkamga.sourcefolio.account.application.SignInService;
@@ -25,5 +27,10 @@ class AccountServices {
     @Bean
     AccountSettings accountSettings(UserStore users, TransactionalServices transactional) {
         return transactional.wrap(AccountSettings.class, new AccountSettingsImpl(users));
+    }
+
+    @Bean
+    AccountDeletion accountDeletion(UserStore users, AccountEvents events, TransactionalServices transactional) {
+        return transactional.wrap(AccountDeletion.class, new AccountDeletionImpl(users, events));
     }
 }
