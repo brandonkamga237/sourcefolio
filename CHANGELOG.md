@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.11.0](https://github.com/brandonkamga237/sourcefolio/compare/v0.10.0...v0.11.0) (2026-10-30)
+
+
+### Features
+
+* **showcase:** GitHub stars, share images for every page, illustrations ([#43](https://github.com/brandonkamga237/sourcefolio/issues/43)) ([bf1fd30](https://github.com/brandonkamga237/sourcefolio/commit/bf1fd30ba31044fda17a625f911dc469bc2da670))
+
 ## [0.10.0](https://github.com/brandonkamga237/sourcefolio/compare/v0.9.0...v0.10.0) (2026-10-30)
 
 
