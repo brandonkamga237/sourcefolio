@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.0](https://github.com/brandonkamga237/sourcefolio/compare/v0.2.1...v0.3.0) (2026-10-30)
+
+
+### Features
+
+* **showcase:** publish a detected portfolio in one click ([#16](https://github.com/brandonkamga237/sourcefolio/issues/16)) ([6e9812e](https://github.com/brandonkamga237/sourcefolio/commit/6e9812ebfbf287f29d6caf7b1e4f3f437ceb0b2a))
+
 ## [0.2.1](https://github.com/brandonkamga237/sourcefolio/compare/v0.2.0...v0.2.1) (2026-10-30)
 
 
