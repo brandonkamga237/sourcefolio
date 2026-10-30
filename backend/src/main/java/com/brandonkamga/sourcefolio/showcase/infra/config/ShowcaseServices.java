@@ -6,6 +6,7 @@ import com.brandonkamga.sourcefolio.showcase.application.PublicShowcases;
 import com.brandonkamga.sourcefolio.showcase.application.PublicShowcasesImpl;
 import com.brandonkamga.sourcefolio.showcase.application.ShowcaseDetection;
 import com.brandonkamga.sourcefolio.showcase.application.ShowcaseDetectionImpl;
+import com.brandonkamga.sourcefolio.showcase.application.ShowcaseEvents;
 import com.brandonkamga.sourcefolio.showcase.application.ShowcasePublication;
 import com.brandonkamga.sourcefolio.showcase.application.ShowcasePublicationImpl;
 import com.brandonkamga.sourcefolio.showcase.domain.port.CandidateStore;
@@ -40,8 +41,9 @@ class ShowcaseServices {
     // makes the save atomic.
     @Bean
     ShowcasePublication showcasePublication(ShowcaseStore showcases, CandidateStore candidates,
-                                            SiteReachability sites, MemberDirectory members, Clock clock) {
-        return new ShowcasePublicationImpl(showcases, candidates, sites, members, clock);
+                                            SiteReachability sites, MemberDirectory members, ShowcaseEvents events,
+                                            Clock clock) {
+        return new ShowcasePublicationImpl(showcases, candidates, sites, members, events, clock);
     }
 
     @Bean

@@ -1,0 +1,27 @@
+package com.brandonkamga.sourcefolio.discovery.domain.port;
+
+import com.brandonkamga.sourcefolio.discovery.domain.model.CatalogEntry;
+import com.brandonkamga.sourcefolio.discovery.domain.model.RecentCursor;
+import com.brandonkamga.sourcefolio.discovery.domain.model.Shuffled;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.util.List;
+import java.util.UUID;
+
+public interface CatalogStore {
+
+    /** Adds the entry, or replaces the one of the same showcase: an event delivered twice changes nothing. */
+    void upsert(CatalogEntry entry);
+
+    /** Follows a GitHub rename on every card of the member. */
+    void renameOwner(UUID ownerId, String login);
+
+    /**
+     * The day's shuffle of the entries published since {@code youngSince} (young) or before it
+     * (not young), after {@code afterKey} (empty for the start), at most {@code limit}.
+     */
+    List<Shuffled> shuffled(LocalDate day, boolean young, Instant youngSince, String afterKey, int limit);
+
+    /** Newest first, after {@code after} (null for the start), at most {@code limit}. */
+    List<CatalogEntry> recent(RecentCursor after, int limit);
+}
