@@ -50,7 +50,17 @@ class ShowcasePublicationImplTest {
     private final ShowcasePublication publication = new ShowcasePublicationImpl(showcases, candidates, url -> {
         fetched.add(url);
         return reachableSites.contains(url);
-    }, logins::get, published::add, Clock.fixed(NOW, ZoneOffset.UTC));
+    }, logins::get, new ShowcaseEvents() {
+        @Override
+        public void showcasePublished(ShowcasePublished event) {
+            published.add(event);
+        }
+
+        @Override
+        public void previewChanged(ShowcasePreviewChanged event) {
+            throw new AssertionError("publishing changes no preview");
+        }
+    }, Clock.fixed(NOW, ZoneOffset.UTC));
 
     @Test
     @DisplayName("a detected candidate whose site answers is published at once, with its repository and its first history line")

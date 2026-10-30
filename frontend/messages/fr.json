@@ -188,5 +188,19 @@
     "like": "Apprécier ce portfolio ({count})",
     "unlike": "Retirer mon appréciation ({count})",
     "failed": "Ton appréciation n’a pas pu être enregistrée. Réessaie."
+  },
+  "preview": {
+    "title": "Aperçu de ta carte",
+    "lead": "Ce que les visiteurs voient dans le catalogue. Sans image, ta carte affiche le nom de ton site.",
+    "imageLabel": "Image",
+    "imageHint": "JPEG, PNG ou WebP, 5 Mo maximum",
+    "videoLabel": "Vidéo courte (facultative)",
+    "videoHint": "MP4, 15 s et 8 Mo maximum, lue au survol",
+    "choose": "Choisir",
+    "change": "Changer",
+    "remove": "Retirer",
+    "sending": "Envoi…",
+    "tooBig": "Ce fichier est trop lourd : 5 Mo maximum pour une image, 8 Mo pour une vidéo.",
+    "failed": "L’envoi n’a pas abouti. Réessaie dans un instant."
   }
 }

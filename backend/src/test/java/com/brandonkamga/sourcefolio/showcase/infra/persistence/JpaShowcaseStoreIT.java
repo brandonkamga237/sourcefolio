@@ -6,6 +6,7 @@ import com.brandonkamga.sourcefolio.shared.domain.Language;
 import com.brandonkamga.sourcefolio.shared.exception.AppException;
 import com.brandonkamga.sourcefolio.shared.exception.ConflictException;
 import com.brandonkamga.sourcefolio.showcase.domain.model.CandidateReason;
+import com.brandonkamga.sourcefolio.showcase.domain.model.PreviewMedia;
 import com.brandonkamga.sourcefolio.showcase.domain.model.RepositoryCoordinates;
 import com.brandonkamga.sourcefolio.showcase.domain.model.RepositoryProvider;
 import com.brandonkamga.sourcefolio.showcase.domain.model.Showcase;
@@ -55,6 +56,29 @@ class JpaShowcaseStoreIT extends PostgresIT {
         assertThat(showcases.findBySlug(stored.slug())).contains(stored);
         assertThat(showcases.existsBySlug(stored.slug())).isTrue();
         assertThat(showcases.existsBySlug(new ShowcaseSlug("nobody"))).isFalse();
+    }
+
+    @Test
+    @DisplayName("the chosen preview is stored and read back, and can be removed")
+    void preview() {
+        UUID member = member();
+        Showcase stored = showcases.save(Showcase.publishVerified(member, slug("previewed"), candidate("nekwalla", "previewed"), NOW));
+        entityManager.flush();
+
+        Showcase withPreview = showcases.save(stored
+                .withPreviewImage(new PreviewMedia("previews/a.webp", "https://media.test/previews/a.webp"))
+                .withPreviewVideo(new PreviewMedia("previews/b.mp4", "https://media.test/previews/b.mp4")));
+        entityManager.flush();
+        entityManager.clear();
+        assertThat(showcases.findByOwner(member)).contains(withPreview);
+
+        showcases.save(withPreview.withPreviewVideo(null));
+        entityManager.flush();
+        entityManager.clear();
+        assertThat(showcases.findByOwner(member)).hasValueSatisfying(found -> {
+            assertThat(found.previewImage()).isNotNull();
+            assertThat(found.previewVideo()).isNull();
+        });
     }
 
     @Test

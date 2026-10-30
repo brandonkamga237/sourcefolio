@@ -12,7 +12,7 @@ import java.util.UUID;
  */
 public record Showcase(ShowcaseId id, ShowcaseSlug slug, UUID ownerId, ShowcaseKind kind, SiteUrl siteUrl, SourceRepo sourceRepo,
                        ShowcaseStatus status, Instant createdAt, Instant publishedAt,
-                       List<ShowcaseStatusEvent> pendingEvents) {
+                       List<ShowcaseStatusEvent> pendingEvents, PreviewMedia previewImage, PreviewMedia previewVideo) {
 
     public Showcase {
         Objects.requireNonNull(id, "id");
@@ -24,6 +24,12 @@ public record Showcase(ShowcaseId id, ShowcaseSlug slug, UUID ownerId, ShowcaseK
         Objects.requireNonNull(status, "status");
         Objects.requireNonNull(createdAt, "createdAt");
         pendingEvents = List.copyOf(pendingEvents);
+    }
+
+    /** A showcase without a chosen preview. */
+    public Showcase(ShowcaseId id, ShowcaseSlug slug, UUID ownerId, ShowcaseKind kind, SiteUrl siteUrl, SourceRepo sourceRepo,
+                    ShowcaseStatus status, Instant createdAt, Instant publishedAt, List<ShowcaseStatusEvent> pendingEvents) {
+        this(id, slug, ownerId, kind, siteUrl, sourceRepo, status, createdAt, publishedAt, pendingEvents, null, null);
     }
 
     /**
@@ -41,6 +47,16 @@ public record Showcase(ShowcaseId id, ShowcaseSlug slug, UUID ownerId, ShowcaseK
 
     /** The same showcase once its pending events are in the history. */
     public Showcase stored() {
-        return new Showcase(id, slug, ownerId, kind, siteUrl, sourceRepo, status, createdAt, publishedAt, List.of());
+        return new Showcase(id, slug, ownerId, kind, siteUrl, sourceRepo, status, createdAt, publishedAt, List.of(), previewImage, previewVideo);
+    }
+
+    /** The preview image the author chose; null goes back to the automatic one. */
+    public Showcase withPreviewImage(PreviewMedia image) {
+        return new Showcase(id, slug, ownerId, kind, siteUrl, sourceRepo, status, createdAt, publishedAt, pendingEvents, image, previewVideo);
+    }
+
+    /** The short preview video the author chose; null removes it. */
+    public Showcase withPreviewVideo(PreviewMedia video) {
+        return new Showcase(id, slug, ownerId, kind, siteUrl, sourceRepo, status, createdAt, publishedAt, pendingEvents, previewImage, video);
     }
 }

@@ -1,6 +1,6 @@
 import { getTranslations } from "next-intl/server";
 import Link from "next/link";
-import { PreviewArt } from "@/components/catalog/PreviewArt";
+import { Preview } from "@/components/catalog/Preview";
 import { IconCode, IconExternal } from "@/components/icons";
 import { localizedPath } from "@/i18n/paths";
 import type { Locale } from "@/i18n/routing";
@@ -25,7 +25,14 @@ export async function PublishedShowcase({ locale, showcase }: PublishedShowcaseP
 
   return (
     <section aria-labelledby="my-showcase" className="grid overflow-hidden rounded-card border border-line bg-surface sm:grid-cols-[minmax(0,240px)_1fr]">
-      <PreviewArt slug={showcase.slug} siteUrl={showcase.siteUrl} aspectClass="aspect-[16/6] sm:aspect-auto sm:h-full" />
+      <Preview
+        slug={showcase.slug}
+        siteUrl={showcase.siteUrl}
+        imageUrl={showcase.previewImageUrl}
+        videoUrl={showcase.previewVideoUrl}
+        aspectClass="aspect-[16/7] sm:aspect-auto sm:h-full sm:min-h-[150px]"
+        sizes="(min-width: 640px) 240px, 100vw"
+      />
       <div className="flex min-w-0 flex-col gap-3 p-4">
         <div className="flex flex-wrap items-center gap-2">
           <span className={`rounded-full px-2.5 py-0.5 text-xs font-semibold ${published ? "bg-accent-soft text-accent-ink" : "bg-surface-sunken text-ink"}`}>

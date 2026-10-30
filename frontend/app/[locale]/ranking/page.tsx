@@ -3,7 +3,7 @@ import Link from "next/link";
 import { connection } from "next/server";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { Suspense } from "react";
-import { PreviewArt } from "@/components/catalog/PreviewArt";
+import { Preview } from "@/components/catalog/Preview";
 import { IconHeart } from "@/components/icons";
 import { localizedPath } from "@/i18n/paths";
 import { toLocale, type Locale } from "@/i18n/routing";
@@ -47,7 +47,7 @@ async function RankingList({ locale }: { locale: Locale }) {
               {row.rank}
             </span>
             <span className="w-[92px] shrink-0 overflow-hidden rounded-control sm:w-[128px]">
-              <PreviewArt slug={row.slug} siteUrl={row.siteUrl} size="thumb" />
+              <Preview slug={row.slug} siteUrl={row.siteUrl} imageUrl={row.previewImageUrl} size="thumb" sizes="128px" />
             </span>
             <span className="flex min-w-0 flex-1 flex-col gap-0.5">
               <span className="truncate text-[15px] font-semibold">{row.ownerLogin}</span>

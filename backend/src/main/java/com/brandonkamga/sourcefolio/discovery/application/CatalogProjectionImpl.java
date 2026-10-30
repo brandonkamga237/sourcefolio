@@ -26,4 +26,9 @@ public class CatalogProjectionImpl implements CatalogProjection {
     public void updateLikes(UUID showcaseId, int count) {
         store.setLikes(showcaseId, count);
     }
+
+    @Override
+    public void updatePreview(UUID showcaseId, String imageUrl, String videoUrl) {
+        store.setPreview(showcaseId, imageUrl, videoUrl);
+    }
 }

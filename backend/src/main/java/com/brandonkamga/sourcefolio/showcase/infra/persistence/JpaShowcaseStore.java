@@ -1,6 +1,7 @@
 package com.brandonkamga.sourcefolio.showcase.infra.persistence;
 
 import com.brandonkamga.sourcefolio.shared.exception.ConflictException;
+import com.brandonkamga.sourcefolio.showcase.domain.model.PreviewMedia;
 import com.brandonkamga.sourcefolio.showcase.domain.model.RepositoryCoordinates;
 import com.brandonkamga.sourcefolio.showcase.domain.model.RepositoryProvider;
 import com.brandonkamga.sourcefolio.showcase.domain.model.Showcase;
@@ -44,6 +45,10 @@ class JpaShowcaseStore implements ShowcaseStore {
             ShowcaseEntity row = showcases.findById(id)
                     .orElseGet(() -> new ShowcaseEntity(id, showcase.slug().value(), showcase.ownerId(), showcase.createdAt()));
             row.update(showcase.kind().name(), showcase.siteUrl().value(), showcase.status().name(), showcase.publishedAt());
+            PreviewMedia image = showcase.previewImage();
+            PreviewMedia video = showcase.previewVideo();
+            row.preview(image == null ? null : image.key(), image == null ? null : image.url(),
+                    video == null ? null : video.key(), video == null ? null : video.url());
             showcases.save(row);
 
             SourceRepo repo = showcase.sourceRepo();
@@ -93,7 +98,9 @@ class JpaShowcaseStore implements ShowcaseStore {
                 new SiteUrl(row.getSiteUrl()),
                 new SourceRepo(RepositoryProvider.valueOf(repo.getProvider()),
                         new RepositoryCoordinates(repo.getOwner(), repo.getName()), repo.isPublic()),
-                ShowcaseStatus.valueOf(row.getStatus()), row.getCreatedAt(), row.getPublishedAt(), List.of());
+                ShowcaseStatus.valueOf(row.getStatus()), row.getCreatedAt(), row.getPublishedAt(), List.of(),
+                row.getPreviewImageKey() == null ? null : new PreviewMedia(row.getPreviewImageKey(), row.getPreviewImageUrl()),
+                row.getPreviewVideoKey() == null ? null : new PreviewMedia(row.getPreviewVideoKey(), row.getPreviewVideoUrl()));
     }
 
     private static StatusEventEntity toEntity(UUID showcaseId, ShowcaseStatusEvent event) {

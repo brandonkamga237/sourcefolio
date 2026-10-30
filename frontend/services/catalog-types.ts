@@ -10,6 +10,9 @@ export interface CatalogCard {
   repositoryUrl: string;
   ownerLogin: string;
   publishedAt: string;
+  /** The author's preview, null until they choose one. */
+  previewImageUrl: string | null;
+  previewVideoUrl: string | null;
 }
 
 export interface CatalogPage {
