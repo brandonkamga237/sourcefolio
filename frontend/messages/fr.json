@@ -62,5 +62,20 @@
     "signedInAs": "Connecté en tant que {login}",
     "signOut": "Se déconnecter",
     "signOutFailed": "La déconnexion a échoué. Réessaie."
+  },
+  "detection": {
+    "searching": "On cherche ton portfolio dans tes dépôts publics…",
+    "foundTitle": "On a trouvé ces sites dans tes dépôts publics",
+    "othersTitle": "Autres sites trouvés",
+    "noneTitle": "Aucun site trouvé dans tes dépôts publics",
+    "noneHint": "Ajoute l’adresse de ton portfolio dans le champ « Website » de son dépôt GitHub, puis reconnecte-toi : on cherchera à nouveau.",
+    "visitSite": "Voir le site",
+    "viewCode": "Voir le code",
+    "reason": {
+      "USER_PAGES": "Ton site GitHub Pages",
+      "NAMED_REPOSITORY": "Un dépôt nommé « {name} »",
+      "HOMEPAGE": "Le site indiqué dans un de tes dépôts",
+      "PROJECT_PAGES": "Un projet publié avec GitHub Pages"
+    }
   }
 }

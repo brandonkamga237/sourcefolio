@@ -62,5 +62,20 @@
     "signedInAs": "Signed in as {login}",
     "signOut": "Sign out",
     "signOutFailed": "Signing out failed. Try again."
+  },
+  "detection": {
+    "searching": "Looking for your portfolio in your public repositories…",
+    "foundTitle": "We found these sites in your public repositories",
+    "othersTitle": "Other sites found",
+    "noneTitle": "No site found in your public repositories",
+    "noneHint": "Add your portfolio’s address to the “Website” field of its GitHub repository, then sign in again: we will look again.",
+    "visitSite": "Visit the site",
+    "viewCode": "View the code",
+    "reason": {
+      "USER_PAGES": "Your GitHub Pages site",
+      "NAMED_REPOSITORY": "A repository named “{name}”",
+      "HOMEPAGE": "The site set in one of your repositories",
+      "PROJECT_PAGES": "A project published with GitHub Pages"
+    }
   }
 }
