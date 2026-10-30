@@ -1,33 +1,11 @@
 "use client";
 
 import { useState } from "react";
+import { signOut } from "@/services/auth";
 
 interface SignOutButtonProps {
   label: string;
   failedMessage: string;
-}
-
-const CSRF_COOKIE = "XSRF-TOKEN";
-
-function readCsrfToken(): string | undefined {
-  return document.cookie
-    .split("; ")
-    .find((entry) => entry.startsWith(`${CSRF_COOKIE}=`))
-    ?.slice(CSRF_COOKIE.length + 1);
-}
-
-// The API sets the XSRF-TOKEN cookie on any GET it answers. A visitor who reached this page
-// through server rendering may not have it yet: one GET first, then the protected POST.
-async function signOut(): Promise<boolean> {
-  if (!readCsrfToken()) {
-    await fetch("/api/me", { credentials: "same-origin" });
-  }
-  const response = await fetch("/api/auth/logout", {
-    method: "POST",
-    credentials: "same-origin",
-    headers: { "X-XSRF-TOKEN": decodeURIComponent(readCsrfToken() ?? "") },
-  });
-  return response.status === 204;
 }
 
 export function SignOutButton({ label, failedMessage }: SignOutButtonProps) {
