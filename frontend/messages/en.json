@@ -61,7 +61,17 @@
   "account": {
     "signedInAs": "Signed in as {login}",
     "signOut": "Sign out",
-    "signOutFailed": "Signing out failed. Try again."
+    "signOutFailed": "Signing out failed. Try again.",
+    "delete": "Delete my account",
+    "deleteLead": "Deletes your account, your portfolio, your profile answers and the likes you gave. It is immediate and final.",
+    "deleteFailed": "Your account could not be deleted. Try again.",
+    "deleteDialog": {
+      "title": "Delete your account?",
+      "description": "Your account, your portfolio and its likes, your profile answers and the likes you gave are deleted right away. This cannot be undone.",
+      "confirm": "Delete for good",
+      "pending": "Deleting…",
+      "typeToConfirm": "Type your username {word} to confirm"
+    }
   },
   "detection": {
     "searching": "Looking for your portfolio in your public repositories…",
@@ -238,6 +248,29 @@
       "preview": "Add an image",
       "profile": "Complete my profile"
     },
-    "doneLead": "Your portfolio is live. Share the link to get visits and likes."
+    "doneLead": "Your portfolio is live. Share the link to get visits and likes.",
+    "dismiss": "Hide this card"
+  },
+  "common": {
+    "cancel": "Cancel"
+  },
+  "manage": {
+    "title": "Change or withdraw my portfolio",
+    "lead": "To publish another repository, withdraw this one first: you then pick the new one among your repositories. Its likes go with it.",
+    "change": "Change portfolio",
+    "withdraw": "Withdraw my portfolio",
+    "failed": "Your portfolio could not be withdrawn. Try again.",
+    "changeDialog": {
+      "title": "Change portfolio?",
+      "description": "Your current portfolio leaves the catalogue with its likes. You then pick another repository to publish.",
+      "confirm": "Withdraw and pick another",
+      "pending": "Withdrawing…"
+    },
+    "withdrawDialog": {
+      "title": "Withdraw your portfolio?",
+      "description": "It leaves Discover and the Ranking, its page no longer exists and its likes are deleted. You can publish one again later.",
+      "confirm": "Withdraw my portfolio",
+      "pending": "Withdrawing…"
+    }
   }
 }

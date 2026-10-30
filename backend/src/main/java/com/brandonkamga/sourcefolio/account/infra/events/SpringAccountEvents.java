@@ -1,5 +1,6 @@
 package com.brandonkamga.sourcefolio.account.infra.events;
 
+import com.brandonkamga.sourcefolio.account.application.MemberDeleting;
 import com.brandonkamga.sourcefolio.account.application.MemberSignedIn;
 import com.brandonkamga.sourcefolio.account.application.AccountEvents;
 import org.springframework.context.ApplicationEventPublisher;
@@ -16,6 +17,11 @@ class SpringAccountEvents implements AccountEvents {
 
     @Override
     public void memberSignedIn(MemberSignedIn event) {
+        publisher.publishEvent(event);
+    }
+
+    @Override
+    public void memberDeleting(MemberDeleting event) {
         publisher.publishEvent(event);
     }
 }

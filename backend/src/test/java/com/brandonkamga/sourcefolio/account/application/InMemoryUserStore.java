@@ -23,4 +23,9 @@ class InMemoryUserStore implements UserStore {
     public Optional<User> find(UserId id) {
         return Optional.ofNullable(rows.get(id));
     }
+
+    @Override
+    public void delete(UserId id) {
+        rows.remove(id);
+    }
 }

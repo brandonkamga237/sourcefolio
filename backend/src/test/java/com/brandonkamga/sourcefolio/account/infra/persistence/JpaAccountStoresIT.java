@@ -48,6 +48,21 @@ class JpaAccountStoresIT extends PostgresIT {
     }
 
     @Test
+    @DisplayName("deleting a user removes the row, and the database removes their GitHub identity with it")
+    void deleteCascades() {
+        User user = users.save(User.register(Language.FR, NOW));
+        identities.save(AuthIdentity.link(user.id(), AuthProvider.GITHUB, "77", "leaving", NOW));
+        entityManager.flush();
+        entityManager.clear();
+
+        users.delete(user.id());
+        entityManager.clear();
+
+        assertThat(users.find(user.id())).isEmpty();
+        assertThat(identities.find(AuthProvider.GITHUB, "77")).isEmpty();
+    }
+
+    @Test
     @DisplayName("a rename updates the stored login and its update time")
     void renameIsStored() {
         User user = users.save(User.register(Language.EN, NOW));

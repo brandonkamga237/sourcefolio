@@ -13,4 +13,7 @@ public interface Likes {
 
     /** Takes the like back; doing it twice changes nothing. */
     LikeState unlike(UUID memberId, String slug);
+
+    /** Takes back every like the member gave, and announces the new counts: their account is going. */
+    void withdrawAllBy(UUID memberId);
 }

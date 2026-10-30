@@ -10,4 +10,7 @@ public interface UserStore {
     User save(User user);
 
     Optional<User> find(UserId id);
+
+    /** Removes the account row; the database removes what references it. */
+    void delete(UserId id);
 }

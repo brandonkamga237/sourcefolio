@@ -18,3 +18,12 @@ export function applyTheme(theme: Theme): void {
     // Private browsing can refuse storage: the theme still applies to this page.
   }
 }
+
+export function storedTheme(): Theme {
+  try {
+    const stored = localStorage.getItem(THEME_STORAGE_KEY);
+    return stored === "light" || stored === "dark" ? stored : "system";
+  } catch {
+    return "system";
+  }
+}

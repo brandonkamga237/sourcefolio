@@ -27,6 +27,13 @@ class JpaUserStore implements UserStore {
         return repository.findById(id.value()).map(JpaUserStore::toDomain);
     }
 
+    @Override
+    public void delete(UserId id) {
+        repository.deleteById(id.value());
+        // Now, not at commit: the foreign keys must cascade inside the use case's transaction.
+        repository.flush();
+    }
+
     private static User toDomain(UserEntity entity) {
         return new User(new UserId(entity.getId()), Language.fromTag(entity.getLanguage()), entity.getEmail(), entity.getCreatedAt());
     }

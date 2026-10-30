@@ -4,6 +4,7 @@ import com.brandonkamga.sourcefolio.showcase.domain.model.RepositoryCoordinates;
 import com.brandonkamga.sourcefolio.showcase.domain.model.RepositoryProvider;
 import com.brandonkamga.sourcefolio.showcase.domain.model.Showcase;
 import com.brandonkamga.sourcefolio.showcase.domain.model.ShowcaseSlug;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -23,4 +24,10 @@ public interface ShowcaseStore {
     boolean existsBySlug(ShowcaseSlug slug);
 
     boolean existsByRepository(RepositoryProvider provider, RepositoryCoordinates repository);
+
+    /**
+     * Deletes every showcase of the member, with what hangs on them (repository, history,
+     * likes, catalogue card), and returns them as they were.
+     */
+    List<Showcase> deleteAllByOwner(UUID ownerId);
 }

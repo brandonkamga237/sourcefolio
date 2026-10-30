@@ -14,8 +14,11 @@ import com.brandonkamga.sourcefolio.showcase.domain.model.SiteUrl;
 import com.brandonkamga.sourcefolio.showcase.domain.model.SourceRepo;
 import com.brandonkamga.sourcefolio.showcase.domain.port.ShowcaseStore;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -91,6 +94,21 @@ class JpaShowcaseStore implements ShowcaseStore {
     @Transactional(readOnly = true)
     public boolean existsByRepository(RepositoryProvider provider, RepositoryCoordinates repository) {
         return sourceRepos.existsRepository(provider.name(), repository.owner(), repository.name());
+    }
+
+    // Two reads and one delete whatever the number of showcases; the database cascades the rest.
+    @Override
+    @Transactional
+    public List<Showcase> deleteAllByOwner(UUID ownerId) {
+        List<ShowcaseEntity> rows = showcases.findAllByOwnerUserId(ownerId);
+        if (rows.isEmpty()) {
+            return List.of();
+        }
+        Map<UUID, SourceRepoEntity> repos = sourceRepos.findAllById(rows.stream().map(ShowcaseEntity::getId).toList()).stream()
+                .collect(Collectors.toMap(SourceRepoEntity::getShowcaseId, Function.identity()));
+        List<Showcase> removed = rows.stream().map(row -> toDomain(row, repos.get(row.getId()))).toList();
+        showcases.deleteAllInBatch(rows);
+        return removed;
     }
 
     private static Showcase toDomain(ShowcaseEntity row, SourceRepoEntity repo) {

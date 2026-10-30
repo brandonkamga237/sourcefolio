@@ -6,6 +6,8 @@ import com.brandonkamga.sourcefolio.shared.exception.NotFoundException;
 import com.brandonkamga.sourcefolio.showcase.application.PublicShowcase;
 import com.brandonkamga.sourcefolio.showcase.application.PublicShowcases;
 import java.time.Clock;
+import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 public class LikesImpl implements Likes {
@@ -46,6 +48,14 @@ public class LikesImpl implements Likes {
         UUID showcaseId = showcaseIdOf(require(slug));
         boolean removed = likes.remove(memberId, showcaseId);
         return stateAfter(showcaseId, removed, false);
+    }
+
+    // Three statements however many likes the member gave: delete, count, then one event each.
+    @Override
+    public void withdrawAllBy(UUID memberId) {
+        List<UUID> touched = likes.removeAllBy(memberId);
+        Map<UUID, Integer> counts = likes.counts(touched);
+        touched.forEach(showcaseId -> events.likesChanged(new ShowcaseLikesChanged(showcaseId, counts.getOrDefault(showcaseId, 0))));
     }
 
     // The count is announced only when it moved, so a repeated tap sends nothing.
