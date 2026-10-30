@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.5.0](https://github.com/brandonkamga237/sourcefolio/compare/v0.4.0...v0.5.0) (2026-10-30)
+
+
+### Features
+
+* **discovery:** add the Discover and Recent catalogue ([#22](https://github.com/brandonkamga237/sourcefolio/issues/22)) ([e63e351](https://github.com/brandonkamga237/sourcefolio/commit/e63e3513bb15f939e574b0007edb1811e4b4923b))
+
 ## [0.4.0](https://github.com/brandonkamga237/sourcefolio/compare/v0.3.0...v0.4.0) (2026-10-30)
 
 
