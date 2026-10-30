@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.10.0](https://github.com/brandonkamga237/sourcefolio/compare/v0.9.0...v0.10.0) (2026-10-30)
+
+
+### Features
+
+* **account:** withdraw or change a portfolio, delete the account, theme kept across languages ([#40](https://github.com/brandonkamga237/sourcefolio/issues/40)) ([36a1fda](https://github.com/brandonkamga237/sourcefolio/commit/36a1fdac59110a5149db8fada60ec5bfb5acf5ae))
+
 ## [0.9.0](https://github.com/brandonkamga237/sourcefolio/compare/v0.8.0...v0.9.0) (2026-10-30)
 
 
