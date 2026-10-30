@@ -180,6 +180,13 @@
   "ranking": {
     "title": "Ranking",
     "lead": "The portfolios the community likes most.",
-    "empty": "The ranking appears with the first likes. Open a portfolio you like and like it."
+    "empty": "The ranking appears with the first likes. Open a portfolio you like and like it.",
+    "likes": "{count, plural, one {# like} other {# likes}}",
+    "unavailable": "The ranking is not answering right now. Try again in a moment."
+  },
+  "likes": {
+    "like": "Like this portfolio ({count})",
+    "unlike": "Take back my like ({count})",
+    "failed": "Your like could not be saved. Try again."
   }
 }

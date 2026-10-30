@@ -3,7 +3,8 @@ import { siteLabel } from "@/lib/site-label";
 interface PreviewArtProps {
   slug: string;
   siteUrl: string;
-  large?: boolean;
+  /** thumb: a small square in lists; card: the feed; large: the side panel. */
+  size?: "thumb" | "card" | "large";
   /** Overrides the 16:10 frame, e.g. a shorter one on phones. */
   aspectClass?: string;
 }
@@ -24,18 +25,28 @@ function tintOf(slug: string): string {
   return tints[hash % tints.length];
 }
 
-export function PreviewArt({ slug, siteUrl, large, aspectClass = "aspect-[16/10]" }: PreviewArtProps) {
-  const label = siteLabel(siteUrl);
+const nameSize = {
+  thumb: "text-[15px] truncate sm:text-[18px]",
+  card: "line-clamp-2 break-words text-[19px] sm:text-[26px]",
+  large: "line-clamp-2 break-words text-[40px]",
+};
+
+export function PreviewArt({ slug, siteUrl, size = "card", aspectClass = "aspect-[16/10]" }: PreviewArtProps) {
   const name = new URL(siteUrl).hostname.split(".")[0];
   return (
-    <div aria-hidden="true" className={`flex ${aspectClass} flex-col justify-between overflow-hidden ${large ? "p-5" : "p-3 sm:p-4"} ${tintOf(slug)}`}>
-      <span className="flex items-center gap-2">
-        <span className="size-2.5 rounded-full bg-current opacity-60" />
-        <span className="truncate font-mono text-[10px] opacity-70 sm:text-[11px]">{label}</span>
-      </span>
-      <span className={`line-clamp-2 font-display leading-[0.92] font-bold tracking-[-0.045em] break-words ${large ? "text-[40px]" : "text-[19px] sm:text-[26px]"}`}>
-        {name}
-      </span>
+    <div
+      aria-hidden="true"
+      className={`flex ${aspectClass} flex-col overflow-hidden ${size === "thumb" ? "justify-end p-2.5" : "justify-between"} ${
+        size === "large" ? "p-5" : size === "card" ? "p-3 sm:p-4" : ""
+      } ${tintOf(slug)}`}
+    >
+      {size === "thumb" ? null : (
+        <span className="flex items-center gap-2">
+          <span className="size-2.5 shrink-0 rounded-full bg-current opacity-60" />
+          <span className="truncate font-mono text-[10px] opacity-70 sm:text-[11px]">{siteLabel(siteUrl)}</span>
+        </span>
+      )}
+      <span className={`font-display leading-[0.92] font-bold tracking-[-0.045em] ${nameSize[size]}`}>{name}</span>
     </div>
   );
 }

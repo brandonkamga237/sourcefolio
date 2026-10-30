@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { Suspense } from "react";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { IconCode, IconExternal } from "@/components/icons";
+import { LikeButton } from "@/components/likes/LikeButton";
 import { localizedPath } from "@/i18n/paths";
 import { toLocale } from "@/i18n/routing";
 import { siteLabel } from "@/lib/site-label";
@@ -58,8 +60,9 @@ export default async function ShowcasePage({ params }: PageProps<"/[locale]/p/[s
   const { locale: raw, slug } = await params;
   const locale = toLocale(raw);
   setRequestLocale(locale);
-  const [t, showcase] = await Promise.all([
+  const [t, tl, showcase] = await Promise.all([
     getTranslations({ locale, namespace: "showcasePage" }),
+    getTranslations({ locale, namespace: "likes" }),
     getPublicShowcase(slug),
   ]);
   if (!showcase) notFound();
@@ -104,10 +107,19 @@ export default async function ShowcasePage({ params }: PageProps<"/[locale]/p/[s
           {t("visitSite")}
           <IconExternal className="size-4" />
         </a>
-        <a href={showcase.repositoryUrl} target="_blank" rel="noopener noreferrer" className={secondaryLink}>
-          <IconCode className="size-4" />
-          {t("viewCode")}
-        </a>
+        <div className="flex gap-2">
+          <a href={showcase.repositoryUrl} target="_blank" rel="noopener noreferrer" className={`${secondaryLink} flex-1`}>
+            <IconCode className="size-4" />
+            {t("viewCode")}
+          </a>
+          <Suspense fallback={<div className="h-[46px] w-16 rounded-control border border-line" />}>
+            <LikeButton
+              slug={showcase.slug}
+              showCount
+              labels={{ like: tl.raw("like") as string, unlike: tl.raw("unlike") as string, failed: tl("failed") }}
+            />
+          </Suspense>
+        </div>
       </div>
 
       <aside className="mt-4 flex flex-col gap-2 rounded-card border border-line bg-surface p-4">
