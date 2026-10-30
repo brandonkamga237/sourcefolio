@@ -20,4 +20,9 @@ public record User(UserId id, Language language, String email, Instant createdAt
     public static User register(Language language, Instant now) {
         return new User(UserId.newId(), language, null, now);
     }
+
+    /** The same member with a new address, or none. */
+    public User withEmail(EmailAddress email) {
+        return new User(id, language, email == null ? null : email.value(), createdAt);
+    }
 }

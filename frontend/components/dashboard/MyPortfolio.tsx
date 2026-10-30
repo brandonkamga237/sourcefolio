@@ -2,8 +2,10 @@ import { getTranslations } from "next-intl/server";
 import { GitHubSignIn } from "@/components/auth/GitHubSignIn";
 import type { Locale } from "@/i18n/routing";
 import { getMe } from "@/services/me";
+import { getMyAnswers } from "@/services/profile";
 import { getMyShowcase } from "@/services/showcases";
 import { CandidatesPanel } from "./CandidatesPanel";
+import { ProfileReminder } from "./ProfileReminder";
 import { PublishedShowcase } from "./PublishedShowcase";
 
 interface MyPortfolioProps {
@@ -16,7 +18,7 @@ const titleClass = "font-display text-[28px] leading-none font-bold tracking-[-0
 // portfolio (spec: "Connexion et publication en 1 clic"). A member sees their portfolio once
 // published, and until then what detection found in their public repositories.
 export async function MyPortfolio({ locale }: MyPortfolioProps) {
-  const [t, member, mine] = await Promise.all([getTranslations({ locale }), getMe(), getMyShowcase()]);
+  const [t, member, mine, answers] = await Promise.all([getTranslations({ locale }), getMe(), getMyShowcase(), getMyAnswers()]);
 
   if (member) {
     const showcase = mine?.showcase ?? null;
@@ -24,7 +26,10 @@ export async function MyPortfolio({ locale }: MyPortfolioProps) {
       <div className="flex flex-col gap-6">
         <h1 className={titleClass}>{t("pages.portfolio.title")}</h1>
         {showcase ? (
-          <PublishedShowcase locale={locale} showcase={showcase} />
+          <>
+            <PublishedShowcase locale={locale} showcase={showcase} />
+            {answers && (!answers.country || !answers.specialty) ? <ProfileReminder locale={locale} /> : null}
+          </>
         ) : (
           <>
             <p className="text-[15px] leading-normal text-ink-body">{t("pages.portfolio.memberEmpty")}</p>

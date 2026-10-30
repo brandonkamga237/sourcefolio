@@ -1,4 +1,6 @@
 import { getTranslations } from "next-intl/server";
+import Link from "next/link";
+import { localizedPath } from "@/i18n/paths";
 import type { Locale } from "@/i18n/routing";
 import { getMe } from "@/services/me";
 import { GitHubSignIn } from "./GitHubSignIn";
@@ -25,6 +27,9 @@ export async function AccountSection({ locale }: AccountSectionProps) {
   return (
     <>
       <p className="text-sm leading-normal text-ink-body">{t("account.signedInAs", { login: `@${member.login}` })}</p>
+      <Link href={localizedPath(locale, "/me/profile")} className="flex h-11 w-fit items-center text-sm font-semibold text-ink underline underline-offset-2">
+        {t("profile.summaryTitle")}
+      </Link>
       <SignOutButton label={t("account.signOut")} failedMessage={t("account.signOutFailed")} />
     </>
   );

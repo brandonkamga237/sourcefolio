@@ -130,5 +130,40 @@
     "emptyTitle": "No portfolio published yet",
     "emptyLead": "Yours can be the first: sign in with GitHub, we find it and you publish it in one click.",
     "emptyLink": "Publish my portfolio"
+  },
+  "profile": {
+    "signInHint": "Sign in with GitHub to complete your profile.",
+    "unavailable": "Your profile cannot be loaded right now. Try again in a moment.",
+    "progress": "Question {current} of {total}",
+    "countryTitle": "Which country do you live in?",
+    "countryPlaceholder": "Choose your country",
+    "specialtyTitle": "What is your specialty?",
+    "emailTitle": "Your email, to hear about it if your site goes down",
+    "emailHint": "Optional. It is never shown or shared.",
+    "next": "Continue",
+    "skip": "Skip",
+    "saving": "Saving…",
+    "failed": "Your answer could not be saved. Try again.",
+    "summaryTitle": "My profile",
+    "countryLabel": "Country",
+    "specialtyLabel": "Specialty",
+    "emailLabel": "Alert email",
+    "notGiven": "Not given",
+    "edit": "Edit",
+    "done": "Back to my portfolio",
+    "reminder": "Add your country and specialty: two questions, ten seconds.",
+    "reminderLink": "Complete my profile"
+  },
+  "specialty": {
+    "frontend": "Frontend",
+    "backend": "Backend",
+    "fullstack": "Full-stack",
+    "mobile": "Mobile",
+    "devops": "DevOps",
+    "data-ai": "Data / AI",
+    "game": "Games",
+    "embedded": "Embedded",
+    "security": "Security",
+    "other": "Other"
   }
 }
