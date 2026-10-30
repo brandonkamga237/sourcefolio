@@ -3,6 +3,7 @@ package com.brandonkamga.sourcefolio.discovery.infra.events;
 import com.brandonkamga.sourcefolio.account.application.MemberSignedIn;
 import com.brandonkamga.sourcefolio.discovery.application.CatalogProjection;
 import com.brandonkamga.sourcefolio.discovery.domain.model.CatalogEntry;
+import com.brandonkamga.sourcefolio.engagement.application.ShowcaseLikesChanged;
 import com.brandonkamga.sourcefolio.showcase.application.ShowcasePublished;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -42,6 +43,14 @@ class CatalogListenersTest {
     }
 
     @Test
+    @DisplayName("a new like count reaches the catalogue")
+    void likesReachCatalogue() {
+        new CatalogListeners(recording()).on(new ShowcaseLikesChanged(SHOWCASE, 7));
+
+        assertThat(calls).containsExactly(SHOWCASE + " likes 7");
+    }
+
+    @Test
     @DisplayName("a catalogue failure never reaches the member who published")
     void failureIsContained() {
         CatalogListeners listeners = new CatalogListeners(new CatalogProjection() {
@@ -54,10 +63,16 @@ class CatalogListenersTest {
             public void renameOwner(UUID ownerId, String login) {
                 throw new IllegalStateException("database down");
             }
+
+            @Override
+            public void updateLikes(UUID showcaseId, int count) {
+                throw new IllegalStateException("database down");
+            }
         });
 
         assertThatCode(() -> listeners.on(PUBLISHED)).doesNotThrowAnyException();
         assertThatCode(() -> listeners.on(new MemberSignedIn(MEMBER, "x"))).doesNotThrowAnyException();
+        assertThatCode(() -> listeners.on(new ShowcaseLikesChanged(SHOWCASE, 3))).doesNotThrowAnyException();
     }
 
     private CatalogProjection recording() {
@@ -70,6 +85,11 @@ class CatalogListenersTest {
             @Override
             public void renameOwner(UUID ownerId, String login) {
                 calls.add(ownerId + " " + login);
+            }
+
+            @Override
+            public void updateLikes(UUID showcaseId, int count) {
+                calls.add(showcaseId + " likes " + count);
             }
         };
     }

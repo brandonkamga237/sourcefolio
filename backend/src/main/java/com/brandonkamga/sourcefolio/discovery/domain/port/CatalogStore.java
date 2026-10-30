@@ -1,6 +1,7 @@
 package com.brandonkamga.sourcefolio.discovery.domain.port;
 
 import com.brandonkamga.sourcefolio.discovery.domain.model.CatalogEntry;
+import com.brandonkamga.sourcefolio.discovery.domain.model.RankedEntry;
 import com.brandonkamga.sourcefolio.discovery.domain.model.RecentCursor;
 import com.brandonkamga.sourcefolio.discovery.domain.model.Shuffled;
 import java.time.Instant;
@@ -15,6 +16,12 @@ public interface CatalogStore {
 
     /** Follows a GitHub rename on every card of the member. */
     void renameOwner(UUID ownerId, String login);
+
+    /** Keeps the copy of a showcase's like count, announced by the engagement module. */
+    void setLikes(UUID showcaseId, int count);
+
+    /** The most liked showcases first, ties broken by the most recent; liked ones only. */
+    List<RankedEntry> ranking(int limit);
 
     /**
      * The day's shuffle of the entries published since {@code youngSince} (young) or before it

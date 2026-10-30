@@ -3,6 +3,7 @@ package com.brandonkamga.sourcefolio.discovery.infra.persistence;
 import com.brandonkamga.sourcefolio.account.domain.model.User;
 import com.brandonkamga.sourcefolio.account.domain.port.UserStore;
 import com.brandonkamga.sourcefolio.discovery.domain.model.CatalogEntry;
+import com.brandonkamga.sourcefolio.discovery.domain.model.RankedEntry;
 import com.brandonkamga.sourcefolio.discovery.domain.model.RecentCursor;
 import com.brandonkamga.sourcefolio.discovery.domain.model.Shuffled;
 import com.brandonkamga.sourcefolio.discovery.domain.port.CatalogStore;
@@ -110,6 +111,21 @@ class JpaCatalogStoreIT extends PostgresIT {
 
         assertThat(first).hasSize(2).allMatch(entry -> entry.publishedAt().equals(NOW));
         assertThat(second).containsExactly(a);
+    }
+
+    @Test
+    @DisplayName("the Ranking reads the like counts, most liked first, and leaves out unliked showcases")
+    void ranking() {
+        CatalogEntry popular = entry("popular", NOW.minus(Duration.ofDays(3)));
+        CatalogEntry liked = entry("liked", NOW);
+        CatalogEntry quiet = entry("quiet", NOW);
+        List.of(popular, liked, quiet).forEach(catalog::upsert);
+
+        catalog.setLikes(popular.showcaseId(), 5);
+        catalog.setLikes(liked.showcaseId(), 2);
+
+        assertThat(catalog.ranking(10)).extracting(RankedEntry::likes, ranked -> ranked.entry().slug())
+                .containsExactly(org.assertj.core.groups.Tuple.tuple(5, "popular"), org.assertj.core.groups.Tuple.tuple(2, "liked"));
     }
 
     // A real showcase and member behind each entry, as the foreign keys require.

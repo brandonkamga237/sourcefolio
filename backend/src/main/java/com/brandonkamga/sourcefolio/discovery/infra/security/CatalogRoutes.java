@@ -11,6 +11,6 @@ class CatalogRoutes implements SecurityCustomizer {
 
     @Override
     public void customize(HttpSecurity http) throws Exception {
-        http.authorizeHttpRequests(routes -> routes.requestMatchers(HttpMethod.GET, "/api/catalog").permitAll());
+        http.authorizeHttpRequests(routes -> routes.requestMatchers(HttpMethod.GET, "/api/catalog", "/api/ranking").permitAll());
     }
 }

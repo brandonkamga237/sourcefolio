@@ -21,4 +21,9 @@ public class CatalogProjectionImpl implements CatalogProjection {
     public void renameOwner(UUID ownerId, String login) {
         store.renameOwner(ownerId, login);
     }
+
+    @Override
+    public void updateLikes(UUID showcaseId, int count) {
+        store.setLikes(showcaseId, count);
+    }
 }

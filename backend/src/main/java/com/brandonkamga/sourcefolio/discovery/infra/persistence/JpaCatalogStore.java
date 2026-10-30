@@ -1,6 +1,7 @@
 package com.brandonkamga.sourcefolio.discovery.infra.persistence;
 
 import com.brandonkamga.sourcefolio.discovery.domain.model.CatalogEntry;
+import com.brandonkamga.sourcefolio.discovery.domain.model.RankedEntry;
 import com.brandonkamga.sourcefolio.discovery.domain.model.RecentCursor;
 import com.brandonkamga.sourcefolio.discovery.domain.model.Shuffled;
 import com.brandonkamga.sourcefolio.discovery.domain.port.CatalogStore;
@@ -38,6 +39,18 @@ class JpaCatalogStore implements CatalogStore {
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void renameOwner(UUID ownerId, String login) {
         entries.renameOwner(ownerId, login);
+    }
+
+    @Override
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    public void setLikes(UUID showcaseId, int count) {
+        entries.setLikes(showcaseId, count);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<RankedEntry> ranking(int limit) {
+        return entries.mostLiked(Limit.of(limit)).stream().map(row -> new RankedEntry(toDomain(row), row.getLikeCount())).toList();
     }
 
     // Two queries whatever the page size: the ordered ids and keys, then their rows.

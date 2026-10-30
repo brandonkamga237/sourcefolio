@@ -4,6 +4,7 @@ import com.brandonkamga.sourcefolio.discovery.domain.model.CatalogEntry;
 import com.brandonkamga.sourcefolio.discovery.domain.model.CatalogPage;
 import com.brandonkamga.sourcefolio.discovery.domain.model.DiscoverCursor;
 import com.brandonkamga.sourcefolio.discovery.domain.model.DiscoverFeed;
+import com.brandonkamga.sourcefolio.discovery.domain.model.RankedEntry;
 import com.brandonkamga.sourcefolio.discovery.domain.model.RecentCursor;
 import com.brandonkamga.sourcefolio.discovery.domain.model.Shuffled;
 import com.brandonkamga.sourcefolio.discovery.domain.port.CatalogStore;
@@ -53,6 +54,11 @@ public class CatalogImpl implements Catalog {
         List<CatalogEntry> page = rows.subList(0, limit);
         CatalogEntry last = page.getLast();
         return new CatalogPage(page, new RecentCursor(last.publishedAt(), last.showcaseId()).encode(), store.count());
+    }
+
+    @Override
+    public List<RankedEntry> listRanking(int size) {
+        return store.ranking(Math.clamp(size, 1, MAX_RANKING_SIZE));
     }
 
     private static String lastKey(List<Shuffled> list, int used, String previous) {

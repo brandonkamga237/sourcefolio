@@ -26,6 +26,16 @@ interface CatalogEntryJpaRepository extends JpaRepository<CatalogEntryEntity, UU
                 @Param("publishedAt") Instant publishedAt);
 
     @Modifying
+    @Query("update CatalogEntryEntity e set e.likeCount = :count where e.showcaseId = :showcaseId")
+    void setLikes(@Param("showcaseId") UUID showcaseId, @Param("count") int count);
+
+    @Query("""
+            select e from CatalogEntryEntity e where e.likeCount > 0
+            order by e.likeCount desc, e.publishedAt desc, e.showcaseId desc
+            """)
+    List<CatalogEntryEntity> mostLiked(Limit limit);
+
+    @Modifying
     @Query("update CatalogEntryEntity e set e.ownerLogin = :login where e.ownerUserId = :ownerUserId")
     void renameOwner(@Param("ownerUserId") UUID ownerUserId, @Param("login") String login);
 
