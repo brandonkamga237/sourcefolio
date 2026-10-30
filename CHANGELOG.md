@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.12.1](https://github.com/brandonkamga237/sourcefolio/compare/v0.12.0...v0.12.1) (2026-10-30)
+
+
+### Bug Fixes
+
+* **frontend:** sticky headers and controls, content centred over the background ([#52](https://github.com/brandonkamga237/sourcefolio/issues/52)) ([2451795](https://github.com/brandonkamga237/sourcefolio/commit/24517957acdfd40c9153667136547908c1d16a00))
+
 ## [0.12.0](https://github.com/brandonkamga237/sourcefolio/compare/v0.11.1...v0.12.0) (2026-10-30)
 
 
