@@ -114,5 +114,21 @@
     "ctaLink": "Publish my portfolio",
     "ogBy": "by {login}",
     "ogTagline": "A portfolio you can read the code of"
+  },
+  "catalog": {
+    "lead": "Developer portfolios online, with their public code. Open the site, then read how it is built.",
+    "sort": {
+      "label": "Catalogue order",
+      "discover": "Discover",
+      "recent": "Recent"
+    },
+    "by": "by {login}",
+    "loadMore": "Show more portfolios",
+    "loading": "Loading…",
+    "loadFailed": "The next portfolios could not be loaded. Try again in a moment.",
+    "unavailable": "The catalogue is not answering right now. Try again in a moment.",
+    "emptyTitle": "No portfolio published yet",
+    "emptyLead": "Yours can be the first: sign in with GitHub, we find it and you publish it in one click.",
+    "emptyLink": "Publish my portfolio"
   }
 }

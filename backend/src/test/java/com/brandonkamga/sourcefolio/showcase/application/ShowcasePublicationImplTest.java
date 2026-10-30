@@ -45,11 +45,12 @@ class ShowcasePublicationImplTest {
     private final InMemoryCandidateStore candidates = new InMemoryCandidateStore();
     private final Set<String> reachableSites = new HashSet<>();
     private final List<String> fetched = new ArrayList<>();
+    private final List<ShowcasePublished> published = new ArrayList<>();
     private final Map<UUID, String> logins = new HashMap<>(Map.of(MEMBER, "Nekwalla", OTHER_MEMBER, "ayo-dev"));
     private final ShowcasePublication publication = new ShowcasePublicationImpl(showcases, candidates, url -> {
         fetched.add(url);
         return reachableSites.contains(url);
-    }, logins::get, Clock.fixed(NOW, ZoneOffset.UTC));
+    }, logins::get, published::add, Clock.fixed(NOW, ZoneOffset.UTC));
 
     @Test
     @DisplayName("a detected candidate whose site answers is published at once, with its repository and its first history line")
@@ -67,6 +68,9 @@ class ShowcasePublicationImplTest {
         assertThat(stored.sourceRepo().url()).isEqualTo("https://github.com/nekwalla/nekwalla.github.io");
         assertThat(showcases.history.get(stored.id().value())).containsExactly(
                 new ShowcaseStatusEvent(null, ShowcaseStatus.PUBLISHED, ShowcaseStatusEvent.AUTO_VERIFIED, StatusActor.SYSTEM, NOW));
+        assertThat(this.published).containsExactly(new ShowcasePublished(stored.id().value(), "nekwalla",
+                "https://nekwalla.github.io/", "nekwalla/nekwalla.github.io", "https://github.com/nekwalla/nekwalla.github.io",
+                MEMBER, "Nekwalla", NOW));
     }
 
     @Test
@@ -116,6 +120,7 @@ class ShowcasePublicationImplTest {
                 .extracting(thrown -> ((AppException) thrown).messageKey())
                 .isEqualTo("showcase.site-unreachable");
         assertThat(showcases.rows).isEmpty();
+        assertThat(published).isEmpty();
     }
 
     @Test

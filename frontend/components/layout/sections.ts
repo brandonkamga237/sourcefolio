@@ -21,9 +21,10 @@ export const sections: readonly Section[] = [
 ];
 
 // "/me" is a prefix of "/me/portfolio": each section owns its exact path and what is
-// below it, except where a more specific section claims it.
+// below it, except where a more specific section claims it. Discover also owns its Recent
+// order and the showcase pages a visitor opens from it.
 export function isActive(section: Section, pathname: string): boolean {
-  if (section.href === "/") return pathname === "/";
+  if (section.href === "/") return pathname === "/" || pathname === "/recent" || pathname.startsWith("/p/");
   if (section.href === "/me") return pathname === "/me" || (pathname.startsWith("/me/") && !pathname.startsWith("/me/portfolio"));
   return pathname === section.href || pathname.startsWith(`${section.href}/`);
 }
