@@ -14,7 +14,7 @@ Two different questions, two different places:
 | Slowest or most failing endpoint | `http_server_requests_seconds_*` by `uri`; p95 via `histogram_quantile` |
 | Which errors, when | Loki: `{job="sourcefolio-backend"} \|= "ERROR"` |
 | Database pressure | `hikaricp_connections_*`, `pg_stat_database_*` |
-| Server and containers (Chromium included) | jobs `node` and `cadvisor`; alerts `NodeMemoryHigh`, `ContainerRestartingFrequently` |
+| Server and containers (Chromium included) | lescracks' Grafana: the VPS is shared, and its node-exporter and cAdvisor already measure it |
 | Did the last deploy break something? | compare error rate and p95 before/after; the version is in `/actuator/info` |
 
 All alert rules live in `prometheus-rules.yml`. They evaluate already; connect an
@@ -22,7 +22,7 @@ Alertmanager or a Grafana contact point to receive them.
 
 ```
 monitoring/
-├── prometheus.yml          targets: backend:9090, postgres, node, cadvisor, blackbox
+├── prometheus.yml          targets: backend:9090, postgres, blackbox
 ├── prometheus-rules.yml    alert rules
 ├── blackbox.yml            external HTTP probe module
 ├── loki.yml                7-day retention
