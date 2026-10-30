@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.12.0](https://github.com/brandonkamga237/sourcefolio/compare/v0.11.1...v0.12.0) (2026-10-30)
+
+
+### Features
+
+* **frontend:** slim dismissible Discover intro, tech illustrations behind pages ([#49](https://github.com/brandonkamga237/sourcefolio/issues/49)) ([864ac11](https://github.com/brandonkamga237/sourcefolio/commit/864ac11fb68a5e8505133b7feb1b8ed80a1b1bd6))
+
 ## [0.11.1](https://github.com/brandonkamga237/sourcefolio/compare/v0.11.0...v0.11.1) (2026-10-30)
 
 
