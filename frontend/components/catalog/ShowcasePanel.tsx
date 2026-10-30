@@ -45,7 +45,7 @@ export function ShowcasePanel({ card, href, locale, labels, onClose }: ShowcaseP
           type="button"
           onClick={onClose}
           aria-label={labels.close}
-          className="absolute top-3 right-3 flex size-10 items-center justify-center rounded-full bg-surface/95 text-ink"
+          className="press absolute top-3 right-3 flex size-11 items-center justify-center rounded-full bg-surface/95 text-ink shadow-sm transition-colors duration-150 hover:bg-surface"
         >
           <IconClose className="size-[18px]" />
         </button>
@@ -71,7 +71,7 @@ export function ShowcasePanel({ card, href, locale, labels, onClose }: ShowcaseP
             href={card.siteUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex h-[46px] flex-1 items-center justify-center gap-1.5 rounded-control bg-accent text-sm font-semibold text-white"
+            className="press flex h-[46px] flex-1 items-center justify-center gap-1.5 rounded-control bg-accent text-sm font-semibold text-white transition-colors duration-150 hover:bg-accent-hover"
           >
             {labels.visitSite}
             <IconExternal className="size-4" />
@@ -80,7 +80,7 @@ export function ShowcasePanel({ card, href, locale, labels, onClose }: ShowcaseP
             href={card.repositoryUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex h-[46px] items-center gap-1.5 rounded-control border border-ink px-4 text-sm font-semibold text-ink"
+            className="press flex h-[46px] items-center gap-1.5 rounded-control border border-ink px-4 text-sm font-semibold text-ink transition-colors duration-150 hover:bg-ink hover:text-ink-inverse"
           >
             <IconCode className="size-4" />
             {labels.viewCode}

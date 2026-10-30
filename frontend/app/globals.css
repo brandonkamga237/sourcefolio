@@ -100,3 +100,59 @@
     outline-offset: 2px;
   }
 }
+
+/* Shared easing: quick start, soft landing, so a tap answers at once. */
+@theme {
+  --ease-out-soft: cubic-bezier(0.23, 1, 0.32, 1);
+  --animate-rise: rise 420ms var(--ease-out-soft) both;
+  --animate-pop: pop 360ms var(--ease-out-soft);
+
+  @keyframes rise {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+  }
+
+  @keyframes pop {
+    40% {
+      transform: scale(1.22);
+    }
+  }
+}
+
+/* Anything pressable shrinks a little under the finger, then springs back. */
+@utility press {
+  transition: transform 160ms var(--ease-out-soft);
+
+  &:active:not(:disabled) {
+    transform: scale(0.97);
+  }
+}
+
+/* The page background: a faint dot grid with a glow of the accent at the top, drawn by CSS
+   alone, so large screens never look empty and phones download nothing for it. */
+@utility backdrop {
+  background-color: var(--color-canvas);
+  background-image:
+    radial-gradient(60rem 22rem at 70% -6rem, color-mix(in oklab, var(--color-accent) 13%, transparent), transparent 70%),
+    radial-gradient(circle at 1px 1px, color-mix(in oklab, var(--color-ink) 9%, transparent) 1px, transparent 0);
+  background-size: 100% 100%, 22px 22px;
+  background-repeat: no-repeat, repeat;
+}
+
+/* Card entrance: each card rises a beat after the previous one (delay set from its index). */
+@utility rise-in {
+  animation: var(--animate-rise);
+  animation-delay: calc(min(var(--index, 0), 11) * 45ms);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 1ms !important;
+    animation-delay: 0ms !important;
+    transition-duration: 1ms !important;
+  }
+}

@@ -58,11 +58,12 @@ export function CatalogFeed({ locale, sort, firstPage, labels }: CatalogFeedProp
     <div className="flex items-start gap-7">
       <div className="flex min-w-0 flex-1 flex-col gap-4">
         <ul className="grid grid-cols-2 gap-3 sm:gap-4 md:[grid-template-columns:repeat(auto-fill,minmax(210px,1fr))]">
-          {cards.map((card) => (
+          {cards.map((card, index) => (
             <li key={card.slug}>
               <ShowcaseCard
                 card={card}
                 href={localizedPath(locale, `/p/${card.slug}`)}
+                index={index}
                 selected={open?.slug === card.slug}
                 onOpen={(event) => openInPanel(card.slug, event)}
               />
@@ -75,7 +76,7 @@ export function CatalogFeed({ locale, sort, firstPage, labels }: CatalogFeedProp
             onClick={loadMore}
             disabled={loading}
             aria-busy={loading}
-            className="flex h-11 items-center justify-center self-center rounded-full border border-ink px-6 text-sm font-semibold text-ink disabled:opacity-60"
+            className="press flex h-11 items-center justify-center self-center rounded-full border border-ink bg-surface px-6 text-sm font-semibold text-ink transition-colors duration-150 hover:bg-ink hover:text-ink-inverse disabled:opacity-60"
           >
             {loading ? labels.loading : labels.loadMore}
           </button>
@@ -89,13 +90,17 @@ export function CatalogFeed({ locale, sort, firstPage, labels }: CatalogFeedProp
 
       {open ? (
         <aside className="sticky top-6 hidden w-[360px] shrink-0 lg:block xl:w-[400px]">
-          <ShowcasePanel
-            card={open}
-            href={localizedPath(locale, `/p/${open.slug}`)}
-            locale={locale}
-            labels={labels.panel}
-            onClose={() => setSelected(null)}
-          />
+          {/* Keyed on the card, so the panel rises again on each switch and the eye sees the change.
+              A CSS animation: Motion did the same for 47 KB more on the page phones open first. */}
+          <div key={open.slug} className="animate-rise">
+            <ShowcasePanel
+              card={open}
+              href={localizedPath(locale, `/p/${open.slug}`)}
+              locale={locale}
+              labels={labels.panel}
+              onClose={() => setSelected(null)}
+            />
+          </div>
         </aside>
       ) : null}
     </div>

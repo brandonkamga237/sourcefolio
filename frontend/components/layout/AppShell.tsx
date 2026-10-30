@@ -1,11 +1,10 @@
 import type { ReactNode } from "react";
 import { getLocale, getTranslations } from "next-intl/server";
 import { toLocale } from "@/i18n/routing";
-import Link from "next/link";
-import { localizedPath } from "@/i18n/paths";
 import { BottomTabs } from "./BottomTabs";
 import { LanguageSwitch } from "./LanguageSwitch";
 import { Logo } from "./Logo";
+import { PublishLink } from "./PublishLink";
 import { SidebarNav } from "./SidebarNav";
 
 interface AppShellProps {
@@ -41,21 +40,26 @@ export async function AppShell({ children }: AppShellProps) {
         </div>
         <SidebarNav locale={locale} labels={labels} />
         <div className="mt-auto flex flex-col gap-3">
-          <Link
-            href={localizedPath(locale, "/me")}
-            className="flex h-11 items-center justify-center rounded-control bg-ink text-sm font-semibold text-ink-inverse"
-          >
-            {t("nav.publish")}
-          </Link>
+          <PublishLink
+            locale={locale}
+            label={t("nav.publish")}
+            className="press flex h-11 items-center justify-center rounded-control bg-ink text-sm font-semibold text-ink-inverse"
+          />
           <LanguageSwitch current={locale} label={t("language.label")} names={{ fr: t("language.fr"), en: t("language.en") }} />
         </div>
       </aside>
 
-      <header className="sticky top-0 z-30 flex h-14 items-center border-b border-line bg-surface/95 px-4 backdrop-blur lg:hidden">
+      {/* The way in stays one tap away on a phone too, whichever tab is open. */}
+      <header className="sticky top-0 z-30 flex h-14 items-center justify-between gap-3 border-b border-line bg-surface/90 px-4 backdrop-blur-md lg:hidden">
         <Logo />
+        <PublishLink
+          locale={locale}
+          label={t("nav.publishShort")}
+          className="press flex h-11 items-center rounded-full bg-ink px-4 text-[13px] font-semibold text-ink-inverse"
+        />
       </header>
 
-      <main id="content" className="min-w-0 flex-1 pb-[calc(3.5rem+env(safe-area-inset-bottom))] lg:pb-0">
+      <main id="content" className="backdrop min-h-dvh min-w-0 flex-1 pb-[calc(3.5rem+env(safe-area-inset-bottom))] lg:pb-0">
         {children}
       </main>
 

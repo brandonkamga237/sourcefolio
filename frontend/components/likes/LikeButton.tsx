@@ -88,11 +88,15 @@ export function LikeButton({ slug, labels, showCount }: LikeButtonProps) {
         aria-pressed={state.own ? undefined : state.liked}
         aria-label={label}
         title={label}
-        className={`flex h-[46px] min-w-[46px] items-center justify-center gap-1.5 rounded-control border px-3 text-sm font-semibold transition-transform active:scale-95 disabled:cursor-not-allowed disabled:border-dashed disabled:text-ink-muted disabled:active:scale-100 ${
+        className={`flex h-[46px] min-w-[46px] items-center justify-center gap-1.5 rounded-control border px-3 text-sm font-semibold transition-[transform,background-color,border-color] duration-200 active:scale-95 disabled:cursor-not-allowed disabled:border-dashed disabled:text-ink-muted disabled:active:scale-100 ${
           state.liked ? "border-accent bg-accent-soft text-accent-ink" : "border-line bg-surface text-ink"
         }`}
       >
-        <IconHeart className={`size-5 ${state.liked ? "fill-current" : ""}`} />
+        {/* Pops when the reader fills it, not when a page opens on a heart already filled. */}
+        <IconHeart
+          key={String(state.liked)}
+          className={`size-5 ${state.liked ? "fill-current" : ""} ${state.liked && mutation.variables === true ? "animate-pop" : ""}`}
+        />
         {showCount ? <span className="font-mono tabular-nums">{state.count}</span> : null}
       </button>
       {error ? (

@@ -28,11 +28,15 @@ export function BottomTabs({ locale, labels }: BottomTabsProps) {
               <Link
                 href={localizedPath(locale, section.href)}
                 aria-current={active ? "page" : undefined}
-                className={`flex h-14 flex-col items-center justify-center gap-1 text-[11px] font-medium select-none ${
-                  active ? "text-accent-ink" : "text-ink-muted"
+                className={`press flex h-14 flex-col items-center justify-center gap-0.5 text-[11px] font-medium select-none ${
+                  active ? "font-semibold text-accent-ink" : "text-ink-muted"
                 }`}
               >
-                <Icon className="size-[22px]" />
+                <span
+                  className={`flex h-7 w-12 items-center justify-center rounded-full transition-colors duration-200 ${active ? "bg-accent-soft" : ""}`}
+                >
+                  <Icon className="size-[22px]" />
+                </span>
                 {labels[section.key]}
               </Link>
             </li>
