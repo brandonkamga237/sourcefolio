@@ -28,8 +28,8 @@ async function SortTabs({ locale, sort }: CatalogScreenProps) {
           key={item.sort}
           href={localizedPath(locale, item.path)}
           aria-current={item.sort === sort ? "page" : undefined}
-          className={`flex h-11 items-center rounded-full px-4 text-sm font-semibold ${
-            item.sort === sort ? "bg-ink text-canvas" : "border border-line bg-surface text-ink"
+          className={`flex h-11 items-center rounded-full px-3.5 text-sm font-semibold ${
+            item.sort === sort ? "bg-ink text-ink-inverse" : "border border-line bg-surface text-ink"
           }`}
         >
           {t(item.sort)}
@@ -42,7 +42,10 @@ async function SortTabs({ locale, sort }: CatalogScreenProps) {
 async function Feed({ locale, sort }: CatalogScreenProps) {
   // Read per request: the catalogue changes as members publish, and the build has no API.
   await connection();
-  const t = await getTranslations({ locale, namespace: "catalog" });
+  const [t, tl] = await Promise.all([
+    getTranslations({ locale, namespace: "catalog" }),
+    getTranslations({ locale, namespace: "likes" }),
+  ]);
   let firstPage: CatalogPage;
   try {
     firstPage = await getCatalogFirstPage(sort);
@@ -60,7 +63,7 @@ async function Feed({ locale, sort }: CatalogScreenProps) {
       <section aria-labelledby="catalog-empty" className="flex flex-col gap-2 rounded-card border border-line bg-surface p-4">
         <h2 id="catalog-empty" className="text-[15px] font-semibold">{t("emptyTitle")}</h2>
         <p className="text-sm leading-normal text-ink-body">{t("emptyLead")}</p>
-        <Link href={localizedPath(locale, "/me/portfolio")} className="flex h-11 w-fit items-center rounded-control bg-accent px-4 text-sm font-semibold text-white">
+        <Link href={localizedPath(locale, "/me")} className="flex h-11 w-fit items-center rounded-control bg-accent px-4 text-sm font-semibold text-white">
           {t("emptyLink")}
         </Link>
       </section>
@@ -68,20 +71,38 @@ async function Feed({ locale, sort }: CatalogScreenProps) {
   }
 
   return (
-    <CatalogFeed
+    <div className="flex flex-col gap-4">
+      <p className="font-mono text-xs text-ink-muted sm:text-[13px]">
+        {t("count", { count: firstPage.total })} · {t(sort === "discover" ? "orderShuffled" : "orderRecent")}
+      </p>
+      <CatalogFeed
       locale={locale}
       sort={sort}
       firstPage={firstPage}
-      labels={{ by: t.raw("by") as string, loadMore: t("loadMore"), loading: t("loading"), loadFailed: t("loadFailed") }}
-    />
+      labels={{
+        loadMore: t("loadMore"),
+        loading: t("loading"),
+        loadFailed: t("loadFailed"),
+        panel: {
+          close: t("panel.close"),
+          visitSite: t("panel.visitSite"),
+          viewCode: t("panel.viewCode"),
+          openPage: t("panel.openPage"),
+          sourceRepo: t("panel.sourceRepo"),
+          publishedOn: t.raw("panel.publishedOn") as string,
+          likes: { like: tl.raw("like") as string, unlike: tl.raw("unlike") as string, failed: tl("failed") },
+        },
+      }}
+      />
+    </div>
   );
 }
 
 function FeedSkeleton() {
   return (
-    <div aria-hidden="true" className="grid gap-3 sm:grid-cols-2">
-      {[0, 1, 2, 3].map((index) => (
-        <div key={index} className="h-[104px] animate-pulse rounded-card bg-surface-sunken" />
+    <div aria-hidden="true" className="grid grid-cols-2 gap-3 sm:gap-4 md:[grid-template-columns:repeat(auto-fill,minmax(210px,1fr))]">
+      {[0, 1, 2, 3, 4, 5].map((index) => (
+        <div key={index} className="aspect-[4/3] animate-pulse rounded-card bg-surface-sunken" />
       ))}
     </div>
   );
@@ -90,12 +111,11 @@ function FeedSkeleton() {
 export async function CatalogScreen({ locale, sort }: CatalogScreenProps) {
   const t = await getTranslations({ locale });
   return (
-    <div className="flex flex-col gap-5 px-4 py-6 lg:px-10 lg:py-8">
-      <div className="flex flex-col gap-2">
-        <h1 className="font-display text-[28px] leading-none font-bold tracking-[-0.035em] lg:text-[40px]">{t("brand.tagline")}</h1>
-        <p className="text-[15px] leading-normal text-ink-body">{t("catalog.lead")}</p>
+    <div className="flex flex-col gap-4 px-4 py-5 lg:px-8 lg:py-7">
+      <div className="flex flex-wrap items-end justify-between gap-3">
+        <h1 className="font-display text-[24px] leading-none font-bold tracking-[-0.035em] sm:text-[30px] lg:text-[40px]">{t("brand.tagline")}</h1>
+        <SortTabs locale={locale} sort={sort} />
       </div>
-      <SortTabs locale={locale} sort={sort} />
       <Suspense fallback={<FeedSkeleton />}>
         <Feed locale={locale} sort={sort} />
       </Suspense>

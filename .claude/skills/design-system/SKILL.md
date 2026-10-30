@@ -90,7 +90,7 @@ of CSS.
 - **Showcase card** — `bg-surface border border-line rounded-card overflow-hidden`; preview at
   `aspect-[16/10]` (desktop screenshot on desktop, mobile screenshot on phones); below it
   `p-3.5` with the name (15 px semibold) and "Spécialité · Pays" (13 px muted), flag and at most
-  three technologies. Selected: `border-2 border-accent`. Never a like count.
+  three technologies. Selected: `border-2 border-accent`. The like count shows on the showcase page and in the Ranking, not on Discover cards.
 - **Filter chip** — `h-11 px-3.5 rounded-full border border-line bg-surface text-sm font-medium`;
   active: `bg-accent-soft border-accent-line text-accent-ink` with a close icon; "Filtres" chip:
   `bg-ink text-white` with the filters icon. "Filtres" opens a sheet with the live count

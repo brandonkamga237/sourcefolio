@@ -34,7 +34,7 @@ export async function ProfileScreen({ locale }: ProfileScreenProps) {
     <ProfileQuestions
       initial={answers}
       countries={countryOptions(locale)}
-      doneHref={localizedPath(locale, "/me/portfolio")}
+      doneHref={localizedPath(locale, "/me")}
       labels={{
         progress: t.raw("profile.progress") as string,
         countryTitle: t("profile.countryTitle"),

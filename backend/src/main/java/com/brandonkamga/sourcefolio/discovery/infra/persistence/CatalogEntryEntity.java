@@ -37,6 +37,9 @@ class CatalogEntryEntity {
     @Column(name = "published_at", nullable = false)
     private Instant publishedAt;
 
+    @Column(name = "like_count", nullable = false)
+    private int likeCount;
+
     protected CatalogEntryEntity() {
     }
 
@@ -48,4 +51,5 @@ class CatalogEntryEntity {
     UUID getOwnerUserId() { return ownerUserId; }
     String getOwnerLogin() { return ownerLogin; }
     Instant getPublishedAt() { return publishedAt; }
+    int getLikeCount() { return likeCount; }
 }

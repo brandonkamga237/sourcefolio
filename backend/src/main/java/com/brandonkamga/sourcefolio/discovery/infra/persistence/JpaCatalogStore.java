@@ -1,6 +1,7 @@
 package com.brandonkamga.sourcefolio.discovery.infra.persistence;
 
 import com.brandonkamga.sourcefolio.discovery.domain.model.CatalogEntry;
+import com.brandonkamga.sourcefolio.discovery.domain.model.RankedEntry;
 import com.brandonkamga.sourcefolio.discovery.domain.model.RecentCursor;
 import com.brandonkamga.sourcefolio.discovery.domain.model.Shuffled;
 import com.brandonkamga.sourcefolio.discovery.domain.port.CatalogStore;
@@ -40,6 +41,18 @@ class JpaCatalogStore implements CatalogStore {
         entries.renameOwner(ownerId, login);
     }
 
+    @Override
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    public void setLikes(UUID showcaseId, int count) {
+        entries.setLikes(showcaseId, count);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<RankedEntry> ranking(int limit) {
+        return entries.mostLiked(Limit.of(limit)).stream().map(row -> new RankedEntry(toDomain(row), row.getLikeCount())).toList();
+    }
+
     // Two queries whatever the page size: the ordered ids and keys, then their rows.
     @Override
     @Transactional(readOnly = true)
@@ -53,6 +66,12 @@ class JpaCatalogStore implements CatalogStore {
                 .filter(row -> rows.containsKey(UUID.fromString(row[0])))
                 .map(row -> new Shuffled(toDomain(rows.get(UUID.fromString(row[0]))), row[1]))
                 .toList();
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public long count() {
+        return entries.count();
     }
 
     @Override

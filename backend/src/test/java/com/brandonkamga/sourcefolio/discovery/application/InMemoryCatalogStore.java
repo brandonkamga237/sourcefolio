@@ -1,6 +1,7 @@
 package com.brandonkamga.sourcefolio.discovery.application;
 
 import com.brandonkamga.sourcefolio.discovery.domain.model.CatalogEntry;
+import com.brandonkamga.sourcefolio.discovery.domain.model.RankedEntry;
 import com.brandonkamga.sourcefolio.discovery.domain.model.RecentCursor;
 import com.brandonkamga.sourcefolio.discovery.domain.model.Shuffled;
 import com.brandonkamga.sourcefolio.discovery.domain.port.CatalogStore;
@@ -20,6 +21,7 @@ import java.util.UUID;
 class InMemoryCatalogStore implements CatalogStore {
 
     final Map<UUID, CatalogEntry> rows = new LinkedHashMap<>();
+    final Map<UUID, Integer> likes = new LinkedHashMap<>();
 
     @Override
     public void upsert(CatalogEntry entry) {
@@ -43,6 +45,27 @@ class InMemoryCatalogStore implements CatalogStore {
                 .sorted(Comparator.comparing(Shuffled::key))
                 .limit(limit)
                 .toList();
+    }
+
+    @Override
+    public void setLikes(UUID showcaseId, int count) {
+        likes.put(showcaseId, count);
+    }
+
+    @Override
+    public List<RankedEntry> ranking(int limit) {
+        return rows.values().stream()
+                .filter(entry -> likes.getOrDefault(entry.showcaseId(), 0) > 0)
+                .sorted(Comparator.comparing((CatalogEntry entry) -> likes.get(entry.showcaseId())).reversed()
+                        .thenComparing(Comparator.comparing(CatalogEntry::publishedAt).reversed()))
+                .limit(limit)
+                .map(entry -> new RankedEntry(entry, likes.get(entry.showcaseId())))
+                .toList();
+    }
+
+    @Override
+    public long count() {
+        return rows.size();
     }
 
     @Override

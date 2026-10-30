@@ -3,6 +3,7 @@ package com.brandonkamga.sourcefolio.discovery.infra.events;
 import com.brandonkamga.sourcefolio.account.application.MemberSignedIn;
 import com.brandonkamga.sourcefolio.discovery.application.CatalogProjection;
 import com.brandonkamga.sourcefolio.discovery.domain.model.CatalogEntry;
+import com.brandonkamga.sourcefolio.engagement.application.ShowcaseLikesChanged;
 import com.brandonkamga.sourcefolio.showcase.application.ShowcasePublished;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,6 +34,15 @@ class CatalogListeners {
                     event.repositoryUrl(), event.ownerId(), event.ownerLogin(), event.publishedAt()));
         } catch (RuntimeException failure) {
             log.error("Showcase {} published but not added to the catalogue", event.showcaseId(), failure);
+        }
+    }
+
+    @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT, fallbackExecution = true)
+    void on(ShowcaseLikesChanged event) {
+        try {
+            catalog.updateLikes(event.showcaseId(), event.count());
+        } catch (RuntimeException failure) {
+            log.error("Like count of showcase {} not copied to the catalogue", event.showcaseId(), failure);
         }
     }
 

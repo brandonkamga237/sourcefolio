@@ -3,6 +3,7 @@ package com.brandonkamga.sourcefolio.discovery.api;
 import com.brandonkamga.sourcefolio.discovery.application.Catalog;
 import com.brandonkamga.sourcefolio.discovery.domain.model.CatalogEntry;
 import com.brandonkamga.sourcefolio.discovery.domain.model.CatalogPage;
+import com.brandonkamga.sourcefolio.discovery.domain.model.RankedEntry;
 import com.brandonkamga.sourcefolio.discovery.infra.security.CatalogRoutesTestConfig;
 import com.brandonkamga.sourcefolio.shared.security.SecurityTestConfig;
 import org.junit.jupiter.api.DisplayName;
@@ -39,7 +40,7 @@ class CatalogControllerTest {
     @Test
     @DisplayName("a visitor gets the Discover feed by default, without an account, and without ids")
     void discoverByDefault() throws Exception {
-        when(catalog.listDiscover(null, 20)).thenReturn(new CatalogPage(List.of(ENTRY), "next"));
+        when(catalog.listDiscover(null, 20)).thenReturn(new CatalogPage(List.of(ENTRY), "next", 124));
 
         mvc.perform(get("/api/catalog"))
                 .andExpect(status().isOk())
@@ -49,13 +50,14 @@ class CatalogControllerTest {
                 .andExpect(jsonPath("$.items[0].publishedAt").value("2026-10-30T09:00:00Z"))
                 .andExpect(jsonPath("$.items[0].showcaseId").doesNotExist())
                 .andExpect(jsonPath("$.items[0].ownerId").doesNotExist())
-                .andExpect(jsonPath("$.nextCursor").value("next"));
+                .andExpect(jsonPath("$.nextCursor").value("next"))
+                .andExpect(jsonPath("$.total").value(124));
     }
 
     @Test
     @DisplayName("Recent takes the cursor and size it is given")
     void recent() throws Exception {
-        when(catalog.listRecent("abc", 10)).thenReturn(new CatalogPage(List.of(), null));
+        when(catalog.listRecent("abc", 10)).thenReturn(new CatalogPage(List.of(), null, 0));
 
         mvc.perform(get("/api/catalog").param("sort", "recent").param("cursor", "abc").param("size", "10"))
                 .andExpect(status().isOk())
@@ -64,7 +66,19 @@ class CatalogControllerTest {
     }
 
     @Test
-    @DisplayName("there is no popularity sort: any other sort is a 400")
+    @DisplayName("a visitor gets the Ranking with ranks and public like counts")
+    void ranking() throws Exception {
+        when(catalog.listRanking(100)).thenReturn(List.of(new RankedEntry(ENTRY, 42)));
+
+        mvc.perform(get("/api/ranking"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.items[0].rank").value(1))
+                .andExpect(jsonPath("$.items[0].slug").value("nekwalla"))
+                .andExpect(jsonPath("$.items[0].likes").value(42));
+    }
+
+    @Test
+    @DisplayName("Discover has no popularity sort: any other sort is a 400")
     void noPopularitySort() throws Exception {
         mvc.perform(get("/api/catalog").param("sort", "popular")).andExpect(status().isBadRequest());
         verifyNoInteractions(catalog);

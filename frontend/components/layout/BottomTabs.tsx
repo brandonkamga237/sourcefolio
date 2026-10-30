@@ -19,7 +19,7 @@ export function BottomTabs({ locale, labels }: BottomTabsProps) {
       aria-label={labels.label}
       className="fixed inset-x-0 bottom-0 z-40 border-t border-line bg-surface/95 pb-[env(safe-area-inset-bottom)] backdrop-blur lg:hidden"
     >
-      <ul className="grid grid-cols-4">
+      <ul className="grid grid-cols-3">
         {sections.map((section) => {
           const active = isActive(section, pathname);
           const Icon = active ? section.activeIcon : section.icon;
