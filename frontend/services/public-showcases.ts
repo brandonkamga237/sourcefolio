@@ -12,6 +12,8 @@ export interface PublicShowcase {
   ownerUrl: string;
   previewImageUrl: string | null;
   previewVideoUrl: string | null;
+  /** GitHub stars of the repository, null until read (at most a day after publication). */
+  repositoryStars: number | null;
 }
 
 /**

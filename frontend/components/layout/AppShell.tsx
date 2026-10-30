@@ -3,7 +3,9 @@ import { getLocale, getTranslations } from "next-intl/server";
 import { toLocale } from "@/i18n/routing";
 import { BottomTabs } from "./BottomTabs";
 import { LanguageSwitch } from "./LanguageSwitch";
+import { Suspense } from "react";
 import { Logo } from "./Logo";
+import { ProjectStars } from "./ProjectStars";
 import { PublishLink } from "./PublishLink";
 import { SidebarNav } from "./SidebarNav";
 
@@ -40,6 +42,9 @@ export async function AppShell({ children }: AppShellProps) {
         </div>
         <SidebarNav locale={locale} labels={labels} />
         <div className="mt-auto flex flex-col gap-3">
+          <Suspense fallback={null}>
+            <ProjectStars locale={locale} />
+          </Suspense>
           <PublishLink
             locale={locale}
             label={t("nav.publish")}
@@ -52,11 +57,16 @@ export async function AppShell({ children }: AppShellProps) {
       {/* The way in stays one tap away on a phone too, whichever tab is open. */}
       <header className="sticky top-0 z-30 flex h-14 items-center justify-between gap-3 border-b border-line bg-surface/90 px-4 backdrop-blur-md lg:hidden">
         <Logo />
-        <PublishLink
+        <div className="flex items-center gap-2">
+          <Suspense fallback={null}>
+            <ProjectStars locale={locale} compact />
+          </Suspense>
+          <PublishLink
           locale={locale}
           label={t("nav.publishShort")}
           className="press flex h-11 items-center rounded-full bg-ink px-4 text-[13px] font-semibold text-ink-inverse"
-        />
+          />
+        </div>
       </header>
 
       <main id="content" className="backdrop min-h-dvh min-w-0 flex-1 pb-[calc(3.5rem+env(safe-area-inset-bottom))] lg:pb-0">

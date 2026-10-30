@@ -122,7 +122,8 @@
     "ctaLead": "Sign in with GitHub, we find your portfolio and you publish it in one click.",
     "ctaLink": "Publish my portfolio",
     "ogBy": "by {login}",
-    "ogTagline": "A portfolio you can read the code of"
+    "ogTagline": "A portfolio you can read the code of",
+    "ogStars": "{formatted} {count, plural, one {star} other {stars}} on GitHub"
   },
   "catalog": {
     "sort": {
@@ -272,5 +273,15 @@
       "confirm": "Withdraw my portfolio",
       "pending": "Withdrawing…"
     }
+  },
+  "og": {
+    "lead": "Open a portfolio, visit the site, then read the code that runs it."
+  },
+  "stars": {
+    "repository": "{count, plural, =0 {No stars} one {# star} other {# stars}} on GitHub",
+    "project": "SourceFolio stars on GitHub: {count}",
+    "projectShort": "Source code",
+    "one": "{count} star on GitHub",
+    "other": "{count} stars on GitHub"
   }
 }
