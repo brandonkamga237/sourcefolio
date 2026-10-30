@@ -21,8 +21,11 @@ paths:
   commit. A secret never gets a default value in production configuration
 - Pin image versions; `latest` makes a restart change what runs. Before pinning, check that the
   tag exists on the registry
-- Screenshots are stored in an S3-compatible bucket: RustFS in development, Cloudflare R2 in
-  production. The backend only knows the `S3_*` variables, never the provider
+- Previews and screenshots are stored in an S3-compatible bucket: RustFS in development and on
+  the VPS (`sourcefolio-rustfs`, volume `sourcefolio_media_data`), never exposed directly.
+  Browsers read objects through Traefik at `/media/<key>`, GET and HEAD only. The backend only
+  knows the `S3_*` variables, never the provider, so moving to another S3 service is a `.env`
+  change
 - The frontend image is built per public origin: `SITE_URL` is a build argument (GitHub
   variable `SITE_URL` in `deploy.yml`) because Next.js writes it into the prerendered pages
 - The backend image carries Chromium for Playwright; keep its version in step with the

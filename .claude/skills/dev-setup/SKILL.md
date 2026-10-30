@@ -90,6 +90,6 @@ local HTTP server of the `*IT` suite, or a real public URL.
 ## Do not
 
 - Do not run `docker-compose.prod.yml` locally: it expects the Traefik network, the Docker Hub
-  images, Cloudflare R2 and a production `.env`.
+  images and a production `.env`.
 - Do not recreate a `docker-compose.yml` under `backend/` or `frontend/`: one compose file per
   environment, at the root.
