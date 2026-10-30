@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.9.0](https://github.com/brandonkamga237/sourcefolio/compare/v0.8.0...v0.9.0) (2026-10-30)
+
+
+### Features
+
+* **frontend:** clearer journeys, own-like disabled, backgrounds and micro-animations ([#37](https://github.com/brandonkamga237/sourcefolio/issues/37)) ([a10bc5b](https://github.com/brandonkamga237/sourcefolio/commit/a10bc5bd501f6ef23db2aa27d53fc66eb0816f13))
+
 ## [0.8.0](https://github.com/brandonkamga237/sourcefolio/compare/v0.7.0...v0.8.0) (2026-10-30)
 
 
