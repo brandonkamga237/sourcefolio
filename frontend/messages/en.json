@@ -152,12 +152,9 @@
     "feedTitle": "Portfolios",
     "recentTitle": "Latest published",
     "intro": {
-      "lead": "Open a portfolio, visit the site, then read the code that runs it. Every portfolio here has a public repository.",
+      "lead": "Open a portfolio, visit the site, then read the code that runs it.",
       "cta": "Publish mine",
-      "ctaHint": "Free, with your GitHub account.",
-      "step1": "Connect GitHub",
-      "step2": "Pick your repository",
-      "step3": "Share your link"
+      "close": "Hide this message"
     }
   },
   "profile": {

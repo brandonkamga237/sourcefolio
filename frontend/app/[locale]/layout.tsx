@@ -74,7 +74,7 @@ export default async function LocaleLayout({ children, params }: LayoutProps<"/[
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeBootScript }} />
       </head>
-      <body className="min-h-full">
+      <body className="backdrop min-h-full">
         <ThemeKeeper />
         <QueryProvider>
           <AppShell>{children}</AppShell>
