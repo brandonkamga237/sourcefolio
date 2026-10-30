@@ -48,6 +48,29 @@ export function clientPut<T>(path: string, body: unknown): Promise<ClientResult<
   return clientWrite<T>("PUT", path, body);
 }
 
+/** Sends one file as multipart form data, with the CSRF token. */
+export async function clientUpload<T>(path: string, file: File): Promise<ClientResult<T>> {
+  try {
+    if (!readCsrfToken()) {
+      await fetch("/api/me", { credentials: "same-origin" });
+    }
+    const form = new FormData();
+    form.append("file", file);
+    const response = await fetch(path, {
+      method: "PUT",
+      credentials: "same-origin",
+      headers: { "X-XSRF-TOKEN": decodeURIComponent(readCsrfToken() ?? "") },
+      body: form,
+    });
+    const json = await response.json().catch(() => null);
+    return response.ok
+      ? { status: response.status, data: json as T, message: null }
+      : { status: response.status, data: null, message: typeof json?.message === "string" ? json.message : null };
+  } catch {
+    return { status: 0, data: null, message: null };
+  }
+}
+
 export function clientDelete<T>(path: string): Promise<ClientResult<T>> {
   return clientWrite<T>("DELETE", path);
 }

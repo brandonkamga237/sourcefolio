@@ -48,6 +48,12 @@ class InMemoryCatalogStore implements CatalogStore {
     }
 
     @Override
+    public void setPreview(UUID showcaseId, String imageUrl, String videoUrl) {
+        rows.computeIfPresent(showcaseId, (id, entry) -> new CatalogEntry(entry.showcaseId(), entry.slug(), entry.siteUrl(),
+                entry.repository(), entry.repositoryUrl(), entry.ownerId(), entry.ownerLogin(), entry.publishedAt(), imageUrl, videoUrl));
+    }
+
+    @Override
     public void setLikes(UUID showcaseId, int count) {
         likes.put(showcaseId, count);
     }

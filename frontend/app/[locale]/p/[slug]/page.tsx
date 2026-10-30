@@ -5,6 +5,7 @@ import { Suspense } from "react";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { IconCode, IconExternal } from "@/components/icons";
 import { LikeButton } from "@/components/likes/LikeButton";
+import { Preview } from "@/components/catalog/Preview";
 import { localizedPath } from "@/i18n/paths";
 import { toLocale } from "@/i18n/routing";
 import { siteLabel } from "@/lib/site-label";
@@ -76,6 +77,21 @@ export default async function ShowcasePage({ params }: PageProps<"/[locale]/p/[s
           {t(`banner.${showcase.status}`)}
         </p>
       ) : null}
+
+      <div className="overflow-hidden rounded-card border border-line">
+        {showcase.previewVideoUrl && showcase.previewImageUrl ? (
+          <video
+            src={showcase.previewVideoUrl}
+            poster={showcase.previewImageUrl}
+            controls
+            playsInline
+            preload="none"
+            className="aspect-[16/10] w-full bg-surface-sunken object-cover"
+          />
+        ) : (
+          <Preview slug={showcase.slug} siteUrl={showcase.siteUrl} imageUrl={showcase.previewImageUrl} size="large" sizes="(min-width: 640px) 576px, 100vw" priority />
+        )}
+      </div>
 
       <header className="flex flex-col gap-2">
         <h1 className="font-display text-[32px] leading-[1.05] font-bold tracking-[-0.035em] break-all lg:text-[44px]">

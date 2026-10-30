@@ -2,7 +2,7 @@ import { cacheLife } from "next/cache";
 import type { CatalogCard } from "./catalog-types";
 
 // TODO(api-types): replace with components["schemas"]["RankingResponse"].
-export interface RankedCard extends CatalogCard {
+export interface RankedCard extends Omit<CatalogCard, "previewVideoUrl"> {
   rank: number;
   likes: number;
 }

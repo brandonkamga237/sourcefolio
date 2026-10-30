@@ -4,4 +4,6 @@ package com.brandonkamga.sourcefolio.showcase.application;
 public interface ShowcaseEvents {
 
     void showcasePublished(ShowcasePublished event);
+
+    void previewChanged(ShowcasePreviewChanged event);
 }

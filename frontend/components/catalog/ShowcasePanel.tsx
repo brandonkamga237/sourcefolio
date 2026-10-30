@@ -5,7 +5,7 @@ import { Suspense } from "react";
 import { IconClose, IconCode, IconExternal } from "@/components/icons";
 import { LikeButton, type LikeButtonLabels } from "@/components/likes/LikeButton";
 import type { CatalogCard } from "@/services/catalog-types";
-import { PreviewArt } from "./PreviewArt";
+import { Preview } from "./Preview";
 
 export interface ShowcasePanelLabels {
   close: string;
@@ -33,7 +33,14 @@ export function ShowcasePanel({ card, href, locale, labels, onClose }: ShowcaseP
   return (
     <section aria-labelledby="panel-name" className="overflow-hidden rounded-panel border border-line bg-surface">
       <div className="relative">
-        <PreviewArt slug={card.slug} siteUrl={card.siteUrl} size="large" />
+        <Preview
+          slug={card.slug}
+          siteUrl={card.siteUrl}
+          imageUrl={card.previewImageUrl}
+          videoUrl={card.previewVideoUrl}
+          size="large"
+          sizes="400px"
+        />
         <button
           type="button"
           onClick={onClose}

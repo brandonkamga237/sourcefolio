@@ -4,3 +4,8 @@ jobrunr:
     enabled: false
   dashboard:
     enabled: false
+
+# No S3 service during tests: nothing creates the bucket at startup.
+app:
+  storage:
+    ensure-bucket: false

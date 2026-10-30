@@ -114,6 +114,21 @@ class JpaCatalogStoreIT extends PostgresIT {
     }
 
     @Test
+    @DisplayName("the preview chosen by the author is kept on the card, and re-publishing does not erase it")
+    void preview() {
+        CatalogEntry entry = entry("with-preview", NOW);
+        catalog.upsert(entry);
+
+        catalog.setPreview(entry.showcaseId(), "https://media.test/i.webp", "https://media.test/v.mp4");
+        catalog.upsert(entry);
+
+        assertThat(catalog.recent(null, 10)).singleElement().satisfies(card -> {
+            assertThat(card.previewImageUrl()).isEqualTo("https://media.test/i.webp");
+            assertThat(card.previewVideoUrl()).isEqualTo("https://media.test/v.mp4");
+        });
+    }
+
+    @Test
     @DisplayName("the Ranking reads the like counts, most liked first, and leaves out unliked showcases")
     void ranking() {
         CatalogEntry popular = entry("popular", NOW.minus(Duration.ofDays(3)));

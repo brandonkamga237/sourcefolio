@@ -4,6 +4,7 @@ import com.brandonkamga.sourcefolio.account.application.MemberSignedIn;
 import com.brandonkamga.sourcefolio.discovery.application.CatalogProjection;
 import com.brandonkamga.sourcefolio.discovery.domain.model.CatalogEntry;
 import com.brandonkamga.sourcefolio.engagement.application.ShowcaseLikesChanged;
+import com.brandonkamga.sourcefolio.showcase.application.ShowcasePreviewChanged;
 import com.brandonkamga.sourcefolio.showcase.application.ShowcasePublished;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -43,6 +44,14 @@ class CatalogListenersTest {
     }
 
     @Test
+    @DisplayName("a new preview reaches the catalogue")
+    void previewReachesCatalogue() {
+        new CatalogListeners(recording()).on(new ShowcasePreviewChanged(SHOWCASE, "https://m/i.jpg", null));
+
+        assertThat(calls).containsExactly(SHOWCASE + " preview https://m/i.jpg null");
+    }
+
+    @Test
     @DisplayName("a new like count reaches the catalogue")
     void likesReachCatalogue() {
         new CatalogListeners(recording()).on(new ShowcaseLikesChanged(SHOWCASE, 7));
@@ -68,6 +77,11 @@ class CatalogListenersTest {
             public void updateLikes(UUID showcaseId, int count) {
                 throw new IllegalStateException("database down");
             }
+
+            @Override
+            public void updatePreview(UUID showcaseId, String imageUrl, String videoUrl) {
+                throw new IllegalStateException("database down");
+            }
         });
 
         assertThatCode(() -> listeners.on(PUBLISHED)).doesNotThrowAnyException();
@@ -90,6 +104,11 @@ class CatalogListenersTest {
             @Override
             public void updateLikes(UUID showcaseId, int count) {
                 calls.add(showcaseId + " likes " + count);
+            }
+
+            @Override
+            public void updatePreview(UUID showcaseId, String imageUrl, String videoUrl) {
+                calls.add(showcaseId + " preview " + imageUrl + " " + videoUrl);
             }
         };
     }

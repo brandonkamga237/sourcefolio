@@ -14,6 +14,9 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
+import org.springframework.web.multipart.MultipartException;
+import org.springframework.web.multipart.support.MissingServletRequestPartException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
@@ -58,6 +61,12 @@ public class GlobalExceptionHandler {
     @ExceptionHandler({HttpMessageNotReadableException.class, MethodArgumentTypeMismatchException.class})
     public ResponseEntity<ApiError> handleMalformed(Exception ex, HttpServletRequest request) {
         return respond(ErrorCode.MALFORMED_REQUEST, message("error.malformed-request"), request);
+    }
+
+    // A file over spring.servlet.multipart.max-file-size, or a form without its file.
+    @ExceptionHandler({MaxUploadSizeExceededException.class, MissingServletRequestPartException.class, MultipartException.class})
+    public ResponseEntity<ApiError> handleUpload(Exception ex, HttpServletRequest request) {
+        return respond(ErrorCode.BAD_REQUEST, message("error.upload-invalid"), request);
     }
 
     @ExceptionHandler(NoResourceFoundException.class)

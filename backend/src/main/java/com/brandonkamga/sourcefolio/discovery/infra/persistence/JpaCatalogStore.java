@@ -43,6 +43,12 @@ class JpaCatalogStore implements CatalogStore {
 
     @Override
     @Transactional(propagation = Propagation.REQUIRES_NEW)
+    public void setPreview(UUID showcaseId, String imageUrl, String videoUrl) {
+        entries.setPreview(showcaseId, imageUrl, videoUrl);
+    }
+
+    @Override
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void setLikes(UUID showcaseId, int count) {
         entries.setLikes(showcaseId, count);
     }
@@ -85,6 +91,7 @@ class JpaCatalogStore implements CatalogStore {
 
     private static CatalogEntry toDomain(CatalogEntryEntity row) {
         return new CatalogEntry(row.getShowcaseId(), row.getSlug(), row.getSiteUrl(), row.getRepository(),
-                row.getRepositoryUrl(), row.getOwnerUserId(), row.getOwnerLogin(), row.getPublishedAt());
+                row.getRepositoryUrl(), row.getOwnerUserId(), row.getOwnerLogin(), row.getPublishedAt(),
+                row.getPreviewImageUrl(), row.getPreviewVideoUrl());
     }
 }

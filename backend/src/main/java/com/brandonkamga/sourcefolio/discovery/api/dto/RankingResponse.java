@@ -9,7 +9,7 @@ import java.util.stream.IntStream;
 public record RankingResponse(List<Row> items) {
 
     public record Row(int rank, String slug, String siteUrl, String repository, String repositoryUrl, String ownerLogin,
-                      Instant publishedAt, int likes) {
+                      Instant publishedAt, int likes, String previewImageUrl) {
     }
 
     public static RankingResponse of(List<RankedEntry> entries) {
@@ -17,7 +17,7 @@ public record RankingResponse(List<Row> items) {
             RankedEntry ranked = entries.get(index);
             var entry = ranked.entry();
             return new Row(index + 1, entry.slug(), entry.siteUrl(), entry.repository(), entry.repositoryUrl(), entry.ownerLogin(),
-                    entry.publishedAt(), ranked.likes());
+                    entry.publishedAt(), ranked.likes(), entry.previewImageUrl());
         }).toList());
     }
 }
