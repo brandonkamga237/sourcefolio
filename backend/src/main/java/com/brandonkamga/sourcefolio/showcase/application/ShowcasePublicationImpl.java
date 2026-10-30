@@ -22,14 +22,16 @@ public class ShowcasePublicationImpl implements ShowcasePublication {
     private final CandidateStore candidates;
     private final SiteReachability sites;
     private final MemberDirectory members;
+    private final ShowcaseEvents events;
     private final Clock clock;
 
     public ShowcasePublicationImpl(ShowcaseStore showcases, CandidateStore candidates, SiteReachability sites,
-                                   MemberDirectory members, Clock clock) {
+                                   MemberDirectory members, ShowcaseEvents events, Clock clock) {
         this.showcases = showcases;
         this.candidates = candidates;
         this.sites = sites;
         this.members = members;
+        this.events = events;
         this.clock = clock;
     }
 
@@ -53,13 +55,18 @@ public class ShowcasePublicationImpl implements ShowcasePublication {
         if (!sites.isReachable(candidate.siteUrl().value())) {
             throw new ConflictException("showcase.site-unreachable", candidate.siteUrl().value());
         }
-        return showcases.save(Showcase.publishVerified(command.memberId(), freeSlug(command.memberId()), candidate, clock.instant()));
+        String login = members.loginOf(command.memberId());
+        Showcase published = showcases.save(Showcase.publishVerified(command.memberId(), freeSlug(login), candidate, clock.instant()));
+        events.showcasePublished(new ShowcasePublished(published.id().value(), published.slug().value(),
+                published.siteUrl().value(), published.sourceRepo().coordinates().toString(), published.sourceRepo().url(),
+                published.ownerId(), login, published.publishedAt()));
+        return published;
     }
 
     // One query in nearly every case: the login is free unless an earlier member held it, which
     // takes a GitHub rename, so the loop stays bounded by the rare collisions.
-    private ShowcaseSlug freeSlug(UUID memberId) {
-        ShowcaseSlug base = ShowcaseSlug.fromLogin(members.loginOf(memberId));
+    private ShowcaseSlug freeSlug(String login) {
+        ShowcaseSlug base = ShowcaseSlug.fromLogin(login);
         ShowcaseSlug slug = base;
         for (int number = 2; showcases.existsBySlug(slug); number++) {
             slug = base.withSuffix(number);
