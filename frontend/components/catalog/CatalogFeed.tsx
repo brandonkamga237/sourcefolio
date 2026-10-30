@@ -89,7 +89,7 @@ export function CatalogFeed({ locale, sort, firstPage, labels }: CatalogFeedProp
       </div>
 
       {open ? (
-        <aside className="sticky top-6 hidden w-[360px] shrink-0 lg:block xl:w-[400px]">
+        <aside className="sticky top-[84px] hidden max-h-[calc(100dvh-100px)] w-[360px] shrink-0 overflow-y-auto overscroll-contain rounded-panel lg:block xl:w-[400px]">
           {/* Keyed on the card, so the panel rises again on each switch and the eye sees the change.
               A CSS animation: Motion did the same for 47 KB more on the page phones open first. */}
           <div key={open.slug} className="animate-rise">
