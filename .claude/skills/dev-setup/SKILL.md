@@ -39,10 +39,12 @@ Create a GitHub OAuth App (Settings → Developer settings → OAuth Apps) with:
 - Homepage URL `http://localhost:3000`
 - Authorization callback URL `http://localhost:3000/login/oauth2/code/github`
 
-Put its id and secret in your shell or in a root `.env` (never committed):
+Export its id and secret in the terminal that runs the backend: `./mvnw spring-boot:run`
+does not read a `.env` file (only `docker compose` does, for the containerised backend).
 ```
-GITHUB_CLIENT_ID=...
-GITHUB_CLIENT_SECRET=...
+export GITHUB_CLIENT_ID=... GITHUB_CLIENT_SECRET=...
+export GITHUB_API_TOKEN=...   # optional: portfolio detection, 60 anonymous calls an hour without it
+cd backend && ./mvnw spring-boot:run
 ```
 The only scope requested is `read:user`. Without these variables the backend starts, and every
 public page works; only sign-in fails.
