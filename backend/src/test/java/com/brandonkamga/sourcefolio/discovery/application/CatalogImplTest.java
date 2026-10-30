@@ -40,6 +40,7 @@ class CatalogImplTest {
         } while (cursor != null);
 
         assertThat(seen).hasSize(30).containsExactlyInAnyOrderElementsOf(all);
+        assertThat(catalog().listDiscover(null, 4).total()).isEqualTo(30);
     }
 
     @Test
@@ -111,7 +112,7 @@ class CatalogImplTest {
     @Test
     @DisplayName("an empty catalogue answers an empty page without a cursor")
     void empty() {
-        assertThat(catalog().listDiscover(null, 20)).isEqualTo(new CatalogPage(List.of(), null));
+        assertThat(catalog().listDiscover(null, 20)).isEqualTo(new CatalogPage(List.of(), null, 0));
     }
 
     private CatalogEntry add(String slug, Instant publishedAt) {

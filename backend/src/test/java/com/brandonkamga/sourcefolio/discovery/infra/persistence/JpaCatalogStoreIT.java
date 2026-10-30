@@ -63,6 +63,7 @@ class JpaCatalogStoreIT extends PostgresIT {
         catalog.upsert(entry);
 
         assertThat(catalog.recent(null, 10)).containsExactly(entry);
+        assertThat(catalog.count()).isEqualTo(1);
     }
 
     @Test

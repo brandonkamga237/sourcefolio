@@ -22,6 +22,9 @@ public interface CatalogStore {
      */
     List<Shuffled> shuffled(LocalDate day, boolean young, Instant youngSince, String afterKey, int limit);
 
+    /** How many showcases the catalogue lists. */
+    long count();
+
     /** Newest first, after {@code after} (null for the start), at most {@code limit}. */
     List<CatalogEntry> recent(RecentCursor after, int limit);
 }

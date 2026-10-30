@@ -46,6 +46,11 @@ class InMemoryCatalogStore implements CatalogStore {
     }
 
     @Override
+    public long count() {
+        return rows.size();
+    }
+
+    @Override
     public List<CatalogEntry> recent(RecentCursor after, int limit) {
         Comparator<CatalogEntry> newestFirst = Comparator.comparing(CatalogEntry::publishedAt)
                 .thenComparing(CatalogEntry::showcaseId).reversed();
