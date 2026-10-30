@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.0](https://github.com/brandonkamga237/sourcefolio/compare/v0.3.0...v0.4.0) (2026-10-30)
+
+
+### Features
+
+* **showcase:** add the public showcase page and sharing ([#19](https://github.com/brandonkamga237/sourcefolio/issues/19)) ([6e97086](https://github.com/brandonkamga237/sourcefolio/commit/6e97086319af30428233c6d039fb03016ffb9e28))
+
 ## [0.3.0](https://github.com/brandonkamga237/sourcefolio/compare/v0.2.1...v0.3.0) (2026-10-30)
 
 
