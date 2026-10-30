@@ -30,7 +30,7 @@
     "portfolio": {
       "title": "Mon portfolio",
       "visitorTitle": "Publie ton portfolio",
-      "visitorLead": "Connecte-toi avec GitHub : on cherche ton portfolio dans tes dépôts publics et tu le publies en un clic.",
+      "visitorLead": "Connecte-toi avec GitHub : on cherche ton portfolio dans tes dépôts publics et tu le publies en un clic.",
       "stepsLabel": "Comment ça marche",
       "step1": "Tu te connectes avec GitHub.",
       "step2": "On trouve ton portfolio parmi tes dépôts publics.",
@@ -68,7 +68,7 @@
     "foundTitle": "On a trouvé ces sites dans tes dépôts publics",
     "othersTitle": "Autres sites trouvés",
     "noneTitle": "Aucun site trouvé dans tes dépôts publics",
-    "noneHint": "Ajoute l’adresse de ton portfolio dans le champ « Website » de son dépôt GitHub, puis reconnecte-toi : on cherchera à nouveau.",
+    "noneHint": "Ajoute l’adresse de ton portfolio dans le champ « Website » de son dépôt GitHub, puis reconnecte-toi : on cherchera à nouveau.",
     "visitSite": "Voir le site",
     "viewCode": "Voir le code",
     "reason": {
@@ -76,6 +76,22 @@
       "NAMED_REPOSITORY": "Un dépôt nommé « {name} »",
       "HOMEPAGE": "Le site indiqué dans un de tes dépôts",
       "PROJECT_PAGES": "Un projet publié avec GitHub Pages"
-    }
+    },
+    "publish": "Oui, c’est mon portfolio : publier",
+    "publishThis": "C’est celui-ci : publier",
+    "publishing": "On vérifie ton site…",
+    "publishFailed": "La publication n’a pas abouti. Réessaie dans un instant."
+  },
+  "myShowcase": {
+    "status": {
+      "PUBLISHED": "Publié",
+      "UNAVAILABLE": "Indisponible temporairement",
+      "NEEDS_FIX": "À corriger",
+      "REMOVED": "Retiré"
+    },
+    "publishedOn": "Publié le {date, date, long}",
+    "publishedLead": "Ton portfolio est publié sur SourceFolio : on a vérifié que ton site répond.",
+    "visitSite": "Voir le site",
+    "viewCode": "Voir le code"
   }
 }

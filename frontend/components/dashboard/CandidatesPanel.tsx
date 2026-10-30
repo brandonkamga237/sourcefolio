@@ -1,19 +1,16 @@
 import { getTranslations } from "next-intl/server";
-import { IconCode, IconExternal } from "@/components/icons";
 import type { Locale } from "@/i18n/routing";
+import { siteLabel } from "@/lib/site-label";
 import { getMyCandidates, type ShowcaseCandidate } from "@/services/showcases";
+import { PublishButton } from "./PublishButton";
 import { RefreshWhilePending } from "./RefreshWhilePending";
+import { ShowcaseLinks } from "./ShowcaseLinks";
 
 interface CandidatesPanelProps {
   locale: Locale;
 }
 
 type Translate = Awaited<ReturnType<typeof getTranslations<"detection">>>;
-
-function siteLabel(siteUrl: string): string {
-  const url = new URL(siteUrl);
-  return url.pathname === "/" ? url.host : `${url.host}${url.pathname.replace(/\/$/, "")}`;
-}
 
 function reasonLabel(t: Translate, candidate: ShowcaseCandidate): string {
   if (candidate.reason === "NAMED_REPOSITORY") {
@@ -22,31 +19,24 @@ function reasonLabel(t: Translate, candidate: ShowcaseCandidate): string {
   return t(`reason.${candidate.reason}`);
 }
 
-// External sites open in a new tab: many portfolios refuse to be framed, and the member stays
-// on their dashboard.
-function CandidateLinks({ t, candidate, compact }: { t: Translate; candidate: ShowcaseCandidate; compact?: boolean }) {
+// The publish button is the screen's main action on the best candidate; the others offer it
+// too, in a quieter style, for members whose portfolio is not the first guess.
+function CandidateActions({ t, candidate, primary }: { t: Translate; candidate: ShowcaseCandidate; primary?: boolean }) {
   return (
-    <div className="flex flex-wrap gap-2">
-      <a
-        href={candidate.siteUrl}
-        target="_blank"
-        rel="noopener noreferrer"
-        className={`flex h-11 items-center justify-center gap-1.5 rounded-control px-4 text-sm font-semibold ${
-          compact ? "border border-line bg-surface text-ink" : "bg-accent text-white"
-        }`}
-      >
-        {t("visitSite")}
-        <IconExternal className="size-4" />
-      </a>
-      <a
-        href={candidate.repositoryUrl}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="flex h-11 items-center justify-center gap-1.5 rounded-control border border-line bg-surface px-4 text-sm font-semibold text-ink"
-      >
-        <IconCode className="size-4" />
-        {t("viewCode")}
-      </a>
+    <div className="flex flex-col gap-2">
+      <PublishButton
+        repository={candidate.repository}
+        label={primary ? t("publish") : t("publishThis")}
+        pendingLabel={t("publishing")}
+        failedMessage={t("publishFailed")}
+        primary={primary}
+      />
+      <ShowcaseLinks
+        siteUrl={candidate.siteUrl}
+        repositoryUrl={candidate.repositoryUrl}
+        visitLabel={t("visitSite")}
+        codeLabel={t("viewCode")}
+      />
     </div>
   );
 }
@@ -88,7 +78,7 @@ export async function CandidatesPanel({ locale }: CandidatesPanelProps) {
           <p className="text-[13px] text-ink-muted">{reasonLabel(t, best)}</p>
           <p className="font-mono text-xs text-ink-soft">{best.repository}</p>
         </div>
-        <CandidateLinks t={t} candidate={best} />
+        <CandidateActions t={t} candidate={best} primary />
       </article>
 
       {others.length > 0 ? (
@@ -103,7 +93,7 @@ export async function CandidatesPanel({ locale }: CandidatesPanelProps) {
                     {reasonLabel(t, candidate)} · <span className="font-mono text-xs">{candidate.repository}</span>
                   </p>
                 </div>
-                <CandidateLinks t={t} candidate={candidate} compact />
+                <CandidateActions t={t} candidate={candidate} />
               </li>
             ))}
           </ul>
