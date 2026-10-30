@@ -9,7 +9,7 @@
 #
 # Secrets: DOCKER_USERNAME, DOCKER_TOKEN or DOCKER_PASSWORD, VPS_HOST, VPS_USER,
 #          VPS_SSH_KEY or VPS_SSH_KEY_griote, DEPLOY_PATH
-# Variables: SITE_URL (the public origin, e.g. https://sourcefolio.dev)
+# Variables: SITE_URL (the public origin, e.g. https://sourcefolio.lescracks.com)
 name: Deploy
 
 on:
@@ -243,7 +243,7 @@ jobs:
 
             # ── Monitoring (kept running, recreated only when its definition changed)
             docker compose -f docker-compose.prod.yml up -d \
-              postgres-exporter node-exporter cadvisor blackbox prometheus grafana loki alloy
+              postgres-exporter blackbox prometheus grafana loki alloy
 
             # ── Remember the running version ──────────────────────
             # A manual `docker compose up` on the VPS then keeps this version instead of :latest.
