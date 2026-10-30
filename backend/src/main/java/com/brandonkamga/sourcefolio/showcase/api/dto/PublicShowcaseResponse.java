@@ -7,7 +7,7 @@ import java.time.Instant;
 /** What a visitor sees of a showcase: no owner id, no history. */
 public record PublicShowcaseResponse(String slug, String siteUrl, String repository, String repositoryUrl,
                                      String status, Instant publishedAt, String ownerLogin, String ownerUrl,
-                                     String previewImageUrl, String previewVideoUrl) {
+                                     String previewImageUrl, String previewVideoUrl, Integer repositoryStars) {
 
     public static PublicShowcaseResponse of(PublicShowcase found) {
         Showcase showcase = found.showcase();
@@ -15,6 +15,6 @@ public record PublicShowcaseResponse(String slug, String siteUrl, String reposit
                 showcase.sourceRepo().coordinates().toString(), showcase.sourceRepo().url(), showcase.status().name(),
                 showcase.publishedAt(), found.ownerLogin(), "https://github.com/" + found.ownerLogin(),
                 showcase.previewImage() == null ? null : showcase.previewImage().url(),
-                showcase.previewVideo() == null ? null : showcase.previewVideo().url());
+                showcase.previewVideo() == null ? null : showcase.previewVideo().url(), showcase.sourceRepo().stars());
     }
 }

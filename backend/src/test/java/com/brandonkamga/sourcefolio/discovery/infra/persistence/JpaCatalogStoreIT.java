@@ -129,6 +129,20 @@ class JpaCatalogStoreIT extends PostgresIT {
     }
 
     @Test
+    @DisplayName("the repository stars are copied, survive a repeated publication event, and can go back to unknown")
+    void repositoryStars() {
+        CatalogEntry entry = entry("starred", NOW);
+        catalog.upsert(entry);
+
+        catalog.setRepositoryStars(entry.showcaseId(), 42);
+        catalog.upsert(entry);
+        assertThat(catalog.recent(null, 10)).singleElement().extracting(CatalogEntry::repositoryStars).isEqualTo(42);
+
+        catalog.setRepositoryStars(entry.showcaseId(), null);
+        assertThat(catalog.recent(null, 10)).singleElement().extracting(CatalogEntry::repositoryStars).isNull();
+    }
+
+    @Test
     @DisplayName("the Ranking reads the like counts, most liked first, and leaves out unliked showcases")
     void ranking() {
         CatalogEntry popular = entry("popular", NOW.minus(Duration.ofDays(3)));

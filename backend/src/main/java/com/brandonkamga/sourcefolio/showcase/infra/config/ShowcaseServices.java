@@ -11,6 +11,8 @@ import com.brandonkamga.sourcefolio.showcase.application.ShowcasePreview;
 import com.brandonkamga.sourcefolio.showcase.application.ShowcasePreviewImpl;
 import com.brandonkamga.sourcefolio.showcase.application.ShowcasePublication;
 import com.brandonkamga.sourcefolio.showcase.application.ShowcasePublicationImpl;
+import com.brandonkamga.sourcefolio.showcase.application.RepositoryStars;
+import com.brandonkamga.sourcefolio.showcase.application.RepositoryStarsImpl;
 import com.brandonkamga.sourcefolio.showcase.application.ShowcaseRemoval;
 import com.brandonkamga.sourcefolio.showcase.application.ShowcaseRemovalImpl;
 import com.brandonkamga.sourcefolio.showcase.domain.port.CandidateStore;
@@ -55,6 +57,12 @@ class ShowcaseServices {
     @Bean
     ShowcasePreview showcasePreview(ShowcaseStore showcases, MediaStore media, ShowcaseEvents events) {
         return new ShowcasePreviewImpl(showcases, media, events);
+    }
+
+    // Not wrapped: refresh() calls GitHub; the store makes each write atomic.
+    @Bean
+    RepositoryStars repositoryStars(ShowcaseStore showcases, RepositoryHost repositories, ShowcaseEvents events, Clock clock) {
+        return new RepositoryStarsImpl(showcases, repositories, events, clock);
     }
 
     @Bean

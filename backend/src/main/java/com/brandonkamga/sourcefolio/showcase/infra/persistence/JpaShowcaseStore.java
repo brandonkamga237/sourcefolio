@@ -13,6 +13,7 @@ import com.brandonkamga.sourcefolio.showcase.domain.model.ShowcaseStatusEvent;
 import com.brandonkamga.sourcefolio.showcase.domain.model.SiteUrl;
 import com.brandonkamga.sourcefolio.showcase.domain.model.SourceRepo;
 import com.brandonkamga.sourcefolio.showcase.domain.port.ShowcaseStore;
+import java.time.Instant;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -56,7 +57,8 @@ class JpaShowcaseStore implements ShowcaseStore {
 
             SourceRepo repo = showcase.sourceRepo();
             SourceRepoEntity repoRow = sourceRepos.findById(id).orElseGet(() -> new SourceRepoEntity(id));
-            repoRow.update(repo.provider().name(), repo.coordinates().owner(), repo.coordinates().name(), repo.isPublic());
+            repoRow.update(repo.provider().name(), repo.coordinates().owner(), repo.coordinates().name(), repo.isPublic(),
+                    repo.stars(), repo.starsCheckedAt());
             sourceRepos.save(repoRow);
 
             events.saveAll(showcase.pendingEvents().stream().map(event -> toEntity(id, event)).toList());
@@ -82,6 +84,25 @@ class JpaShowcaseStore implements ShowcaseStore {
     public Optional<Showcase> findBySlug(ShowcaseSlug slug) {
         return showcases.findBySlug(slug.value())
                 .map(row -> toDomain(row, sourceRepos.findById(row.getId()).orElseThrow()));
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Optional<Showcase> findById(ShowcaseId id) {
+        return showcases.findById(id.value())
+                .map(row -> toDomain(row, sourceRepos.findById(row.getId()).orElseThrow()));
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<ShowcaseId> findDueForStars(Instant readBefore, int limit) {
+        return sourceRepos.dueForStars(readBefore, limit).stream().map(ShowcaseId::new).toList();
+    }
+
+    @Override
+    @Transactional
+    public void saveRepositoryStars(ShowcaseId id, Integer stars, Instant checkedAt) {
+        sourceRepos.saveStars(id.value(), stars, checkedAt);
     }
 
     @Override
@@ -115,7 +136,8 @@ class JpaShowcaseStore implements ShowcaseStore {
         return new Showcase(new ShowcaseId(row.getId()), new ShowcaseSlug(row.getSlug()), row.getOwnerUserId(), ShowcaseKind.valueOf(row.getKind()),
                 new SiteUrl(row.getSiteUrl()),
                 new SourceRepo(RepositoryProvider.valueOf(repo.getProvider()),
-                        new RepositoryCoordinates(repo.getOwner(), repo.getName()), repo.isPublic()),
+                        new RepositoryCoordinates(repo.getOwner(), repo.getName()), repo.isPublic(), repo.getStars(),
+                        repo.getStarsCheckedAt()),
                 ShowcaseStatus.valueOf(row.getStatus()), row.getCreatedAt(), row.getPublishedAt(), List.of(),
                 row.getPreviewImageKey() == null ? null : new PreviewMedia(row.getPreviewImageKey(), row.getPreviewImageUrl()),
                 row.getPreviewVideoKey() == null ? null : new PreviewMedia(row.getPreviewVideoKey(), row.getPreviewVideoUrl()));

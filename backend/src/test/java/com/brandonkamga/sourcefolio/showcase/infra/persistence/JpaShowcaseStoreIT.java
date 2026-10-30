@@ -11,6 +11,7 @@ import com.brandonkamga.sourcefolio.showcase.domain.model.RepositoryCoordinates;
 import com.brandonkamga.sourcefolio.showcase.domain.model.RepositoryProvider;
 import com.brandonkamga.sourcefolio.showcase.domain.model.Showcase;
 import com.brandonkamga.sourcefolio.showcase.domain.model.ShowcaseCandidate;
+import com.brandonkamga.sourcefolio.showcase.domain.model.ShowcaseId;
 import com.brandonkamga.sourcefolio.showcase.domain.model.ShowcaseSlug;
 import com.brandonkamga.sourcefolio.showcase.domain.model.SiteUrl;
 import com.brandonkamga.sourcefolio.showcase.domain.port.ShowcaseStore;
@@ -149,6 +150,29 @@ class JpaShowcaseStoreIT extends PostgresIT {
         assertThat(showcases.existsByRepository(RepositoryProvider.GITHUB, new RepositoryCoordinates("nekwalla", "deleted"))).isFalse();
         assertThat(showcases.findByOwner(other)).contains(theirs);
         assertThat(showcases.deleteAllByOwner(member)).isEmpty();
+    }
+
+    @Test
+    @DisplayName("stars are written alone, read back, and due once more than the cut-off old; never read ones come first")
+    void repositoryStars() {
+        Showcase never = showcases.save(Showcase.publishVerified(member(), slug("never-read"), candidate("nekwalla", "never-read"), NOW));
+        Showcase stale = showcases.save(Showcase.publishVerified(member(), slug("stale-read"), candidate("nekwalla", "stale-read"), NOW));
+        Showcase fresh = showcases.save(Showcase.publishVerified(member(), slug("fresh-read"), candidate("nekwalla", "fresh-read"), NOW));
+        entityManager.flush();
+
+        showcases.saveRepositoryStars(stale.id(), 3, NOW.minusSeconds(30 * 3600));
+        showcases.saveRepositoryStars(fresh.id(), 9, NOW.minusSeconds(3600));
+        entityManager.flush();
+        entityManager.clear();
+
+        assertThat(showcases.findById(fresh.id())).hasValueSatisfying(found -> {
+            assertThat(found.sourceRepo().stars()).isEqualTo(9);
+            assertThat(found.sourceRepo().starsCheckedAt()).isEqualTo(NOW.minusSeconds(3600));
+            assertThat(found.siteUrl()).isEqualTo(fresh.siteUrl());
+        });
+        List<ShowcaseId> due = showcases.findDueForStars(NOW.minusSeconds(24 * 3600), 1000);
+        assertThat(due).contains(never.id(), stale.id()).doesNotContain(fresh.id());
+        assertThat(due.indexOf(never.id())).isLessThan(due.indexOf(stale.id()));
     }
 
     @Test

@@ -41,6 +41,11 @@ class ShowcaseRemovalImplTest {
         public void showcaseRemoved(ShowcaseRemoved event) {
             removed.add(event);
         }
+
+        @Override
+        public void starsChanged(ShowcaseStarsChanged event) {
+            throw new AssertionError("removing reads no stars");
+        }
     });
 
     @Test
