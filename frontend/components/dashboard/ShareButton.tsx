@@ -30,15 +30,15 @@ export function ShareButton({ path, title, label, copiedLabel }: ShareButtonProp
   }
 
   return (
-    <div className="flex flex-col gap-2">
+    <div className="flex flex-col gap-1">
       <button
         type="button"
         onClick={handleClick}
-        className="flex h-11 items-center justify-center rounded-control bg-accent px-5 text-sm font-semibold text-white"
+        className="flex h-11 items-center justify-center rounded-control bg-accent px-4 text-sm font-semibold text-white"
       >
         {label}
       </button>
-      <p role="status" className="text-[13px] text-ink-muted">
+      <p role="status" className="text-xs text-ink-muted empty:hidden">
         {copied ? copiedLabel : null}
       </p>
     </div>

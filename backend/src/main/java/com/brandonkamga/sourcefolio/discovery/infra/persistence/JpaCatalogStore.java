@@ -57,6 +57,12 @@ class JpaCatalogStore implements CatalogStore {
 
     @Override
     @Transactional(readOnly = true)
+    public long count() {
+        return entries.count();
+    }
+
+    @Override
+    @Transactional(readOnly = true)
     public List<CatalogEntry> recent(RecentCursor after, int limit) {
         List<CatalogEntryEntity> rows = after == null
                 ? entries.findAllByOrderByPublishedAtDescShowcaseIdDesc(Limit.of(limit))

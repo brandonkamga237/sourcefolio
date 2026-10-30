@@ -1,0 +1,3 @@
+import type { SVGProps } from "react";
+const SvgRanking = (props: SVGProps<SVGSVGElement>) => <svg xmlns="http://www.w3.org/2000/svg" width={24} height={24} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.75} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" focusable="false" {...props}><path d="M9 20V9h6v11M3 20v-6h6M15 20v-8h6v8M2 20h20" /><path d="M12 3l.9 1.8 2 .3-1.45 1.4.35 2-1.8-.95-1.8.95.35-2L9.1 5.1l2-.3z" /></svg>;
+export default SvgRanking;

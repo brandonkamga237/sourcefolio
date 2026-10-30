@@ -8,4 +8,6 @@ export { default as IconHeart } from "./Heart";
 export { default as IconLogoMark } from "./LogoMark";
 export { default as IconMe } from "./Me";
 export { default as IconPortfolio } from "./Portfolio";
+export { default as IconRanking } from "./Ranking";
+export { default as IconRankingActive } from "./RankingActive";
 export { default as IconSearch } from "./Search";

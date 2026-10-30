@@ -6,7 +6,7 @@ import java.time.Instant;
 import java.util.List;
 
 /** One page of cards. No count of likes or views: the catalogue never ranks by popularity. */
-public record CatalogResponse(List<Card> items, String nextCursor) {
+public record CatalogResponse(List<Card> items, String nextCursor, long total) {
 
     public record Card(String slug, String siteUrl, String repository, String repositoryUrl, String ownerLogin,
                        Instant publishedAt) {
@@ -18,6 +18,6 @@ public record CatalogResponse(List<Card> items, String nextCursor) {
     }
 
     public static CatalogResponse of(CatalogPage page) {
-        return new CatalogResponse(page.entries().stream().map(Card::of).toList(), page.nextCursor());
+        return new CatalogResponse(page.entries().stream().map(Card::of).toList(), page.nextCursor(), page.total());
     }
 }

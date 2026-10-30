@@ -40,7 +40,7 @@ public class CatalogImpl implements Catalog {
         String next = more ? new DiscoverCursor(cursor.day(), cursor.index() + page.items().size(),
                 lastKey(young, page.youngUsed(), cursor.youngAfter()),
                 lastKey(old, page.oldUsed(), cursor.oldAfter())).encode() : null;
-        return new CatalogPage(page.items().stream().map(Shuffled::entry).toList(), next);
+        return new CatalogPage(page.items().stream().map(Shuffled::entry).toList(), next, store.count());
     }
 
     @Override
@@ -48,11 +48,11 @@ public class CatalogImpl implements Catalog {
         int limit = clamp(size);
         List<CatalogEntry> rows = store.recent(RecentCursor.decode(rawCursor).orElse(null), limit + 1);
         if (rows.size() <= limit) {
-            return new CatalogPage(rows, null);
+            return new CatalogPage(rows, null, store.count());
         }
         List<CatalogEntry> page = rows.subList(0, limit);
         CatalogEntry last = page.getLast();
-        return new CatalogPage(page, new RecentCursor(last.publishedAt(), last.showcaseId()).encode());
+        return new CatalogPage(page, new RecentCursor(last.publishedAt(), last.showcaseId()).encode(), store.count());
     }
 
     private static String lastKey(List<Shuffled> list, int used, String previous) {

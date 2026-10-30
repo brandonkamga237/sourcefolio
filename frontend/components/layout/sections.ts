@@ -1,30 +1,27 @@
 import type { ComponentType, SVGProps } from "react";
-import { IconDiscover, IconDiscoverActive, IconMe, IconPortfolio, IconSearch } from "@/components/icons";
+import { IconDiscover, IconDiscoverActive, IconMe, IconRanking, IconRankingActive } from "@/components/icons";
 
 type Icon = ComponentType<SVGProps<SVGSVGElement>>;
 
 export interface Section {
-  key: "discover" | "search" | "portfolio" | "me";
-  href: "/" | "/search" | "/me/portfolio" | "/me";
+  key: "discover" | "ranking" | "me";
+  href: "/" | "/ranking" | "/me";
   icon: Icon;
   activeIcon: Icon;
 }
 
 export type SectionLabels = Record<Section["key"], string> & { label: string };
 
-// The four tabs of the spec, in the same order in the sidebar and in the bottom bar.
+// The three tabs of the spec, in the same order in the sidebar and in the bottom bar.
 export const sections: readonly Section[] = [
   { key: "discover", href: "/", icon: IconDiscover, activeIcon: IconDiscoverActive },
-  { key: "search", href: "/search", icon: IconSearch, activeIcon: IconSearch },
-  { key: "portfolio", href: "/me/portfolio", icon: IconPortfolio, activeIcon: IconPortfolio },
+  { key: "ranking", href: "/ranking", icon: IconRanking, activeIcon: IconRankingActive },
   { key: "me", href: "/me", icon: IconMe, activeIcon: IconMe },
 ];
 
-// "/me" is a prefix of "/me/portfolio": each section owns its exact path and what is
-// below it, except where a more specific section claims it. Discover also owns its Recent
-// order and the showcase pages a visitor opens from it.
+// Discover also owns its Recent order and the showcase pages a visitor opens from it; Me owns
+// everything under /me (portfolio, profile questions).
 export function isActive(section: Section, pathname: string): boolean {
   if (section.href === "/") return pathname === "/" || pathname === "/recent" || pathname.startsWith("/p/");
-  if (section.href === "/me") return pathname === "/me" || (pathname.startsWith("/me/") && !pathname.startsWith("/me/portfolio"));
   return pathname === section.href || pathname.startsWith(`${section.href}/`);
 }
