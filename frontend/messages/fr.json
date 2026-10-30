@@ -114,5 +114,21 @@
     "ctaLink": "Publier mon portfolio",
     "ogBy": "par {login}",
     "ogTagline": "Un portfolio dont tu peux lire le code"
+  },
+  "catalog": {
+    "lead": "Des portfolios de développeurs en ligne, avec leur code public. Ouvre le site, puis lis comment il est construit.",
+    "sort": {
+      "label": "Ordre du catalogue",
+      "discover": "Découvrir",
+      "recent": "Récents"
+    },
+    "by": "par {login}",
+    "loadMore": "Voir plus de portfolios",
+    "loading": "Chargement…",
+    "loadFailed": "La suite n’a pas pu être chargée. Réessaie dans un instant.",
+    "unavailable": "Le catalogue ne répond pas pour le moment. Réessaie dans un instant.",
+    "emptyTitle": "Aucun portfolio publié pour l’instant",
+    "emptyLead": "Le tien peut être le premier : connecte-toi avec GitHub, on le trouve et tu le publies en un clic.",
+    "emptyLink": "Publier mon portfolio"
   }
 }
