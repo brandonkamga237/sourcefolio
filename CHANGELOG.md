@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.1](https://github.com/brandonkamga237/sourcefolio/compare/v0.2.0...v0.2.1) (2026-10-30)
+
+
+### Bug Fixes
+
+* **infra:** run the backend health probe with bash ([#13](https://github.com/brandonkamga237/sourcefolio/issues/13)) ([77cd786](https://github.com/brandonkamga237/sourcefolio/commit/77cd786a12315d2c053b3530bb7136c84135bb05))
+
 ## [0.2.0](https://github.com/brandonkamga237/sourcefolio/compare/v0.1.0...v0.2.0) (2026-10-30)
 
 
