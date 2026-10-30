@@ -4,6 +4,8 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 import java.time.Instant;
 import java.util.UUID;
 
@@ -15,7 +17,9 @@ class DeveloperProfileEntity {
     @Column(name = "member_id")
     private UUID memberId;
 
-    @Column(name = "country_code", length = 2, columnDefinition = "CHAR(2)")
+    // CHAR(2) in the schema: without this, Hibernate validates it as a VARCHAR and refuses to start.
+    @Column(name = "country_code", length = 2)
+    @JdbcTypeCode(SqlTypes.CHAR)
     private String countryCode;
 
     @Column(length = 20)
