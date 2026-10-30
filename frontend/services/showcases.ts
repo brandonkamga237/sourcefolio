@@ -30,6 +30,7 @@ export type ShowcaseStatus = "PUBLISHED" | "UNAVAILABLE" | "NEEDS_FIX" | "REMOVE
 
 export interface MyShowcase {
   id: string;
+  slug: string;
   siteUrl: string;
   repository: string;
   repositoryUrl: string;
