@@ -80,13 +80,14 @@ export default async function RankingPage({ params }: PageProps<"/[locale]/ranki
   setRequestLocale(locale);
   const t = await getTranslations({ locale, namespace: "ranking" });
   return (
-    <div className="flex max-w-4xl flex-col gap-4 px-4 py-5 lg:px-8 lg:py-7">
-      <section className="relative isolate flex items-center justify-between gap-4 overflow-hidden rounded-panel border border-line bg-surface/80 px-4 py-4 backdrop-blur-sm sm:px-6 sm:py-5 lg:px-8">
-        <div className="flex min-w-0 flex-col gap-1.5">
-          <h1 className="font-display text-[24px] leading-none font-bold tracking-[-0.035em] sm:text-[30px] lg:text-[40px]">{t("title")}</h1>
-          <p className="text-sm leading-snug text-ink-muted sm:text-[15px]">{t("lead")}</p>
+    <div className="mx-auto flex w-full max-w-4xl flex-col gap-4 px-4 py-4 lg:px-8 lg:py-7">
+      {/* A slim header that stays while the list scrolls under it. */}
+      <section className="sticky top-[64px] z-20 flex items-center justify-between gap-4 overflow-hidden rounded-panel border border-line bg-surface/90 px-4 py-2.5 shadow-[0_8px_24px_-18px_rgba(18,20,18,0.35)] backdrop-blur-md sm:px-5 lg:top-4 lg:px-6 lg:py-3">
+        <div className="flex min-w-0 flex-col gap-0.5">
+          <h1 className="font-display text-[22px] leading-none font-bold tracking-[-0.035em] sm:text-[26px] lg:text-[30px]">{t("title")}</h1>
+          <p className="truncate text-[13px] text-ink-muted sm:text-sm">{t("lead")}</p>
         </div>
-        <Podium className="h-[84px] w-auto shrink-0 sm:h-[120px] lg:h-[140px]" />
+        <Podium className="h-[52px] w-auto shrink-0 sm:h-[64px] lg:h-[72px]" />
       </section>
       <Suspense fallback={<RankingSkeleton />}>
         <RankingList locale={locale} />
