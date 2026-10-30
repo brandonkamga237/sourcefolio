@@ -92,6 +92,27 @@
     "publishedOn": "Publié le {date, date, long}",
     "publishedLead": "Ton portfolio est publié sur SourceFolio : on a vérifié que ton site répond.",
     "visitSite": "Voir le site",
-    "viewCode": "Voir le code"
+    "viewCode": "Voir le code",
+    "share": "Partager",
+    "shareTitle": "Mon portfolio sur SourceFolio : {site}",
+    "shareCopied": "Lien copié. Colle-le où tu veux.",
+    "viewPage": "Voir ma fiche publique"
+  },
+  "showcasePage": {
+    "metaTitle": "{site}, le portfolio de {login}",
+    "metaDescription": "Le portfolio de {login} et le code qui le construit, sur SourceFolio.",
+    "by": "par <profile>{login}</profile>",
+    "publishedOn": "Publié le {date, date, long}",
+    "visitSite": "Voir le site",
+    "viewCode": "Voir le code",
+    "banner": {
+      "UNAVAILABLE": "Ce portfolio est indisponible pour le moment : son site ne répond plus. Il reviendra dès qu’il répondra.",
+      "NEEDS_FIX": "Ce portfolio attend une correction de son auteur."
+    },
+    "ctaTitle": "Toi aussi, montre ton code",
+    "ctaLead": "Connecte-toi avec GitHub, on trouve ton portfolio et tu le publies en un clic.",
+    "ctaLink": "Publier mon portfolio",
+    "ogBy": "par {login}",
+    "ogTagline": "Un portfolio dont tu peux lire le code"
   }
 }

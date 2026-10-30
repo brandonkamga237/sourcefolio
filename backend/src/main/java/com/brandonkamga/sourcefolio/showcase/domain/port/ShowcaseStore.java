@@ -3,6 +3,7 @@ package com.brandonkamga.sourcefolio.showcase.domain.port;
 import com.brandonkamga.sourcefolio.showcase.domain.model.RepositoryCoordinates;
 import com.brandonkamga.sourcefolio.showcase.domain.model.RepositoryProvider;
 import com.brandonkamga.sourcefolio.showcase.domain.model.Showcase;
+import com.brandonkamga.sourcefolio.showcase.domain.model.ShowcaseSlug;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -16,6 +17,10 @@ public interface ShowcaseStore {
 
     /** The member's most recent showcase, whatever its status. */
     Optional<Showcase> findByOwner(UUID ownerId);
+
+    Optional<Showcase> findBySlug(ShowcaseSlug slug);
+
+    boolean existsBySlug(ShowcaseSlug slug);
 
     boolean existsByRepository(RepositoryProvider provider, RepositoryCoordinates repository);
 }

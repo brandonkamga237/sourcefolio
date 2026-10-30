@@ -1,7 +1,10 @@
 import { getTranslations } from "next-intl/server";
+import Link from "next/link";
+import { localizedPath } from "@/i18n/paths";
 import type { Locale } from "@/i18n/routing";
 import { siteLabel } from "@/lib/site-label";
 import type { MyShowcase } from "@/services/showcases";
+import { ShareButton } from "./ShareButton";
 import { ShowcaseLinks } from "./ShowcaseLinks";
 
 interface PublishedShowcaseProps {
@@ -14,6 +17,7 @@ interface PublishedShowcaseProps {
 export async function PublishedShowcase({ locale, showcase }: PublishedShowcaseProps) {
   const t = await getTranslations({ locale, namespace: "myShowcase" });
   const published = showcase.status === "PUBLISHED";
+  const pagePath = localizedPath(locale, `/p/${showcase.slug}`);
 
   return (
     <section aria-labelledby="my-showcase" className="flex flex-col gap-3 rounded-card border border-line bg-surface p-4">
@@ -33,7 +37,20 @@ export async function PublishedShowcase({ locale, showcase }: PublishedShowcaseP
           <p className="text-[13px] text-ink-muted">{t("publishedOn", { date: new Date(showcase.publishedAt) })}</p>
         ) : null}
       </div>
-      {published ? <p className="text-sm leading-normal text-ink-body">{t("publishedLead")}</p> : null}
+      {published ? (
+        <>
+          <p className="text-sm leading-normal text-ink-body">{t("publishedLead")}</p>
+          <ShareButton
+            path={pagePath}
+            title={t("shareTitle", { site: siteLabel(showcase.siteUrl) })}
+            label={t("share")}
+            copiedLabel={t("shareCopied")}
+          />
+        </>
+      ) : null}
+      <Link href={pagePath} className="flex h-11 w-fit items-center text-sm font-semibold text-ink underline underline-offset-2">
+        {t("viewPage")}
+      </Link>
       <ShowcaseLinks
         siteUrl={showcase.siteUrl}
         repositoryUrl={showcase.repositoryUrl}

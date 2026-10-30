@@ -8,6 +8,7 @@ import com.brandonkamga.sourcefolio.showcase.domain.model.CandidateReason;
 import com.brandonkamga.sourcefolio.showcase.domain.model.RepositoryCoordinates;
 import com.brandonkamga.sourcefolio.showcase.domain.model.Showcase;
 import com.brandonkamga.sourcefolio.showcase.domain.model.ShowcaseCandidate;
+import com.brandonkamga.sourcefolio.showcase.domain.model.ShowcaseSlug;
 import com.brandonkamga.sourcefolio.showcase.domain.model.SiteUrl;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -42,7 +43,7 @@ class MyShowcaseControllerTest {
 
     private static final UUID MEMBER = UUID.fromString("0b8f2c1e-4d6a-4f6e-9a77-3c2d1e0f9a11");
     private static final Instant NOW = Instant.parse("2026-10-30T09:00:00Z");
-    private static final Showcase PUBLISHED = Showcase.publishVerified(MEMBER, new ShowcaseCandidate(
+    private static final Showcase PUBLISHED = Showcase.publishVerified(MEMBER, new ShowcaseSlug("nekwalla"), new ShowcaseCandidate(
             new RepositoryCoordinates("nekwalla", "nekwalla.github.io"), new SiteUrl("https://nekwalla.github.io/"),
             CandidateReason.USER_PAGES), NOW).stored();
 
@@ -70,6 +71,7 @@ class MyShowcaseControllerTest {
         mvc.perform(get("/api/me/showcase").with(member()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.showcase.id").value(PUBLISHED.id().toString()))
+                .andExpect(jsonPath("$.showcase.slug").value("nekwalla"))
                 .andExpect(jsonPath("$.showcase.siteUrl").value("https://nekwalla.github.io/"))
                 .andExpect(jsonPath("$.showcase.repository").value("nekwalla/nekwalla.github.io"))
                 .andExpect(jsonPath("$.showcase.repositoryUrl").value("https://github.com/nekwalla/nekwalla.github.io"))

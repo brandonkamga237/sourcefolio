@@ -10,6 +10,7 @@ import com.brandonkamga.sourcefolio.showcase.domain.model.RepositoryCoordinates;
 import com.brandonkamga.sourcefolio.showcase.domain.model.RepositoryProvider;
 import com.brandonkamga.sourcefolio.showcase.domain.model.Showcase;
 import com.brandonkamga.sourcefolio.showcase.domain.model.ShowcaseCandidate;
+import com.brandonkamga.sourcefolio.showcase.domain.model.ShowcaseSlug;
 import com.brandonkamga.sourcefolio.showcase.domain.model.SiteUrl;
 import com.brandonkamga.sourcefolio.showcase.domain.port.ShowcaseStore;
 import com.brandonkamga.sourcefolio.support.PostgresIT;
@@ -17,6 +18,7 @@ import jakarta.persistence.EntityManager;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.transaction.annotation.Transactional;
 import java.time.Instant;
 import java.util.List;
@@ -42,7 +44,7 @@ class JpaShowcaseStoreIT extends PostgresIT {
     @DisplayName("a published showcase is stored with its repository and read back as it was")
     void roundTrip() {
         UUID member = member();
-        Showcase published = Showcase.publishVerified(member, candidate("nekwalla", "nekwalla.github.io"), NOW);
+        Showcase published = Showcase.publishVerified(member, slug("nekwalla.github.io"), candidate("nekwalla", "nekwalla.github.io"), NOW);
 
         Showcase stored = showcases.save(published);
         entityManager.flush();
@@ -50,12 +52,15 @@ class JpaShowcaseStoreIT extends PostgresIT {
 
         assertThat(stored.pendingEvents()).isEmpty();
         assertThat(showcases.findByOwner(member)).contains(stored);
+        assertThat(showcases.findBySlug(stored.slug())).contains(stored);
+        assertThat(showcases.existsBySlug(stored.slug())).isTrue();
+        assertThat(showcases.existsBySlug(new ShowcaseSlug("nobody"))).isFalse();
     }
 
     @Test
     @DisplayName("the first status is written to the history")
     void historyWritten() {
-        Showcase stored = showcases.save(Showcase.publishVerified(member(), candidate("nekwalla", "portfolio"), NOW));
+        Showcase stored = showcases.save(Showcase.publishVerified(member(), slug("portfolio"), candidate("nekwalla", "portfolio"), NOW));
         entityManager.flush();
 
         List<?> rows = entityManager.createNativeQuery(
@@ -69,7 +74,7 @@ class JpaShowcaseStoreIT extends PostgresIT {
     @Test
     @DisplayName("a repository is found whatever the case it is written in")
     void existsIgnoresCase() {
-        showcases.save(Showcase.publishVerified(member(), candidate("Nekwalla", "Portfolio"), NOW));
+        showcases.save(Showcase.publishVerified(member(), slug("Portfolio"), candidate("Nekwalla", "Portfolio"), NOW));
         entityManager.flush();
 
         assertThat(showcases.existsByRepository(RepositoryProvider.GITHUB, new RepositoryCoordinates("nekwalla", "portfolio"))).isTrue();
@@ -79,13 +84,25 @@ class JpaShowcaseStoreIT extends PostgresIT {
     @Test
     @DisplayName("the same repository cannot be behind two showcases, even written in another case")
     void repositoryUnique() {
-        showcases.save(Showcase.publishVerified(member(), candidate("nekwalla", "portfolio"), NOW));
+        showcases.save(Showcase.publishVerified(member(), slug("portfolio"), candidate("nekwalla", "portfolio"), NOW));
         entityManager.flush();
 
-        assertThatThrownBy(() -> showcases.save(Showcase.publishVerified(member(), candidate("NEKWALLA", "portfolio"), NOW)))
+        assertThatThrownBy(() -> showcases.save(Showcase.publishVerified(member(), slug("portfolio"), candidate("NEKWALLA", "portfolio"), NOW)))
                 .isInstanceOf(ConflictException.class)
                 .extracting(thrown -> ((AppException) thrown).messageKey())
                 .isEqualTo("showcase.repository-taken");
+    }
+
+    @Test
+    @DisplayName("two showcases cannot share a public address")
+    void slugUnique() {
+        showcases.save(Showcase.publishVerified(member(), new ShowcaseSlug("nekwalla"), candidate("nekwalla", "portfolio"), NOW));
+        entityManager.flush();
+
+        assertThatThrownBy(() -> {
+            showcases.save(Showcase.publishVerified(member(), new ShowcaseSlug("nekwalla"), candidate("other", "site"), NOW));
+            entityManager.flush();
+        }).isInstanceOf(DataIntegrityViolationException.class);
     }
 
     @Test
@@ -96,6 +113,11 @@ class JpaShowcaseStoreIT extends PostgresIT {
 
     private UUID member() {
         return users.save(User.register(Language.FR, NOW)).id().value();
+    }
+
+    // One address per test showcase: the repository name is unique within each test.
+    private static ShowcaseSlug slug(String repositoryName) {
+        return new ShowcaseSlug(repositoryName.toLowerCase().replace(".", "-") + "-" + UUID.randomUUID().toString().substring(0, 8));
     }
 
     private static ShowcaseCandidate candidate(String owner, String name) {
