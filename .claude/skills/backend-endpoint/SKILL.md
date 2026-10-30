@@ -55,11 +55,20 @@ Everything lives under `<module>/` (`account`, `profile`, `showcase`, `checkup`,
    `ErrorCode` and `GlobalExceptionHandler` maps it to the status and a localised message.
    Never build a status by hand.
 
-7. **SecurityConfig** — `shared/security/SecurityConfig.java`. `/api/**` is authenticated
-   by default: a public route (catalogue, showcase page, profile page, search) is declared
-   `permitAll()` above that line, method by method. `/api/moderation/**` needs
-   `hasRole("MODERATOR")`; add `@PreAuthorize` on those controllers too. Writes are protected
-   by the same-origin `SameSite=Lax` session cookie plus CSRF on state-changing routes.
+7. **Security** — `shared/security/SecurityConfig.java` holds the general rules: `/api/**`
+   needs a session, everything unlisted is denied, writes need the CSRF token (`csrf.spa()`,
+   cookie `XSRF-TOKEN` echoed in `X-XSRF-TOKEN`). A module opens its own routes with a
+   `SecurityCustomizer` bean in `<module>/infra/security/`, method by method:
+   ```java
+   @Bean
+   SecurityCustomizer catalogRoutes() {
+       return http -> http.authorizeHttpRequests(routes -> routes
+               .requestMatchers(HttpMethod.GET, "/api/catalog/**").permitAll());
+   }
+   ```
+   Customizers run before the general rules, so their matchers win; `shared` never names a
+   module. See `account/infra/security/GitHubLogin.java`. `/api/moderation/**` needs
+   `hasRole("MODERATOR")`; add `@PreAuthorize` on those controllers too.
 
 8. **OpenAPI** — springdoc picks the controller up. Give the operation a stable
    `operationId` (`@Operation(operationId = "postFeedback")`): the frontend's generated types
@@ -69,7 +78,9 @@ Everything lives under `<module>/` (`account`, `profile`, `showcase`, `checkup`,
 
 - Members sign in with GitHub only (Spring Security OAuth2 Client, scope `read:user`). The
   `AuthIdentity` row links the provider account to a `User`; the rest of the code knows the
-  `User` id, never the GitHub login.
+  `User` id, never the GitHub login. In a controller, the member id is
+  `UUID.fromString(authentication.getName())` (the session principal's name); other modules ask
+  `account`'s `SignInService.requireMember(id)` for the login and language.
 - An action that needs a session from a visitor (like, comment) returns 401; the frontend
   starts the GitHub sign-in and replays the action on return.
 - User-facing text (emails, error messages) exists in French and English, picked from the

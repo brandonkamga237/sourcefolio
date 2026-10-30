@@ -4,6 +4,8 @@
 #
 # Services: PostgreSQL · Backend (Spring Boot, JobRunr workers, Playwright) ·
 #           Frontend (Next.js) · monitoring (Prometheus, Grafana, Loki, Alloy, exporters)
+# The VPS is shared with lescracks: machine-level metrics (node-exporter, cAdvisor) come from its
+# stack, not from this one.
 # Object storage is Cloudflare R2, outside this stack (S3_* variables).
 #
 # Prerequisites on the server: Docker with the Compose plugin, Traefik on the external
@@ -124,38 +126,6 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
-    networks:
-      - sourcefolio-internal
-
-  # ---------------------------------------------------------------------------
-  # Node exporter - host CPU/RAM/disk/network of the VPS itself
-  # ---------------------------------------------------------------------------
-  node-exporter:
-    image: prom/node-exporter:v1.12.1
-    container_name: sourcefolio-node-exporter
-    restart: unless-stopped
-    command:
-      - '--path.rootfs=/host'
-    volumes:
-      - '/:/host:ro,rslave'
-    networks:
-      - sourcefolio-internal
-
-  # ---------------------------------------------------------------------------
-  # cAdvisor - per-container CPU, memory and restart churn (Chromium included)
-  # ---------------------------------------------------------------------------
-  cadvisor:
-    image: gcr.io/cadvisor/cadvisor:v0.55.1
-    container_name: sourcefolio-cadvisor
-    restart: unless-stopped
-    volumes:
-      - /:/rootfs:ro
-      - /var/run:/var/run:ro
-      - /sys:/sys:ro
-      - /var/lib/docker/:/var/lib/docker:ro
-      - /dev/disk/:/dev/disk:ro
-    devices:
-      - /dev/kmsg:/dev/kmsg
     networks:
       - sourcefolio-internal
 

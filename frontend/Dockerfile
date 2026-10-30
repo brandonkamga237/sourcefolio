@@ -12,7 +12,10 @@ RUN --mount=type=cache,target=/root/.local/share/pnpm/store pnpm install --froze
 
 FROM deps AS build
 COPY . .
-ENV NEXT_TELEMETRY_DISABLED=1
+# Pages are prerendered at build time, so the canonical origin of their metadata and
+# hreflang links is fixed here: build one image per public origin.
+ARG SITE_URL=http://localhost:3000
+ENV SITE_URL=$SITE_URL NEXT_TELEMETRY_DISABLED=1
 # next.config sets output: 'standalone', which emits a minimal server.js with only the
 # dependencies the app imports.
 RUN pnpm build

@@ -52,36 +52,10 @@ groups:
           summary: "Job backlog growing"
           description: "More than 500 jobs have been waiting for 15 minutes: workers cannot keep up."
 
+  # Disk, memory, CPU and container restarts of the shared VPS are alerted by lescracks' stack.
   - name: sourcefolio-capacity
     interval: 15s
     rules:
-      - alert: DiskAlmostFull
-        expr: 1 - (node_filesystem_avail_bytes{fstype!~"tmpfs|overlay"} / node_filesystem_size_bytes) > 0.85
-        for: 5m
-        labels:
-          severity: warning
-        annotations:
-          summary: "Disk almost full"
-          description: "Less than 15 % space left on {{ $labels.mountpoint }}."
-
-      - alert: NodeMemoryHigh
-        expr: 1 - (node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes) > 0.9
-        for: 3m
-        labels:
-          severity: warning
-        annotations:
-          summary: "Server memory high"
-          description: "The VPS uses more than 90 % of its RAM (Chromium captures are the usual suspect)."
-
-      - alert: NodeCpuHigh
-        expr: 1 - avg(rate(node_cpu_seconds_total{mode="idle"}[5m])) > 0.85
-        for: 5m
-        labels:
-          severity: warning
-        annotations:
-          summary: "Server CPU high"
-          description: "The VPS has had less than 15 % idle CPU for 5 minutes."
-
       - alert: ConnectionPoolSaturated
         expr: hikaricp_connections_pending > 0
         for: 2m
@@ -90,15 +64,6 @@ groups:
         annotations:
           summary: "PostgreSQL pool saturated"
           description: "Threads are waiting for a connection: the database is a bottleneck."
-
-      - alert: ContainerRestartingFrequently
-        expr: changes(container_start_time_seconds{name=~"sourcefolio-.*"}[15m]) > 3
-        for: 5m
-        labels:
-          severity: warning
-        annotations:
-          summary: "Container restart loop"
-          description: "{{ $labels.name }} restarted more than 3 times in 15 minutes."
 
   - name: sourcefolio-api
     interval: 15s

@@ -1,0 +1,6 @@
+# Tests call use cases directly: no job server polling the database in the background.
+jobrunr:
+  background-job-server:
+    enabled: false
+  dashboard:
+    enabled: false

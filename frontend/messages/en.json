@@ -1,0 +1,81 @@
+{
+  "meta": {
+    "title": "SourceFolio — portfolios you can read the code of",
+    "description": "Discover developer portfolios that are online and whose code is public, by country, specialty and technology."
+  },
+  "brand": {
+    "wordmark": "sourcefolio",
+    "tagline": "Portfolios you can read the code of."
+  },
+  "nav": {
+    "label": "Main navigation",
+    "discover": "Discover",
+    "search": "Search",
+    "portfolio": "My portfolio",
+    "me": "Me",
+    "publish": "Publish your portfolio"
+  },
+  "language": {
+    "label": "Language",
+    "fr": "FR",
+    "en": "EN"
+  },
+  "a11y": {
+    "skipToContent": "Skip to content"
+  },
+  "pages": {
+    "search": {
+      "title": "Search"
+    },
+    "portfolio": {
+      "title": "My portfolio",
+      "visitorTitle": "Publish your portfolio",
+      "visitorLead": "Sign in with GitHub: we look for your portfolio among your public repositories and you publish it in one click.",
+      "stepsLabel": "How it works",
+      "step1": "You sign in with GitHub.",
+      "step2": "We find your portfolio among your public repositories.",
+      "step3": "You confirm, it is published. In under a minute.",
+      "memberEmpty": "No portfolio published yet."
+    },
+    "me": {
+      "title": "Me",
+      "account": "Account",
+      "accountHint": "Sign in to publish your portfolio, get feedback and follow its visits."
+    }
+  },
+  "auth": {
+    "signInWithGithub": "Sign in with GitHub",
+    "permission": "Access to your public profile only."
+  },
+  "theme": {
+    "label": "Theme",
+    "system": "System",
+    "light": "Light",
+    "dark": "Dark"
+  },
+  "notFound": {
+    "title": "Page not found",
+    "body": "This address leads to no portfolio. It may have moved or been removed.",
+    "back": "Back to Discover"
+  },
+  "account": {
+    "signedInAs": "Signed in as {login}",
+    "signOut": "Sign out",
+    "signOutFailed": "Signing out failed. Try again."
+  },
+  "detection": {
+    "searching": "Looking for your portfolio in your public repositories…",
+    "foundTitle": "We found these sites in your public repositories",
+    "othersTitle": "Other sites found",
+    "noneTitle": "No site found in your public repositories",
+    "noneHint": "Add your portfolio’s address to the “Website” field of its GitHub repository, then sign in again: we will look again.",
+    "visitSite": "Visit the site",
+    "viewCode": "View the code",
+    "reason": {
+      "USER_PAGES": "Your GitHub Pages site",
+      "NAMED_REPOSITORY": "A repository named “{name}”",
+      "HOMEPAGE": "The site set in one of your repositories",
+      "PROJECT_PAGES": "A project published with GitHub Pages"
+    }
+  }
+}

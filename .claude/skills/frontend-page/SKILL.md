@@ -15,8 +15,8 @@ Load the `design-system` skill for every visual decision.
   (`[locale]/me/portfolio`), Me (`[locale]/me`); a showcase page lives at a stable, shareable
   URL (`[locale]/p/[slug]`), and on desktop it also opens as a side panel over the catalogue
   (parallel + intercepting route) without losing the grid
-- Shell (sidebar on `lg`, bottom tabs below) → `app/[locale]/layout.tsx` +
-  `components/layout/`
+- Shell (sidebar on `lg`, bottom tabs below) → `components/layout/AppShell.tsx`, mounted by
+  `app/[locale]/layout.tsx`; the four sections are listed once in `components/layout/sections.ts`
 - Reusable component → `components/<area>/` (`catalog`, `showcase`, `feedback`,
   `onboarding`, `dashboard`, `layout`…)
 - Radix primitive wrapped with our tokens → `components/ui/` (`Sheet`, `Dialog`, `Menu`,
@@ -28,12 +28,15 @@ Load the `design-system` skill for every visual decision.
 ## Non-negotiable conventions
 
 - **Locale in every URL**: `/fr/...` and `/en/...`, routing defined once in `i18n/routing.ts`;
-  links go through next-intl's `Link`, never a bare `<a href="/...">` for internal pages. The
+  internal links are `<Link href={localizedPath(locale, "/search")}>` (`next/link` +
+  `i18n/paths.ts`). A server component gets the locale from `params` (`toLocale`), a client
+  component from its props. The
   default locale comes from `Accept-Language`, then English; a member's choice is saved on the
   account.
-- **No literal text in JSX**: `const t = useTranslations('catalog')` (client) or
-  `await getTranslations('catalog')` (server). Both files get the key in the same commit; a
-  missing key fails the build check.
+- **No literal text in JSX**: `await getTranslations('catalog')` in a server component; a client
+  component gets the strings it shows as props (see `components/layout/AppShell.tsx` passing
+  `labels` to `SidebarNav`). No `NextIntlClientProvider`: it ships the ICU parser to the
+  browser. Both message files get the key in the same commit; `pnpm typecheck` fails otherwise.
 - **Import through `@/`** — never `../../..`.
 - **No `fetch` in a component.** Server Components call `services/` functions directly;
   Client Components use them through TanStack Query (`useQuery`, `useInfiniteQuery` for the
@@ -74,5 +77,8 @@ sitemap and the OG image.
 ```
 cd frontend && pnpm typecheck && pnpm lint && pnpm build
 ```
-`pnpm build` prints the first-load JS per route: stay under 150 KB compressed for the catalogue
-and the showcase page. `pnpm` only, never `npm`.
+Measure the initial JS of a page on the production server (`pnpm build`, then
+`node .next/standalone/server.js` after copying `.next/static` into `.next/standalone/.next/`):
+sum the gzip size of its `<script src>` files, leaving out the `noModule` polyfills that modern
+browsers skip. The framework alone is about 127 KB; the budget is 150 KB, so every client
+dependency has to earn its place. `pnpm` only, never `npm`.
