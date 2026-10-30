@@ -113,7 +113,7 @@ export default async function ShowcasePage({ params }: PageProps<"/[locale]/p/[s
         <p className="flex flex-wrap items-center gap-x-3 gap-y-1 font-mono text-xs text-ink-soft">
           <span className="break-all">{showcase.repository}</span>
           {showcase.repositoryStars != null ? (
-            <a href={showcase.repositoryUrl} target="_blank" rel="noopener noreferrer" className="font-semibold text-ink">
+            <a href={showcase.repositoryUrl} target="_blank" rel="noopener noreferrer" className="press -my-2 flex min-h-11 items-center font-semibold text-ink">
               <StarCount count={showcase.repositoryStars} locale={locale} label={ts("repository", { count: showcase.repositoryStars })} />
             </a>
           ) : null}

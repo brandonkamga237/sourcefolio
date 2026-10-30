@@ -280,8 +280,9 @@
   "stars": {
     "repository": "{count, plural, =0 {Aucune étoile} one {# étoile} other {# étoiles}} sur GitHub",
     "project": "Étoiles de SourceFolio sur GitHub : {count}",
-    "projectShort": "Code source",
+    "projectShort": "SourceFolio sur GitHub",
     "one": "{count} étoile sur GitHub",
-    "other": "{count} étoiles sur GitHub"
+    "other": "{count} étoiles sur GitHub",
+    "badge": "GitHub"
   }
 }
