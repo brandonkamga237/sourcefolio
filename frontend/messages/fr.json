@@ -187,7 +187,8 @@
   "likes": {
     "like": "Apprécier ce portfolio ({count})",
     "unlike": "Retirer mon appréciation ({count})",
-    "failed": "Ton appréciation n’a pas pu être enregistrée. Réessaie."
+    "failed": "Ton appréciation n’a pas pu être enregistrée. Réessaie.",
+    "own": "C’est ton portfolio : {count} appréciation(s)"
   },
   "preview": {
     "title": "Aperçu de ta carte",

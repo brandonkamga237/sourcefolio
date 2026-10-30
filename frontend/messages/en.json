@@ -187,7 +187,8 @@
   "likes": {
     "like": "Like this portfolio ({count})",
     "unlike": "Take back my like ({count})",
-    "failed": "Your like could not be saved. Try again."
+    "failed": "Your like could not be saved. Try again.",
+    "own": "This is your portfolio: {count} like(s)"
   },
   "preview": {
     "title": "Your card preview",

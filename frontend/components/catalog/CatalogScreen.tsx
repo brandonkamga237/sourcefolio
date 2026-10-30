@@ -90,7 +90,7 @@ async function Feed({ locale, sort }: CatalogScreenProps) {
           openPage: t("panel.openPage"),
           sourceRepo: t("panel.sourceRepo"),
           publishedOn: t.raw("panel.publishedOn") as string,
-          likes: { like: tl.raw("like") as string, unlike: tl.raw("unlike") as string, failed: tl("failed") },
+          likes: { like: tl.raw("like") as string, unlike: tl.raw("unlike") as string, own: tl.raw("own") as string, failed: tl("failed") },
         },
       }}
       />

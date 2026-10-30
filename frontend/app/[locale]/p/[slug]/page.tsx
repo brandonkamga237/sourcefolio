@@ -132,7 +132,7 @@ export default async function ShowcasePage({ params }: PageProps<"/[locale]/p/[s
             <LikeButton
               slug={showcase.slug}
               showCount
-              labels={{ like: tl.raw("like") as string, unlike: tl.raw("unlike") as string, failed: tl("failed") }}
+              labels={{ like: tl.raw("like") as string, unlike: tl.raw("unlike") as string, own: tl.raw("own") as string, failed: tl("failed") }}
             />
           </Suspense>
         </div>

@@ -11,6 +11,8 @@ export interface LikeButtonLabels {
   like: string;
   /** Contains {count}. */
   unlike: string;
+  /** Contains {count}. Read on the author's own portfolio, where the button is disabled. */
+  own: string;
   failed: string;
 }
 
@@ -36,7 +38,7 @@ export function LikeButton({ slug, labels, showCount }: LikeButtonProps) {
 
   const { data } = useQuery({
     queryKey: likesKey(slug),
-    queryFn: async () => (await fetchLikes(slug)).data ?? { count: 0, liked: false },
+    queryFn: async () => (await fetchLikes(slug)).data ?? { count: 0, liked: false, own: false },
   });
 
   const mutation = useMutation({
@@ -56,7 +58,7 @@ export function LikeButton({ slug, labels, showCount }: LikeButtonProps) {
       await queryClient.cancelQueries({ queryKey: likesKey(slug) });
       const previous = queryClient.getQueryData<LikeState>(likesKey(slug));
       if (previous) {
-        queryClient.setQueryData<LikeState>(likesKey(slug), { count: previous.count + (liked ? 1 : -1), liked });
+        queryClient.setQueryData<LikeState>(likesKey(slug), { ...previous, count: previous.count + (liked ? 1 : -1), liked });
       }
       return { previous };
     },
@@ -71,21 +73,22 @@ export function LikeButton({ slug, labels, showCount }: LikeButtonProps) {
     if (autoLiked.current || searchParams.get(AUTO_LIKE) !== "1" || !data) return;
     autoLiked.current = true;
     router.replace(pathname, { scroll: false });
-    if (!data.liked) mutation.mutate(true);
+    if (!data.liked && !data.own) mutation.mutate(true);
   }, [data, mutation, pathname, router, searchParams]);
 
-  const state = data ?? { count: 0, liked: false };
-  const label = (state.liked ? labels.unlike : labels.like).replace("{count}", String(state.count));
+  const state = data ?? { count: 0, liked: false, own: false };
+  const label = (state.own ? labels.own : state.liked ? labels.unlike : labels.like).replace("{count}", String(state.count));
 
   return (
     <div className="flex flex-col gap-1">
       <button
         type="button"
         onClick={() => mutation.mutate(!state.liked)}
-        aria-pressed={state.liked}
+        disabled={state.own}
+        aria-pressed={state.own ? undefined : state.liked}
         aria-label={label}
         title={label}
-        className={`flex h-[46px] min-w-[46px] items-center justify-center gap-1.5 rounded-control border px-3 text-sm font-semibold transition-transform active:scale-95 ${
+        className={`flex h-[46px] min-w-[46px] items-center justify-center gap-1.5 rounded-control border px-3 text-sm font-semibold transition-transform active:scale-95 disabled:cursor-not-allowed disabled:border-dashed disabled:text-ink-muted disabled:active:scale-100 ${
           state.liked ? "border-accent bg-accent-soft text-accent-ink" : "border-line bg-surface text-ink"
         }`}
       >
