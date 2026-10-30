@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.7.0](https://github.com/brandonkamga237/sourcefolio/compare/v0.6.0...v0.7.0) (2026-10-30)
+
+
+### Features
+
+* **engagement:** public likes and the Ranking tab ([#30](https://github.com/brandonkamga237/sourcefolio/issues/30)) ([baeb100](https://github.com/brandonkamga237/sourcefolio/commit/baeb100cfd404f1a328c11efb65cca7fd02f7dec))
+* **frontend:** redesign navigation, Discover and Me after the V1 mockups ([#29](https://github.com/brandonkamga237/sourcefolio/issues/29)) ([cb00b3c](https://github.com/brandonkamga237/sourcefolio/commit/cb00b3cb2113a4c92b6d21a0f196e81e1c8b0fc6))
+
 ## [0.6.0](https://github.com/brandonkamga237/sourcefolio/compare/v0.5.0...v0.6.0) (2026-10-30)
 
 
