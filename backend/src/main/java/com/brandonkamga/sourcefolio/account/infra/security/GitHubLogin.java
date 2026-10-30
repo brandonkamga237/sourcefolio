@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.oauth2.client.CommonOAuth2Provider;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.oauth2.client.registration.InMemoryClientRegistrationRepository;
+import org.springframework.security.oauth2.client.web.OAuth2AuthorizationRequestRedirectFilter;
 
 /**
  * GitHub sign-in, switched on only when the OAuth App is configured: without GITHUB_CLIENT_ID the
@@ -34,9 +35,10 @@ class GitHubLogin {
         GitHubMemberService members = new GitHubMemberService(signIn);
         return http -> http
                 .authorizeHttpRequests(routes -> routes.requestMatchers("/oauth2/**", "/login/oauth2/**").permitAll())
+                .addFilterBefore(new ReturnPath.Remember(), OAuth2AuthorizationRequestRedirectFilter.class)
                 .oauth2Login(login -> login
                         .userInfoEndpoint(userInfo -> userInfo.userService(members))
-                        .defaultSuccessUrl("/", true)
+                        .successHandler(new ReturnPath.Redirect())
                         .failureUrl("/?signin=failed"));
     }
 }
