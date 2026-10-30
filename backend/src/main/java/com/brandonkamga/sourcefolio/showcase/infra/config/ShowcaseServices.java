@@ -1,10 +1,14 @@
 package com.brandonkamga.sourcefolio.showcase.infra.config;
 
+import com.brandonkamga.sourcefolio.checkup.application.SiteReachability;
 import com.brandonkamga.sourcefolio.showcase.application.ShowcaseDetection;
 import com.brandonkamga.sourcefolio.showcase.application.ShowcaseDetectionImpl;
+import com.brandonkamga.sourcefolio.showcase.application.ShowcasePublication;
+import com.brandonkamga.sourcefolio.showcase.application.ShowcasePublicationImpl;
 import com.brandonkamga.sourcefolio.showcase.domain.port.CandidateStore;
 import com.brandonkamga.sourcefolio.showcase.domain.port.DetectionScheduler;
 import com.brandonkamga.sourcefolio.showcase.domain.port.RepositoryHost;
+import com.brandonkamga.sourcefolio.showcase.domain.port.ShowcaseStore;
 import com.brandonkamga.sourcefolio.showcase.infra.github.GitHubRepositoryHost;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -26,6 +30,14 @@ class ShowcaseServices {
     ShowcaseDetection showcaseDetection(RepositoryHost repositories, CandidateStore candidates,
                                         DetectionScheduler scheduler, Clock clock) {
         return new ShowcaseDetectionImpl(repositories, candidates, scheduler, clock);
+    }
+
+    // Not wrapped either: publish() fetches the member's site before saving, and the store
+    // makes the save atomic.
+    @Bean
+    ShowcasePublication showcasePublication(ShowcaseStore showcases, CandidateStore candidates,
+                                            SiteReachability sites, Clock clock) {
+        return new ShowcasePublicationImpl(showcases, candidates, sites, clock);
     }
 
     @Bean

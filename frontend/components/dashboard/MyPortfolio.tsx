@@ -2,7 +2,9 @@ import { getTranslations } from "next-intl/server";
 import { GitHubSignIn } from "@/components/auth/GitHubSignIn";
 import type { Locale } from "@/i18n/routing";
 import { getMe } from "@/services/me";
+import { getMyShowcase } from "@/services/showcases";
 import { CandidatesPanel } from "./CandidatesPanel";
+import { PublishedShowcase } from "./PublishedShowcase";
 
 interface MyPortfolioProps {
   locale: Locale;
@@ -11,17 +13,24 @@ interface MyPortfolioProps {
 const titleClass = "font-display text-[28px] leading-none font-bold tracking-[-0.035em] lg:text-[40px]";
 
 // A visitor gets one action, signing in with GitHub, which starts the detection of their
-// portfolio (spec: "Connexion et publication en 1 clic"). A member without a published
-// portfolio sees what detection found in their public repositories.
+// portfolio (spec: "Connexion et publication en 1 clic"). A member sees their portfolio once
+// published, and until then what detection found in their public repositories.
 export async function MyPortfolio({ locale }: MyPortfolioProps) {
-  const [t, member] = await Promise.all([getTranslations({ locale }), getMe()]);
+  const [t, member, mine] = await Promise.all([getTranslations({ locale }), getMe(), getMyShowcase()]);
 
   if (member) {
+    const showcase = mine?.showcase ?? null;
     return (
       <div className="flex flex-col gap-6">
         <h1 className={titleClass}>{t("pages.portfolio.title")}</h1>
-        <p className="text-[15px] leading-normal text-ink-body">{t("pages.portfolio.memberEmpty")}</p>
-        <CandidatesPanel locale={locale} />
+        {showcase ? (
+          <PublishedShowcase locale={locale} showcase={showcase} />
+        ) : (
+          <>
+            <p className="text-[15px] leading-normal text-ink-body">{t("pages.portfolio.memberEmpty")}</p>
+            <CandidatesPanel locale={locale} />
+          </>
+        )}
       </div>
     );
   }

@@ -76,6 +76,22 @@
       "NAMED_REPOSITORY": "A repository named “{name}”",
       "HOMEPAGE": "The site set in one of your repositories",
       "PROJECT_PAGES": "A project published with GitHub Pages"
-    }
+    },
+    "publish": "Yes, it’s my portfolio: publish",
+    "publishThis": "This is the one: publish",
+    "publishing": "Checking your site…",
+    "publishFailed": "Publishing did not go through. Try again in a moment."
+  },
+  "myShowcase": {
+    "status": {
+      "PUBLISHED": "Published",
+      "UNAVAILABLE": "Temporarily unavailable",
+      "NEEDS_FIX": "Needs a fix",
+      "REMOVED": "Removed"
+    },
+    "publishedOn": "Published on {date, date, long}",
+    "publishedLead": "Your portfolio is published on SourceFolio: we checked that your site answers.",
+    "visitSite": "Visit the site",
+    "viewCode": "View the code"
   }
 }
