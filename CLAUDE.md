@@ -47,8 +47,9 @@ these names, because CI, the skills and the agents call them.
   translation key blocks the release
 - Mobile first: about 90 % of first visits come from a phone, often through a WhatsApp link.
   Touch targets are 44 px minimum, contrast AA, light and dark themes
-- The product builds habits through usefulness (stats, feedback, health alerts), never through
-  streaks, points or rankings. The number of likes is visible to its author only
+- The product builds habits through usefulness (stats, feedback, health alerts) and one public
+  ranking: the Ranking tab orders published showcases by likes, and like counts are public. No
+  streaks or points. Discover is never sorted by popularity
 - One main action per screen; the rest is progressive disclosure
 - Comments explain why, never what. No file headers, no generated javadoc, no commented-out code
 - Icons and the logo come from our own pack (`frontend/icons/*.svg` → SVGR): never Lucide,
@@ -79,7 +80,7 @@ these names, because CI, the skills and the agents call them.
 - `git push --force`, committing `.env`, hardcoding S3 keys, the GitHub OAuth secret or any token
 - Editing a Flyway migration that is already merged: add the next `V{n}` instead
 - Asking GitHub for more than the public profile (`read:user`): no `repo`, no `read:org`
-- Showing a public score, a like count or a ranking; a popularity sort ("Populaires")
+- Sorting Discover by popularity: likes rank showcases in the Ranking tab only
 - Translating member content automatically (bios, comments) in V1
 - Embedding a portfolio in an iframe: external sites open in a new tab, and the click is counted
 - Inventing data the backend does not provide
@@ -99,7 +100,10 @@ these names, because CI, the skills and the agents call them.
 - **Feedback** (retour): a comment with an optional angle (`DESIGN`, `CLARITY`, `PERFORMANCE`,
   `MOBILE`, `CODE`) and 10 to 1 000 characters
 - **Discover**: the feed, shuffled once a day, one card in five reserved for showcases younger
-  than 14 days. **Recent** is the only other sort
+  than 14 days. **Recent** is its only other sort
+- **Ranking** (Classement): published showcases ordered by likes, counts shown
+- **Preview**: the image (and optional short video) a card shows; the author's upload, or the
+  automatic screenshot of the site when there is none
 
 ## Where to look
 
