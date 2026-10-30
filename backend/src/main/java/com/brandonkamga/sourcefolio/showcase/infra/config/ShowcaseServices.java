@@ -1,12 +1,16 @@
 package com.brandonkamga.sourcefolio.showcase.infra.config;
 
 import com.brandonkamga.sourcefolio.checkup.application.SiteReachability;
+import com.brandonkamga.sourcefolio.shared.config.TransactionalServices;
+import com.brandonkamga.sourcefolio.showcase.application.PublicShowcases;
+import com.brandonkamga.sourcefolio.showcase.application.PublicShowcasesImpl;
 import com.brandonkamga.sourcefolio.showcase.application.ShowcaseDetection;
 import com.brandonkamga.sourcefolio.showcase.application.ShowcaseDetectionImpl;
 import com.brandonkamga.sourcefolio.showcase.application.ShowcasePublication;
 import com.brandonkamga.sourcefolio.showcase.application.ShowcasePublicationImpl;
 import com.brandonkamga.sourcefolio.showcase.domain.port.CandidateStore;
 import com.brandonkamga.sourcefolio.showcase.domain.port.DetectionScheduler;
+import com.brandonkamga.sourcefolio.showcase.domain.port.MemberDirectory;
 import com.brandonkamga.sourcefolio.showcase.domain.port.RepositoryHost;
 import com.brandonkamga.sourcefolio.showcase.domain.port.ShowcaseStore;
 import com.brandonkamga.sourcefolio.showcase.infra.github.GitHubRepositoryHost;
@@ -36,8 +40,13 @@ class ShowcaseServices {
     // makes the save atomic.
     @Bean
     ShowcasePublication showcasePublication(ShowcaseStore showcases, CandidateStore candidates,
-                                            SiteReachability sites, Clock clock) {
-        return new ShowcasePublicationImpl(showcases, candidates, sites, clock);
+                                            SiteReachability sites, MemberDirectory members, Clock clock) {
+        return new ShowcasePublicationImpl(showcases, candidates, sites, members, clock);
+    }
+
+    @Bean
+    PublicShowcases publicShowcases(ShowcaseStore showcases, MemberDirectory members, TransactionalServices transactional) {
+        return transactional.wrap(PublicShowcases.class, new PublicShowcasesImpl(showcases, members));
     }
 
     @Bean

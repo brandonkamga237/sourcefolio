@@ -1,0 +1,122 @@
+import type { Metadata } from "next";
+import Link from "next/link";
+import { notFound } from "next/navigation";
+import { getTranslations, setRequestLocale } from "next-intl/server";
+import { IconCode, IconExternal } from "@/components/icons";
+import { localizedPath } from "@/i18n/paths";
+import { toLocale } from "@/i18n/routing";
+import { siteLabel } from "@/lib/site-label";
+import { getPublicShowcase, type PublicShowcase } from "@/services/public-showcases";
+
+// Rendered whole before answering, not streamed behind a placeholder: an unknown address must
+// get a real 404 status, and the WhatsApp or LinkedIn crawler must find the metadata in the
+// first response. The showcase comes from a cache, so the wait stays short.
+export const instant = false;
+
+export async function generateMetadata({ params }: PageProps<"/[locale]/p/[slug]">): Promise<Metadata> {
+  const { locale: raw, slug } = await params;
+  const locale = toLocale(raw);
+  const [t, showcase] = await Promise.all([
+    getTranslations({ locale, namespace: "showcasePage" }),
+    getPublicShowcase(slug),
+  ]);
+  if (!showcase) notFound();
+  const values = { site: siteLabel(showcase.siteUrl), login: showcase.ownerLogin };
+  return {
+    title: t("metaTitle", values),
+    description: t("metaDescription", values),
+    alternates: {
+      canonical: `/${locale}/p/${slug}`,
+      languages: { fr: `/fr/p/${slug}`, en: `/en/p/${slug}`, "x-default": `/en/p/${slug}` },
+    },
+    openGraph: { type: "profile", locale: locale === "fr" ? "fr_FR" : "en_US", url: `/${locale}/p/${slug}` },
+    // Hidden from the catalogue while its site is down: search engines should not list it either.
+    robots: showcase.status === "PUBLISHED" ? undefined : { index: false },
+  };
+}
+
+// "<" escaped so a value can never close the script element.
+function jsonLd(showcase: PublicShowcase): string {
+  return JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "ProfilePage",
+    mainEntity: {
+      "@type": "Person",
+      name: showcase.ownerLogin,
+      url: showcase.siteUrl,
+      sameAs: [showcase.siteUrl, showcase.ownerUrl],
+    },
+  }).replace(/</g, "\\u003c");
+}
+
+const secondaryLink =
+  "flex h-11 items-center justify-center gap-1.5 rounded-control border border-line bg-surface px-4 text-sm font-semibold text-ink";
+
+// The page most visitors land on first, from a shared link on a phone. One main action, the
+// site; the code next to it is the promise of SourceFolio. External sites open in a new tab.
+export default async function ShowcasePage({ params }: PageProps<"/[locale]/p/[slug]">) {
+  const { locale: raw, slug } = await params;
+  const locale = toLocale(raw);
+  setRequestLocale(locale);
+  const [t, showcase] = await Promise.all([
+    getTranslations({ locale, namespace: "showcasePage" }),
+    getPublicShowcase(slug),
+  ]);
+  if (!showcase) notFound();
+
+  return (
+    <article className="mx-auto flex max-w-xl flex-col gap-6 px-4 py-6 lg:mx-0 lg:px-10 lg:py-8">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd(showcase) }} />
+
+      {showcase.status !== "PUBLISHED" ? (
+        <p role="status" className="rounded-card border border-line bg-surface-sunken p-3.5 text-sm leading-normal text-ink">
+          {t(`banner.${showcase.status}`)}
+        </p>
+      ) : null}
+
+      <header className="flex flex-col gap-2">
+        <h1 className="font-display text-[32px] leading-[1.05] font-bold tracking-[-0.035em] break-all lg:text-[44px]">
+          {siteLabel(showcase.siteUrl)}
+        </h1>
+        <p className="text-[15px] text-ink-body">
+          {t.rich("by", {
+            login: showcase.ownerLogin,
+            profile: (chunks) => (
+              <a href={showcase.ownerUrl} target="_blank" rel="noopener noreferrer" className="font-semibold text-ink underline underline-offset-2">
+                {chunks}
+              </a>
+            ),
+          })}
+        </p>
+        <p className="font-mono text-xs break-all text-ink-soft">{showcase.repository}</p>
+        {showcase.publishedAt ? (
+          <p className="text-[13px] text-ink-muted">{t("publishedOn", { date: new Date(showcase.publishedAt) })}</p>
+        ) : null}
+      </header>
+
+      <div className="flex flex-col gap-2">
+        <a
+          href={showcase.siteUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="flex h-12 items-center justify-center gap-2 rounded-control bg-accent px-5 text-[15px] font-semibold text-white"
+        >
+          {t("visitSite")}
+          <IconExternal className="size-4" />
+        </a>
+        <a href={showcase.repositoryUrl} target="_blank" rel="noopener noreferrer" className={secondaryLink}>
+          <IconCode className="size-4" />
+          {t("viewCode")}
+        </a>
+      </div>
+
+      <aside className="mt-4 flex flex-col gap-2 rounded-card border border-line bg-surface p-4">
+        <h2 className="text-[15px] font-semibold">{t("ctaTitle")}</h2>
+        <p className="text-sm leading-normal text-ink-body">{t("ctaLead")}</p>
+        <Link href={localizedPath(locale, "/me/portfolio")} className="flex h-11 w-fit items-center rounded-control border border-ink px-4 text-sm font-semibold text-ink">
+          {t("ctaLink")}
+        </Link>
+      </aside>
+    </article>
+  );
+}

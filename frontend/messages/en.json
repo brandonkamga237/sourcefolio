@@ -92,6 +92,27 @@
     "publishedOn": "Published on {date, date, long}",
     "publishedLead": "Your portfolio is published on SourceFolio: we checked that your site answers.",
     "visitSite": "Visit the site",
-    "viewCode": "View the code"
+    "viewCode": "View the code",
+    "share": "Share",
+    "shareTitle": "My portfolio on SourceFolio: {site}",
+    "shareCopied": "Link copied. Paste it anywhere.",
+    "viewPage": "See my public page"
+  },
+  "showcasePage": {
+    "metaTitle": "{site}, {login}’s portfolio",
+    "metaDescription": "{login}’s portfolio and the code that builds it, on SourceFolio.",
+    "by": "by <profile>{login}</profile>",
+    "publishedOn": "Published on {date, date, long}",
+    "visitSite": "Visit the site",
+    "viewCode": "View the code",
+    "banner": {
+      "UNAVAILABLE": "This portfolio is unavailable for now: its site no longer answers. It comes back as soon as it does.",
+      "NEEDS_FIX": "This portfolio is waiting for a fix from its author."
+    },
+    "ctaTitle": "Show your code too",
+    "ctaLead": "Sign in with GitHub, we find your portfolio and you publish it in one click.",
+    "ctaLink": "Publish my portfolio",
+    "ogBy": "by {login}",
+    "ogTagline": "A portfolio you can read the code of"
   }
 }

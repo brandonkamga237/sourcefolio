@@ -10,12 +10,13 @@ import java.util.UUID;
  * {@link ShowcaseStatusEvent}s waiting in {@link #pendingEvents()} until the store appends them
  * to the history; a stored copy has none.
  */
-public record Showcase(ShowcaseId id, UUID ownerId, ShowcaseKind kind, SiteUrl siteUrl, SourceRepo sourceRepo,
+public record Showcase(ShowcaseId id, ShowcaseSlug slug, UUID ownerId, ShowcaseKind kind, SiteUrl siteUrl, SourceRepo sourceRepo,
                        ShowcaseStatus status, Instant createdAt, Instant publishedAt,
                        List<ShowcaseStatusEvent> pendingEvents) {
 
     public Showcase {
         Objects.requireNonNull(id, "id");
+        Objects.requireNonNull(slug, "slug");
         Objects.requireNonNull(ownerId, "ownerId");
         Objects.requireNonNull(kind, "kind");
         Objects.requireNonNull(siteUrl, "siteUrl");
@@ -30,8 +31,8 @@ public record Showcase(ShowcaseId id, UUID ownerId, ShowcaseKind kind, SiteUrl s
      * repository belongs to the member, its homepage or their GitHub Pages is the site, and the
      * site answers). The caller has made those checks.
      */
-    public static Showcase publishVerified(UUID ownerId, ShowcaseCandidate candidate, Instant now) {
-        return new Showcase(ShowcaseId.newId(), ownerId, ShowcaseKind.PORTFOLIO, candidate.siteUrl(),
+    public static Showcase publishVerified(UUID ownerId, ShowcaseSlug slug, ShowcaseCandidate candidate, Instant now) {
+        return new Showcase(ShowcaseId.newId(), slug, ownerId, ShowcaseKind.PORTFOLIO, candidate.siteUrl(),
                 new SourceRepo(RepositoryProvider.GITHUB, candidate.repository(), true),
                 ShowcaseStatus.PUBLISHED, now, now,
                 List.of(new ShowcaseStatusEvent(null, ShowcaseStatus.PUBLISHED, ShowcaseStatusEvent.AUTO_VERIFIED,
@@ -40,6 +41,6 @@ public record Showcase(ShowcaseId id, UUID ownerId, ShowcaseKind kind, SiteUrl s
 
     /** The same showcase once its pending events are in the history. */
     public Showcase stored() {
-        return new Showcase(id, ownerId, kind, siteUrl, sourceRepo, status, createdAt, publishedAt, List.of());
+        return new Showcase(id, slug, ownerId, kind, siteUrl, sourceRepo, status, createdAt, publishedAt, List.of());
     }
 }
