@@ -1,4 +1,4 @@
-import { IconStar } from "@/components/icons";
+import { IconGithub, IconStar } from "@/components/icons";
 
 interface StarCountProps {
   count: number;
@@ -8,12 +8,17 @@ interface StarCountProps {
   className?: string;
 }
 
-// The GitHub stars of a repository: an icon and a compact number (1.2k), the sentence for
-// assistive technology. No hook, so server and client components both use it.
+// The GitHub stars of a repository: the GitHub mark, a star and a compact number (1.2k), so it
+// reads as GitHub's count at a glance; the sentence goes to assistive technology. No hook, so
+// server and client components both use it.
 export function StarCount({ count, locale, label, className = "" }: StarCountProps) {
   return (
-    <span title={label} className={`inline-flex items-center gap-1 font-mono tabular-nums ${className}`}>
-      <IconStar aria-hidden="true" className="size-[1.1em] fill-current" />
+    <span
+      title={label}
+      className={`inline-flex h-7 items-center gap-1.5 rounded-full border border-line bg-surface px-2.5 font-mono text-xs tabular-nums ${className}`}
+    >
+      <IconGithub aria-hidden="true" className="size-3.5 shrink-0" />
+      <IconStar aria-hidden="true" className="size-3.5 shrink-0 fill-accent text-accent" />
       <span aria-hidden="true">{new Intl.NumberFormat(locale, { notation: "compact", maximumFractionDigits: 1 }).format(count)}</span>
       <span className="sr-only">{label}</span>
     </span>
