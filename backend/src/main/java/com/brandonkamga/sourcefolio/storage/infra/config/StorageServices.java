@@ -15,6 +15,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import software.amazon.awssdk.auth.credentials.AwsBasicCredentials;
 import software.amazon.awssdk.auth.credentials.StaticCredentialsProvider;
+import software.amazon.awssdk.core.exception.SdkClientException;
 import software.amazon.awssdk.http.urlconnection.UrlConnectionHttpClient;
 import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.s3.S3Client;
@@ -53,25 +54,51 @@ class StorageServices {
     }
 
     // Browsers read previews straight from the bucket (Traefik serves /media), so the bucket is
-    // public for reading and nothing else. A failure is logged, not fatal: the site works
-    // without previews, only uploads fail.
+    // public for reading and nothing else. RustFS may still be starting: a few attempts, then a
+    // logged failure, not a fatal one. The site works without previews, only uploads fail.
     @Bean
     @ConditionalOnProperty(name = "app.storage.ensure-bucket", havingValue = "true")
     ApplicationRunner bucketInitializer(S3Client s3, @Value("${app.storage.bucket}") String bucket) {
         return arguments -> {
-            try {
-                try {
-                    s3.headBucket(request -> request.bucket(bucket));
-                } catch (NoSuchBucketException missing) {
-                    s3.createBucket(request -> request.bucket(bucket));
-                    log.info("Created bucket {}", bucket);
+            for (int attempt = 1; attempt <= 10; attempt++) {
+                if (ensureBucket(s3, bucket, attempt == 10)) {
+                    return;
                 }
-                s3.putBucketPolicy(request -> request.bucket(bucket).policy("""
-                        {"Version":"2012-10-17","Statement":[{"Effect":"Allow","Principal":{"AWS":["*"]},
-                        "Action":["s3:GetObject"],"Resource":["arn:aws:s3:::%s/*"]}]}""".formatted(bucket)));
-            } catch (S3Exception | software.amazon.awssdk.core.exception.SdkClientException failure) {
-                log.error("Bucket {} not ready: previews cannot be stored until it is", bucket, failure);
+                Thread.sleep(3_000);
             }
         };
+    }
+
+    private static boolean ensureBucket(S3Client s3, String bucket, boolean lastAttempt) {
+        try {
+            if (!bucketExists(s3, bucket)) {
+                s3.createBucket(request -> request.bucket(bucket));
+                log.info("Created bucket {}", bucket);
+            }
+            s3.putBucketPolicy(request -> request.bucket(bucket).policy("""
+                    {"Version":"2012-10-17","Statement":[{"Effect":"Allow","Principal":{"AWS":["*"]},
+                    "Action":["s3:GetObject"],"Resource":["arn:aws:s3:::%s/*"]}]}""".formatted(bucket)));
+            return true;
+        } catch (S3Exception | SdkClientException failure) {
+            if (lastAttempt) {
+                log.error("Bucket {} not ready: previews cannot be stored until it is", bucket, failure);
+            }
+            return false;
+        }
+    }
+
+    // A HEAD answer has no body, so a missing bucket may come back as a bare 404.
+    private static boolean bucketExists(S3Client s3, String bucket) {
+        try {
+            s3.headBucket(request -> request.bucket(bucket));
+            return true;
+        } catch (NoSuchBucketException missing) {
+            return false;
+        } catch (S3Exception failure) {
+            if (failure.statusCode() == 404) {
+                return false;
+            }
+            throw failure;
+        }
     }
 }
