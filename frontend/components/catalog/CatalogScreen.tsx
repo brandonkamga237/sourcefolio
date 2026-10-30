@@ -115,7 +115,11 @@ export async function CatalogScreen({ locale, sort }: CatalogScreenProps) {
   const t = await getTranslations({ locale });
   return (
     <div className="flex flex-col gap-4 px-4 py-4 sm:gap-5 lg:px-8 lg:py-7">
-      {sort === "discover" ? <DiscoverIntro locale={locale} /> : null}
+      {sort === "discover" ? (
+        <Suspense fallback={<div aria-hidden="true" className="h-[76px] animate-pulse rounded-panel bg-surface-sunken sm:h-[84px] lg:h-[96px]" />}>
+          <DiscoverIntro locale={locale} />
+        </Suspense>
+      ) : null}
       <div className="flex flex-wrap items-center justify-between gap-3">
         {sort === "discover" ? (
           <h2 className="font-display text-[20px] leading-none font-bold tracking-[-0.03em] sm:text-[24px]">{t("catalog.feedTitle")}</h2>

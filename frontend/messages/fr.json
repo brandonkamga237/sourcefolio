@@ -152,12 +152,9 @@
     "feedTitle": "Les portfolios",
     "recentTitle": "Les derniers publiés",
     "intro": {
-      "lead": "Ouvre un portfolio, visite le site, puis lis le code qui le fait tourner. Chaque portfolio ici a son dépôt public.",
+      "lead": "Ouvre un portfolio, visite le site, puis lis le code qui le fait tourner.",
       "cta": "Publier le mien",
-      "ctaHint": "Gratuit, avec ton compte GitHub.",
-      "step1": "Connecte GitHub",
-      "step2": "Choisis ton dépôt",
-      "step3": "Partage ton lien"
+      "close": "Masquer ce message"
     }
   },
   "profile": {
