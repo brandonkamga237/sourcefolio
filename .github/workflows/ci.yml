@@ -73,9 +73,9 @@ jobs:
           cache: pnpm
           cache-dependency-path: frontend/pnpm-lock.yaml
       - run: pnpm install --frozen-lockfile
+      # Also fails on a translation key missing from fr.json or en.json, or an unknown key in t().
       - run: pnpm typecheck
       - run: pnpm lint
-      # A missing translation key fails here: next-intl's messages are checked at build time.
       - run: pnpm build
 
   backend-image:

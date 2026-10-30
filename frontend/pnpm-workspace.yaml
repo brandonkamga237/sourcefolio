@@ -1,3 +1,7 @@
+# Packages allowed to run install scripts. Every one listed here ships prebuilt binaries
+# through optional dependencies, so none of their scripts is needed.
 allowBuilds:
+  "@parcel/watcher": false
+  "@swc/core": false
   sharp: false
   unrs-resolver: false

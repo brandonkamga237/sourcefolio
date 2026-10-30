@@ -23,6 +23,8 @@ paths:
   tag exists on the registry
 - Screenshots are stored in an S3-compatible bucket: RustFS in development, Cloudflare R2 in
   production. The backend only knows the `S3_*` variables, never the provider
+- The frontend image is built per public origin: `SITE_URL` is a build argument (GitHub
+  variable `SITE_URL` in `deploy.yml`) because Next.js writes it into the prerendered pages
 - The backend image carries Chromium for Playwright; keep its version in step with the
   `com.microsoft.playwright` dependency
 - CI (`.github/workflows/ci.yml`) gates every PR; `release.yml` (release-please) tags versions;

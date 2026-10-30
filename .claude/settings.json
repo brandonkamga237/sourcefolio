@@ -17,7 +17,9 @@
       "Bash(git status:*)",
       "Bash(git diff:*)",
       "Bash(git log:*)",
-      "Bash(git branch:*)"
+      "Bash(git branch:*)",
+      "Bash(scripts/git/merge-to-develop.sh:*)",
+      "Bash(gh pr merge:*)"
     ],
     "deny": [
       "Read(./.env)",
@@ -25,7 +27,6 @@
       "Read(./**/.env.local)",
       "Bash(git push --force:*)",
       "Bash(docker compose -f docker-compose.prod.yml:*)",
-      "Bash(gh pr merge:*)",
       "Bash(git push origin main:*)",
       "Bash(git push origin develop:*)"
     ]

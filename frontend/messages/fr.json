@@ -1,0 +1,81 @@
+{
+  "meta": {
+    "title": "SourceFolio — des portfolios dont tu peux lire le code",
+    "description": "Découvre des portfolios de développeurs en ligne dont le code est public, par pays, spécialité et technologie."
+  },
+  "brand": {
+    "wordmark": "sourcefolio",
+    "tagline": "Des portfolios dont tu peux lire le code."
+  },
+  "nav": {
+    "label": "Navigation principale",
+    "discover": "Découvrir",
+    "search": "Rechercher",
+    "portfolio": "Mon portfolio",
+    "me": "Moi",
+    "publish": "Publier ton portfolio"
+  },
+  "language": {
+    "label": "Langue",
+    "fr": "FR",
+    "en": "EN"
+  },
+  "a11y": {
+    "skipToContent": "Aller au contenu"
+  },
+  "pages": {
+    "search": {
+      "title": "Rechercher"
+    },
+    "portfolio": {
+      "title": "Mon portfolio",
+      "visitorTitle": "Publie ton portfolio",
+      "visitorLead": "Connecte-toi avec GitHub : on cherche ton portfolio dans tes dépôts publics et tu le publies en un clic.",
+      "stepsLabel": "Comment ça marche",
+      "step1": "Tu te connectes avec GitHub.",
+      "step2": "On trouve ton portfolio parmi tes dépôts publics.",
+      "step3": "Tu confirmes, il est publié. En moins d’une minute.",
+      "memberEmpty": "Aucun portfolio publié pour l’instant."
+    },
+    "me": {
+      "title": "Moi",
+      "account": "Compte",
+      "accountHint": "Connecte-toi pour publier ton portfolio, recevoir des retours et suivre ses visites."
+    }
+  },
+  "auth": {
+    "signInWithGithub": "Se connecter avec GitHub",
+    "permission": "Accès à ton profil public uniquement."
+  },
+  "theme": {
+    "label": "Thème",
+    "system": "Système",
+    "light": "Clair",
+    "dark": "Sombre"
+  },
+  "notFound": {
+    "title": "Page introuvable",
+    "body": "Cette adresse ne mène à aucun portfolio. Il a peut-être changé d’adresse ou été retiré.",
+    "back": "Revenir à Découvrir"
+  },
+  "account": {
+    "signedInAs": "Connecté en tant que {login}",
+    "signOut": "Se déconnecter",
+    "signOutFailed": "La déconnexion a échoué. Réessaie."
+  },
+  "detection": {
+    "searching": "On cherche ton portfolio dans tes dépôts publics…",
+    "foundTitle": "On a trouvé ces sites dans tes dépôts publics",
+    "othersTitle": "Autres sites trouvés",
+    "noneTitle": "Aucun site trouvé dans tes dépôts publics",
+    "noneHint": "Ajoute l’adresse de ton portfolio dans le champ « Website » de son dépôt GitHub, puis reconnecte-toi : on cherchera à nouveau.",
+    "visitSite": "Voir le site",
+    "viewCode": "Voir le code",
+    "reason": {
+      "USER_PAGES": "Ton site GitHub Pages",
+      "NAMED_REPOSITORY": "Un dépôt nommé « {name} »",
+      "HOMEPAGE": "Le site indiqué dans un de tes dépôts",
+      "PROJECT_PAGES": "Un projet publié avec GitHub Pages"
+    }
+  }
+}

@@ -29,7 +29,7 @@ and must not become trusted instructions for a later run.
 The connection details are kept out of the repository. Read `.claude/release-verifier.local.md`
 first: it gives `<host>` (the SSH alias), `<stack-dir>` (the directory of the production stack),
 `<management-port>` (the internal actuator port) and `<site>` (the public origin, e.g.
-`https://sourcefolio.dev`). If the file is missing, stop with
+`https://sourcefolio.lescracks.com`). If the file is missing, stop with
 `STATUS: UNKNOWN (connection details missing)`. Never write these values in your report.
 
 Run remote commands as `ssh -o BatchMode=yes <host> '…'`. Only the `sourcefolio-*` containers

@@ -20,29 +20,21 @@ scrape_configs:
     static_configs:
       - targets: ['postgres-exporter:9187']
 
-  # Host: CPU, memory, disk and network of the VPS itself.
-  - job_name: 'node'
-    static_configs:
-      - targets: ['node-exporter:9100']
-
-  # Per-container CPU, memory and restart churn.
-  - job_name: 'cadvisor'
-    static_configs:
-      - targets: ['cadvisor:8080']
+  # No node or cadvisor job: the VPS is shared with lescracks, whose stack already measures the
+  # machine and its containers.
 
   # External probes: what a visitor actually gets, through DNS, Traefik and TLS.
-  # Prometheus does not read environment variables here: change the domain by hand
-  # when the final name is chosen.
+  # Prometheus does not read environment variables here: the domain is written out.
   - job_name: 'blackbox-public'
     metrics_path: /probe
     params:
       module: [http_2xx]
     static_configs:
       - targets:
-          - https://sourcefolio.dev/fr
-          - https://sourcefolio.dev/en
-          - https://sourcefolio.dev/sitemap.xml
-          - https://sourcefolio.dev/api/catalog?size=1
+          - https://sourcefolio.lescracks.com/fr
+          - https://sourcefolio.lescracks.com/en
+          - https://sourcefolio.lescracks.com/sitemap.xml
+          - https://sourcefolio.lescracks.com/api/catalog?size=1
     relabel_configs:
       - source_labels: [__address__]
         target_label: __param_target
