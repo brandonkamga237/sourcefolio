@@ -6,6 +6,8 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 import { IconCode, IconExternal } from "@/components/icons";
 import { LikeButton } from "@/components/likes/LikeButton";
 import { Preview } from "@/components/catalog/Preview";
+import { StarCount } from "@/components/stars/StarCount";
+import { CommitGraph } from "@/components/illustrations/CommitGraph";
 import { localizedPath } from "@/i18n/paths";
 import { toLocale } from "@/i18n/routing";
 import { siteLabel } from "@/lib/site-label";
@@ -61,9 +63,10 @@ export default async function ShowcasePage({ params }: PageProps<"/[locale]/p/[s
   const { locale: raw, slug } = await params;
   const locale = toLocale(raw);
   setRequestLocale(locale);
-  const [t, tl, showcase] = await Promise.all([
+  const [t, tl, ts, showcase] = await Promise.all([
     getTranslations({ locale, namespace: "showcasePage" }),
     getTranslations({ locale, namespace: "likes" }),
+    getTranslations({ locale, namespace: "stars" }),
     getPublicShowcase(slug),
   ]);
   if (!showcase) notFound();
@@ -107,7 +110,14 @@ export default async function ShowcasePage({ params }: PageProps<"/[locale]/p/[s
             ),
           })}
         </p>
-        <p className="font-mono text-xs break-all text-ink-soft">{showcase.repository}</p>
+        <p className="flex flex-wrap items-center gap-x-3 gap-y-1 font-mono text-xs text-ink-soft">
+          <span className="break-all">{showcase.repository}</span>
+          {showcase.repositoryStars != null ? (
+            <a href={showcase.repositoryUrl} target="_blank" rel="noopener noreferrer" className="font-semibold text-ink">
+              <StarCount count={showcase.repositoryStars} locale={locale} label={ts("repository", { count: showcase.repositoryStars })} />
+            </a>
+          ) : null}
+        </p>
         {showcase.publishedAt ? (
           <p className="text-[13px] text-ink-muted">{t("publishedOn", { date: new Date(showcase.publishedAt) })}</p>
         ) : null}
@@ -138,7 +148,8 @@ export default async function ShowcasePage({ params }: PageProps<"/[locale]/p/[s
         </div>
       </div>
 
-      <aside className="mt-4 flex flex-col gap-2 rounded-card border border-line bg-surface p-4">
+      <aside className="relative isolate mt-4 flex flex-col gap-2 overflow-hidden rounded-card border border-line bg-surface p-4">
+        <CommitGraph className="pointer-events-none absolute -right-10 -bottom-8 -z-10 w-[200px] opacity-50" />
         <h2 className="text-[15px] font-semibold">{t("ctaTitle")}</h2>
         <p className="text-sm leading-normal text-ink-body">{t("ctaLead")}</p>
         <Link href={localizedPath(locale, "/me")} className="press flex h-11 w-fit items-center rounded-control border border-ink px-4 text-sm font-semibold text-ink">

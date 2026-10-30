@@ -6,6 +6,7 @@ import com.brandonkamga.sourcefolio.discovery.domain.model.CatalogEntry;
 import com.brandonkamga.sourcefolio.engagement.application.ShowcaseLikesChanged;
 import com.brandonkamga.sourcefolio.showcase.application.ShowcasePreviewChanged;
 import com.brandonkamga.sourcefolio.showcase.application.ShowcasePublished;
+import com.brandonkamga.sourcefolio.showcase.application.ShowcaseStarsChanged;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -53,6 +54,15 @@ class CatalogListeners {
             catalog.updateLikes(event.showcaseId(), event.count());
         } catch (RuntimeException failure) {
             log.error("Like count of showcase {} not copied to the catalogue", event.showcaseId(), failure);
+        }
+    }
+
+    @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT, fallbackExecution = true)
+    void on(ShowcaseStarsChanged event) {
+        try {
+            catalog.updateRepositoryStars(event.showcaseId(), event.stars());
+        } catch (RuntimeException failure) {
+            log.error("Repository stars of showcase {} not copied to the catalogue", event.showcaseId(), failure);
         }
     }
 

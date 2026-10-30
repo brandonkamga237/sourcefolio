@@ -5,6 +5,7 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 import { Suspense } from "react";
 import { Preview } from "@/components/catalog/Preview";
 import { IconHeart } from "@/components/icons";
+import { Podium } from "@/components/illustrations/Podium";
 import { localizedPath } from "@/i18n/paths";
 import { toLocale, type Locale } from "@/i18n/routing";
 import { siteLabel } from "@/lib/site-label";
@@ -41,7 +42,7 @@ async function RankingList({ locale }: { locale: Locale }) {
         <li key={row.slug}>
           <Link
             href={localizedPath(locale, `/p/${row.slug}`)}
-            className="flex items-center gap-3 rounded-card border border-line bg-surface p-2 pr-4 transition-transform hover:border-ink-muted active:scale-[0.99]"
+            className="group rise-in flex items-center gap-3 rounded-card border border-line bg-surface p-2 pr-4 transition-[transform,box-shadow,border-color] duration-300 ease-out-soft active:scale-[0.99] pointer-fine:hover:-translate-y-0.5 pointer-fine:hover:border-ink-muted pointer-fine:hover:shadow-[0_12px_28px_-16px_rgba(18,20,18,0.3)]"
           >
             <span className={`w-8 shrink-0 text-center font-mono text-lg font-semibold tabular-nums ${row.rank <= 3 ? "text-accent-ink" : "text-ink-muted"}`}>
               {row.rank}
@@ -80,10 +81,13 @@ export default async function RankingPage({ params }: PageProps<"/[locale]/ranki
   const t = await getTranslations({ locale, namespace: "ranking" });
   return (
     <div className="flex max-w-4xl flex-col gap-4 px-4 py-5 lg:px-8 lg:py-7">
-      <div className="flex flex-col gap-1">
-        <h1 className="font-display text-[24px] leading-none font-bold tracking-[-0.035em] sm:text-[30px] lg:text-[40px]">{t("title")}</h1>
-        <p className="text-sm text-ink-muted">{t("lead")}</p>
-      </div>
+      <section className="relative isolate flex items-center justify-between gap-4 overflow-hidden rounded-panel border border-line bg-surface/80 px-4 py-4 backdrop-blur-sm sm:px-6 sm:py-5 lg:px-8">
+        <div className="flex min-w-0 flex-col gap-1.5">
+          <h1 className="font-display text-[24px] leading-none font-bold tracking-[-0.035em] sm:text-[30px] lg:text-[40px]">{t("title")}</h1>
+          <p className="text-sm leading-snug text-ink-muted sm:text-[15px]">{t("lead")}</p>
+        </div>
+        <Podium className="h-[84px] w-auto shrink-0 sm:h-[120px] lg:h-[140px]" />
+      </section>
       <Suspense fallback={<RankingSkeleton />}>
         <RankingList locale={locale} />
       </Suspense>

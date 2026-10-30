@@ -31,4 +31,9 @@ public class CatalogProjectionImpl implements CatalogProjection {
     public void updatePreview(UUID showcaseId, String imageUrl, String videoUrl) {
         store.setPreview(showcaseId, imageUrl, videoUrl);
     }
+
+    @Override
+    public void updateRepositoryStars(UUID showcaseId, Integer stars) {
+        store.setRepositoryStars(showcaseId, stars);
+    }
 }

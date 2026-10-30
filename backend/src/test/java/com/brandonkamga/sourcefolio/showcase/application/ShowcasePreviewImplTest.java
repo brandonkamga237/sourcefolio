@@ -60,6 +60,11 @@ class ShowcasePreviewImplTest {
         public void showcaseRemoved(ShowcaseRemoved event) {
             throw new AssertionError("a preview change removes no showcase");
         }
+
+        @Override
+        public void starsChanged(ShowcaseStarsChanged event) {
+            throw new AssertionError("a preview change reads no stars");
+        }
     });
 
     @Test

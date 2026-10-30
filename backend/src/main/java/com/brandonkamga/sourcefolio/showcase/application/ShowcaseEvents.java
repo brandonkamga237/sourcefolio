@@ -8,4 +8,6 @@ public interface ShowcaseEvents {
     void previewChanged(ShowcasePreviewChanged event);
 
     void showcaseRemoved(ShowcaseRemoved event);
+
+    void starsChanged(ShowcaseStarsChanged event);
 }

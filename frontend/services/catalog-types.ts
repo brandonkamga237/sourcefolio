@@ -13,6 +13,8 @@ export interface CatalogCard {
   /** The author's preview, null until they choose one. */
   previewImageUrl: string | null;
   previewVideoUrl: string | null;
+  /** GitHub stars of the repository, null until read. Shown, never used to order. */
+  repositoryStars: number | null;
 }
 
 export interface CatalogPage {

@@ -14,6 +14,7 @@ import org.springframework.web.client.RestClient;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.OptionalInt;
 
 /**
  * Anti-corruption layer over GitHub's REST API: public data only, through the token of the
@@ -55,6 +56,18 @@ public class GitHubRepositoryHost implements RepositoryHost {
         return repositories;
     }
 
+    // One call; a private or deleted repository answers 404 to an anonymous or app token.
+    @Override
+    public OptionalInt stars(RepositoryCoordinates repository) {
+        try {
+            GitHubStars body = github.get().uri("/repos/{owner}/{name}", repository.owner(), repository.name())
+                    .retrieve().body(GitHubStars.class);
+            return body == null || body.stargazersCount() == null ? OptionalInt.empty() : OptionalInt.of(body.stargazersCount());
+        } catch (HttpClientErrorException.NotFound gone) {
+            return OptionalInt.empty();
+        }
+    }
+
     private static boolean hasNextPage(HttpHeaders headers) {
         String link = headers.getFirst(HttpHeaders.LINK);
         return link != null && link.contains("rel=\"next\"");
@@ -74,5 +87,9 @@ public class GitHubRepositoryHost implements RepositoryHost {
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     record Owner(String login) {
+    }
+
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    record GitHubStars(@JsonProperty("stargazers_count") Integer stargazersCount) {
     }
 }

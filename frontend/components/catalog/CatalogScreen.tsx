@@ -43,9 +43,10 @@ async function SortTabs({ locale, sort }: CatalogScreenProps) {
 async function Feed({ locale, sort }: CatalogScreenProps) {
   // Read per request: the catalogue changes as members publish, and the build has no API.
   await connection();
-  const [t, tl] = await Promise.all([
+  const [t, tl, ts] = await Promise.all([
     getTranslations({ locale, namespace: "catalog" }),
     getTranslations({ locale, namespace: "likes" }),
+    getTranslations({ locale, namespace: "stars" }),
   ]);
   let firstPage: CatalogPage;
   try {
@@ -91,6 +92,7 @@ async function Feed({ locale, sort }: CatalogScreenProps) {
           openPage: t("panel.openPage"),
           sourceRepo: t("panel.sourceRepo"),
           publishedOn: t.raw("panel.publishedOn") as string,
+          stars: { one: ts.raw("one") as string, other: ts.raw("other") as string },
           likes: { like: tl.raw("like") as string, unlike: tl.raw("unlike") as string, own: tl.raw("own") as string, failed: tl("failed") },
         },
       }}

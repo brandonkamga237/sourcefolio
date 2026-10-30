@@ -59,6 +59,15 @@ class InMemoryCatalogStore implements CatalogStore {
     }
 
     @Override
+    public void setRepositoryStars(UUID showcaseId, Integer stars) {
+        CatalogEntry entry = rows.get(showcaseId);
+        if (entry != null) {
+            rows.put(showcaseId, new CatalogEntry(entry.showcaseId(), entry.slug(), entry.siteUrl(), entry.repository(), entry.repositoryUrl(),
+                    entry.ownerId(), entry.ownerLogin(), entry.publishedAt(), entry.previewImageUrl(), entry.previewVideoUrl(), stars));
+        }
+    }
+
+    @Override
     public List<RankedEntry> ranking(int limit) {
         return rows.values().stream()
                 .filter(entry -> likes.getOrDefault(entry.showcaseId(), 0) > 0)

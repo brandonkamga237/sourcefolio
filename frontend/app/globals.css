@@ -155,9 +155,10 @@
   background-color: var(--color-canvas);
   background-image:
     radial-gradient(60rem 22rem at 70% -6rem, color-mix(in oklab, var(--color-accent) 13%, transparent), transparent 70%),
+    radial-gradient(40rem 26rem at -8rem 85%, color-mix(in oklab, var(--color-success) 7%, transparent), transparent 70%),
     radial-gradient(circle at 1px 1px, color-mix(in oklab, var(--color-ink) 9%, transparent) 1px, transparent 0);
-  background-size: 100% 100%, 22px 22px;
-  background-repeat: no-repeat, repeat;
+  background-size: 100% 100%, 100% 100%, 22px 22px;
+  background-repeat: no-repeat, no-repeat, repeat;
 }
 
 /* Card entrance: each card rises a beat after the previous one (delay set from its index). */

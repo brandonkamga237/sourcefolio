@@ -23,6 +23,9 @@ public interface CatalogStore {
     /** Keeps the copy of a showcase's like count, announced by the engagement module. */
     void setLikes(UUID showcaseId, int count);
 
+    /** Keeps the copy of the repository's GitHub stars; null when unknown. */
+    void setRepositoryStars(UUID showcaseId, Integer stars);
+
     /** The most liked showcases first, ties broken by the most recent; liked ones only. */
     List<RankedEntry> ranking(int limit);
 
