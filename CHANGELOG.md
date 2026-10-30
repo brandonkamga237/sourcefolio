@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.11.1](https://github.com/brandonkamga237/sourcefolio/compare/v0.11.0...v0.11.1) (2026-10-30)
+
+
+### Bug Fixes
+
+* **frontend:** make the GitHub stars badges recognisable ([#46](https://github.com/brandonkamga237/sourcefolio/issues/46)) ([edc7045](https://github.com/brandonkamga237/sourcefolio/commit/edc704598865a311e12269116bde194060536b61))
+
 ## [0.11.0](https://github.com/brandonkamga237/sourcefolio/compare/v0.10.0...v0.11.0) (2026-10-30)
 
 
