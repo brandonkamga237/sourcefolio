@@ -7,7 +7,7 @@ import java.util.Optional;
 /** showcase is null before the member's first publication. */
 public record MyShowcaseResponse(MyShowcase showcase) {
 
-    public record MyShowcase(String id, String siteUrl, String repository, String repositoryUrl, String status,
+    public record MyShowcase(String id, String slug, String siteUrl, String repository, String repositoryUrl, String status,
                              Instant publishedAt) {
     }
 
@@ -20,7 +20,7 @@ public record MyShowcaseResponse(MyShowcase showcase) {
     }
 
     private static MyShowcase view(Showcase showcase) {
-        return new MyShowcase(showcase.id().toString(), showcase.siteUrl().value(),
+        return new MyShowcase(showcase.id().toString(), showcase.slug().value(), showcase.siteUrl().value(),
                 showcase.sourceRepo().coordinates().toString(), showcase.sourceRepo().url(), showcase.status().name(),
                 showcase.publishedAt());
     }

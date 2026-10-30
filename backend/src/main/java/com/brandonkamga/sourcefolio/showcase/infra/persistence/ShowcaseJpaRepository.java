@@ -7,4 +7,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 interface ShowcaseJpaRepository extends JpaRepository<ShowcaseEntity, UUID> {
 
     Optional<ShowcaseEntity> findFirstByOwnerUserIdOrderByCreatedAtDesc(UUID ownerUserId);
+
+    Optional<ShowcaseEntity> findBySlug(String slug);
+
+    boolean existsBySlug(String slug);
 }

@@ -10,6 +10,7 @@ import com.brandonkamga.sourcefolio.showcase.domain.model.RepositoryCoordinates;
 import com.brandonkamga.sourcefolio.showcase.domain.model.RepositoryProvider;
 import com.brandonkamga.sourcefolio.showcase.domain.model.Showcase;
 import com.brandonkamga.sourcefolio.showcase.domain.model.ShowcaseCandidate;
+import com.brandonkamga.sourcefolio.showcase.domain.model.ShowcaseSlug;
 import com.brandonkamga.sourcefolio.showcase.domain.model.ShowcaseStatus;
 import com.brandonkamga.sourcefolio.showcase.domain.model.ShowcaseStatusEvent;
 import com.brandonkamga.sourcefolio.showcase.domain.model.SiteUrl;
@@ -44,10 +45,11 @@ class ShowcasePublicationImplTest {
     private final InMemoryCandidateStore candidates = new InMemoryCandidateStore();
     private final Set<String> reachableSites = new HashSet<>();
     private final List<String> fetched = new ArrayList<>();
+    private final Map<UUID, String> logins = new HashMap<>(Map.of(MEMBER, "Nekwalla", OTHER_MEMBER, "ayo-dev"));
     private final ShowcasePublication publication = new ShowcasePublicationImpl(showcases, candidates, url -> {
         fetched.add(url);
         return reachableSites.contains(url);
-    }, Clock.fixed(NOW, ZoneOffset.UTC));
+    }, logins::get, Clock.fixed(NOW, ZoneOffset.UTC));
 
     @Test
     @DisplayName("a detected candidate whose site answers is published at once, with its repository and its first history line")
@@ -65,6 +67,32 @@ class ShowcasePublicationImplTest {
         assertThat(stored.sourceRepo().url()).isEqualTo("https://github.com/nekwalla/nekwalla.github.io");
         assertThat(showcases.history.get(stored.id().value())).containsExactly(
                 new ShowcaseStatusEvent(null, ShowcaseStatus.PUBLISHED, ShowcaseStatusEvent.AUTO_VERIFIED, StatusActor.SYSTEM, NOW));
+    }
+
+    @Test
+    @DisplayName("the public address comes from the member's login, lowercased")
+    void slugFromLogin() {
+        candidates.replace(MEMBER, new CandidateScan(NOW, List.of(PAGES)));
+        reachableSites.add("https://nekwalla.github.io/");
+
+        Showcase published = publication.publish(new PublishShowcase(MEMBER, PAGES.repository()));
+
+        assertThat(published.slug()).isEqualTo(new ShowcaseSlug("nekwalla"));
+    }
+
+    @Test
+    @DisplayName("a login already used as an address by an earlier member gets the next free suffix")
+    void slugCollision() {
+        candidates.replace(OTHER_MEMBER, new CandidateScan(NOW, List.of(API)));
+        candidates.replace(MEMBER, new CandidateScan(NOW, List.of(PAGES)));
+        reachableSites.addAll(List.of("https://nekwalla.github.io/", "https://api.example.org/"));
+        // The other member published as "nekwalla" before renaming on GitHub.
+        logins.put(OTHER_MEMBER, "nekwalla");
+        publication.publish(new PublishShowcase(OTHER_MEMBER, API.repository()));
+
+        Showcase published = publication.publish(new PublishShowcase(MEMBER, PAGES.repository()));
+
+        assertThat(published.slug()).isEqualTo(new ShowcaseSlug("nekwalla-2"));
     }
 
     @Test
@@ -165,6 +193,16 @@ class ShowcasePublicationImplTest {
         public Optional<Showcase> findByOwner(UUID ownerId) {
             return rows.values().stream().filter(row -> row.ownerId().equals(ownerId))
                     .max(Comparator.comparing(Showcase::createdAt));
+        }
+
+        @Override
+        public Optional<Showcase> findBySlug(ShowcaseSlug slug) {
+            return rows.values().stream().filter(row -> row.slug().equals(slug)).findFirst();
+        }
+
+        @Override
+        public boolean existsBySlug(ShowcaseSlug slug) {
+            return findBySlug(slug).isPresent();
         }
 
         @Override

@@ -14,6 +14,9 @@ class ShowcaseEntity {
     @Id
     private UUID id;
 
+    @Column(nullable = false, length = 100, updatable = false)
+    private String slug;
+
     @Column(name = "owner_user_id", nullable = false, updatable = false)
     private UUID ownerUserId;
 
@@ -35,8 +38,9 @@ class ShowcaseEntity {
     protected ShowcaseEntity() {
     }
 
-    ShowcaseEntity(UUID id, UUID ownerUserId, Instant createdAt) {
+    ShowcaseEntity(UUID id, String slug, UUID ownerUserId, Instant createdAt) {
         this.id = id;
+        this.slug = slug;
         this.ownerUserId = ownerUserId;
         this.createdAt = createdAt;
     }
@@ -49,6 +53,7 @@ class ShowcaseEntity {
     }
 
     UUID getId() { return id; }
+    String getSlug() { return slug; }
     UUID getOwnerUserId() { return ownerUserId; }
     String getKind() { return kind; }
     String getSiteUrl() { return siteUrl; }

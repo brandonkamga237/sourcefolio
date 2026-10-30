@@ -6,6 +6,7 @@ import com.brandonkamga.sourcefolio.showcase.domain.model.RepositoryProvider;
 import com.brandonkamga.sourcefolio.showcase.domain.model.Showcase;
 import com.brandonkamga.sourcefolio.showcase.domain.model.ShowcaseId;
 import com.brandonkamga.sourcefolio.showcase.domain.model.ShowcaseKind;
+import com.brandonkamga.sourcefolio.showcase.domain.model.ShowcaseSlug;
 import com.brandonkamga.sourcefolio.showcase.domain.model.ShowcaseStatus;
 import com.brandonkamga.sourcefolio.showcase.domain.model.ShowcaseStatusEvent;
 import com.brandonkamga.sourcefolio.showcase.domain.model.SiteUrl;
@@ -41,7 +42,7 @@ class JpaShowcaseStore implements ShowcaseStore {
         // repository may answer at saveAll as well as at the final flush.
         try {
             ShowcaseEntity row = showcases.findById(id)
-                    .orElseGet(() -> new ShowcaseEntity(id, showcase.ownerId(), showcase.createdAt()));
+                    .orElseGet(() -> new ShowcaseEntity(id, showcase.slug().value(), showcase.ownerId(), showcase.createdAt()));
             row.update(showcase.kind().name(), showcase.siteUrl().value(), showcase.status().name(), showcase.publishedAt());
             showcases.save(row);
 
@@ -70,12 +71,25 @@ class JpaShowcaseStore implements ShowcaseStore {
 
     @Override
     @Transactional(readOnly = true)
+    public Optional<Showcase> findBySlug(ShowcaseSlug slug) {
+        return showcases.findBySlug(slug.value())
+                .map(row -> toDomain(row, sourceRepos.findById(row.getId()).orElseThrow()));
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public boolean existsBySlug(ShowcaseSlug slug) {
+        return showcases.existsBySlug(slug.value());
+    }
+
+    @Override
+    @Transactional(readOnly = true)
     public boolean existsByRepository(RepositoryProvider provider, RepositoryCoordinates repository) {
         return sourceRepos.existsRepository(provider.name(), repository.owner(), repository.name());
     }
 
     private static Showcase toDomain(ShowcaseEntity row, SourceRepoEntity repo) {
-        return new Showcase(new ShowcaseId(row.getId()), row.getOwnerUserId(), ShowcaseKind.valueOf(row.getKind()),
+        return new Showcase(new ShowcaseId(row.getId()), new ShowcaseSlug(row.getSlug()), row.getOwnerUserId(), ShowcaseKind.valueOf(row.getKind()),
                 new SiteUrl(row.getSiteUrl()),
                 new SourceRepo(RepositoryProvider.valueOf(repo.getProvider()),
                         new RepositoryCoordinates(repo.getOwner(), repo.getName()), repo.isPublic()),
