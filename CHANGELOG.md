@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.6.0](https://github.com/brandonkamga237/sourcefolio/compare/v0.5.0...v0.6.0) (2026-10-30)
+
+
+### Features
+
+* **profile:** complete the profile one question at a time ([#25](https://github.com/brandonkamga237/sourcefolio/issues/25)) ([c21650d](https://github.com/brandonkamga237/sourcefolio/commit/c21650dbe65ad90712aa77e00cf0216e29d24a52))
+
 ## [0.5.0](https://github.com/brandonkamga237/sourcefolio/compare/v0.4.0...v0.5.0) (2026-10-30)
 
 
