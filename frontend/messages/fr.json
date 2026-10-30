@@ -130,5 +130,40 @@
     "emptyTitle": "Aucun portfolio publié pour l’instant",
     "emptyLead": "Le tien peut être le premier : connecte-toi avec GitHub, on le trouve et tu le publies en un clic.",
     "emptyLink": "Publier mon portfolio"
+  },
+  "profile": {
+    "signInHint": "Connecte-toi avec GitHub pour compléter ton profil.",
+    "unavailable": "Ton profil ne peut pas être chargé pour le moment. Réessaie dans un instant.",
+    "progress": "Question {current} sur {total}",
+    "countryTitle": "Dans quel pays vis-tu ?",
+    "countryPlaceholder": "Choisis ton pays",
+    "specialtyTitle": "Quelle est ta spécialité ?",
+    "emailTitle": "Ton e-mail, pour être prévenu si ton site tombe",
+    "emailHint": "Facultatif. Il n’est jamais affiché ni partagé.",
+    "next": "Continuer",
+    "skip": "Passer",
+    "saving": "Enregistrement…",
+    "failed": "Ta réponse n’a pas pu être enregistrée. Réessaie.",
+    "summaryTitle": "Mon profil",
+    "countryLabel": "Pays",
+    "specialtyLabel": "Spécialité",
+    "emailLabel": "E-mail d’alerte",
+    "notGiven": "Non renseigné",
+    "edit": "Modifier",
+    "done": "Retour à mon portfolio",
+    "reminder": "Ajoute ton pays et ta spécialité : deux questions, dix secondes.",
+    "reminderLink": "Compléter mon profil"
+  },
+  "specialty": {
+    "frontend": "Frontend",
+    "backend": "Backend",
+    "fullstack": "Full-stack",
+    "mobile": "Mobile",
+    "devops": "DevOps",
+    "data-ai": "Data / IA",
+    "game": "Jeu vidéo",
+    "embedded": "Embarqué",
+    "security": "Sécurité",
+    "other": "Autre"
   }
 }

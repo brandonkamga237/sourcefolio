@@ -17,13 +17,13 @@ function readCsrfToken(): string | undefined {
 
 // The API sets the XSRF-TOKEN cookie on any GET it answers. A page reached through server
 // rendering may not have it yet in the browser: one GET first, then the protected write.
-export async function clientPost<T>(path: string, body?: unknown): Promise<ClientResult<T>> {
+async function clientWrite<T>(method: "POST" | "PUT", path: string, body?: unknown): Promise<ClientResult<T>> {
   try {
     if (!readCsrfToken()) {
       await fetch("/api/me", { credentials: "same-origin" });
     }
     const response = await fetch(path, {
-      method: "POST",
+      method,
       credentials: "same-origin",
       headers: {
         "X-XSRF-TOKEN": decodeURIComponent(readCsrfToken() ?? ""),
@@ -38,4 +38,12 @@ export async function clientPost<T>(path: string, body?: unknown): Promise<Clien
   } catch {
     return { status: 0, data: null, message: null };
   }
+}
+
+export function clientPost<T>(path: string, body?: unknown): Promise<ClientResult<T>> {
+  return clientWrite<T>("POST", path, body);
+}
+
+export function clientPut<T>(path: string, body: unknown): Promise<ClientResult<T>> {
+  return clientWrite<T>("PUT", path, body);
 }
