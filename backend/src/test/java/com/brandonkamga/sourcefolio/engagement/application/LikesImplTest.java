@@ -16,6 +16,9 @@ import java.time.Clock;
 import java.time.Instant;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -53,6 +56,23 @@ class LikesImplTest {
         @Override
         public boolean exists(UUID memberId, UUID showcaseId) {
             return rows.contains(memberId + ":" + showcaseId);
+        }
+
+        @Override
+        public List<UUID> removeAllBy(UUID memberId) {
+            List<String> mine = rows.stream().filter(row -> row.startsWith(memberId + ":")).toList();
+            mine.forEach(rows::remove);
+            return mine.stream().map(row -> UUID.fromString(row.substring(row.indexOf(':') + 1))).toList();
+        }
+
+        @Override
+        public Map<UUID, Integer> counts(Collection<UUID> showcaseIds) {
+            Map<UUID, Integer> counts = new HashMap<>();
+            showcaseIds.forEach(id -> {
+                int count = count(id);
+                if (count > 0) counts.put(id, count);
+            });
+            return counts;
         }
     };
     private final List<ShowcaseLikesChanged> announced = new ArrayList<>();
@@ -94,6 +114,28 @@ class LikesImplTest {
         likes.like(FAN, "nekwalla");
 
         assertThat(likes.findState(OWNER, "nekwalla")).isEqualTo(new LikeState(1, false, true));
+    }
+
+    @Test
+    @DisplayName("a deleted member's likes are all taken back, and each showcase's new count is announced")
+    void withdrawAll() {
+        UUID other = UUID.fromString("9a0e3f11-6b7c-4d2e-8f90-1a2b3c4d5e6f");
+        likes.like(FAN, "nekwalla");
+        likes.like(other, "nekwalla");
+        announced.clear();
+
+        likes.withdrawAllBy(FAN);
+
+        assertThat(rows).containsExactly(other + ":" + SHOWCASE.id().value());
+        assertThat(announced).containsExactly(new ShowcaseLikesChanged(SHOWCASE.id().value(), 1));
+    }
+
+    @Test
+    @DisplayName("a member who liked nothing leaves without announcing anything")
+    void withdrawNothing() {
+        likes.withdrawAllBy(FAN);
+
+        assertThat(announced).isEmpty();
     }
 
     @Test

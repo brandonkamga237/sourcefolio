@@ -11,6 +11,8 @@ import com.brandonkamga.sourcefolio.showcase.application.ShowcasePreview;
 import com.brandonkamga.sourcefolio.showcase.application.ShowcasePreviewImpl;
 import com.brandonkamga.sourcefolio.showcase.application.ShowcasePublication;
 import com.brandonkamga.sourcefolio.showcase.application.ShowcasePublicationImpl;
+import com.brandonkamga.sourcefolio.showcase.application.ShowcaseRemoval;
+import com.brandonkamga.sourcefolio.showcase.application.ShowcaseRemovalImpl;
 import com.brandonkamga.sourcefolio.showcase.domain.port.CandidateStore;
 import com.brandonkamga.sourcefolio.showcase.domain.port.DetectionScheduler;
 import com.brandonkamga.sourcefolio.showcase.domain.port.MemberDirectory;
@@ -53,6 +55,11 @@ class ShowcaseServices {
     @Bean
     ShowcasePreview showcasePreview(ShowcaseStore showcases, MediaStore media, ShowcaseEvents events) {
         return new ShowcasePreviewImpl(showcases, media, events);
+    }
+
+    @Bean
+    ShowcaseRemoval showcaseRemoval(ShowcaseStore showcases, ShowcaseEvents events, TransactionalServices transactional) {
+        return transactional.wrap(ShowcaseRemoval.class, new ShowcaseRemovalImpl(showcases, events));
     }
 
     @Bean

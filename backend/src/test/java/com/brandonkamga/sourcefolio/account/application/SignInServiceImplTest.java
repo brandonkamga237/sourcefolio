@@ -23,7 +23,18 @@ class SignInServiceImplTest {
     private final InMemoryUserStore users = new InMemoryUserStore();
     private final InMemoryAuthIdentityStore identities = new InMemoryAuthIdentityStore();
     private final List<MemberSignedIn> published = new ArrayList<>();
-    private final SignInService signIn = new SignInServiceImpl(users, identities, published::add, Clock.fixed(NOW, ZoneOffset.UTC));
+    private final AccountEvents events = new AccountEvents() {
+        @Override
+        public void memberSignedIn(MemberSignedIn event) {
+            published.add(event);
+        }
+
+        @Override
+        public void memberDeleting(MemberDeleting event) {
+            throw new AssertionError("signing in deletes nothing");
+        }
+    };
+    private final SignInService signIn = new SignInServiceImpl(users, identities, events, Clock.fixed(NOW, ZoneOffset.UTC));
 
     @Test
     @DisplayName("a first sign-in registers the member in their browser's language and links the GitHub account")
@@ -58,7 +69,7 @@ class SignInServiceImplTest {
     void renameIsFollowed() {
         Member first = signIn.signIn(github("42", "nekwalla", Language.FR));
         Instant later = NOW.plusSeconds(3600);
-        SignInService laterSignIn = new SignInServiceImpl(users, identities, published::add, Clock.fixed(later, ZoneOffset.UTC));
+        SignInService laterSignIn = new SignInServiceImpl(users, identities, events, Clock.fixed(later, ZoneOffset.UTC));
 
         Member renamed = laterSignIn.signIn(github("42", "nadege-ekwalla", Language.FR));
 

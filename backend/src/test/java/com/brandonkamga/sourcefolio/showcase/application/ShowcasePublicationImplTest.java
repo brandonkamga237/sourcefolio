@@ -60,6 +60,11 @@ class ShowcasePublicationImplTest {
         public void previewChanged(ShowcasePreviewChanged event) {
             throw new AssertionError("publishing changes no preview");
         }
+
+        @Override
+        public void showcaseRemoved(ShowcaseRemoved event) {
+            throw new AssertionError("publishing removes nothing");
+        }
     }, Clock.fixed(NOW, ZoneOffset.UTC));
 
     @Test
@@ -224,6 +229,16 @@ class ShowcasePublicationImplTest {
         public boolean existsByRepository(RepositoryProvider provider, RepositoryCoordinates repository) {
             return rows.values().stream().anyMatch(row -> row.sourceRepo().provider() == provider
                     && row.sourceRepo().coordinates().sameAs(repository));
+        }
+
+        @Override
+        public List<Showcase> deleteAllByOwner(UUID ownerId) {
+            List<Showcase> removed = rows.values().stream().filter(row -> row.ownerId().equals(ownerId)).toList();
+            removed.forEach(row -> {
+                rows.remove(row.id().value());
+                history.remove(row.id().value());
+            });
+            return removed;
         }
     }
 }

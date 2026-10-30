@@ -4,6 +4,8 @@ import com.brandonkamga.sourcefolio.shared.exception.ConflictException;
 import com.brandonkamga.sourcefolio.shared.security.SecurityTestConfig;
 import com.brandonkamga.sourcefolio.showcase.application.PublishShowcase;
 import com.brandonkamga.sourcefolio.showcase.application.ShowcasePublication;
+import com.brandonkamga.sourcefolio.showcase.application.ShowcaseRemoval;
+import com.brandonkamga.sourcefolio.shared.exception.NotFoundException;
 import com.brandonkamga.sourcefolio.showcase.domain.model.CandidateReason;
 import com.brandonkamga.sourcefolio.showcase.domain.model.RepositoryCoordinates;
 import com.brandonkamga.sourcefolio.showcase.domain.model.Showcase;
@@ -28,10 +30,13 @@ import java.util.Optional;
 import java.util.UUID;
 import static org.hamcrest.Matchers.nullValue;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.oauth2Login;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -52,6 +57,28 @@ class MyShowcaseControllerTest {
 
     @MockitoBean
     private ShowcasePublication publication;
+
+    @MockitoBean
+    private ShowcaseRemoval removal;
+
+    @Test
+    @DisplayName("a member withdraws their portfolio with DELETE and gets 204")
+    void withdraw() throws Exception {
+        mvc.perform(delete("/api/me/showcase").with(member()).with(csrf()))
+                .andExpect(status().isNoContent());
+
+        verify(removal).withdraw(MEMBER);
+    }
+
+    @Test
+    @DisplayName("withdrawing without a portfolio is a 404 in the member's language")
+    void withdrawNothing() throws Exception {
+        doThrow(new NotFoundException("showcase.none")).when(removal).withdraw(MEMBER);
+
+        mvc.perform(delete("/api/me/showcase").with(member()).with(csrf()).header("Accept-Language", "fr"))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.message").value("Tu n’as pas de portfolio publié."));
+    }
 
     @Test
     @DisplayName("before the first publication, showcase is null")

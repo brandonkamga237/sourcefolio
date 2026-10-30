@@ -6,4 +6,6 @@ public interface ShowcaseEvents {
     void showcasePublished(ShowcasePublished event);
 
     void previewChanged(ShowcasePreviewChanged event);
+
+    void showcaseRemoved(ShowcaseRemoved event);
 }

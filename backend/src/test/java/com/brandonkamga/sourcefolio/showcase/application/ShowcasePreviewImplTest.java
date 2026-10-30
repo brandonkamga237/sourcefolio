@@ -55,6 +55,11 @@ class ShowcasePreviewImplTest {
         public void previewChanged(ShowcasePreviewChanged event) {
             announced.add(event);
         }
+
+        @Override
+        public void showcaseRemoved(ShowcaseRemoved event) {
+            throw new AssertionError("a preview change removes no showcase");
+        }
     });
 
     @Test

@@ -3,6 +3,7 @@ package com.brandonkamga.sourcefolio.showcase.infra.events;
 import com.brandonkamga.sourcefolio.showcase.application.ShowcaseEvents;
 import com.brandonkamga.sourcefolio.showcase.application.ShowcasePreviewChanged;
 import com.brandonkamga.sourcefolio.showcase.application.ShowcasePublished;
+import com.brandonkamga.sourcefolio.showcase.application.ShowcaseRemoved;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;
 
@@ -22,6 +23,11 @@ class SpringShowcaseEvents implements ShowcaseEvents {
 
     @Override
     public void previewChanged(ShowcasePreviewChanged event) {
+        publisher.publishEvent(event);
+    }
+
+    @Override
+    public void showcaseRemoved(ShowcaseRemoved event) {
         publisher.publishEvent(event);
     }
 }
