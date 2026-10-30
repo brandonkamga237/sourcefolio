@@ -1,7 +1,7 @@
 "use client";
 
 import { useSyncExternalStore } from "react";
-import { applyTheme, THEME_STORAGE_KEY, themes, type Theme } from "./theme";
+import { applyTheme, storedTheme, themes, type Theme } from "./theme";
 
 interface ThemeChoiceProps {
   label: string;
@@ -9,15 +9,6 @@ interface ThemeChoiceProps {
 }
 
 const CHANGE_EVENT = "sourcefolio-theme-change";
-
-function readTheme(): Theme {
-  try {
-    const stored = localStorage.getItem(THEME_STORAGE_KEY);
-    return stored === "light" || stored === "dark" ? stored : "system";
-  } catch {
-    return "system";
-  }
-}
 
 function subscribe(onChange: () => void) {
   window.addEventListener("storage", onChange);
@@ -35,7 +26,7 @@ function choose(theme: Theme) {
 
 // Stored in the browser for now; once members sign in, the choice also goes to the account.
 export function ThemeChoice({ label, names }: ThemeChoiceProps) {
-  const current = useSyncExternalStore(subscribe, readTheme, () => "system");
+  const current = useSyncExternalStore(subscribe, storedTheme, (): Theme => "system");
 
   return (
     <fieldset className="grid grid-cols-3 gap-1 rounded-control bg-surface-sunken p-1">
