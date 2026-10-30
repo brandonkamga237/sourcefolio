@@ -36,6 +36,8 @@ export interface MyShowcase {
   repositoryUrl: string;
   status: ShowcaseStatus;
   publishedAt: string | null;
+  previewImageUrl: string | null;
+  previewVideoUrl: string | null;
 }
 
 export interface MyShowcaseResponse {

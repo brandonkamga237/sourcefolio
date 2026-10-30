@@ -10,6 +10,8 @@ export interface PublicShowcase {
   publishedAt: string | null;
   ownerLogin: string;
   ownerUrl: string;
+  previewImageUrl: string | null;
+  previewVideoUrl: string | null;
 }
 
 /**

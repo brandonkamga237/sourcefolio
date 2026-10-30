@@ -1,7 +1,7 @@
 import Link from "next/link";
 import type { MouseEvent } from "react";
 import type { CatalogCard } from "@/services/catalog-types";
-import { PreviewArt } from "./PreviewArt";
+import { Preview } from "./Preview";
 
 interface ShowcaseCardProps {
   card: CatalogCard;
@@ -22,7 +22,13 @@ export function ShowcaseCard({ card, href, selected, onOpen }: ShowcaseCardProps
         selected ? "border border-line lg:border-2 lg:border-accent" : "border border-line hover:border-ink-muted"
       }`}
     >
-      <PreviewArt slug={card.slug} siteUrl={card.siteUrl} />
+      <Preview
+        slug={card.slug}
+        siteUrl={card.siteUrl}
+        imageUrl={card.previewImageUrl}
+        videoUrl={card.previewVideoUrl}
+        sizes="(min-width: 1024px) 260px, 50vw"
+      />
       <span className="flex flex-col gap-0.5 px-3 pt-2.5 pb-3 sm:px-3.5 sm:pt-3 sm:pb-3.5">
         <span className="truncate text-sm font-semibold sm:text-[15px]">{card.ownerLogin}</span>
         <span className="truncate font-mono text-[11px] text-ink-muted sm:text-xs">{card.repository}</span>

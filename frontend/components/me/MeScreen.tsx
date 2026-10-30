@@ -3,6 +3,7 @@ import { getTranslations } from "next-intl/server";
 import { GitHubSignIn } from "@/components/auth/GitHubSignIn";
 import { SignOutButton } from "@/components/auth/SignOutButton";
 import { CandidatesPanel } from "@/components/dashboard/CandidatesPanel";
+import { PreviewEditor } from "@/components/dashboard/PreviewEditor";
 import { PublishedShowcase } from "@/components/dashboard/PublishedShowcase";
 import { localizedPath } from "@/i18n/paths";
 import type { Locale } from "@/i18n/routing";
@@ -83,7 +84,27 @@ export async function MeScreen({ locale }: MeScreenProps) {
         <section aria-labelledby="me-portfolio" className="flex flex-col gap-3">
           <h2 id="me-portfolio" className={sectionTitle}>{t("me.portfolioTitle")}</h2>
           {showcase ? (
-            <PublishedShowcase locale={locale} showcase={showcase} />
+            <>
+              <PublishedShowcase locale={locale} showcase={showcase} />
+              <PreviewEditor
+                hasImage={showcase.previewImageUrl !== null}
+                hasVideo={showcase.previewVideoUrl !== null}
+                labels={{
+                  title: t("preview.title"),
+                  lead: t("preview.lead"),
+                  imageLabel: t("preview.imageLabel"),
+                  imageHint: t("preview.imageHint"),
+                  videoLabel: t("preview.videoLabel"),
+                  videoHint: t("preview.videoHint"),
+                  choose: t("preview.choose"),
+                  change: t("preview.change"),
+                  remove: t("preview.remove"),
+                  sending: t("preview.sending"),
+                  tooBig: t("preview.tooBig"),
+                  failed: t("preview.failed"),
+                }}
+              />
+            </>
           ) : (
             <>
               <p className="text-sm leading-normal text-ink-body">{t("pages.portfolio.memberEmpty")}</p>

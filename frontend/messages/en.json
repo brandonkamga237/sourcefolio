@@ -188,5 +188,19 @@
     "like": "Like this portfolio ({count})",
     "unlike": "Take back my like ({count})",
     "failed": "Your like could not be saved. Try again."
+  },
+  "preview": {
+    "title": "Your card preview",
+    "lead": "What visitors see in the catalogue. Without an image, your card shows your site’s name.",
+    "imageLabel": "Image",
+    "imageHint": "JPEG, PNG or WebP, 5 MB at most",
+    "videoLabel": "Short video (optional)",
+    "videoHint": "MP4, 15 s and 8 MB at most, played on hover",
+    "choose": "Choose",
+    "change": "Change",
+    "remove": "Remove",
+    "sending": "Sending…",
+    "tooBig": "This file is too large: 5 MB at most for an image, 8 MB for a video.",
+    "failed": "The upload did not go through. Try again in a moment."
   }
 }
