@@ -180,6 +180,13 @@
   "ranking": {
     "title": "Classement",
     "lead": "Les portfolios les plus appréciés par la communauté.",
-    "empty": "Le classement apparaît avec les premières appréciations. Ouvre un portfolio qui te plaît et apprécie-le."
+    "empty": "Le classement apparaît avec les premières appréciations. Ouvre un portfolio qui te plaît et apprécie-le.",
+    "likes": "{count, plural, one {# appréciation} other {# appréciations}}",
+    "unavailable": "Le classement ne répond pas pour le moment. Réessaie dans un instant."
+  },
+  "likes": {
+    "like": "Apprécier ce portfolio ({count})",
+    "unlike": "Retirer mon appréciation ({count})",
+    "failed": "Ton appréciation n’a pas pu être enregistrée. Réessaie."
   }
 }

@@ -1,6 +1,7 @@
 package com.brandonkamga.sourcefolio.discovery.api;
 
 import com.brandonkamga.sourcefolio.discovery.api.dto.CatalogResponse;
+import com.brandonkamga.sourcefolio.discovery.api.dto.RankingResponse;
 import com.brandonkamga.sourcefolio.discovery.application.Catalog;
 import com.brandonkamga.sourcefolio.shared.exception.BadRequestException;
 import io.swagger.v3.oas.annotations.Operation;
@@ -27,5 +28,11 @@ class CatalogController {
             case "recent" -> catalog.listRecent(cursor, size);
             default -> throw new BadRequestException("catalog.sort-invalid");
         });
+    }
+
+    @GetMapping("/api/ranking")
+    @Operation(operationId = "getRanking")
+    RankingResponse ranking(@RequestParam(defaultValue = "100") int size) {
+        return RankingResponse.of(catalog.listRanking(size));
     }
 }

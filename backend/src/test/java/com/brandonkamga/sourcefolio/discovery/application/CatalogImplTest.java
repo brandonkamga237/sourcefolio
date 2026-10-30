@@ -110,6 +110,23 @@ class CatalogImplTest {
     }
 
     @Test
+    @DisplayName("the Ranking lists liked showcases only, most liked first, ties to the most recent")
+    void ranking() {
+        CatalogEntry quiet = add("quiet", NOW.minus(Duration.ofDays(1)));
+        CatalogEntry popular = add("popular", NOW.minus(Duration.ofDays(9)));
+        CatalogEntry olderTie = add("older-tie", NOW.minus(Duration.ofDays(5)));
+        CatalogEntry newerTie = add("newer-tie", NOW.minus(Duration.ofDays(2)));
+        store.setLikes(popular.showcaseId(), 9);
+        store.setLikes(olderTie.showcaseId(), 3);
+        store.setLikes(newerTie.showcaseId(), 3);
+        store.setLikes(quiet.showcaseId(), 0);
+
+        assertThat(catalog().listRanking(100)).extracting(ranked -> ranked.entry().slug() + "=" + ranked.likes())
+                .containsExactly("popular=9", "newer-tie=3", "older-tie=3");
+        assertThat(catalog().listRanking(500)).hasSize(3);
+    }
+
+    @Test
     @DisplayName("an empty catalogue answers an empty page without a cursor")
     void empty() {
         assertThat(catalog().listDiscover(null, 20)).isEqualTo(new CatalogPage(List.of(), null, 0));

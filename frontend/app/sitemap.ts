@@ -22,7 +22,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   await connection();
   const site = process.env.SITE_URL ?? "http://localhost:3000";
   const api = process.env.API_INTERNAL_URL ?? "http://localhost:8080";
-  const entries: MetadataRoute.Sitemap = [...bothLanguages(site, ""), ...bothLanguages(site, "/recent")];
+  const entries: MetadataRoute.Sitemap = [...bothLanguages(site, ""), ...bothLanguages(site, "/recent"), ...bothLanguages(site, "/ranking")];
 
   let cursor: string | null = null;
   for (let page = 0; page < MAX_PAGES; page++) {

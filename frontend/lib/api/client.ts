@@ -17,7 +17,7 @@ function readCsrfToken(): string | undefined {
 
 // The API sets the XSRF-TOKEN cookie on any GET it answers. A page reached through server
 // rendering may not have it yet in the browser: one GET first, then the protected write.
-async function clientWrite<T>(method: "POST" | "PUT", path: string, body?: unknown): Promise<ClientResult<T>> {
+async function clientWrite<T>(method: "POST" | "PUT" | "DELETE", path: string, body?: unknown): Promise<ClientResult<T>> {
   try {
     if (!readCsrfToken()) {
       await fetch("/api/me", { credentials: "same-origin" });
@@ -46,4 +46,21 @@ export function clientPost<T>(path: string, body?: unknown): Promise<ClientResul
 
 export function clientPut<T>(path: string, body: unknown): Promise<ClientResult<T>> {
   return clientWrite<T>("PUT", path, body);
+}
+
+export function clientDelete<T>(path: string): Promise<ClientResult<T>> {
+  return clientWrite<T>("DELETE", path);
+}
+
+/** A public read from the browser; no CSRF token needed. */
+export async function clientGet<T>(path: string): Promise<ClientResult<T>> {
+  try {
+    const response = await fetch(path, { credentials: "same-origin", headers: { accept: "application/json" } });
+    const json = await response.json().catch(() => null);
+    return response.ok
+      ? { status: response.status, data: json as T, message: null }
+      : { status: response.status, data: null, message: typeof json?.message === "string" ? json.message : null };
+  } catch {
+    return { status: 0, data: null, message: null };
+  }
 }

@@ -1,7 +1,9 @@
 "use client";
 
 import Link from "next/link";
+import { Suspense } from "react";
 import { IconClose, IconCode, IconExternal } from "@/components/icons";
+import { LikeButton, type LikeButtonLabels } from "@/components/likes/LikeButton";
 import type { CatalogCard } from "@/services/catalog-types";
 import { PreviewArt } from "./PreviewArt";
 
@@ -13,6 +15,7 @@ export interface ShowcasePanelLabels {
   sourceRepo: string;
   /** Contains {date}. */
   publishedOn: string;
+  likes: LikeButtonLabels;
 }
 
 interface ShowcasePanelProps {
@@ -30,7 +33,7 @@ export function ShowcasePanel({ card, href, locale, labels, onClose }: ShowcaseP
   return (
     <section aria-labelledby="panel-name" className="overflow-hidden rounded-panel border border-line bg-surface">
       <div className="relative">
-        <PreviewArt slug={card.slug} siteUrl={card.siteUrl} large />
+        <PreviewArt slug={card.slug} siteUrl={card.siteUrl} size="large" />
         <button
           type="button"
           onClick={onClose}
@@ -75,6 +78,9 @@ export function ShowcasePanel({ card, href, locale, labels, onClose }: ShowcaseP
             <IconCode className="size-4" />
             {labels.viewCode}
           </a>
+          <Suspense fallback={<div className="size-[46px] rounded-control border border-line" />}>
+            <LikeButton key={card.slug} slug={card.slug} labels={labels.likes} showCount />
+          </Suspense>
         </div>
 
         <div className="flex flex-col gap-1 border-t border-line-soft pt-4">

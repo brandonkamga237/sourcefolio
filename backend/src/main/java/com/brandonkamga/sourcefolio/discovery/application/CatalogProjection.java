@@ -9,4 +9,6 @@ public interface CatalogProjection {
     void add(CatalogEntry entry);
 
     void renameOwner(UUID ownerId, String login);
+
+    void updateLikes(UUID showcaseId, int count);
 }
