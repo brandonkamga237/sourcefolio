@@ -98,7 +98,7 @@ export function ShowcasePanel({ card, href, locale, labels, onClose }: ShowcaseP
           <div className="flex items-start justify-between gap-3">
             <span className="font-mono text-[13px] break-all">{card.repository}</span>
             {card.repositoryStars != null ? (
-              <a href={card.repositoryUrl} target="_blank" rel="noopener noreferrer" className="shrink-0 text-[13px] font-semibold text-ink hover:text-accent-ink">
+              <a href={card.repositoryUrl} target="_blank" rel="noopener noreferrer" className="press -my-2 flex min-h-11 shrink-0 items-center font-semibold text-ink">
                 <StarCount
                   count={card.repositoryStars}
                   locale={locale}
