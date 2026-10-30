@@ -5,6 +5,7 @@ import { Suspense } from "react";
 import { IconClose, IconCode, IconExternal } from "@/components/icons";
 import { LikeButton, type LikeButtonLabels } from "@/components/likes/LikeButton";
 import type { CatalogCard } from "@/services/catalog-types";
+import { StarCount } from "@/components/stars/StarCount";
 import { Preview } from "./Preview";
 
 export interface ShowcasePanelLabels {
@@ -16,6 +17,8 @@ export interface ShowcasePanelLabels {
   /** Contains {date}. */
   publishedOn: string;
   likes: LikeButtonLabels;
+  /** Contains {count}; picked by the plural rule of the locale. */
+  stars: { one: string; other: string };
 }
 
 interface ShowcasePanelProps {
@@ -92,7 +95,18 @@ export function ShowcasePanel({ card, href, locale, labels, onClose }: ShowcaseP
 
         <div className="flex flex-col gap-1 border-t border-line-soft pt-4">
           <span className="text-xs text-ink-muted">{labels.sourceRepo}</span>
-          <span className="font-mono text-[13px] break-all">{card.repository}</span>
+          <div className="flex items-start justify-between gap-3">
+            <span className="font-mono text-[13px] break-all">{card.repository}</span>
+            {card.repositoryStars != null ? (
+              <a href={card.repositoryUrl} target="_blank" rel="noopener noreferrer" className="shrink-0 text-[13px] font-semibold text-ink hover:text-accent-ink">
+                <StarCount
+                  count={card.repositoryStars}
+                  locale={locale}
+                  label={labels.stars[new Intl.PluralRules(locale).select(card.repositoryStars) === "one" ? "one" : "other"].replace("{count}", String(card.repositoryStars))}
+                />
+              </a>
+            ) : null}
+          </div>
         </div>
 
         <Link href={href} className="flex h-11 items-center text-sm font-semibold text-accent-ink">

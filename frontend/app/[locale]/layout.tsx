@@ -47,6 +47,9 @@ export async function generateMetadata({ params }: LayoutProps<"/[locale]">): Pr
     metadataBase: new URL(process.env.SITE_URL ?? "http://localhost:3000"),
     title: { default: t("title"), template: "%s · SourceFolio" },
     description: t("description"),
+    // Pages inherit these; the image itself is the opengraph-image file of this segment.
+    openGraph: { type: "website", siteName: "SourceFolio", locale: locale === "fr" ? "fr_FR" : "en_US" },
+    twitter: { card: "summary_large_image" },
     alternates: {
       canonical: `/${locale}`,
       languages: { fr: "/fr", en: "/en", "x-default": "/en" },

@@ -3,7 +3,9 @@ package com.brandonkamga.sourcefolio.showcase.domain.port;
 import com.brandonkamga.sourcefolio.showcase.domain.model.RepositoryCoordinates;
 import com.brandonkamga.sourcefolio.showcase.domain.model.RepositoryProvider;
 import com.brandonkamga.sourcefolio.showcase.domain.model.Showcase;
+import com.brandonkamga.sourcefolio.showcase.domain.model.ShowcaseId;
 import com.brandonkamga.sourcefolio.showcase.domain.model.ShowcaseSlug;
+import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -19,7 +21,18 @@ public interface ShowcaseStore {
     /** The member's most recent showcase, whatever its status. */
     Optional<Showcase> findByOwner(UUID ownerId);
 
+    Optional<Showcase> findById(ShowcaseId id);
+
     Optional<Showcase> findBySlug(ShowcaseSlug slug);
+
+    /** Showcases still listed whose repository stars were not read since {@code readBefore}, least recent first. */
+    List<ShowcaseId> findDueForStars(Instant readBefore, int limit);
+
+    /**
+     * Writes the stars just read and when, and nothing else: an author changing their preview at
+     * the same moment keeps their change.
+     */
+    void saveRepositoryStars(ShowcaseId id, Integer stars, Instant checkedAt);
 
     boolean existsBySlug(ShowcaseSlug slug);
 

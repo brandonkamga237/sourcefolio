@@ -46,6 +46,9 @@ class CatalogEntryEntity {
     @Column(name = "preview_video_url", length = 1000)
     private String previewVideoUrl;
 
+    @Column(name = "repository_stars")
+    private Integer repositoryStars;
+
     protected CatalogEntryEntity() {
     }
 
@@ -60,4 +63,5 @@ class CatalogEntryEntity {
     int getLikeCount() { return likeCount; }
     String getPreviewImageUrl() { return previewImageUrl; }
     String getPreviewVideoUrl() { return previewVideoUrl; }
+    Integer getRepositoryStars() { return repositoryStars; }
 }

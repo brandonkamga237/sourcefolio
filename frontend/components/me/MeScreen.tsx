@@ -17,6 +17,7 @@ import { cookies } from "next/headers";
 import { DeleteAccount } from "./DeleteAccount";
 import { JourneyCard } from "./JourneyCard";
 import { ForgetJourneyDismissal } from "./JourneyDismissal";
+import { CommitGraph } from "@/components/illustrations/CommitGraph";
 import { MePreferences } from "./MePreferences";
 
 interface MeScreenProps {
@@ -39,8 +40,9 @@ export async function MeScreen({ locale }: MeScreenProps) {
     const steps = [t("pages.portfolio.step1"), t("pages.portfolio.step2"), t("pages.portfolio.step3")];
     return (
       <div className={columns}>
-        <section aria-labelledby="me-visitor" className="flex flex-col gap-4 rounded-panel border border-line bg-surface p-5 lg:p-6">
-          <div className="flex flex-col gap-2">
+        <section aria-labelledby="me-visitor" className="relative isolate flex flex-col gap-4 overflow-hidden rounded-panel border border-line bg-surface p-5 lg:p-6">
+          <CommitGraph className="pointer-events-none absolute -top-2 -right-6 -z-10 hidden w-[260px] sm:block" />
+          <div className="flex flex-col gap-2 sm:pr-48">
             <h1 id="me-visitor" className="font-display text-[26px] leading-tight font-bold tracking-[-0.03em] lg:text-[32px]">
               {t("pages.portfolio.visitorTitle")}
             </h1>

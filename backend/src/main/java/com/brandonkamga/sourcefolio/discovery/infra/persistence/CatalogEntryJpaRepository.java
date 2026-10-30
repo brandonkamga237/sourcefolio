@@ -33,6 +33,10 @@ interface CatalogEntryJpaRepository extends JpaRepository<CatalogEntryEntity, UU
     @Query("update CatalogEntryEntity e set e.likeCount = :count where e.showcaseId = :showcaseId")
     void setLikes(@Param("showcaseId") UUID showcaseId, @Param("count") int count);
 
+    @Modifying
+    @Query("update CatalogEntryEntity e set e.repositoryStars = :stars where e.showcaseId = :showcaseId")
+    void setRepositoryStars(@Param("showcaseId") UUID showcaseId, @Param("stars") Integer stars);
+
     @Query("""
             select e from CatalogEntryEntity e where e.likeCount > 0
             order by e.likeCount desc, e.publishedAt desc, e.showcaseId desc

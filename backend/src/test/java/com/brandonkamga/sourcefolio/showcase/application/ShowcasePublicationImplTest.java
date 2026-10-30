@@ -9,6 +9,8 @@ import com.brandonkamga.sourcefolio.showcase.domain.model.CandidateScan;
 import com.brandonkamga.sourcefolio.showcase.domain.model.RepositoryCoordinates;
 import com.brandonkamga.sourcefolio.showcase.domain.model.RepositoryProvider;
 import com.brandonkamga.sourcefolio.showcase.domain.model.Showcase;
+import com.brandonkamga.sourcefolio.showcase.domain.model.SourceRepo;
+import com.brandonkamga.sourcefolio.showcase.domain.model.ShowcaseId;
 import com.brandonkamga.sourcefolio.showcase.domain.model.ShowcaseCandidate;
 import com.brandonkamga.sourcefolio.showcase.domain.model.ShowcaseSlug;
 import com.brandonkamga.sourcefolio.showcase.domain.model.ShowcaseStatus;
@@ -64,6 +66,11 @@ class ShowcasePublicationImplTest {
         @Override
         public void showcaseRemoved(ShowcaseRemoved event) {
             throw new AssertionError("publishing removes nothing");
+        }
+
+        @Override
+        public void starsChanged(ShowcaseStarsChanged event) {
+            throw new AssertionError("publishing reads no stars");
         }
     }, Clock.fixed(NOW, ZoneOffset.UTC));
 
@@ -229,6 +236,29 @@ class ShowcasePublicationImplTest {
         public boolean existsByRepository(RepositoryProvider provider, RepositoryCoordinates repository) {
             return rows.values().stream().anyMatch(row -> row.sourceRepo().provider() == provider
                     && row.sourceRepo().coordinates().sameAs(repository));
+        }
+
+        @Override
+        public Optional<Showcase> findById(ShowcaseId id) {
+            return Optional.ofNullable(rows.get(id.value()));
+        }
+
+        @Override
+        public List<ShowcaseId> findDueForStars(Instant readBefore, int limit) {
+            return rows.values().stream()
+                    .filter(row -> row.status() != ShowcaseStatus.REMOVED)
+                    .filter(row -> row.sourceRepo().starsCheckedAt() == null || row.sourceRepo().starsCheckedAt().isBefore(readBefore))
+                    .sorted(Comparator.comparing((Showcase row) -> row.sourceRepo().starsCheckedAt(), Comparator.nullsFirst(Comparator.naturalOrder())))
+                    .limit(limit).map(Showcase::id).toList();
+        }
+
+        @Override
+        public void saveRepositoryStars(ShowcaseId id, Integer stars, Instant checkedAt) {
+            Showcase row = rows.get(id.value());
+            SourceRepo repo = row.sourceRepo();
+            rows.put(id.value(), new Showcase(row.id(), row.slug(), row.ownerId(), row.kind(), row.siteUrl(),
+                    new SourceRepo(repo.provider(), repo.coordinates(), repo.isPublic(), stars, checkedAt), row.status(), row.createdAt(),
+                    row.publishedAt(), List.of(), row.previewImage(), row.previewVideo()));
         }
 
         @Override

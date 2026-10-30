@@ -11,3 +11,4 @@ export { default as IconPortfolio } from "./Portfolio";
 export { default as IconRanking } from "./Ranking";
 export { default as IconRankingActive } from "./RankingActive";
 export { default as IconSearch } from "./Search";
+export { default as IconStar } from "./Star";

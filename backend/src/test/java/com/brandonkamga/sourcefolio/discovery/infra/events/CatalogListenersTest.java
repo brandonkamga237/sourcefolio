@@ -6,6 +6,7 @@ import com.brandonkamga.sourcefolio.discovery.domain.model.CatalogEntry;
 import com.brandonkamga.sourcefolio.engagement.application.ShowcaseLikesChanged;
 import com.brandonkamga.sourcefolio.showcase.application.ShowcasePreviewChanged;
 import com.brandonkamga.sourcefolio.showcase.application.ShowcasePublished;
+import com.brandonkamga.sourcefolio.showcase.application.ShowcaseStarsChanged;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import java.time.Instant;
@@ -52,6 +53,14 @@ class CatalogListenersTest {
     }
 
     @Test
+    @DisplayName("new repository stars reach the catalogue")
+    void starsReachCatalogue() {
+        new CatalogListeners(recording()).on(new ShowcaseStarsChanged(SHOWCASE, 7));
+
+        assertThat(calls).containsExactly(SHOWCASE + " stars 7");
+    }
+
+    @Test
     @DisplayName("a new like count reaches the catalogue")
     void likesReachCatalogue() {
         new CatalogListeners(recording()).on(new ShowcaseLikesChanged(SHOWCASE, 7));
@@ -82,6 +91,11 @@ class CatalogListenersTest {
             public void updatePreview(UUID showcaseId, String imageUrl, String videoUrl) {
                 throw new IllegalStateException("database down");
             }
+
+            @Override
+            public void updateRepositoryStars(UUID showcaseId, Integer stars) {
+                throw new IllegalStateException("database down");
+            }
         });
 
         assertThatCode(() -> listeners.on(PUBLISHED)).doesNotThrowAnyException();
@@ -109,6 +123,11 @@ class CatalogListenersTest {
             @Override
             public void updatePreview(UUID showcaseId, String imageUrl, String videoUrl) {
                 calls.add(showcaseId + " preview " + imageUrl + " " + videoUrl);
+            }
+
+            @Override
+            public void updateRepositoryStars(UUID showcaseId, Integer stars) {
+                calls.add(showcaseId + " stars " + stars);
             }
         };
     }

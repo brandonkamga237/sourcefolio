@@ -4,6 +4,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import java.time.Instant;
 import java.util.UUID;
 
 @Entity
@@ -26,6 +27,11 @@ class SourceRepoEntity {
     @Column(name = "is_public", nullable = false)
     private boolean isPublic;
 
+    private Integer stars;
+
+    @Column(name = "stars_checked_at")
+    private Instant starsCheckedAt;
+
     protected SourceRepoEntity() {
     }
 
@@ -33,11 +39,13 @@ class SourceRepoEntity {
         this.showcaseId = showcaseId;
     }
 
-    void update(String provider, String owner, String name, boolean isPublic) {
+    void update(String provider, String owner, String name, boolean isPublic, Integer stars, Instant starsCheckedAt) {
         this.provider = provider;
         this.owner = owner;
         this.name = name;
         this.isPublic = isPublic;
+        this.stars = stars;
+        this.starsCheckedAt = starsCheckedAt;
     }
 
     UUID getShowcaseId() { return showcaseId; }
@@ -45,4 +53,6 @@ class SourceRepoEntity {
     String getOwner() { return owner; }
     String getName() { return name; }
     boolean isPublic() { return isPublic; }
+    Integer getStars() { return stars; }
+    Instant getStarsCheckedAt() { return starsCheckedAt; }
 }

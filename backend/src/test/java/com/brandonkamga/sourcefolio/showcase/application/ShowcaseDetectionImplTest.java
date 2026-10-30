@@ -1,5 +1,7 @@
 package com.brandonkamga.sourcefolio.showcase.application;
 
+import java.util.OptionalInt;
+import com.brandonkamga.sourcefolio.showcase.domain.port.RepositoryHost;
 import com.brandonkamga.sourcefolio.showcase.domain.model.CandidateReason;
 import com.brandonkamga.sourcefolio.showcase.domain.model.CandidateScan;
 import com.brandonkamga.sourcefolio.showcase.domain.model.PublicRepository;
@@ -30,7 +32,17 @@ class ShowcaseDetectionImplTest {
     private final InMemoryCandidateStore store = new InMemoryCandidateStore();
     private final List<String> scheduled = new ArrayList<>();
     private final ShowcaseDetection detection = new ShowcaseDetectionImpl(
-            login -> github.getOrDefault(login, List.of()), store,
+            new RepositoryHost() {
+                @Override
+                public List<PublicRepository> listPublicRepositories(String login) {
+                    return github.getOrDefault(login, List.of());
+                }
+
+                @Override
+                public OptionalInt stars(RepositoryCoordinates repository) {
+                    throw new AssertionError("detection reads no stars");
+                }
+            }, store,
             (memberId, login) -> scheduled.add(memberId + " " + login), Clock.fixed(NOW, ZoneOffset.UTC));
 
     @Test
