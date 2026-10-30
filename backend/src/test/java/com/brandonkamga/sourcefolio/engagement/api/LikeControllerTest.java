@@ -43,18 +43,19 @@ class LikeControllerTest {
     @Test
     @DisplayName("a visitor sees the public count, not liked")
     void visitorSeesCount() throws Exception {
-        when(likes.findState(null, "nekwalla")).thenReturn(new LikeState(12, false));
+        when(likes.findState(null, "nekwalla")).thenReturn(new LikeState(12, false, false));
 
         mvc.perform(get("/api/showcases/nekwalla/likes"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.count").value(12))
-                .andExpect(jsonPath("$.liked").value(false));
+                .andExpect(jsonPath("$.liked").value(false))
+                .andExpect(jsonPath("$.own").value(false));
     }
 
     @Test
     @DisplayName("a member sees whether they like it")
     void memberSeesOwnState() throws Exception {
-        when(likes.findState(MEMBER, "nekwalla")).thenReturn(new LikeState(12, true));
+        when(likes.findState(MEMBER, "nekwalla")).thenReturn(new LikeState(12, true, false));
 
         mvc.perform(get("/api/showcases/nekwalla/likes").with(member()))
                 .andExpect(jsonPath("$.liked").value(true));
@@ -63,8 +64,8 @@ class LikeControllerTest {
     @Test
     @DisplayName("a member likes with PUT and takes it back with DELETE")
     void likeAndUnlike() throws Exception {
-        when(likes.like(MEMBER, "nekwalla")).thenReturn(new LikeState(13, true));
-        when(likes.unlike(MEMBER, "nekwalla")).thenReturn(new LikeState(12, false));
+        when(likes.like(MEMBER, "nekwalla")).thenReturn(new LikeState(13, true, false));
+        when(likes.unlike(MEMBER, "nekwalla")).thenReturn(new LikeState(12, false, false));
 
         mvc.perform(put("/api/showcases/nekwalla/like").with(member()).with(csrf()))
                 .andExpect(status().isOk()).andExpect(jsonPath("$.count").value(13));

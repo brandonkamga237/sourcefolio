@@ -47,7 +47,7 @@ function firstRun(answers: MyAnswers): Step[] {
 }
 
 const primaryButton =
-  "flex h-12 w-full items-center justify-center rounded-control bg-accent px-5 text-[15px] font-semibold text-white disabled:opacity-50";
+  "press flex h-12 w-full items-center justify-center rounded-control bg-accent px-5 text-[15px] font-semibold text-white disabled:opacity-50";
 
 export function ProfileQuestions({ initial, countries, labels, doneHref }: ProfileQuestionsProps) {
   const [answers, setAnswers] = useState(initial);
@@ -121,14 +121,14 @@ export function ProfileQuestions({ initial, countries, labels, doneHref }: Profi
               <button
                 type="button"
                 onClick={() => ask(row.step)}
-                className="flex h-11 shrink-0 items-center rounded-control border border-line px-4 text-sm font-semibold text-ink"
+                className="press flex h-11 shrink-0 items-center rounded-control border border-line px-4 text-sm font-semibold text-ink"
               >
                 {labels.edit}
               </button>
             </div>
           ))}
         </dl>
-        <Link href={doneHref} className="flex h-11 w-fit items-center text-sm font-semibold text-ink underline underline-offset-2">
+        <Link href={doneHref} className="press flex h-11 w-fit items-center text-sm font-semibold text-ink underline underline-offset-2">
           {labels.done}
         </Link>
       </section>
@@ -186,7 +186,7 @@ export function ProfileQuestions({ initial, countries, labels, doneHref }: Profi
                 disabled={saving}
                 aria-pressed={answers.specialty === specialty}
                 onClick={() => chooseSpecialty(specialty)}
-                className={`flex h-11 items-center rounded-full px-4 text-[15px] font-semibold disabled:opacity-60 ${
+                className={`press flex h-11 items-center rounded-full px-4 text-[15px] font-semibold disabled:opacity-60 ${
                   answers.specialty === specialty ? "bg-ink text-canvas" : "border border-line bg-surface text-ink"
                 }`}
               >
@@ -217,7 +217,7 @@ export function ProfileQuestions({ initial, countries, labels, doneHref }: Profi
           <button type="submit" disabled={saving} className={primaryButton}>
             {saving ? labels.saving : labels.next}
           </button>
-          <button type="button" onClick={advance} disabled={saving} className="flex h-11 items-center justify-center text-sm font-semibold text-ink">
+          <button type="button" onClick={advance} disabled={saving} className="press flex h-11 items-center justify-center text-sm font-semibold text-ink">
             {labels.skip}
           </button>
         </form>

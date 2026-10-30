@@ -5,6 +5,8 @@ import { clientDelete, clientGet, clientPut, type ClientResult } from "@/lib/api
 export interface LikeState {
   count: number;
   liked: boolean;
+  /** The reader is the author: the count is shown without a button. */
+  own: boolean;
 }
 
 export const likesKey = (slug: string) => ["likes", slug] as const;

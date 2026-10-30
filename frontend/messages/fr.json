@@ -12,7 +12,8 @@
     "discover": "Découvrir",
     "me": "Moi",
     "publish": "Publier ton portfolio",
-    "ranking": "Classement"
+    "ranking": "Classement",
+    "publishShort": "Publier"
   },
   "language": {
     "label": "Langue",
@@ -136,6 +137,16 @@
       "openPage": "Ouvrir la fiche complète",
       "sourceRepo": "Dépôt source",
       "publishedOn": "Publié le {date}"
+    },
+    "feedTitle": "Les portfolios",
+    "recentTitle": "Les derniers publiés",
+    "intro": {
+      "lead": "Ouvre un portfolio, visite le site, puis lis le code qui le fait tourner. Chaque portfolio ici a son dépôt public.",
+      "cta": "Publier le mien",
+      "ctaHint": "Gratuit, avec ton compte GitHub.",
+      "step1": "Connecte GitHub",
+      "step2": "Choisis ton dépôt",
+      "step3": "Partage ton lien"
     }
   },
   "profile": {
@@ -175,7 +186,8 @@
   },
   "me": {
     "portfolioTitle": "Mon portfolio",
-    "preferencesTitle": "Préférences"
+    "preferencesTitle": "Préférences",
+    "accountTitle": "Compte et préférences"
   },
   "ranking": {
     "title": "Classement",
@@ -187,7 +199,8 @@
   "likes": {
     "like": "Apprécier ce portfolio ({count})",
     "unlike": "Retirer mon appréciation ({count})",
-    "failed": "Ton appréciation n’a pas pu être enregistrée. Réessaie."
+    "failed": "Ton appréciation n’a pas pu être enregistrée. Réessaie.",
+    "own": "C’est ton portfolio : {count} appréciation(s)"
   },
   "preview": {
     "title": "Aperçu de ta carte",
@@ -202,5 +215,29 @@
     "sending": "Envoi…",
     "tooBig": "Ce fichier est trop lourd : 5 Mo maximum pour une image, 8 Mo pour une vidéo.",
     "failed": "L’envoi n’a pas abouti. Réessaie dans un instant."
+  },
+  "journey": {
+    "title": "Ton portfolio sur SourceFolio",
+    "doneTitle": "Tout est prêt",
+    "progress": "{done} étapes sur {total}",
+    "stateDone": "Fait :",
+    "stateTodo": "À faire :",
+    "steps": {
+      "account": "GitHub",
+      "publish": "Publication",
+      "preview": "Image",
+      "profile": "Profil"
+    },
+    "next": {
+      "publish": "Choisis le dépôt de ton portfolio : il apparaît dans Découvrir dès qu’il est publié.",
+      "preview": "Ajoute une image (et une courte vidéo si tu veux) : c’est ce que montre ta carte.",
+      "profile": "Indique ton pays et ta spécialité pour qu’on te trouve plus facilement."
+    },
+    "actions": {
+      "publish": "Choisir mon dépôt",
+      "preview": "Ajouter une image",
+      "profile": "Compléter mon profil"
+    },
+    "doneLead": "Ton portfolio est en ligne. Partage le lien pour recevoir des visites et des likes."
   }
 }

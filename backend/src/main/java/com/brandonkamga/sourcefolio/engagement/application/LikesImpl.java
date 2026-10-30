@@ -24,8 +24,10 @@ public class LikesImpl implements Likes {
 
     @Override
     public LikeState findState(UUID memberId, String slug) {
-        UUID showcaseId = showcaseIdOf(require(slug));
-        return new LikeState(likes.count(showcaseId), memberId != null && likes.exists(memberId, showcaseId));
+        PublicShowcase found = require(slug);
+        UUID showcaseId = showcaseIdOf(found);
+        boolean own = found.showcase().ownerId().equals(memberId);
+        return new LikeState(likes.count(showcaseId), memberId != null && likes.exists(memberId, showcaseId), own);
     }
 
     @Override
@@ -52,7 +54,7 @@ public class LikesImpl implements Likes {
         if (changed) {
             events.likesChanged(new ShowcaseLikesChanged(showcaseId, count));
         }
-        return new LikeState(count, liked);
+        return new LikeState(count, liked, false);
     }
 
     private PublicShowcase require(String slug) {

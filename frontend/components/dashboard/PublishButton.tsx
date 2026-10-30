@@ -38,7 +38,7 @@ export function PublishButton({ repository, label, pendingLabel, failedMessage, 
         onClick={handleClick}
         disabled={pending}
         aria-busy={pending}
-        className={`flex h-11 items-center justify-center rounded-control px-5 text-sm font-semibold disabled:opacity-70 ${
+        className={`press flex h-11 items-center justify-center rounded-control px-5 text-sm font-semibold disabled:opacity-70 ${
           primary ? "bg-accent text-white" : "border border-ink text-ink"
         }`}
       >

@@ -34,7 +34,7 @@ export function ShareButton({ path, title, label, copiedLabel }: ShareButtonProp
       <button
         type="button"
         onClick={handleClick}
-        className="flex h-11 items-center justify-center rounded-control bg-accent px-4 text-sm font-semibold text-white"
+        className="press flex h-11 items-center justify-center rounded-control bg-accent px-4 text-sm font-semibold text-white"
       >
         {label}
       </button>
