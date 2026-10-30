@@ -11,4 +11,6 @@ public interface CatalogProjection {
     void renameOwner(UUID ownerId, String login);
 
     void updateLikes(UUID showcaseId, int count);
+
+    void updatePreview(UUID showcaseId, String imageUrl, String videoUrl);
 }

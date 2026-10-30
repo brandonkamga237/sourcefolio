@@ -35,6 +35,18 @@ class ShowcaseEntity {
     @Column(name = "published_at")
     private Instant publishedAt;
 
+    @Column(name = "preview_image_key", length = 300)
+    private String previewImageKey;
+
+    @Column(name = "preview_image_url", length = 1000)
+    private String previewImageUrl;
+
+    @Column(name = "preview_video_key", length = 300)
+    private String previewVideoKey;
+
+    @Column(name = "preview_video_url", length = 1000)
+    private String previewVideoUrl;
+
     protected ShowcaseEntity() {
     }
 
@@ -52,6 +64,13 @@ class ShowcaseEntity {
         this.publishedAt = publishedAt;
     }
 
+    void preview(String imageKey, String imageUrl, String videoKey, String videoUrl) {
+        this.previewImageKey = imageKey;
+        this.previewImageUrl = imageUrl;
+        this.previewVideoKey = videoKey;
+        this.previewVideoUrl = videoUrl;
+    }
+
     UUID getId() { return id; }
     String getSlug() { return slug; }
     UUID getOwnerUserId() { return ownerUserId; }
@@ -60,4 +79,8 @@ class ShowcaseEntity {
     String getStatus() { return status; }
     Instant getCreatedAt() { return createdAt; }
     Instant getPublishedAt() { return publishedAt; }
+    String getPreviewImageKey() { return previewImageKey; }
+    String getPreviewImageUrl() { return previewImageUrl; }
+    String getPreviewVideoKey() { return previewVideoKey; }
+    String getPreviewVideoUrl() { return previewVideoUrl; }
 }

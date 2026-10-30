@@ -8,7 +8,7 @@ import java.util.Optional;
 public record MyShowcaseResponse(MyShowcase showcase) {
 
     public record MyShowcase(String id, String slug, String siteUrl, String repository, String repositoryUrl, String status,
-                             Instant publishedAt) {
+                             Instant publishedAt, String previewImageUrl, String previewVideoUrl) {
     }
 
     public static MyShowcaseResponse of(Optional<Showcase> showcase) {
@@ -22,6 +22,7 @@ public record MyShowcaseResponse(MyShowcase showcase) {
     private static MyShowcase view(Showcase showcase) {
         return new MyShowcase(showcase.id().toString(), showcase.slug().value(), showcase.siteUrl().value(),
                 showcase.sourceRepo().coordinates().toString(), showcase.sourceRepo().url(), showcase.status().name(),
-                showcase.publishedAt());
+                showcase.publishedAt(), showcase.previewImage() == null ? null : showcase.previewImage().url(),
+                showcase.previewVideo() == null ? null : showcase.previewVideo().url());
     }
 }

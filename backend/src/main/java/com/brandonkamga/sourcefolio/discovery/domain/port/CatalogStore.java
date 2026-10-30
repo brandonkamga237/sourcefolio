@@ -17,6 +17,9 @@ public interface CatalogStore {
     /** Follows a GitHub rename on every card of the member. */
     void renameOwner(UUID ownerId, String login);
 
+    /** Keeps the copy of the preview the author chose; null URLs mean none. */
+    void setPreview(UUID showcaseId, String imageUrl, String videoUrl);
+
     /** Keeps the copy of a showcase's like count, announced by the engagement module. */
     void setLikes(UUID showcaseId, int count);
 

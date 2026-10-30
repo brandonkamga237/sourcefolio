@@ -6,7 +6,13 @@ import java.util.UUID;
 
 /** One published showcase as the catalogue shows it. A copy, fed by events from showcase. */
 public record CatalogEntry(UUID showcaseId, String slug, String siteUrl, String repository, String repositoryUrl,
-                           UUID ownerId, String ownerLogin, Instant publishedAt) {
+                           UUID ownerId, String ownerLogin, Instant publishedAt, String previewImageUrl, String previewVideoUrl) {
+
+    /** An entry whose author has not chosen a preview. */
+    public CatalogEntry(UUID showcaseId, String slug, String siteUrl, String repository, String repositoryUrl,
+                        UUID ownerId, String ownerLogin, Instant publishedAt) {
+        this(showcaseId, slug, siteUrl, repository, repositoryUrl, ownerId, ownerLogin, publishedAt, null, null);
+    }
 
     public CatalogEntry {
         Objects.requireNonNull(showcaseId, "showcaseId");

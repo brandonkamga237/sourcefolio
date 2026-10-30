@@ -40,6 +40,12 @@ class CatalogEntryEntity {
     @Column(name = "like_count", nullable = false)
     private int likeCount;
 
+    @Column(name = "preview_image_url", length = 1000)
+    private String previewImageUrl;
+
+    @Column(name = "preview_video_url", length = 1000)
+    private String previewVideoUrl;
+
     protected CatalogEntryEntity() {
     }
 
@@ -52,4 +58,6 @@ class CatalogEntryEntity {
     String getOwnerLogin() { return ownerLogin; }
     Instant getPublishedAt() { return publishedAt; }
     int getLikeCount() { return likeCount; }
+    String getPreviewImageUrl() { return previewImageUrl; }
+    String getPreviewVideoUrl() { return previewVideoUrl; }
 }

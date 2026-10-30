@@ -15,6 +15,13 @@ app:
     client-id: ${GITHUB_CLIENT_ID}
     client-secret: ${GITHUB_CLIENT_SECRET}
     api-token: ${GITHUB_API_TOKEN}
+  storage:
+    endpoint: ${S3_ENDPOINT}
+    region: ${S3_REGION}
+    bucket: ${S3_BUCKET}
+    access-key: ${S3_ACCESS_KEY}
+    secret-key: ${S3_SECRET_KEY}
+    public-url: ${S3_PUBLIC_URL}
 
 # The API description feeds the frontend's types at build time; production does not serve it.
 springdoc:

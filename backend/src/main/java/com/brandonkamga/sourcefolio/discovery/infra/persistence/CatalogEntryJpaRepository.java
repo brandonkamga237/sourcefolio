@@ -26,6 +26,10 @@ interface CatalogEntryJpaRepository extends JpaRepository<CatalogEntryEntity, UU
                 @Param("publishedAt") Instant publishedAt);
 
     @Modifying
+    @Query("update CatalogEntryEntity e set e.previewImageUrl = :imageUrl, e.previewVideoUrl = :videoUrl where e.showcaseId = :showcaseId")
+    void setPreview(@Param("showcaseId") UUID showcaseId, @Param("imageUrl") String imageUrl, @Param("videoUrl") String videoUrl);
+
+    @Modifying
     @Query("update CatalogEntryEntity e set e.likeCount = :count where e.showcaseId = :showcaseId")
     void setLikes(@Param("showcaseId") UUID showcaseId, @Param("count") int count);
 

@@ -7,6 +7,8 @@ import com.brandonkamga.sourcefolio.showcase.application.PublicShowcasesImpl;
 import com.brandonkamga.sourcefolio.showcase.application.ShowcaseDetection;
 import com.brandonkamga.sourcefolio.showcase.application.ShowcaseDetectionImpl;
 import com.brandonkamga.sourcefolio.showcase.application.ShowcaseEvents;
+import com.brandonkamga.sourcefolio.showcase.application.ShowcasePreview;
+import com.brandonkamga.sourcefolio.showcase.application.ShowcasePreviewImpl;
 import com.brandonkamga.sourcefolio.showcase.application.ShowcasePublication;
 import com.brandonkamga.sourcefolio.showcase.application.ShowcasePublicationImpl;
 import com.brandonkamga.sourcefolio.showcase.domain.port.CandidateStore;
@@ -14,6 +16,7 @@ import com.brandonkamga.sourcefolio.showcase.domain.port.DetectionScheduler;
 import com.brandonkamga.sourcefolio.showcase.domain.port.MemberDirectory;
 import com.brandonkamga.sourcefolio.showcase.domain.port.RepositoryHost;
 import com.brandonkamga.sourcefolio.showcase.domain.port.ShowcaseStore;
+import com.brandonkamga.sourcefolio.storage.application.MediaStore;
 import com.brandonkamga.sourcefolio.showcase.infra.github.GitHubRepositoryHost;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -44,6 +47,12 @@ class ShowcaseServices {
                                             SiteReachability sites, MemberDirectory members, ShowcaseEvents events,
                                             Clock clock) {
         return new ShowcasePublicationImpl(showcases, candidates, sites, members, events, clock);
+    }
+
+    // Not wrapped: it uploads to the bucket before saving; the store makes the save atomic.
+    @Bean
+    ShowcasePreview showcasePreview(ShowcaseStore showcases, MediaStore media, ShowcaseEvents events) {
+        return new ShowcasePreviewImpl(showcases, media, events);
     }
 
     @Bean
