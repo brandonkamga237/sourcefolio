@@ -61,7 +61,17 @@
   "account": {
     "signedInAs": "Connecté en tant que {login}",
     "signOut": "Se déconnecter",
-    "signOutFailed": "La déconnexion a échoué. Réessaie."
+    "signOutFailed": "La déconnexion a échoué. Réessaie.",
+    "delete": "Supprimer mon compte",
+    "deleteLead": "Supprime ton compte, ton portfolio, tes réponses de profil et les likes que tu as donnés. C’est immédiat et définitif.",
+    "deleteFailed": "Ton compte n’a pas pu être supprimé. Réessaie.",
+    "deleteDialog": {
+      "title": "Supprimer ton compte ?",
+      "description": "Ton compte, ton portfolio et ses likes, tes réponses de profil et les likes que tu as donnés sont supprimés tout de suite. On ne peut pas revenir en arrière.",
+      "confirm": "Supprimer définitivement",
+      "pending": "Suppression…",
+      "typeToConfirm": "Tape ton identifiant {word} pour confirmer"
+    }
   },
   "detection": {
     "searching": "On cherche ton portfolio dans tes dépôts publics…",
@@ -238,6 +248,29 @@
       "preview": "Ajouter une image",
       "profile": "Compléter mon profil"
     },
-    "doneLead": "Ton portfolio est en ligne. Partage le lien pour recevoir des visites et des likes."
+    "doneLead": "Ton portfolio est en ligne. Partage le lien pour recevoir des visites et des likes.",
+    "dismiss": "Masquer cette carte"
+  },
+  "common": {
+    "cancel": "Annuler"
+  },
+  "manage": {
+    "title": "Changer ou retirer mon portfolio",
+    "lead": "Pour publier un autre dépôt, retire d’abord celui-ci : tu choisis ensuite le nouveau parmi tes dépôts. Ses likes partent avec lui.",
+    "change": "Changer de portfolio",
+    "withdraw": "Retirer mon portfolio",
+    "failed": "Ton portfolio n’a pas pu être retiré. Réessaie.",
+    "changeDialog": {
+      "title": "Changer de portfolio ?",
+      "description": "Ton portfolio actuel est retiré du catalogue avec ses likes. Tu choisis ensuite un autre dépôt à publier.",
+      "confirm": "Retirer et choisir un autre dépôt",
+      "pending": "Retrait…"
+    },
+    "withdrawDialog": {
+      "title": "Retirer ton portfolio ?",
+      "description": "Il disparaît de Découvrir et du Classement, sa fiche n’existe plus et ses likes sont supprimés. Tu pourras en publier un à nouveau.",
+      "confirm": "Retirer mon portfolio",
+      "pending": "Retrait…"
+    }
   }
 }

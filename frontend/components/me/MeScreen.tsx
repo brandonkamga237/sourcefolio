@@ -11,7 +11,12 @@ import { countryOptions } from "@/lib/countries";
 import { getMe } from "@/services/me";
 import { getMyAnswers } from "@/services/profile";
 import { getMyShowcase } from "@/services/showcases";
+import { ManageShowcase } from "@/components/dashboard/ManageShowcase";
+import { JOURNEY_COOKIE } from "@/lib/journey";
+import { cookies } from "next/headers";
+import { DeleteAccount } from "./DeleteAccount";
 import { JourneyCard } from "./JourneyCard";
+import { ForgetJourneyDismissal } from "./JourneyDismissal";
 import { MePreferences } from "./MePreferences";
 
 interface MeScreenProps {
@@ -58,7 +63,7 @@ export async function MeScreen({ locale }: MeScreenProps) {
     );
   }
 
-  const [mine, answers] = await Promise.all([getMyShowcase(), getMyAnswers()]);
+  const [mine, answers, jar] = await Promise.all([getMyShowcase(), getMyAnswers(), cookies()]);
   const showcase = mine?.showcase ?? null;
   const countryName = answers?.country ? countryOptions(locale).find((option) => option.code === answers.country)?.name : null;
   const profileRows = [
@@ -67,6 +72,16 @@ export async function MeScreen({ locale }: MeScreenProps) {
     { label: t("profile.emailLabel"), value: answers?.email ?? null },
   ];
   const profileIncomplete = answers !== null && (!answers.country || !answers.specialty);
+  const allDone = showcase !== null && showcase.previewImageUrl !== null && !profileIncomplete;
+  const journeyDismissed = jar.get(JOURNEY_COOKIE)?.value === "dismissed";
+  const dialog = (key: "manage.changeDialog" | "manage.withdrawDialog" | "account.deleteDialog", extra?: { typeToConfirm: string }) => ({
+    title: t(`${key}.title`),
+    description: t(`${key}.description`),
+    confirm: t(`${key}.confirm`),
+    pending: t(`${key}.pending`),
+    cancel: t("common.cancel"),
+    ...extra,
+  });
   // Scrolled to from the journey card: clear of the sticky top bar on a phone.
   const anchored = "scroll-mt-20";
 
@@ -85,7 +100,8 @@ export async function MeScreen({ locale }: MeScreenProps) {
           </div>
         </header>
 
-        <JourneyCard locale={locale} showcase={showcase} profileComplete={!profileIncomplete} />
+        {allDone && journeyDismissed ? null : <JourneyCard locale={locale} showcase={showcase} profileComplete={!profileIncomplete} />}
+        {!allDone && journeyDismissed ? <ForgetJourneyDismissal /> : null}
 
         <section id="me-portfolio" aria-labelledby="me-portfolio-title" className={`flex flex-col gap-3 ${anchored}`}>
           <h2 id="me-portfolio-title" className={sectionTitle}>{t("me.portfolioTitle")}</h2>
@@ -112,6 +128,17 @@ export async function MeScreen({ locale }: MeScreenProps) {
                   }}
                 />
               </div>
+              <ManageShowcase
+                labels={{
+                  title: t("manage.title"),
+                  lead: t("manage.lead"),
+                  change: t("manage.change"),
+                  withdraw: t("manage.withdraw"),
+                  failed: t("manage.failed"),
+                  changeDialog: dialog("manage.changeDialog"),
+                  withdrawDialog: dialog("manage.withdrawDialog"),
+                }}
+              />
             </>
           ) : (
             <>
@@ -148,6 +175,16 @@ export async function MeScreen({ locale }: MeScreenProps) {
           <div className="flex flex-col gap-4 border-t border-line-soft p-4">
             <MePreferences locale={locale} />
             <SignOutButton label={t("account.signOut")} failedMessage={t("account.signOutFailed")} />
+            <div className="flex flex-col gap-2 border-t border-line-soft pt-4">
+              <p className="text-[13px] leading-normal text-ink-muted">{t("account.deleteLead")}</p>
+              <DeleteAccount
+                login={member.login}
+                homeHref={localizedPath(locale, "/")}
+                label={t("account.delete")}
+                failed={t("account.deleteFailed")}
+                dialog={dialog("account.deleteDialog", { typeToConfirm: t.raw("account.deleteDialog.typeToConfirm") as string })}
+              />
+            </div>
           </div>
         </details>
       </div>

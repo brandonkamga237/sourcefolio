@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { getTranslations } from "next-intl/server";
 import { ShareButton } from "@/components/dashboard/ShareButton";
+import { DismissJourney } from "./JourneyDismissal";
 import { localizedPath } from "@/i18n/paths";
 import type { Locale } from "@/i18n/routing";
 import { siteLabel } from "@/lib/site-label";
@@ -35,11 +36,14 @@ export async function JourneyCard({ locale, showcase, profileComplete }: Journey
 
   return (
     <section aria-labelledby="journey-title" className="flex flex-col gap-4 rounded-panel border border-line bg-surface p-4 sm:p-5">
-      <div className="flex flex-col gap-1">
-        <h2 id="journey-title" className="font-display text-[20px] leading-tight font-bold tracking-[-0.025em]">
-          {next ? t("journey.title") : t("journey.doneTitle")}
-        </h2>
-        <p className="text-[13px] text-ink-muted">{t("journey.progress", { done: doneCount, total: steps.length })}</p>
+      <div className="flex items-start justify-between gap-3">
+        <div className="flex flex-col gap-1">
+          <h2 id="journey-title" className="font-display text-[20px] leading-tight font-bold tracking-[-0.025em]">
+            {next ? t("journey.title") : t("journey.doneTitle")}
+          </h2>
+          <p className="text-[13px] text-ink-muted">{t("journey.progress", { done: doneCount, total: steps.length })}</p>
+        </div>
+        {next ? null : <DismissJourney label={t("journey.dismiss")} />}
       </div>
 
       <ol className="grid grid-cols-4 gap-1.5">
