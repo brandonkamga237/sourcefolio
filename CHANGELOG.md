@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.8.0](https://github.com/brandonkamga237/sourcefolio/compare/v0.7.0...v0.8.0) (2026-10-30)
+
+
+### Features
+
+* **showcase:** preview images and short videos on cards ([#33](https://github.com/brandonkamga237/sourcefolio/issues/33)) ([5762ffd](https://github.com/brandonkamga237/sourcefolio/commit/5762ffddf9ee5d78fec5de05cf90d84ed8d5faea))
+
 ## [0.7.0](https://github.com/brandonkamga237/sourcefolio/compare/v0.6.0...v0.7.0) (2026-10-30)
 
 
