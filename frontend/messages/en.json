@@ -10,10 +10,9 @@
   "nav": {
     "label": "Main navigation",
     "discover": "Discover",
-    "search": "Search",
-    "portfolio": "My portfolio",
     "me": "Me",
-    "publish": "Publish your portfolio"
+    "publish": "Publish your portfolio",
+    "ranking": "Ranking"
   },
   "language": {
     "label": "Language",
@@ -90,13 +89,12 @@
       "REMOVED": "Removed"
     },
     "publishedOn": "Published on {date, date, long}",
-    "publishedLead": "Your portfolio is published on SourceFolio: we checked that your site answers.",
     "visitSite": "Visit the site",
     "viewCode": "View the code",
     "share": "Share",
     "shareTitle": "My portfolio on SourceFolio: {site}",
     "shareCopied": "Link copied. Paste it anywhere.",
-    "viewPage": "See my public page"
+    "viewPage": "My page"
   },
   "showcasePage": {
     "metaTitle": "{site}, {login}’s portfolio",
@@ -116,20 +114,29 @@
     "ogTagline": "A portfolio you can read the code of"
   },
   "catalog": {
-    "lead": "Developer portfolios online, with their public code. Open the site, then read how it is built.",
     "sort": {
       "label": "Catalogue order",
       "discover": "Discover",
       "recent": "Recent"
     },
-    "by": "by {login}",
     "loadMore": "Show more portfolios",
     "loading": "Loading…",
     "loadFailed": "The next portfolios could not be loaded. Try again in a moment.",
     "unavailable": "The catalogue is not answering right now. Try again in a moment.",
     "emptyTitle": "No portfolio published yet",
     "emptyLead": "Yours can be the first: sign in with GitHub, we find it and you publish it in one click.",
-    "emptyLink": "Publish my portfolio"
+    "emptyLink": "Publish my portfolio",
+    "count": "{count, plural, one {# portfolio} other {# portfolios}}",
+    "orderShuffled": "shuffled today",
+    "orderRecent": "newest first",
+    "panel": {
+      "close": "Close the panel",
+      "visitSite": "Visit the site",
+      "viewCode": "Code",
+      "openPage": "Open the full page",
+      "sourceRepo": "Source repository",
+      "publishedOn": "Published on {date}"
+    }
   },
   "profile": {
     "signInHint": "Sign in with GitHub to complete your profile.",
@@ -150,7 +157,7 @@
     "emailLabel": "Alert email",
     "notGiven": "Not given",
     "edit": "Edit",
-    "done": "Back to my portfolio",
+    "done": "Back to Me",
     "reminder": "Add your country and specialty: two questions, ten seconds.",
     "reminderLink": "Complete my profile"
   },
@@ -165,5 +172,14 @@
     "embedded": "Embedded",
     "security": "Security",
     "other": "Other"
+  },
+  "me": {
+    "portfolioTitle": "My portfolio",
+    "preferencesTitle": "Preferences"
+  },
+  "ranking": {
+    "title": "Ranking",
+    "lead": "The portfolios the community likes most.",
+    "empty": "The ranking appears with the first likes. Open a portfolio you like and like it."
   }
 }

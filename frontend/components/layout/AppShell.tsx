@@ -13,7 +13,7 @@ interface AppShellProps {
 }
 
 // Desktop (lg): sidebar on the left. Phone: slim top bar and the tabs at the bottom, in the
-// thumb zone. Same four sections in both. Labels are translated here, on the server, and
+// thumb zone. Same three sections in both. Labels are translated here, on the server, and
 // handed to the client components as plain strings: the browser never loads the message
 // catalogue or the ICU parser just to show four words.
 export async function AppShell({ children }: AppShellProps) {
@@ -22,8 +22,7 @@ export async function AppShell({ children }: AppShellProps) {
   const labels = {
     label: t("nav.label"),
     discover: t("nav.discover"),
-    search: t("nav.search"),
-    portfolio: t("nav.portfolio"),
+    ranking: t("nav.ranking"),
     me: t("nav.me"),
   };
 
@@ -43,7 +42,7 @@ export async function AppShell({ children }: AppShellProps) {
         <SidebarNav locale={locale} labels={labels} />
         <div className="mt-auto flex flex-col gap-3">
           <Link
-            href={localizedPath(locale, "/me/portfolio")}
+            href={localizedPath(locale, "/me")}
             className="flex h-11 items-center justify-center rounded-control bg-ink text-sm font-semibold text-ink-inverse"
           >
             {t("nav.publish")}

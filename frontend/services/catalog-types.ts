@@ -16,6 +16,8 @@ export interface CatalogPage {
   items: CatalogCard[];
   /** null on the last page. */
   nextCursor: string | null;
+  /** How many portfolios the whole catalogue lists. */
+  total: number;
 }
 
 export const CATALOG_PAGE_SIZE = 20;

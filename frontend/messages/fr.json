@@ -10,10 +10,9 @@
   "nav": {
     "label": "Navigation principale",
     "discover": "Découvrir",
-    "search": "Rechercher",
-    "portfolio": "Mon portfolio",
     "me": "Moi",
-    "publish": "Publier ton portfolio"
+    "publish": "Publier ton portfolio",
+    "ranking": "Classement"
   },
   "language": {
     "label": "Langue",
@@ -90,13 +89,12 @@
       "REMOVED": "Retiré"
     },
     "publishedOn": "Publié le {date, date, long}",
-    "publishedLead": "Ton portfolio est publié sur SourceFolio : on a vérifié que ton site répond.",
     "visitSite": "Voir le site",
     "viewCode": "Voir le code",
     "share": "Partager",
     "shareTitle": "Mon portfolio sur SourceFolio : {site}",
     "shareCopied": "Lien copié. Colle-le où tu veux.",
-    "viewPage": "Voir ma fiche publique"
+    "viewPage": "Ma fiche"
   },
   "showcasePage": {
     "metaTitle": "{site}, le portfolio de {login}",
@@ -116,20 +114,29 @@
     "ogTagline": "Un portfolio dont tu peux lire le code"
   },
   "catalog": {
-    "lead": "Des portfolios de développeurs en ligne, avec leur code public. Ouvre le site, puis lis comment il est construit.",
     "sort": {
       "label": "Ordre du catalogue",
       "discover": "Découvrir",
       "recent": "Récents"
     },
-    "by": "par {login}",
     "loadMore": "Voir plus de portfolios",
     "loading": "Chargement…",
     "loadFailed": "La suite n’a pas pu être chargée. Réessaie dans un instant.",
     "unavailable": "Le catalogue ne répond pas pour le moment. Réessaie dans un instant.",
     "emptyTitle": "Aucun portfolio publié pour l’instant",
     "emptyLead": "Le tien peut être le premier : connecte-toi avec GitHub, on le trouve et tu le publies en un clic.",
-    "emptyLink": "Publier mon portfolio"
+    "emptyLink": "Publier mon portfolio",
+    "count": "{count, plural, one {# portfolio} other {# portfolios}}",
+    "orderShuffled": "mélangés aujourd’hui",
+    "orderRecent": "les plus récents d’abord",
+    "panel": {
+      "close": "Fermer le panneau",
+      "visitSite": "Voir le site",
+      "viewCode": "Code",
+      "openPage": "Ouvrir la fiche complète",
+      "sourceRepo": "Dépôt source",
+      "publishedOn": "Publié le {date}"
+    }
   },
   "profile": {
     "signInHint": "Connecte-toi avec GitHub pour compléter ton profil.",
@@ -150,7 +157,7 @@
     "emailLabel": "E-mail d’alerte",
     "notGiven": "Non renseigné",
     "edit": "Modifier",
-    "done": "Retour à mon portfolio",
+    "done": "Retour à Moi",
     "reminder": "Ajoute ton pays et ta spécialité : deux questions, dix secondes.",
     "reminderLink": "Compléter mon profil"
   },
@@ -165,5 +172,14 @@
     "embedded": "Embarqué",
     "security": "Sécurité",
     "other": "Autre"
+  },
+  "me": {
+    "portfolioTitle": "Mon portfolio",
+    "preferencesTitle": "Préférences"
+  },
+  "ranking": {
+    "title": "Classement",
+    "lead": "Les portfolios les plus appréciés par la communauté.",
+    "empty": "Le classement apparaît avec les premières appréciations. Ouvre un portfolio qui te plaît et apprécie-le."
   }
 }

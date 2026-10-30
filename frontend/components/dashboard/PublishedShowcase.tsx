@@ -1,62 +1,66 @@
 import { getTranslations } from "next-intl/server";
 import Link from "next/link";
+import { PreviewArt } from "@/components/catalog/PreviewArt";
+import { IconCode, IconExternal } from "@/components/icons";
 import { localizedPath } from "@/i18n/paths";
 import type { Locale } from "@/i18n/routing";
 import { siteLabel } from "@/lib/site-label";
 import type { MyShowcase } from "@/services/showcases";
 import { ShareButton } from "./ShareButton";
-import { ShowcaseLinks } from "./ShowcaseLinks";
 
 interface PublishedShowcaseProps {
   locale: Locale;
   showcase: MyShowcase;
 }
 
-// The status is the author's private view of their portfolio (never a public score): anything
-// but PUBLISHED means visitors no longer find it in the catalogue.
+const iconLink = "flex size-11 shrink-0 items-center justify-center rounded-control border border-line bg-surface text-ink";
+
+// The author's view of their portfolio: what visitors see on the card, its status, and the
+// actions they come here for. Anything but PUBLISHED means visitors no longer find it in the
+// catalogue.
 export async function PublishedShowcase({ locale, showcase }: PublishedShowcaseProps) {
   const t = await getTranslations({ locale, namespace: "myShowcase" });
   const published = showcase.status === "PUBLISHED";
   const pagePath = localizedPath(locale, `/p/${showcase.slug}`);
 
   return (
-    <section aria-labelledby="my-showcase" className="flex flex-col gap-3 rounded-card border border-line bg-surface p-4">
-      <div className="flex flex-col gap-2">
-        <span
-          className={`w-fit rounded-full px-2.5 py-1 text-xs font-semibold ${
-            published ? "bg-accent-soft text-accent-ink" : "bg-surface-sunken text-ink"
-          }`}
-        >
-          {t(`status.${showcase.status}`)}
-        </span>
-        <h2 id="my-showcase" className="font-display text-2xl font-bold tracking-[-0.025em] break-all">
-          {siteLabel(showcase.siteUrl)}
-        </h2>
-        <p className="font-mono text-xs text-ink-soft">{showcase.repository}</p>
-        {showcase.publishedAt ? (
-          <p className="text-[13px] text-ink-muted">{t("publishedOn", { date: new Date(showcase.publishedAt) })}</p>
-        ) : null}
+    <section aria-labelledby="my-showcase" className="grid overflow-hidden rounded-card border border-line bg-surface sm:grid-cols-[minmax(0,240px)_1fr]">
+      <PreviewArt slug={showcase.slug} siteUrl={showcase.siteUrl} aspectClass="aspect-[16/6] sm:aspect-auto sm:h-full" />
+      <div className="flex min-w-0 flex-col gap-3 p-4">
+        <div className="flex flex-wrap items-center gap-2">
+          <span className={`rounded-full px-2.5 py-0.5 text-xs font-semibold ${published ? "bg-accent-soft text-accent-ink" : "bg-surface-sunken text-ink"}`}>
+            {t(`status.${showcase.status}`)}
+          </span>
+          {showcase.publishedAt ? (
+            <span className="text-xs text-ink-muted">{t("publishedOn", { date: new Date(showcase.publishedAt) })}</span>
+          ) : null}
+        </div>
+        <div className="flex min-w-0 flex-col gap-0.5">
+          <h2 id="my-showcase" className="truncate font-display text-[22px] leading-tight font-bold tracking-[-0.025em]">
+            {siteLabel(showcase.siteUrl)}
+          </h2>
+          <p className="truncate font-mono text-xs text-ink-muted">{showcase.repository}</p>
+        </div>
+        <div className="mt-auto flex flex-wrap items-start gap-2">
+          {published ? (
+            <ShareButton
+              path={pagePath}
+              title={t("shareTitle", { site: siteLabel(showcase.siteUrl) })}
+              label={t("share")}
+              copiedLabel={t("shareCopied")}
+            />
+          ) : null}
+          <Link href={pagePath} className="flex h-11 items-center rounded-control border border-ink px-3.5 text-sm font-semibold text-ink">
+            {t("viewPage")}
+          </Link>
+          <a href={showcase.siteUrl} target="_blank" rel="noopener noreferrer" aria-label={t("visitSite")} title={t("visitSite")} className={iconLink}>
+            <IconExternal className="size-4" />
+          </a>
+          <a href={showcase.repositoryUrl} target="_blank" rel="noopener noreferrer" aria-label={t("viewCode")} title={t("viewCode")} className={iconLink}>
+            <IconCode className="size-4" />
+          </a>
+        </div>
       </div>
-      {published ? (
-        <>
-          <p className="text-sm leading-normal text-ink-body">{t("publishedLead")}</p>
-          <ShareButton
-            path={pagePath}
-            title={t("shareTitle", { site: siteLabel(showcase.siteUrl) })}
-            label={t("share")}
-            copiedLabel={t("shareCopied")}
-          />
-        </>
-      ) : null}
-      <Link href={pagePath} className="flex h-11 w-fit items-center text-sm font-semibold text-ink underline underline-offset-2">
-        {t("viewPage")}
-      </Link>
-      <ShowcaseLinks
-        siteUrl={showcase.siteUrl}
-        repositoryUrl={showcase.repositoryUrl}
-        visitLabel={t("visitSite")}
-        codeLabel={t("viewCode")}
-      />
     </section>
   );
 }

@@ -113,7 +113,7 @@ export default async function ShowcasePage({ params }: PageProps<"/[locale]/p/[s
       <aside className="mt-4 flex flex-col gap-2 rounded-card border border-line bg-surface p-4">
         <h2 className="text-[15px] font-semibold">{t("ctaTitle")}</h2>
         <p className="text-sm leading-normal text-ink-body">{t("ctaLead")}</p>
-        <Link href={localizedPath(locale, "/me/portfolio")} className="flex h-11 w-fit items-center rounded-control border border-ink px-4 text-sm font-semibold text-ink">
+        <Link href={localizedPath(locale, "/me")} className="flex h-11 w-fit items-center rounded-control border border-ink px-4 text-sm font-semibold text-ink">
           {t("ctaLink")}
         </Link>
       </aside>
