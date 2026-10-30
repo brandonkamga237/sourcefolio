@@ -1,92 +1,80 @@
 import Link from "next/link";
+import { cookies } from "next/headers";
 import { getTranslations } from "next-intl/server";
 import { localizedPath } from "@/i18n/paths";
 import type { Locale } from "@/i18n/routing";
+import { INTRO_COOKIE } from "@/lib/intro";
+import { DismissibleIntro } from "./DismissIntro";
 
 interface DiscoverIntroProps {
   locale: Locale;
 }
 
-// The promise in one line, then the way in for an author. Browsing stays the main action of
-// Discover, so the band is short on a phone and the cards start above the fold.
+// The promise in one line and the way in for an author, in a slim band: browsing stays the main
+// action of Discover, so the cards start right below. Dismissed, it is gone for two weeks and
+// the feed's own title becomes the page's heading. Reads a cookie: render inside Suspense.
 export async function DiscoverIntro({ locale }: DiscoverIntroProps) {
-  const t = await getTranslations({ locale });
-  const steps = [t("catalog.intro.step1"), t("catalog.intro.step2"), t("catalog.intro.step3")];
+  const [t, jar] = await Promise.all([getTranslations({ locale }), cookies()]);
+  if (jar.get(INTRO_COOKIE)?.value === "hidden") {
+    return <h1 className="sr-only">{t("brand.tagline")}</h1>;
+  }
 
   return (
-    <section
-      aria-labelledby="discover-title"
-      className="relative isolate overflow-hidden rounded-panel border border-line bg-surface/80 px-4 py-3.5 backdrop-blur-sm sm:p-6 lg:p-8"
-    >
-      <div className="flex max-w-xl flex-col gap-1.5 sm:gap-3 md:max-w-none md:pr-[280px] lg:gap-4 lg:pr-[360px]">
-        <h1
-          id="discover-title"
-          className="font-display text-[22px] leading-[1.05] font-bold tracking-[-0.04em] text-balance sm:text-[34px] lg:text-[46px]"
-        >
-          {t("brand.tagline")}
-        </h1>
-        <p className="text-[13px] leading-snug text-ink-body sm:text-[15px] sm:leading-normal">{t("catalog.intro.lead")}</p>
-        {/* On a phone the top bar already carries the way in. */}
-        <div className="hidden flex-wrap items-center gap-x-4 gap-y-2 sm:flex">
-          <Link
-            href={localizedPath(locale, "/me")}
-            className="press flex h-11 items-center rounded-control bg-accent px-4 text-sm font-semibold text-white transition-colors duration-150 hover:bg-accent-hover"
-          >
-            {t("catalog.intro.cta")}
-          </Link>
-          <span className="text-[13px] text-ink-muted">{t("catalog.intro.ctaHint")}</span>
+    <DismissibleIntro closeLabel={t("catalog.intro.close")}>
+      <section
+        aria-labelledby="discover-title"
+        className="relative isolate flex items-center gap-4 overflow-hidden rounded-panel border border-line bg-surface/85 py-3.5 pr-12 pl-4 backdrop-blur-sm sm:py-4 sm:pl-5 lg:gap-6 lg:py-5 lg:pr-16 lg:pl-6"
+      >
+        <CodeMark />
+        <div className="flex min-w-0 flex-1 flex-col gap-1">
+          <h1 id="discover-title" className="font-display text-[19px] leading-tight font-bold tracking-[-0.03em] text-balance sm:text-[24px] lg:text-[28px]">
+            {t("brand.tagline")}
+          </h1>
+          <p className="text-[13px] leading-snug text-ink-body sm:text-sm">{t("catalog.intro.lead")}</p>
         </div>
-        <ol className="mt-1 hidden gap-2 sm:flex">
-          {steps.map((step, index) => (
-            <li key={index} className="flex items-center gap-2 text-[13px] text-ink-soft">
-              <span
-                aria-hidden="true"
-                className="flex size-6 shrink-0 items-center justify-center rounded-full bg-accent-soft font-mono text-[11px] font-semibold text-accent-ink"
-              >
-                {index + 1}
-              </span>
-              {step}
-            </li>
-          ))}
-        </ol>
-      </div>
-      <SiteAndCode />
-    </section>
+        {/* On a phone the top bar already carries the way in. */}
+        <Link
+          href={localizedPath(locale, "/me")}
+          className="press hidden h-11 shrink-0 items-center rounded-control bg-accent px-4 text-sm font-semibold text-white transition-colors duration-150 hover:bg-accent-hover sm:flex"
+        >
+          {t("catalog.intro.cta")}
+        </Link>
+        <FloatingWindows />
+      </section>
+    </DismissibleIntro>
   );
 }
 
-const line = "h-1.5 rounded-full";
-
-// A site in front of its source, the promise drawn with shapes only (no text to translate).
-function SiteAndCode() {
+// The site's mark, large and soft: the band reads as SourceFolio's own at a glance.
+function CodeMark() {
   return (
-    <div aria-hidden="true" className="pointer-events-none absolute top-1/2 right-6 hidden -translate-y-1/2 md:block lg:right-10">
-      <div className="relative h-[190px] w-[260px] lg:h-[220px] lg:w-[320px]">
-        <div className="absolute top-0 right-0 flex h-[150px] w-[220px] -rotate-3 flex-col gap-2.5 rounded-card bg-ink p-4 shadow-[0_18px_40px_-18px_rgba(18,20,18,0.55)] lg:h-[170px] lg:w-[260px]">
-          <div className={`${line} w-1/3 bg-accent`} />
-          <div className={`${line} ml-4 w-2/3 bg-white/25`} />
-          <div className={`${line} ml-4 w-1/2 bg-success`} />
-          <div className={`${line} ml-8 w-3/5 bg-white/25`} />
-          <div className={`${line} ml-4 w-2/5 bg-accent-line`} />
-          <div className={`${line} w-1/4 bg-accent`} />
+    <span aria-hidden="true" className="hidden size-12 shrink-0 items-center justify-center rounded-[14px] bg-ink text-ink-inverse sm:flex lg:size-14">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" className="size-6 lg:size-7">
+        <path d="M8 8l-4 4 4 4M16 8l4 4-4 4" />
+      </svg>
+    </span>
+  );
+}
+
+// A code window and a site window drifting behind the call to action: decoration only.
+function FloatingWindows() {
+  return (
+    <div aria-hidden="true" className="pointer-events-none absolute top-1/2 right-52 -z-10 hidden h-[76px] w-[170px] -translate-y-1/2 min-[1360px]:block">
+      <div className="drift absolute top-0 right-0 flex h-[54px] w-[112px] -rotate-6 flex-col gap-1.5 rounded-control bg-ink p-2.5 opacity-90">
+        <span className="h-1.5 w-1/3 rounded-full bg-accent" />
+        <span className="ml-3 h-1.5 w-2/3 rounded-full bg-white/25" />
+        <span className="ml-3 h-1.5 w-1/2 rounded-full bg-success" />
+      </div>
+      <div className="drift absolute bottom-0 left-0 flex h-[48px] w-[96px] rotate-3 flex-col overflow-hidden rounded-control border border-line bg-surface [animation-delay:-3s]">
+        <div className="flex gap-1 border-b border-line-soft px-2 py-1.5">
+          <span className="size-1.5 rounded-full bg-line" />
+          <span className="size-1.5 rounded-full bg-line" />
+          <span className="size-1.5 rounded-full bg-line" />
         </div>
-        <div className="absolute bottom-0 left-0 flex h-[130px] w-[200px] rotate-2 flex-col overflow-hidden rounded-card border border-line bg-surface shadow-[0_18px_40px_-18px_rgba(18,20,18,0.35)] lg:h-[150px] lg:w-[230px]">
-          <div className="flex gap-1 border-b border-line-soft px-3 py-2">
-            <span className="size-2 rounded-full bg-line" />
-            <span className="size-2 rounded-full bg-line" />
-            <span className="size-2 rounded-full bg-line" />
-          </div>
-          <div className="flex flex-1 flex-col gap-2 p-3">
-            <div className="h-3 w-3/4 rounded-full bg-ink" />
-            <div className={`${line} w-1/2 bg-line`} />
-            <div className="mt-auto flex gap-1.5">
-              <div className="h-5 w-14 rounded-md bg-accent" />
-              <div className="h-5 w-10 rounded-md border border-line" />
-            </div>
-          </div>
+        <div className="flex flex-1 flex-col gap-1.5 p-2">
+          <span className="h-2 w-3/4 rounded-full bg-ink" />
+          <span className="mt-auto h-2.5 w-8 rounded bg-accent" />
         </div>
-        <div className="absolute top-3 left-8 size-10 rounded-full border-[6px] border-accent-line" />
-        <div className="absolute right-2 bottom-4 size-5 rotate-12 rounded-md bg-accent-soft" />
       </div>
     </div>
   );

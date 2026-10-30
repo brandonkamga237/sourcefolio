@@ -4,6 +4,8 @@ import { toLocale } from "@/i18n/routing";
 import { BottomTabs } from "./BottomTabs";
 import { LanguageSwitch } from "./LanguageSwitch";
 import { Suspense } from "react";
+import { Terminal } from "@/components/illustrations/Terminal";
+import { TechBackdrop } from "@/components/illustrations/TechBackdrop";
 import { Logo } from "./Logo";
 import { ProjectStars } from "./ProjectStars";
 import { PublishLink } from "./PublishLink";
@@ -41,7 +43,10 @@ export async function AppShell({ children }: AppShellProps) {
           <Logo />
         </div>
         <SidebarNav locale={locale} labels={labels} />
-        <div className="mt-auto flex flex-col gap-3">
+        <div className="mt-auto px-1">
+          <Terminal />
+        </div>
+        <div className="flex flex-col gap-3">
           <Suspense fallback={null}>
             <ProjectStars locale={locale} />
           </Suspense>
@@ -69,7 +74,9 @@ export async function AppShell({ children }: AppShellProps) {
         </div>
       </header>
 
-      <main id="content" className="backdrop min-h-dvh min-w-0 flex-1 pb-[calc(3.5rem+env(safe-area-inset-bottom))] lg:pb-0">
+      <TechBackdrop />
+
+      <main id="content" className="min-h-dvh min-w-0 flex-1 pb-[calc(3.5rem+env(safe-area-inset-bottom))] lg:pb-0">
         {children}
       </main>
 
