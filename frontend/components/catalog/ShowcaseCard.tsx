@@ -1,4 +1,3 @@
-import Image from "next/image";
 import Link from "next/link";
 import type { CSSProperties, MouseEvent } from "react";
 import { IconHeart, IconStar } from "@/components/icons";
@@ -7,7 +6,7 @@ import type { Locale } from "@/i18n/routing";
 import { flagOf } from "@/lib/countries";
 import { compactNumber, plural, type PluralTemplates } from "@/lib/plural";
 import { siteLabel } from "@/lib/site-label";
-import { avatarUrl } from "@/services/members";
+import { Avatar } from "@/components/members/Avatar";
 import type { CatalogCard } from "@/services/catalog-types";
 import { Preview } from "./Preview";
 
@@ -71,14 +70,7 @@ export function ShowcaseCard({ card, href, index, selected, onOpen, locale, labe
         labels={labels.member}
         triggerClassName="flex w-full items-center gap-2.5 px-3 pt-2.5 pb-3 text-left transition-colors duration-150 hover:bg-surface-raised sm:px-3.5 sm:pt-3 sm:pb-3.5"
       >
-        <Image
-          src={avatarUrl(card.ownerLogin, 64)}
-          alt=""
-          width={32}
-          height={32}
-          unoptimized
-          className="size-7 shrink-0 rounded-full bg-accent-soft object-cover ring-2 ring-surface transition-[box-shadow] duration-200 group-hover:ring-accent-soft sm:size-8"
-        />
+        <Avatar login={card.ownerLogin} size={30} className="ring-2 ring-surface transition-[box-shadow] duration-200 group-hover:ring-accent-soft" />
         <span className="flex min-w-0 flex-col gap-0.5">
           <span className="truncate text-sm font-semibold sm:text-[15px]">{card.ownerLogin}</span>
           <span className="truncate text-[11px] text-ink-muted sm:text-xs">

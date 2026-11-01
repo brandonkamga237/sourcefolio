@@ -10,8 +10,7 @@ import { StarCount } from "@/components/stars/StarCount";
 import { CommitGraph } from "@/components/illustrations/CommitGraph";
 import { memberSheetLabels } from "@/components/members/labels";
 import { MemberSheet } from "@/components/members/MemberSheet";
-import { avatarUrl } from "@/services/members";
-import Image from "next/image";
+import { Avatar } from "@/components/members/Avatar";
 import { localizedPath } from "@/i18n/paths";
 import { toLocale } from "@/i18n/routing";
 import { siteLabel } from "@/lib/site-label";
@@ -112,7 +111,7 @@ export default async function ShowcasePage({ params }: PageProps<"/[locale]/p/[s
           labels={memberLabels}
           triggerClassName="press -mx-2 flex w-fit items-center gap-2.5 rounded-full py-1 pr-4 pl-1 text-left transition-colors duration-150 hover:bg-surface-sunken"
         >
-          <Image src={avatarUrl(showcase.ownerLogin, 80)} alt="" width={36} height={36} unoptimized className="size-9 rounded-full bg-accent-soft object-cover" />
+          <Avatar login={showcase.ownerLogin} size={36} />
           <span className="text-[15px] text-ink-body">
             {t("byLogin", { login: showcase.ownerLogin })}
             <span className="ml-2 text-[13px] font-semibold text-accent-ink">{t("seeProfile")}</span>

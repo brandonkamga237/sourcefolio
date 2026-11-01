@@ -12,7 +12,8 @@ import type { Locale } from "@/i18n/routing";
 import { countryName, flagOf } from "@/lib/countries";
 import { compactNumber, plural, type PluralTemplates } from "@/lib/plural";
 import { siteLabel } from "@/lib/site-label";
-import { avatarUrl, fetchMember, memberKey } from "@/services/members";
+import { fetchMember, memberKey } from "@/services/members";
+import { Avatar } from "./Avatar";
 
 export interface MemberSheetLabels {
   /** Contains {login}: the trigger's accessible name. */
@@ -79,14 +80,7 @@ export function MemberSheet({ login, locale, labels, children, triggerClassName 
 
           <div className="relative -mt-12 flex flex-col gap-4 overflow-y-auto px-5 pb-[calc(1.25rem+env(safe-area-inset-bottom))] sm:pb-5">
             <div className="flex items-end gap-3">
-              <Image
-                src={avatarUrl(login)}
-                alt=""
-                width={88}
-                height={88}
-                unoptimized
-                className="size-[88px] shrink-0 rounded-full border-4 border-surface bg-surface-sunken object-cover"
-              />
+              <Avatar login={login} size={88} className="border-4 border-surface" />
               <div className="flex min-w-0 flex-col pb-1">
                 <Dialog.Title className="truncate font-display text-[24px] leading-tight font-bold tracking-[-0.025em]">{data?.login ?? login}</Dialog.Title>
                 <Dialog.Description className="truncate text-[13px] text-ink-muted">

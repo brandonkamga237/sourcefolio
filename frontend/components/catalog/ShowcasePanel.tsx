@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { Suspense } from "react";
 import { IconChevronLeft, IconChevronRight, IconClose, IconCode, IconCopy, IconExternal, IconGithub, IconHeart, IconStar } from "@/components/icons";
@@ -10,7 +9,7 @@ import { MemberSheet, type MemberSheetLabels } from "@/components/members/Member
 import type { Locale } from "@/i18n/routing";
 import { countryName, flagOf } from "@/lib/countries";
 import { compactNumber } from "@/lib/plural";
-import { avatarUrl } from "@/services/members";
+import { Avatar } from "@/components/members/Avatar";
 import { LikeButton, type LikeButtonLabels } from "@/components/likes/LikeButton";
 import type { CatalogCard } from "@/services/catalog-types";
 import { Preview } from "./Preview";
@@ -120,7 +119,7 @@ export function ShowcasePanel({ card, position, direction, onPrev, onNext, href,
           labels={labels.member}
           triggerClassName="press -mx-2 flex items-center gap-3 rounded-control px-2 py-1 text-left transition-colors duration-150 hover:bg-surface-sunken"
         >
-          <Image src={avatarUrl(card.ownerLogin, 96)} alt="" width={44} height={44} unoptimized className="size-11 shrink-0 rounded-full bg-accent-soft object-cover" />
+          <Avatar login={card.ownerLogin} size={44} />
           <span className="flex min-w-0 flex-1 flex-col">
             <span id="panel-name" className="truncate font-display text-[22px] leading-tight font-bold tracking-[-0.025em]">
               {card.ownerLogin}
