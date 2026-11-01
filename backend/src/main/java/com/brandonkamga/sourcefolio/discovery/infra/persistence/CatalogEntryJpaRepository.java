@@ -46,6 +46,10 @@ interface CatalogEntryJpaRepository extends JpaRepository<CatalogEntryEntity, UU
     void setLikes(@Param("showcaseId") UUID showcaseId, @Param("count") int count);
 
     @Modifying
+    @Query("update CatalogEntryEntity e set e.feedbackCount = :count where e.showcaseId = :showcaseId")
+    void setFeedbackCount(@Param("showcaseId") UUID showcaseId, @Param("count") int count);
+
+    @Modifying
     @Query("""
             update CatalogEntryEntity e set e.repositoryStars = :stars, e.repositoryDescription = :description,
                 e.repositoryLanguages = :languages, e.repositoryPushedAt = :pushedAt

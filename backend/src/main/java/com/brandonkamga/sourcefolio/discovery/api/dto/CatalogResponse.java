@@ -15,13 +15,13 @@ public record CatalogResponse(List<Card> items, String nextCursor, long total) {
                        Instant publishedAt, String previewImageUrl, String previewVideoUrl, Integer repositoryStars,
                        int likes, String countryCode, List<String> specialties, String headline,
                        String repositoryDescription, List<String> repositoryLanguages, Instant repositoryPushedAt,
-                       String authorRole) {
+                       String authorRole, int feedbackCount) {
 
         static Card of(CatalogEntry entry) {
             return new Card(entry.slug(), entry.siteUrl(), entry.repository(), entry.repositoryUrl(), entry.ownerLogin(),
                     entry.publishedAt(), entry.previewImageUrl(), entry.previewVideoUrl(), entry.repositoryStars(), entry.likes(),
                     entry.countryCode(), entry.specialties(), entry.headline(), entry.repositoryDescription(),
-                    entry.repositoryLanguages(), entry.repositoryPushedAt(), entry.authorRole());
+                    entry.repositoryLanguages(), entry.repositoryPushedAt(), entry.authorRole(), entry.feedbackCount());
         }
     }
 
