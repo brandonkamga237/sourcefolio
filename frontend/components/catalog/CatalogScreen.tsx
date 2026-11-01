@@ -6,7 +6,6 @@ import { localizedPath } from "@/i18n/paths";
 import type { Locale } from "@/i18n/routing";
 import { getCatalogFacets, getCatalogFirstPage, type CatalogPage, type CatalogSort } from "@/services/catalog";
 import { filterParams, hasFilters, readFilters } from "@/services/catalog-types";
-import { SPECIALTIES } from "@/services/profile-types";
 import { CatalogSearch } from "./CatalogSearch";
 import { SortTabs, StaticSortTabs } from "./SortTabs";
 import { CatalogFeed } from "./CatalogFeed";
@@ -37,7 +36,7 @@ async function SortNav({ locale, sort }: { locale: Locale; sort: CatalogSort }) 
   );
 }
 
-// The search bar offers only the countries and interests some portfolio carries. Read per
+// The search bar offers only the countries and source languages some portfolio carries. Read per
 // request (then cached a few minutes): the build has no API, and the facets grow with the catalogue.
 async function Search({ locale }: { locale: Locale }) {
   await connection();
@@ -50,11 +49,10 @@ async function Search({ locale }: { locale: Locale }) {
         search: t("catalog.search.placeholder"),
         country: t("catalog.search.country"),
         anyCountry: t("catalog.search.anyCountry"),
-        interest: t("catalog.search.interest"),
-        anyInterest: t("catalog.search.anyInterest"),
+        language: t("catalog.search.language"),
+        anyLanguage: t("catalog.search.anyLanguage"),
         clear: t("catalog.search.clear"),
         filters: t("catalog.search.filters"),
-        specialtyNames: Object.fromEntries(SPECIALTIES.map((slug) => [slug, t(`specialty.${slug}`)])),
       }}
     />
   );
