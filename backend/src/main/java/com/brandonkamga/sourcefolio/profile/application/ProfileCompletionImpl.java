@@ -62,7 +62,7 @@ public class ProfileCompletionImpl implements ProfileCompletion {
     private DeveloperProfile saveAndAnnounce(DeveloperProfile profile) {
         DeveloperProfile saved = profiles.save(profile);
         events.profileChanged(new ProfileChanged(saved.memberId(), saved.country() == null ? null : saved.country().value(),
-                saved.specialties().slugs()));
+                saved.specialties().slugs(), saved.headline() == null ? null : saved.headline().value()));
         return saved;
     }
 }

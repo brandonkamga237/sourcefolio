@@ -15,6 +15,7 @@ public class ProfileDirectoryImpl implements ProfileDirectory {
     @Override
     public Optional<PublicProfile> findPublicProfile(UUID memberId) {
         return profiles.find(memberId).map(profile ->
-                new PublicProfile(profile.country() == null ? null : profile.country().value(), profile.specialties().slugs()));
+                new PublicProfile(profile.country() == null ? null : profile.country().value(), profile.specialties().slugs(),
+                        profile.headline() == null ? null : profile.headline().value()));
     }
 }

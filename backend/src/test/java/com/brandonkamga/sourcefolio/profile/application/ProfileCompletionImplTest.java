@@ -106,8 +106,8 @@ class ProfileCompletionImplTest {
         }
 
         assertThat(announced).containsExactly(
-                new ProfileChanged(MEMBER, "CM", List.of()),
-                new ProfileChanged(MEMBER, "CM", List.of("backend", "devops")));
+                new ProfileChanged(MEMBER, "CM", List.of(), null),
+                new ProfileChanged(MEMBER, "CM", List.of("backend", "devops"), null));
     }
 
     @Test
