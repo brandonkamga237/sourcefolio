@@ -82,6 +82,27 @@ class ProfileControllerTest {
     }
 
     @Test
+    @DisplayName("a fourth specialty is a 400 in the member's language")
+    void tooManySpecialties() throws Exception {
+        when(profiles.answerSpecialties(MEMBER, List.of("backend", "devops", "frontend", "mobile")))
+                .thenThrow(new BadRequestException("profile.specialties-invalid"));
+
+        mvc.perform(put("/api/me/profile/specialties").with(member()).with(csrf()).header("Accept-Language", "fr")
+                        .contentType(MediaType.APPLICATION_JSON).content("{\"specialties\":[\"backend\",\"devops\",\"frontend\",\"mobile\"]}"))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message").value("Choisis une à trois spécialités différentes."));
+    }
+
+    @Test
+    @DisplayName("a missing list is refused before reaching the use case")
+    void missingSpecialties() throws Exception {
+        mvc.perform(put("/api/me/profile/specialties").with(member()).with(csrf())
+                        .contentType(MediaType.APPLICATION_JSON).content("{}"))
+                .andExpect(status().isBadRequest());
+        verifyNoInteractions(profiles);
+    }
+
+    @Test
     @DisplayName("an empty answer is refused before reaching the use case")
     void emptyAnswer() throws Exception {
         mvc.perform(put("/api/me/profile/country").with(member()).with(csrf())
