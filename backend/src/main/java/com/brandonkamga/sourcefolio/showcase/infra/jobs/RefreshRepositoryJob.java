@@ -8,14 +8,15 @@ import org.jobrunr.scheduling.JobScheduler;
 import org.springframework.stereotype.Component;
 
 /**
- * GitHub stars of the showcases' repositories. Every hour, one query picks the repositories not
- * read for a day and one job per repository reads it: 40 an hour stays under the 60 calls GitHub
- * allows without a token, shared with detection.
+ * What GitHub says about the showcases' repositories (stars, description, languages, last push).
+ * Every hour, one query picks the repositories not read for a day and one job per repository
+ * reads it, in two calls: 25 an hour stays under the 60 calls GitHub allows without a token,
+ * shared with detection.
  */
 @Component
 public class RefreshRepositoryJob {
 
-    private static final int PER_HOUR = 40;
+    private static final int PER_HOUR = 25;
 
     private final RepositoryRefresh stars;
     private final JobScheduler jobs;
@@ -26,13 +27,13 @@ public class RefreshRepositoryJob {
     }
 
     @Recurring(id = "repository-stars", cron = "23 * * * *")
-    @Job(name = "Pick the repositories whose stars are due", labels = "github")
+    @Job(name = "Pick the repositories due for a read", labels = "github")
     public void sweep() {
         stars.listDue(PER_HOUR).forEach(showcaseId -> jobs.<RefreshRepositoryJob>enqueue(job -> job.refresh(showcaseId)));
     }
 
     // A rate limit or an outage throws: one retry, and the next sweep picks it up anyway.
-    @Job(name = "Read the stars of showcase %0", labels = "github", retries = 1)
+    @Job(name = "Read the repository of showcase %0", labels = "github", retries = 1)
     public void refresh(UUID showcaseId) {
         stars.refresh(showcaseId);
     }
