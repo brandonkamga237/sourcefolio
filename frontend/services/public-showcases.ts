@@ -14,6 +14,10 @@ export interface PublicShowcase {
   previewVideoUrl: string | null;
   /** GitHub stars of the repository, null until read (at most a day after publication). */
   repositoryStars: number | null;
+  /** What GitHub says about the repository, read daily: its description, main languages, last push. */
+  repositoryDescription: string | null;
+  repositoryLanguages: string[];
+  repositoryPushedAt: string | null;
 }
 
 /**
