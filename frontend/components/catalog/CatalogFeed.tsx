@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useState, type MouseEvent } from "react";
 import type { Locale } from "@/i18n/routing";
 import { localizedPath } from "@/i18n/paths";
-import type { CatalogPage, CatalogSort } from "@/services/catalog-types";
+import type { CatalogFilters, CatalogPage, CatalogSort } from "@/services/catalog-types";
 import { fetchCatalogPage } from "@/services/catalog-client";
 import { ShowcaseCard, type ShowcaseCardLabels } from "./ShowcaseCard";
 import { ShowcasePanel, type ShowcasePanelLabels } from "./ShowcasePanel";
@@ -11,6 +11,8 @@ import { ShowcasePanel, type ShowcasePanelLabels } from "./ShowcasePanel";
 interface CatalogFeedProps {
   locale: Locale;
   sort: CatalogSort;
+  /** The visitor's filters; the next pages load under the same ones. */
+  filters: CatalogFilters;
   firstPage: CatalogPage;
   labels: {
     loadMore: string;
@@ -26,7 +28,7 @@ const WIDE = "(min-width: 1024px)";
 // The first page arrives rendered by the server; the next ones load on request, with a button
 // rather than an endless scroll, so a phone loads only what is asked for. On a wide screen the
 // first card starts open in the side panel, as in the mockup.
-export function CatalogFeed({ locale, sort, firstPage, labels }: CatalogFeedProps) {
+export function CatalogFeed({ locale, sort, filters, firstPage, labels }: CatalogFeedProps) {
   const [cards, setCards] = useState(firstPage.items);
   const [cursor, setCursor] = useState(firstPage.nextCursor);
   const [selected, setSelected] = useState<string | null>(firstPage.items[0]?.slug ?? null);
@@ -47,7 +49,7 @@ export function CatalogFeed({ locale, sort, firstPage, labels }: CatalogFeedProp
     if (!cursor) return;
     setLoading(true);
     setFailed(false);
-    const page = await fetchCatalogPage(sort, cursor);
+    const page = await fetchCatalogPage(sort, cursor, filters);
     setLoading(false);
     if (!page) {
       setFailed(true);
@@ -124,7 +126,7 @@ export function CatalogFeed({ locale, sort, firstPage, labels }: CatalogFeedProp
       </div>
 
       {open ? (
-        <aside className="sticky top-[84px] hidden w-[360px] shrink-0 lg:block xl:w-[400px]">
+        <aside className="sticky top-[148px] hidden w-[360px] shrink-0 lg:block xl:top-[84px] xl:w-[400px]">
           <ShowcasePanel
               card={open}
               position={{ index: openIndex, total: cards.length, more: cursor !== null }}

@@ -11,6 +11,17 @@ import org.springframework.data.repository.query.Param;
 
 interface CatalogEntryJpaRepository extends JpaRepository<CatalogEntryEntity, UUID> {
 
+    // The visitor's optional filters, shared by the shuffle, Recent and the count. A null part
+    // means "any"; the casts tell PostgreSQL the type of a parameter bound as null.
+    String FILTERS = """
+             AND (CAST(:country AS VARCHAR) IS NULL OR country_code = CAST(:country AS CHAR(2)))
+             AND (CAST(:specialty AS VARCHAR) IS NULL OR CAST(:specialty AS VARCHAR) = ANY(specialties))
+             AND (CAST(:pattern AS VARCHAR) IS NULL
+                  OR lower(owner_login) LIKE CAST(:pattern AS VARCHAR)
+                  OR lower(site_url) LIKE CAST(:pattern AS VARCHAR)
+                  OR lower(coalesce(headline, '')) LIKE CAST(:pattern AS VARCHAR))
+            """;
+
     @Modifying
     @Query(value = """
             INSERT INTO catalog_entries (showcase_id, slug, site_url, repository, repository_url, owner_user_id, owner_login, published_at)
@@ -65,19 +76,47 @@ interface CatalogEntryJpaRepository extends JpaRepository<CatalogEntryEntity, UU
             FROM catalog_entries
             WHERE (published_at >= :youngSince) = :young
               AND md5(CAST(showcase_id AS VARCHAR) || :day) > :afterKey
+            """ + FILTERS + """
             ORDER BY md5(CAST(showcase_id AS VARCHAR) || :day)
             LIMIT :limit
             """, nativeQuery = true)
     List<String> shuffledIdsAndKeys(@Param("day") String day, @Param("young") boolean young,
                                     @Param("youngSince") Instant youngSince, @Param("afterKey") String afterKey,
-                                    @Param("limit") int limit);
+                                    @Param("limit") int limit, @Param("country") String country,
+                                    @Param("specialty") String specialty, @Param("pattern") String pattern);
 
-    List<CatalogEntryEntity> findAllByOrderByPublishedAtDescShowcaseIdDesc(Limit limit);
+    // Keyset on (published_at, showcase_id): never a deep OFFSET. Ids only; the rows follow.
+    @Query(value = """
+            SELECT showcase_id FROM catalog_entries
+            WHERE (CAST(:afterAt AS TIMESTAMPTZ) IS NULL
+                   OR published_at < CAST(:afterAt AS TIMESTAMPTZ)
+                   OR (published_at = CAST(:afterAt AS TIMESTAMPTZ) AND showcase_id < CAST(:afterId AS UUID)))
+            """ + FILTERS + """
+            ORDER BY published_at DESC, showcase_id DESC
+            LIMIT :limit
+            """, nativeQuery = true)
+    List<UUID> recentIds(@Param("afterAt") Instant afterAt, @Param("afterId") UUID afterId, @Param("limit") int limit,
+                         @Param("country") String country, @Param("specialty") String specialty, @Param("pattern") String pattern);
 
-    @Query("""
-            select e from CatalogEntryEntity e
-            where e.publishedAt < :publishedAt or (e.publishedAt = :publishedAt and e.showcaseId < :showcaseId)
-            order by e.publishedAt desc, e.showcaseId desc
-            """)
-    List<CatalogEntryEntity> recentAfter(@Param("publishedAt") Instant publishedAt, @Param("showcaseId") UUID showcaseId, Limit limit);
+    @Query(value = """
+            SELECT country_code AS value, count(*) AS count FROM catalog_entries
+            WHERE country_code IS NOT NULL GROUP BY country_code ORDER BY count DESC, value
+            """, nativeQuery = true)
+    List<FacetRow> countryFacets();
+
+    @Query(value = """
+            SELECT interest AS value, count(*) AS count FROM catalog_entries, unnest(specialties) AS interest
+            GROUP BY interest ORDER BY count DESC, value
+            """, nativeQuery = true)
+    List<FacetRow> specialtyFacets();
+
+    interface FacetRow {
+        String getValue();
+
+        long getCount();
+    }
+
+    @Query(value = "SELECT count(*) FROM catalog_entries WHERE TRUE" + FILTERS, nativeQuery = true)
+    long countMatching(@Param("country") String country, @Param("specialty") String specialty, @Param("pattern") String pattern);
+
 }

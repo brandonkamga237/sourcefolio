@@ -167,6 +167,17 @@
       "lead": "Open a portfolio, visit the site, then read the code that runs it.",
       "cta": "Publish mine",
       "close": "Hide this message"
+    },
+    "search": {
+      "placeholder": "Search a name, a site, a headline…",
+      "country": "Country",
+      "anyCountry": "All countries",
+      "interest": "Interest",
+      "anyInterest": "All interests",
+      "clear": "Clear filters",
+      "filters": "Filters",
+      "noMatchTitle": "No portfolio matches",
+      "noMatchLead": "Try other words, or remove a filter."
     }
   },
   "profile": {

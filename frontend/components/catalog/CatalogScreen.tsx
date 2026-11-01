@@ -4,7 +4,11 @@ import { getTranslations } from "next-intl/server";
 import { Suspense } from "react";
 import { localizedPath } from "@/i18n/paths";
 import type { Locale } from "@/i18n/routing";
-import { getCatalogFirstPage, type CatalogPage, type CatalogSort } from "@/services/catalog";
+import { getCatalogFacets, getCatalogFirstPage, type CatalogPage, type CatalogSort } from "@/services/catalog";
+import { filterParams, hasFilters, readFilters } from "@/services/catalog-types";
+import { SPECIALTIES } from "@/services/profile-types";
+import { CatalogSearch } from "./CatalogSearch";
+import { SortTabs, StaticSortTabs } from "./SortTabs";
 import { CatalogFeed } from "./CatalogFeed";
 import { DiscoverIntro } from "./DiscoverIntro";
 import { memberSheetLabels } from "@/components/members/labels";
@@ -12,6 +16,8 @@ import { memberSheetLabels } from "@/components/members/labels";
 interface CatalogScreenProps {
   locale: Locale;
   sort: CatalogSort;
+  /** The page's query, read inside the feed's boundary: request data never blocks the shell. */
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
 }
 
 const sorts: { sort: CatalogSort; path: string }[] = [
@@ -20,30 +26,44 @@ const sorts: { sort: CatalogSort; path: string }[] = [
 ];
 
 // The two orders of the spec, as links: each has its own address, so a shared or reloaded page
-// keeps its order. No popularity order, ever.
-async function SortTabs({ locale, sort }: CatalogScreenProps) {
+// keeps its order (and the visitor's filters). No popularity order, ever.
+async function SortNav({ locale, sort }: { locale: Locale; sort: CatalogSort }) {
   const t = await getTranslations({ locale, namespace: "catalog.sort" });
+  const tabs = sorts.map((item) => ({ key: item.sort, href: localizedPath(locale, item.path), label: t(item.sort), current: item.sort === sort }));
   return (
-    <nav aria-label={t("label")} className="flex gap-2">
-      {sorts.map((item) => (
-        <Link
-          key={item.sort}
-          href={localizedPath(locale, item.path)}
-          aria-current={item.sort === sort ? "page" : undefined}
-          className={`press flex h-11 items-center rounded-full px-3.5 text-sm font-semibold transition-colors duration-150 ${
-            item.sort === sort ? "bg-ink text-ink-inverse" : "border border-line bg-surface text-ink hover:border-ink-muted"
-          }`}
-        >
-          {t(item.sort)}
-        </Link>
-      ))}
-    </nav>
+    <Suspense fallback={<StaticSortTabs label={t("label")} tabs={tabs} />}>
+      <SortTabs label={t("label")} tabs={tabs} />
+    </Suspense>
   );
 }
 
-async function Feed({ locale, sort }: CatalogScreenProps) {
+// The search bar offers only the countries and interests some portfolio carries. Read per
+// request (then cached a few minutes): the build has no API, and the facets grow with the catalogue.
+async function Search({ locale }: { locale: Locale }) {
+  await connection();
+  const [t, facets] = await Promise.all([getTranslations({ locale }), getCatalogFacets()]);
+  return (
+    <CatalogSearch
+      locale={locale}
+      facets={facets}
+      labels={{
+        search: t("catalog.search.placeholder"),
+        country: t("catalog.search.country"),
+        anyCountry: t("catalog.search.anyCountry"),
+        interest: t("catalog.search.interest"),
+        anyInterest: t("catalog.search.anyInterest"),
+        clear: t("catalog.search.clear"),
+        filters: t("catalog.search.filters"),
+        specialtyNames: Object.fromEntries(SPECIALTIES.map((slug) => [slug, t(`specialty.${slug}`)])),
+      }}
+    />
+  );
+}
+
+async function Feed({ locale, sort, searchParams }: CatalogScreenProps) {
   // Read per request: the catalogue changes as members publish, and the build has no API.
   await connection();
+  const filters = readFilters(await searchParams);
   const [t, tl, ts] = await Promise.all([
     getTranslations({ locale, namespace: "catalog" }),
     getTranslations({ locale, namespace: "likes" }),
@@ -52,13 +72,25 @@ async function Feed({ locale, sort }: CatalogScreenProps) {
   const memberLabels = await memberSheetLabels(locale);
   let firstPage: CatalogPage;
   try {
-    firstPage = await getCatalogFirstPage(sort);
+    firstPage = await getCatalogFirstPage(sort, filters);
   } catch (error) {
     console.error("The catalogue could not be loaded", error);
     return (
       <p role="alert" className="rounded-card border border-line bg-surface p-4 text-sm text-ink-body">
         {t("unavailable")}
       </p>
+    );
+  }
+
+  if (firstPage.items.length === 0 && hasFilters(filters)) {
+    return (
+      <section aria-labelledby="catalog-no-match" className="flex flex-col items-start gap-2 rounded-card border border-line bg-surface p-5">
+        <h2 id="catalog-no-match" className="text-[15px] font-semibold">{t("search.noMatchTitle")}</h2>
+        <p className="text-sm leading-normal text-ink-body">{t("search.noMatchLead")}</p>
+        <Link href={localizedPath(locale, sort === "recent" ? "/recent" : "/")} className="press flex h-11 items-center rounded-control border border-ink px-4 text-sm font-semibold text-ink">
+          {t("search.clear")}
+        </Link>
+      </section>
     );
   }
 
@@ -80,6 +112,8 @@ async function Feed({ locale, sort }: CatalogScreenProps) {
         {t("count", { count: firstPage.total })} · {t(sort === "discover" ? "orderShuffled" : "orderRecent")}
       </p>
       <CatalogFeed
+      key={filterParams(filters).join("&")}
+      filters={filters}
       locale={locale}
       sort={sort}
       firstPage={firstPage}
@@ -130,23 +164,26 @@ function FeedSkeleton() {
   );
 }
 
-export async function CatalogScreen({ locale, sort }: CatalogScreenProps) {
+export async function CatalogScreen({ locale, sort, searchParams }: CatalogScreenProps) {
   const t = await getTranslations({ locale });
   return (
     <div className="mx-auto flex w-full max-w-[1500px] flex-col gap-4 px-4 py-4 sm:gap-5 lg:px-8 lg:py-7">
       {sort === "discover" ? <DiscoverIntro locale={locale} /> : null}
-      {/* Stays at the top while the cards scroll: the order (and soon search and filters) is
+      {/* Stays at the top while the cards scroll: the order, the search and the filters are
           always one tap away, under the phone's top bar or at the top of the desktop window. */}
-      <div className="sticky top-14 z-20 -mx-4 flex flex-wrap items-center justify-between gap-3 bg-canvas/85 px-4 py-2 backdrop-blur-md lg:top-0 lg:-mx-8 lg:px-8 lg:py-3">
+      <div className="sticky top-14 z-20 -mx-4 flex flex-wrap items-center justify-between gap-x-3 gap-y-2 bg-canvas/85 px-4 py-2 backdrop-blur-md lg:top-0 lg:-mx-8 lg:px-8 lg:py-3 xl:flex-nowrap">
         {sort === "discover" ? (
           <h2 className="font-display text-[20px] leading-none font-bold tracking-[-0.03em] sm:text-[24px]">{t("catalog.feedTitle")}</h2>
         ) : (
           <h1 className="font-display text-[22px] leading-none font-bold tracking-[-0.035em] sm:text-[26px] lg:text-[30px]">{t("catalog.recentTitle")}</h1>
         )}
-        <SortTabs locale={locale} sort={sort} />
+        <SortNav locale={locale} sort={sort} />
+        <Suspense fallback={<div aria-hidden="true" className="h-11 w-full animate-pulse rounded-control bg-surface-sunken xl:order-1 xl:w-auto xl:flex-1" />}>
+          <Search locale={locale} />
+        </Suspense>
       </div>
       <Suspense fallback={<FeedSkeleton />}>
-        <Feed locale={locale} sort={sort} />
+        <Feed locale={locale} sort={sort} searchParams={searchParams} />
       </Suspense>
     </div>
   );

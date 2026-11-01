@@ -2,6 +2,8 @@ package com.brandonkamga.sourcefolio.discovery.api;
 
 import com.brandonkamga.sourcefolio.discovery.application.Catalog;
 import com.brandonkamga.sourcefolio.discovery.domain.model.CatalogEntry;
+import com.brandonkamga.sourcefolio.discovery.domain.model.CatalogFacets;
+import com.brandonkamga.sourcefolio.discovery.domain.model.CatalogFilter;
 import com.brandonkamga.sourcefolio.discovery.domain.model.CatalogPage;
 import com.brandonkamga.sourcefolio.discovery.domain.model.RankedEntry;
 import com.brandonkamga.sourcefolio.discovery.infra.security.CatalogRoutesTestConfig;
@@ -38,9 +40,42 @@ class CatalogControllerTest {
             Instant.parse("2026-10-30T09:00:00Z"), null, null, 12, 4, "CM", List.of("backend", "devops"), "Backend à Douala");
 
     @Test
+    @DisplayName("search words, country and interest reach the use case, tidied")
+    void filters() throws Exception {
+        CatalogFilter filter = new CatalogFilter("react", "CM", "frontend");
+        when(catalog.listRecent(null, 20, filter)).thenReturn(new CatalogPage(List.of(ENTRY), null, 1));
+
+        mvc.perform(get("/api/catalog").param("sort", "recent").param("q", " React ").param("country", "cm").param("specialty", "frontend"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.total").value(1));
+    }
+
+    @Test
+    @DisplayName("an invalid filter is a 400 in the visitor's language, before the use case")
+    void invalidFilter() throws Exception {
+        mvc.perform(get("/api/catalog").param("country", "Cameroun").header("Accept-Language", "fr"))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.code").value("BAD_REQUEST"));
+        verifyNoInteractions(catalog);
+    }
+
+    @Test
+    @DisplayName("a visitor gets the countries and interests to filter by, with their counts")
+    void facets() throws Exception {
+        when(catalog.findFacets()).thenReturn(new CatalogFacets(List.of(new CatalogFacets.Facet("CM", 3)),
+                List.of(new CatalogFacets.Facet("backend", 2))));
+
+        mvc.perform(get("/api/catalog/facets"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.countries[0].value").value("CM"))
+                .andExpect(jsonPath("$.countries[0].count").value(3))
+                .andExpect(jsonPath("$.specialties[0].value").value("backend"));
+    }
+
+    @Test
     @DisplayName("a visitor gets the Discover feed by default, without an account, and without ids")
     void discoverByDefault() throws Exception {
-        when(catalog.listDiscover(null, 20)).thenReturn(new CatalogPage(List.of(ENTRY), "next", 124));
+        when(catalog.listDiscover(null, 20, CatalogFilter.none())).thenReturn(new CatalogPage(List.of(ENTRY), "next", 124));
 
         mvc.perform(get("/api/catalog"))
                 .andExpect(status().isOk())
@@ -62,7 +97,7 @@ class CatalogControllerTest {
     @Test
     @DisplayName("Recent takes the cursor and size it is given")
     void recent() throws Exception {
-        when(catalog.listRecent("abc", 10)).thenReturn(new CatalogPage(List.of(), null, 0));
+        when(catalog.listRecent("abc", 10, CatalogFilter.none())).thenReturn(new CatalogPage(List.of(), null, 0));
 
         mvc.perform(get("/api/catalog").param("sort", "recent").param("cursor", "abc").param("size", "10"))
                 .andExpect(status().isOk())
