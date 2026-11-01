@@ -37,7 +37,8 @@ class CatalogControllerTest {
 
     private static final CatalogEntry ENTRY = new CatalogEntry(UUID.randomUUID(), "nekwalla", "https://nekwalla.github.io/",
             "nekwalla/nekwalla.github.io", "https://github.com/nekwalla/nekwalla.github.io", UUID.randomUUID(), "Nekwalla",
-            Instant.parse("2026-10-30T09:00:00Z"), null, null, 12, 4, "CM", List.of("backend", "devops"), "Backend à Douala");
+            Instant.parse("2026-10-30T09:00:00Z"), null, null, 12, 4, "CM", List.of("backend", "devops"), "Backend à Douala",
+            "My portfolio in Astro", List.of("Astro", "TypeScript"), Instant.parse("2026-10-29T18:00:00Z"));
 
     @Test
     @DisplayName("search words, country and interest reach the use case, tidied")
@@ -88,6 +89,9 @@ class CatalogControllerTest {
                 .andExpect(jsonPath("$.items[0].countryCode").value("CM"))
                 .andExpect(jsonPath("$.items[0].specialties[0]").value("backend"))
                 .andExpect(jsonPath("$.items[0].headline").value("Backend à Douala"))
+                .andExpect(jsonPath("$.items[0].repositoryDescription").value("My portfolio in Astro"))
+                .andExpect(jsonPath("$.items[0].repositoryLanguages[0]").value("Astro"))
+                .andExpect(jsonPath("$.items[0].repositoryPushedAt").value("2026-10-29T18:00:00Z"))
                 .andExpect(jsonPath("$.items[0].showcaseId").doesNotExist())
                 .andExpect(jsonPath("$.items[0].ownerId").doesNotExist())
                 .andExpect(jsonPath("$.nextCursor").value("next"))

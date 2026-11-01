@@ -2,6 +2,7 @@ package com.brandonkamga.sourcefolio.showcase.domain.port;
 
 import com.brandonkamga.sourcefolio.showcase.domain.model.RepositoryCoordinates;
 import com.brandonkamga.sourcefolio.showcase.domain.model.RepositoryProvider;
+import com.brandonkamga.sourcefolio.showcase.domain.model.RepositorySnapshot;
 import com.brandonkamga.sourcefolio.showcase.domain.model.Showcase;
 import com.brandonkamga.sourcefolio.showcase.domain.model.ShowcaseId;
 import com.brandonkamga.sourcefolio.showcase.domain.model.ShowcaseSlug;
@@ -29,10 +30,11 @@ public interface ShowcaseStore {
     List<ShowcaseId> findDueForStars(Instant readBefore, int limit);
 
     /**
-     * Writes the stars just read and when, and nothing else: an author changing their preview at
-     * the same moment keeps their change.
+     * Writes what GitHub just said (null when the repository cannot be read: everything is
+     * cleared) and when, and nothing else: an author changing their preview at the same moment
+     * keeps their change.
      */
-    void saveRepositoryStars(ShowcaseId id, Integer stars, Instant checkedAt);
+    void saveRepositorySnapshot(ShowcaseId id, RepositorySnapshot snapshot, Instant checkedAt);
 
     boolean existsBySlug(ShowcaseSlug slug);
 

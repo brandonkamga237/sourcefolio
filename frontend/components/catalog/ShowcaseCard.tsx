@@ -72,12 +72,13 @@ export function ShowcaseCard({ card, href, index, selected, onOpen, locale, labe
               {/* The numbers, quiet and named on hover: a heart is a like here, a star is GitHub's. */}
               <span className="flex shrink-0 items-center gap-2 font-mono tabular-nums">
                 <span className="flex items-center gap-0.5" title={plural(labels.likes, card.likes, locale)}>
-                  <IconHeart aria-hidden="true" className={`size-3 ${card.likes > 0 ? "fill-accent text-accent" : ""}`} />
+                  <IconHeart aria-hidden="true" className={`size-3 ${card.likes > 0 ? "fill-like text-like" : ""}`} />
                   {compactNumber(card.likes, locale)}
                 </span>
                 {card.repositoryStars != null ? (
-                  <span className="flex items-center gap-0.5" title={plural(labels.stars, card.repositoryStars, locale)}>
-                    <IconStar aria-hidden="true" className="size-3" />
+                  // Secondary on a phone's narrow card: the panel and the page still show them.
+                  <span className="flex items-center gap-0.5 max-sm:hidden" title={plural(labels.stars, card.repositoryStars, locale)}>
+                    <IconStar aria-hidden="true" className="size-3 fill-star text-star" />
                     {compactNumber(card.repositoryStars, locale)}
                   </span>
                 ) : null}
@@ -89,14 +90,15 @@ export function ShowcaseCard({ card, href, index, selected, onOpen, locale, labe
             </span>
           </span>
         </MemberSheet>
-        {/* Sharing a portfolio is what brings visitors: one tap from every card. */}
+        {/* Sharing a portfolio is what brings visitors: one tap from every card, shown on hover
+            (or keyboard focus) where a mouse can hover, always there on a phone. */}
         <ShareAction
           path={href}
           title={labels.shareTitle.replace("{login}", card.ownerLogin)}
           label={labels.share}
           copiedLabel={labels.copied}
           iconOnly
-          className="press mr-1.5 flex size-11 shrink-0 items-center justify-center rounded-full text-ink-muted transition-colors duration-150 hover:bg-surface-sunken hover:text-ink"
+          className="press mr-1.5 flex size-11 shrink-0 items-center justify-center rounded-full text-ink-muted transition-[color,background-color,opacity] duration-150 hover:bg-surface-sunken hover:text-ink focus-visible:opacity-100 pointer-fine:opacity-0 pointer-fine:group-hover:opacity-100"
         />
       </div>
     </article>

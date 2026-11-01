@@ -18,7 +18,7 @@ export function StarCount({ count, locale, label, className = "" }: StarCountPro
       className={`inline-flex h-7 items-center gap-1.5 rounded-full border border-line bg-surface px-2.5 font-mono text-xs tabular-nums ${className}`}
     >
       <IconGithub aria-hidden="true" className="size-3.5 shrink-0" />
-      <IconStar aria-hidden="true" className="size-3.5 shrink-0 fill-accent text-accent" />
+      <IconStar aria-hidden="true" className="size-3.5 shrink-0 fill-star text-star" />
       <span aria-hidden="true">{new Intl.NumberFormat(locale, { notation: "compact", maximumFractionDigits: 1 }).format(count)}</span>
       <span className="sr-only">{label}</span>
     </span>

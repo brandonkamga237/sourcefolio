@@ -4,6 +4,7 @@ import com.brandonkamga.sourcefolio.shared.exception.ConflictException;
 import com.brandonkamga.sourcefolio.showcase.domain.model.PreviewMedia;
 import com.brandonkamga.sourcefolio.showcase.domain.model.RepositoryCoordinates;
 import com.brandonkamga.sourcefolio.showcase.domain.model.RepositoryProvider;
+import com.brandonkamga.sourcefolio.showcase.domain.model.RepositorySnapshot;
 import com.brandonkamga.sourcefolio.showcase.domain.model.Showcase;
 import com.brandonkamga.sourcefolio.showcase.domain.model.ShowcaseId;
 import com.brandonkamga.sourcefolio.showcase.domain.model.ShowcaseKind;
@@ -101,8 +102,10 @@ class JpaShowcaseStore implements ShowcaseStore {
 
     @Override
     @Transactional
-    public void saveRepositoryStars(ShowcaseId id, Integer stars, Instant checkedAt) {
-        sourceRepos.saveStars(id.value(), stars, checkedAt);
+    public void saveRepositorySnapshot(ShowcaseId id, RepositorySnapshot snapshot, Instant checkedAt) {
+        sourceRepos.saveSnapshot(id.value(), snapshot == null ? null : snapshot.stars(), snapshot == null ? null : snapshot.description(),
+                snapshot == null ? new String[0] : snapshot.languages().toArray(String[]::new), snapshot == null ? null : snapshot.pushedAt(),
+                checkedAt);
     }
 
     @Override
@@ -137,7 +140,7 @@ class JpaShowcaseStore implements ShowcaseStore {
                 new SiteUrl(row.getSiteUrl()),
                 new SourceRepo(RepositoryProvider.valueOf(repo.getProvider()),
                         new RepositoryCoordinates(repo.getOwner(), repo.getName()), repo.isPublic(), repo.getStars(),
-                        repo.getStarsCheckedAt()),
+                        repo.getDescription(), List.of(repo.getLanguages()), repo.getPushedAt(), repo.getStarsCheckedAt()),
                 ShowcaseStatus.valueOf(row.getStatus()), row.getCreatedAt(), row.getPublishedAt(), List.of(),
                 row.getPreviewImageKey() == null ? null : new PreviewMedia(row.getPreviewImageKey(), row.getPreviewImageUrl()),
                 row.getPreviewVideoKey() == null ? null : new PreviewMedia(row.getPreviewVideoKey(), row.getPreviewVideoUrl()));

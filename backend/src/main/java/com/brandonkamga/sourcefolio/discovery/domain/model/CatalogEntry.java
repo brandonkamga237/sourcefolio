@@ -12,7 +12,16 @@ import java.util.UUID;
  */
 public record CatalogEntry(UUID showcaseId, String slug, String siteUrl, String repository, String repositoryUrl,
                            UUID ownerId, String ownerLogin, Instant publishedAt, String previewImageUrl, String previewVideoUrl,
-                           Integer repositoryStars, int likes, String countryCode, List<String> specialties, String headline) {
+                           Integer repositoryStars, int likes, String countryCode, List<String> specialties, String headline,
+                           String repositoryDescription, List<String> repositoryLanguages, Instant repositoryPushedAt) {
+
+    /** An entry whose repository GitHub has not described yet. */
+    public CatalogEntry(UUID showcaseId, String slug, String siteUrl, String repository, String repositoryUrl,
+                        UUID ownerId, String ownerLogin, Instant publishedAt, String previewImageUrl, String previewVideoUrl,
+                        Integer repositoryStars, int likes, String countryCode, List<String> specialties, String headline) {
+        this(showcaseId, slug, siteUrl, repository, repositoryUrl, ownerId, ownerLogin, publishedAt, previewImageUrl, previewVideoUrl,
+                repositoryStars, likes, countryCode, specialties, headline, null, List.of(), null);
+    }
 
     /** An entry whose author has written no headline. */
     public CatalogEntry(UUID showcaseId, String slug, String siteUrl, String repository, String repositoryUrl,
@@ -57,5 +66,6 @@ public record CatalogEntry(UUID showcaseId, String slug, String siteUrl, String 
         Objects.requireNonNull(ownerId, "ownerId");
         Objects.requireNonNull(publishedAt, "publishedAt");
         specialties = specialties == null ? List.of() : List.copyOf(specialties);
+        repositoryLanguages = repositoryLanguages == null ? List.of() : List.copyOf(repositoryLanguages);
     }
 }

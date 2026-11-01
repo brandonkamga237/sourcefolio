@@ -62,7 +62,7 @@ class ShowcasePreviewImplTest {
         }
 
         @Override
-        public void starsChanged(ShowcaseStarsChanged event) {
+        public void repositoryChanged(ShowcaseRepositoryChanged event) {
             throw new AssertionError("a preview change reads no stars");
         }
     });

@@ -1,6 +1,7 @@
 package com.brandonkamga.sourcefolio.discovery.application;
 
 import com.brandonkamga.sourcefolio.discovery.domain.model.CatalogEntry;
+import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
 
@@ -15,7 +16,7 @@ public interface CatalogProjection {
 
     void updatePreview(UUID showcaseId, String imageUrl, String videoUrl);
 
-    void updateRepositoryStars(UUID showcaseId, Integer stars);
+    void updateRepository(UUID showcaseId, Integer stars, String description, List<String> languages, Instant pushedAt);
 
     void updateAuthorProfile(UUID ownerId, String countryCode, List<String> specialties, String headline);
 }

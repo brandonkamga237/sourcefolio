@@ -9,6 +9,7 @@ import com.brandonkamga.sourcefolio.showcase.domain.model.CandidateReason;
 import com.brandonkamga.sourcefolio.showcase.domain.model.PreviewMedia;
 import com.brandonkamga.sourcefolio.showcase.domain.model.RepositoryCoordinates;
 import com.brandonkamga.sourcefolio.showcase.domain.model.RepositoryProvider;
+import com.brandonkamga.sourcefolio.showcase.domain.model.RepositorySnapshot;
 import com.brandonkamga.sourcefolio.showcase.domain.model.Showcase;
 import com.brandonkamga.sourcefolio.showcase.domain.model.ShowcaseCandidate;
 import com.brandonkamga.sourcefolio.showcase.domain.model.ShowcaseId;
@@ -160,13 +161,16 @@ class JpaShowcaseStoreIT extends PostgresIT {
         Showcase fresh = showcases.save(Showcase.publishVerified(member(), slug("fresh-read"), candidate("nekwalla", "fresh-read"), NOW));
         entityManager.flush();
 
-        showcases.saveRepositoryStars(stale.id(), 3, NOW.minusSeconds(30 * 3600));
-        showcases.saveRepositoryStars(fresh.id(), 9, NOW.minusSeconds(3600));
+        showcases.saveRepositorySnapshot(stale.id(), new RepositorySnapshot(3, "A portfolio", NOW, List.of("TypeScript", "CSS")), NOW.minusSeconds(30 * 3600));
+        showcases.saveRepositorySnapshot(fresh.id(), new RepositorySnapshot(9, "A portfolio", NOW, List.of("TypeScript", "CSS")), NOW.minusSeconds(3600));
         entityManager.flush();
         entityManager.clear();
 
         assertThat(showcases.findById(fresh.id())).hasValueSatisfying(found -> {
             assertThat(found.sourceRepo().stars()).isEqualTo(9);
+            assertThat(found.sourceRepo().description()).isEqualTo("A portfolio");
+            assertThat(found.sourceRepo().languages()).containsExactly("TypeScript", "CSS");
+            assertThat(found.sourceRepo().pushedAt()).isEqualTo(NOW);
             assertThat(found.sourceRepo().starsCheckedAt()).isEqualTo(NOW.minusSeconds(3600));
             assertThat(found.siteUrl()).isEqualTo(fresh.siteUrl());
         });

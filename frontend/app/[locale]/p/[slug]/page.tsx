@@ -6,7 +6,9 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 import { IconCode, IconExternal } from "@/components/icons";
 import { LikeButton } from "@/components/likes/LikeButton";
 import { Preview } from "@/components/catalog/Preview";
+import { ProjectFacts } from "@/components/catalog/ProjectFacts";
 import { StarCount } from "@/components/stars/StarCount";
+import { sinceLabel } from "@/lib/relative-time";
 import { CommitGraph } from "@/components/illustrations/CommitGraph";
 import { memberSheetLabels } from "@/components/members/labels";
 import { MemberSheet } from "@/components/members/MemberSheet";
@@ -66,10 +68,11 @@ export default async function ShowcasePage({ params }: PageProps<"/[locale]/p/[s
   const { locale: raw, slug } = await params;
   const locale = toLocale(raw);
   setRequestLocale(locale);
-  const [t, tl, ts, showcase, memberLabels] = await Promise.all([
+  const [t, tl, ts, tp, showcase, memberLabels] = await Promise.all([
     getTranslations({ locale, namespace: "showcasePage" }),
     getTranslations({ locale, namespace: "likes" }),
     getTranslations({ locale, namespace: "stars" }),
+    getTranslations({ locale, namespace: "catalog.panel" }),
     getPublicShowcase(slug),
     memberSheetLabels(locale),
   ]);
@@ -129,6 +132,13 @@ export default async function ShowcasePage({ params }: PageProps<"/[locale]/p/[s
           <p className="text-[13px] text-ink-muted">{t("publishedOn", { date: new Date(showcase.publishedAt) })}</p>
         ) : null}
       </header>
+
+      <ProjectFacts
+        description={showcase.repositoryDescription}
+        languages={showcase.repositoryLanguages ?? []}
+        updatedSince={showcase.repositoryPushedAt ? sinceLabel(showcase.repositoryPushedAt, locale) : null}
+        labels={{ title: tp("projectTitle"), languages: tp("projectLanguages"), updated: tp.raw("projectUpdated") as string }}
+      />
 
       <div className="flex flex-col gap-2">
         <a

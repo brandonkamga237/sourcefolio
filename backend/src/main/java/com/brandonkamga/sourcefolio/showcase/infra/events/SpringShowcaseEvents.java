@@ -4,7 +4,7 @@ import com.brandonkamga.sourcefolio.showcase.application.ShowcaseEvents;
 import com.brandonkamga.sourcefolio.showcase.application.ShowcasePreviewChanged;
 import com.brandonkamga.sourcefolio.showcase.application.ShowcasePublished;
 import com.brandonkamga.sourcefolio.showcase.application.ShowcaseRemoved;
-import com.brandonkamga.sourcefolio.showcase.application.ShowcaseStarsChanged;
+import com.brandonkamga.sourcefolio.showcase.application.ShowcaseRepositoryChanged;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;
 
@@ -33,7 +33,7 @@ class SpringShowcaseEvents implements ShowcaseEvents {
     }
 
     @Override
-    public void starsChanged(ShowcaseStarsChanged event) {
+    public void repositoryChanged(ShowcaseRepositoryChanged event) {
         publisher.publishEvent(event);
     }
 }

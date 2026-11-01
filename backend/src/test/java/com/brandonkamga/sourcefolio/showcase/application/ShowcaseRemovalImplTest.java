@@ -43,7 +43,7 @@ class ShowcaseRemovalImplTest {
         }
 
         @Override
-        public void starsChanged(ShowcaseStarsChanged event) {
+        public void repositoryChanged(ShowcaseRepositoryChanged event) {
             throw new AssertionError("removing reads no stars");
         }
     });

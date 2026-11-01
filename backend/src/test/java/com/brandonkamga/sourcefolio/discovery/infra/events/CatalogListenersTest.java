@@ -7,7 +7,7 @@ import com.brandonkamga.sourcefolio.engagement.application.ShowcaseLikesChanged;
 import com.brandonkamga.sourcefolio.profile.application.ProfileChanged;
 import com.brandonkamga.sourcefolio.showcase.application.ShowcasePreviewChanged;
 import com.brandonkamga.sourcefolio.showcase.application.ShowcasePublished;
-import com.brandonkamga.sourcefolio.showcase.application.ShowcaseStarsChanged;
+import com.brandonkamga.sourcefolio.showcase.application.ShowcaseRepositoryChanged;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import java.time.Instant;
@@ -62,11 +62,11 @@ class CatalogListenersTest {
     }
 
     @Test
-    @DisplayName("new repository stars reach the catalogue")
-    void starsReachCatalogue() {
-        new CatalogListeners(recording()).on(new ShowcaseStarsChanged(SHOWCASE, 7));
+    @DisplayName("what GitHub says about the repository reaches the catalogue")
+    void repositoryReachesCatalogue() {
+        new CatalogListeners(recording()).on(new ShowcaseRepositoryChanged(SHOWCASE, 7, "A portfolio", List.of("TypeScript"), null));
 
-        assertThat(calls).containsExactly(SHOWCASE + " stars 7");
+        assertThat(calls).containsExactly(SHOWCASE + " repository 7 A portfolio [TypeScript]");
     }
 
     @Test
@@ -102,7 +102,7 @@ class CatalogListenersTest {
             }
 
             @Override
-            public void updateRepositoryStars(UUID showcaseId, Integer stars) {
+            public void updateRepository(UUID showcaseId, Integer stars, String description, List<String> languages, Instant pushedAt) {
                 throw new IllegalStateException("database down");
             }
 
@@ -140,8 +140,8 @@ class CatalogListenersTest {
             }
 
             @Override
-            public void updateRepositoryStars(UUID showcaseId, Integer stars) {
-                calls.add(showcaseId + " stars " + stars);
+            public void updateRepository(UUID showcaseId, Integer stars, String description, List<String> languages, Instant pushedAt) {
+                calls.add(showcaseId + " repository " + stars + " " + description + " " + languages);
             }
 
             @Override

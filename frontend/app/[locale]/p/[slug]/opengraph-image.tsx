@@ -50,7 +50,7 @@ export default async function OpenGraphImage({ params }: { params: Promise<{ loc
             {showcase ? <div style={{ fontSize: 32, color: og.body }}>{t("ogBy", { login: showcase.ownerLogin })}</div> : null}
             {stars !== null ? (
               <div style={{ display: "flex", alignItems: "center", gap: 12, fontSize: 28, color: og.ink }}>
-                <svg width={30} height={30} viewBox="0 0 24 24" fill={og.accent} stroke={og.accent} strokeWidth={1.6} strokeLinejoin="round">
+                <svg width={30} height={30} viewBox="0 0 24 24" fill={og.star} stroke={og.star} strokeWidth={1.6} strokeLinejoin="round">
                   <path d="M12 3.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8L12 16.9l-5.2 2.7 1-5.8-4.3-4.1 5.9-.9z" />
                 </svg>
                 {t("ogStars", { count: stars, formatted: formatStars(stars, locale) })}

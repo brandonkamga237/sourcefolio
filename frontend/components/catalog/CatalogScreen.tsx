@@ -146,6 +146,7 @@ async function Feed({ locale, sort, searchParams }: CatalogScreenProps) {
           copied: t("panel.copied"),
           githubProfile: t("panel.githubProfile"),
           member: memberLabels,
+          project: { title: t("panel.projectTitle"), languages: t("panel.projectLanguages"), updated: t.raw("panel.projectUpdated") as string },
           likes: { like: tl.raw("like") as string, unlike: tl.raw("unlike") as string, own: tl.raw("own") as string, failed: tl("failed") },
         },
       }}

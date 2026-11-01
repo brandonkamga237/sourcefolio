@@ -30,6 +30,7 @@ export const og = {
   accentSoft: "#e9ecfd",
   accentLine: "#c9d0fa",
   success: "#1d7a4b",
+  star: "#bf8700",
 };
 
 // The dot grid and accent glow of the site's backdrop.

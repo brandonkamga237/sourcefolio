@@ -159,7 +159,10 @@
       "shareTitle": "Le portfolio de {login} sur SourceFolio",
       "clone": "git clone",
       "copied": "Copié",
-      "githubProfile": "GitHub"
+      "githubProfile": "GitHub",
+      "projectTitle": "Le projet",
+      "projectLanguages": "Technologies du dépôt",
+      "projectUpdated": "Code mis à jour {when}"
     },
     "feedTitle": "Les portfolios",
     "recentTitle": "Les derniers publiés",

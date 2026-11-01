@@ -131,17 +131,25 @@ class JpaCatalogStoreIT extends PostgresIT {
     }
 
     @Test
-    @DisplayName("the repository stars are copied, survive a repeated publication event, and can go back to unknown")
-    void repositoryStars() {
+    @DisplayName("what GitHub says about the repository is copied, survives a repeated publication event, and can go back to unknown")
+    void repositoryFacts() {
         CatalogEntry entry = entry("starred", NOW);
         catalog.upsert(entry);
 
-        catalog.setRepositoryStars(entry.showcaseId(), 42);
+        catalog.setRepository(entry.showcaseId(), 42, "My portfolio in Astro", List.of("Astro", "TypeScript"), NOW);
         catalog.upsert(entry);
-        assertThat(catalog.recent(null, 10, CatalogFilter.none())).singleElement().extracting(CatalogEntry::repositoryStars).isEqualTo(42);
+        assertThat(catalog.recent(null, 10, CatalogFilter.none())).singleElement().satisfies(card -> {
+            assertThat(card.repositoryStars()).isEqualTo(42);
+            assertThat(card.repositoryDescription()).isEqualTo("My portfolio in Astro");
+            assertThat(card.repositoryLanguages()).containsExactly("Astro", "TypeScript");
+            assertThat(card.repositoryPushedAt()).isEqualTo(NOW);
+        });
 
-        catalog.setRepositoryStars(entry.showcaseId(), null);
-        assertThat(catalog.recent(null, 10, CatalogFilter.none())).singleElement().extracting(CatalogEntry::repositoryStars).isNull();
+        catalog.setRepository(entry.showcaseId(), null, null, List.of(), null);
+        assertThat(catalog.recent(null, 10, CatalogFilter.none())).singleElement().satisfies(card -> {
+            assertThat(card.repositoryStars()).isNull();
+            assertThat(card.repositoryLanguages()).isEmpty();
+        });
     }
 
     @Test
