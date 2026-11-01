@@ -191,7 +191,12 @@
     "done": "Retour à Moi",
     "reminder": "Ajoute ton pays et ta spécialité : deux questions, dix secondes.",
     "reminderLink": "Compléter mon profil",
-    "specialtyHint": "Touche-les dans l’ordre d’importance, jusqu’à trois : la première est celle qu’on verra d’abord."
+    "specialtyHint": "Touche-les dans l’ordre d’importance, jusqu’à trois : la première est celle qu’on verra d’abord.",
+    "headlineTitle": "Ton titre",
+    "headlineHint": "Une ligne écrite par toi, affichée sous ton nom : ce que tu fais, ce que tu cherches.",
+    "headlinePlaceholder": "Ex. Développeuse front-end React à Douala",
+    "headlineCounter": "{count}/{max}",
+    "headlineLabel": "Titre"
   },
   "specialty": {
     "frontend": "Frontend",

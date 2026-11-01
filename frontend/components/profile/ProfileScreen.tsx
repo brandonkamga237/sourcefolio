@@ -37,6 +37,11 @@ export async function ProfileScreen({ locale }: ProfileScreenProps) {
       doneHref={localizedPath(locale, "/me")}
       labels={{
         progress: t.raw("profile.progress") as string,
+        headlineTitle: t("profile.headlineTitle"),
+        headlineHint: t("profile.headlineHint"),
+        headlinePlaceholder: t("profile.headlinePlaceholder"),
+        headlineCounter: t.raw("profile.headlineCounter") as string,
+        headlineLabel: t("profile.headlineLabel"),
         countryTitle: t("profile.countryTitle"),
         countryPlaceholder: t("profile.countryPlaceholder"),
         specialtyTitle: t("profile.specialtyTitle"),

@@ -191,7 +191,12 @@
     "done": "Back to Me",
     "reminder": "Add your country and specialty: two questions, ten seconds.",
     "reminderLink": "Complete my profile",
-    "specialtyHint": "Tap them in order of importance, up to three: the first is the one people see first."
+    "specialtyHint": "Tap them in order of importance, up to three: the first is the one people see first.",
+    "headlineTitle": "Your headline",
+    "headlineHint": "One line in your own words, shown under your name: what you do, what you are looking for.",
+    "headlinePlaceholder": "E.g. Front-end React developer in Lagos",
+    "headlineCounter": "{count}/{max}",
+    "headlineLabel": "Headline"
   },
   "specialty": {
     "frontend": "Frontend",
