@@ -147,7 +147,18 @@
       "viewCode": "Code",
       "openPage": "Ouvrir la fiche complète",
       "sourceRepo": "Dépôt source",
-      "publishedOn": "Publié le {date}"
+      "publishedOn": "Publié le {date}",
+      "previous": "Portfolio précédent (flèche gauche)",
+      "next": "Portfolio suivant (flèche droite)",
+      "position": "{current} sur {total}",
+      "statLikes": "appréciations",
+      "statStars": "étoiles",
+      "statPublished": "publié",
+      "share": "Partager",
+      "shareTitle": "Le portfolio de {login} sur SourceFolio",
+      "clone": "Copier git clone",
+      "copied": "Copié",
+      "githubProfile": "Profil GitHub"
     },
     "feedTitle": "Les portfolios",
     "recentTitle": "Les derniers publiés",
@@ -208,7 +219,9 @@
     "like": "Apprécier ce portfolio ({count})",
     "unlike": "Retirer mon appréciation ({count})",
     "failed": "Ton appréciation n’a pas pu être enregistrée. Réessaie.",
-    "own": "C’est ton portfolio : {count} appréciation(s)"
+    "own": "C’est ton portfolio : {count} appréciation(s)",
+    "countOne": "{count} appréciation",
+    "countOther": "{count} appréciations"
   },
   "preview": {
     "title": "Aperçu de ta carte",

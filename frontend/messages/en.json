@@ -147,7 +147,18 @@
       "viewCode": "Code",
       "openPage": "Open the full page",
       "sourceRepo": "Source repository",
-      "publishedOn": "Published on {date}"
+      "publishedOn": "Published on {date}",
+      "previous": "Previous portfolio (left arrow)",
+      "next": "Next portfolio (right arrow)",
+      "position": "{current} of {total}",
+      "statLikes": "likes",
+      "statStars": "stars",
+      "statPublished": "published",
+      "share": "Share",
+      "shareTitle": "{login}’s portfolio on SourceFolio",
+      "clone": "Copy git clone",
+      "copied": "Copied",
+      "githubProfile": "GitHub profile"
     },
     "feedTitle": "Portfolios",
     "recentTitle": "Latest published",
@@ -208,7 +219,9 @@
     "like": "Like this portfolio ({count})",
     "unlike": "Take back my like ({count})",
     "failed": "Your like could not be saved. Try again.",
-    "own": "This is your portfolio: {count} like(s)"
+    "own": "This is your portfolio: {count} like(s)",
+    "countOne": "{count} like",
+    "countOther": "{count} likes"
   },
   "preview": {
     "title": "Your card preview",

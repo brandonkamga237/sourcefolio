@@ -2,18 +2,19 @@
 
 import { useState, type ReactNode } from "react";
 import { IconClose } from "@/components/icons";
-import { INTRO_COOKIE, INTRO_HIDDEN_SECONDS } from "@/lib/intro";
 
 interface DismissibleIntroProps {
   closeLabel: string;
+  /** The page's heading, kept for screen readers once the band is closed. */
+  heading: string;
   children: ReactNode;
 }
 
-// The band fades up and away at once; the cookie keeps it hidden for two weeks. No refresh:
-// the feed below stays where it is.
-export function DismissibleIntro({ closeLabel, children }: DismissibleIntroProps) {
+// The band fades up and away; nothing is remembered, so a reload shows it again. The feed
+// below stays where it is.
+export function DismissibleIntro({ closeLabel, heading, children }: DismissibleIntroProps) {
   const [state, setState] = useState<"shown" | "leaving" | "gone">("shown");
-  if (state === "gone") return null;
+  if (state === "gone") return <h1 className="sr-only">{heading}</h1>;
 
   return (
     <div
@@ -29,7 +30,6 @@ export function DismissibleIntro({ closeLabel, children }: DismissibleIntroProps
           aria-label={closeLabel}
           title={closeLabel}
           onClick={() => {
-            document.cookie = `${INTRO_COOKIE}=hidden; path=/; max-age=${INTRO_HIDDEN_SECONDS}; samesite=lax`;
             // Reduced motion shortens the animation to nothing; leave at once rather than wait for it.
             setState(window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "gone" : "leaving");
           }}
