@@ -9,6 +9,8 @@ export interface PublicMember {
   specialties: string[];
   /** The member's own line, null until written. */
   headline: string | null;
+  /** The role they declare (a slug), null until answered. */
+  role: string | null;
   onSourceFolioSince: string;
   likesReceived: number;
   showcase: {
