@@ -17,6 +17,10 @@ export type Specialty = (typeof SPECIALTY_GROUPS)[SpecialtyGroup][number];
 
 export const SPECIALTIES: readonly Specialty[] = Object.values(SPECIALTY_GROUPS).flat();
 
+// The twelve roles a member can declare, one at most: their claim, shown as theirs.
+export const ROLES = ["frontend", "backend", "fullstack", "mobile", "devops", "data-ai", "security", "design", "qa", "game", "embedded", "learning"] as const;
+export type Role = (typeof ROLES)[number];
+
 export interface Profile {
   /** ISO 3166-1 alpha-2, null until answered. */
   country: string | null;
@@ -24,6 +28,8 @@ export interface Profile {
   specialties: Specialty[];
   /** The member's own line, null until written. */
   headline: string | null;
+  /** The role the member declares, null until answered. */
+  role: Role | null;
 }
 
 export const MAX_SPECIALTIES = 4;
