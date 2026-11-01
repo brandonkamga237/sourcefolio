@@ -9,6 +9,8 @@ import com.brandonkamga.sourcefolio.showcase.domain.model.RepositoryCoordinates;
 import com.brandonkamga.sourcefolio.showcase.domain.model.RepositorySnapshot;
 import com.brandonkamga.sourcefolio.showcase.domain.model.ShowcaseCandidate;
 import com.brandonkamga.sourcefolio.showcase.domain.port.CandidateStore;
+import com.brandonkamga.sourcefolio.shared.exception.AppException;
+import com.brandonkamga.sourcefolio.shared.exception.ErrorCode;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -22,6 +24,7 @@ import java.util.Map;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class ShowcaseDetectionImplTest {
 
@@ -31,27 +34,54 @@ class ShowcaseDetectionImplTest {
     private final Map<String, List<PublicRepository>> github = new HashMap<>();
     private final InMemoryCandidateStore store = new InMemoryCandidateStore();
     private final List<String> scheduled = new ArrayList<>();
-    private final ShowcaseDetection detection = new ShowcaseDetectionImpl(
-            new RepositoryHost() {
-                @Override
-                public List<PublicRepository> listPublicRepositories(String login) {
-                    return github.getOrDefault(login, List.of());
-                }
+    private Clock clock = Clock.fixed(NOW, ZoneOffset.UTC);
 
-                @Override
-                public Optional<RepositorySnapshot> snapshot(RepositoryCoordinates repository) {
-                    throw new AssertionError("detection reads no repository facts");
-                }
-            }, store,
-            (memberId, login) -> scheduled.add(memberId + " " + login), Clock.fixed(NOW, ZoneOffset.UTC));
+    private ShowcaseDetection detection() {
+        return new ShowcaseDetectionImpl(new RepositoryHost() {
+            @Override
+            public List<PublicRepository> listPublicRepositories(String login) {
+                return github.getOrDefault(login, List.of());
+            }
+
+            @Override
+            public Optional<RepositorySnapshot> snapshot(RepositoryCoordinates repository) {
+                throw new AssertionError("detection reads no repository facts");
+            }
+        }, store, (memberId, login) -> scheduled.add(memberId + " " + login), memberId -> "nekwalla", clock);
+    }
 
     @Test
     @DisplayName("requesting a detection schedules it in the background and touches nothing else")
     void requestSchedules() {
-        detection.requestDetection(MEMBER, "nekwalla");
+        detection().requestDetection(MEMBER, "nekwalla");
 
         assertThat(scheduled).containsExactly(MEMBER + " nekwalla");
         assertThat(store.rows).isEmpty();
+    }
+
+    @Test
+    @DisplayName("a member asks for a new search from Me: it is scheduled under their current login")
+    void rescan() {
+        detection().requestRescan(MEMBER);
+
+        assertThat(scheduled).containsExactly(MEMBER + " nekwalla");
+    }
+
+    @Test
+    @DisplayName("a new search is refused within 30 seconds of the last one, and allowed after")
+    void rescanThrottled() {
+        github.put("nekwalla", List.of());
+        detection().detect(MEMBER, "nekwalla");
+        clock = Clock.fixed(NOW.plusSeconds(29), ZoneOffset.UTC);
+
+        assertThatThrownBy(() -> detection().requestRescan(MEMBER))
+                .isInstanceOf(AppException.class)
+                .extracting(thrown -> ((AppException) thrown).code()).isEqualTo(ErrorCode.CONFLICT);
+        assertThat(scheduled).isEmpty();
+
+        clock = Clock.fixed(NOW.plusSeconds(31), ZoneOffset.UTC);
+        detection().requestRescan(MEMBER);
+        assertThat(scheduled).hasSize(1);
     }
 
     @Test
@@ -61,7 +91,7 @@ class ShowcaseDetectionImplTest {
                 repo("api", "https://api.example.org"),
                 repo("nekwalla.github.io", null)));
 
-        detection.detect(MEMBER, "nekwalla");
+        detection().detect(MEMBER, "nekwalla");
 
         CandidateScan scan = store.rows.get(MEMBER);
         assertThat(scan.scannedAt()).isEqualTo(NOW);
@@ -70,19 +100,29 @@ class ShowcaseDetectionImplTest {
     }
 
     @Test
+    @DisplayName("a detection also keeps the repositories it found no site for, so the member can still pick one")
+    void detectKeepsTheRest() {
+        github.put("nekwalla", List.of(repo("portfolio-next", null), repo("api", "https://api.example.org")));
+
+        detection().detect(MEMBER, "nekwalla");
+
+        assertThat(store.rows.get(MEMBER).withoutSite()).extracting(RepositoryCoordinates::name).containsExactly("portfolio-next");
+    }
+
+    @Test
     @DisplayName("a member with no candidate gets an empty scan, so the screen can say nothing was found")
     void nothingFoundIsStillAScan() {
-        detection.detect(MEMBER, "nekwalla");
+        detection().detect(MEMBER, "nekwalla");
 
-        assertThat(detection.findCandidates(MEMBER)).hasValueSatisfying(scan -> assertThat(scan.candidates()).isEmpty());
+        assertThat(detection().findCandidates(MEMBER)).hasValueSatisfying(scan -> assertThat(scan.candidates()).isEmpty());
     }
 
     @Test
     @DisplayName("running a detection again replaces the previous result instead of adding to it")
     void detectIsIdempotent() {
         github.put("nekwalla", List.of(repo("portfolio", "https://nekwalla.dev")));
-        detection.detect(MEMBER, "nekwalla");
-        detection.detect(MEMBER, "nekwalla");
+        detection().detect(MEMBER, "nekwalla");
+        detection().detect(MEMBER, "nekwalla");
 
         assertThat(store.rows.get(MEMBER).candidates()).hasSize(1);
     }
@@ -90,7 +130,7 @@ class ShowcaseDetectionImplTest {
     @Test
     @DisplayName("before the first detection finishes, there is no scan at all")
     void noScanYet() {
-        assertThat(detection.findCandidates(MEMBER)).isEmpty();
+        assertThat(detection().findCandidates(MEMBER)).isEmpty();
     }
 
     private static PublicRepository repo(String name, String homepage) {

@@ -11,10 +11,18 @@ export interface ShowcaseCandidate {
   reason: CandidateReason;
 }
 
+/** One of the member's repositories with no site found: it becomes a candidate once its GitHub "Website" field is filled. */
+export interface RepositoryWithoutSite {
+  repository: string;
+  repositoryUrl: string;
+}
+
 export interface ShowcaseCandidates {
   /** null until the first detection after sign-in has finished. */
   scannedAt: string | null;
   candidates: ShowcaseCandidate[];
+  /** Most recently pushed first. */
+  withoutSite: RepositoryWithoutSite[];
 }
 
 /** The signed-in member's last portfolio detection; null when the API cannot answer for them. */

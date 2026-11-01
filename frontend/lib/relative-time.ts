@@ -7,5 +7,6 @@ export function sinceLabel(iso: string, locale: string): string {
   for (const [unit, size] of units) {
     if (Math.abs(seconds) >= size) return format.format(Math.round(seconds / size), unit);
   }
-  return format.format(0, "minute");
+  // "now" rather than "this minute", which reads oddly ("cette minute-ci").
+  return format.format(0, "second");
 }

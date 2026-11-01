@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { ConfirmDialog, type ConfirmDialogLabels } from "@/components/ui/ConfirmDialog";
-import { withdrawMyShowcase } from "@/services/showcase-publication";
+import { rescanMyRepositories, withdrawMyShowcase } from "@/services/showcase-publication";
 
 export interface ManageShowcaseLabels {
   title: string;
@@ -22,13 +22,16 @@ const action = "press flex h-11 items-center justify-center rounded-control bord
 
 // Changing portfolio is taking this one down, then picking another repository among the
 // candidates that Me shows as soon as there is no portfolio (spec: a new repository is a new
-// portfolio). Both ask first, since the likes go with it.
+// portfolio). A new search starts with it, so the list is not the one from sign-in. Both ask
+// first, since the likes go with it.
 export function ManageShowcase({ labels }: ManageShowcaseProps) {
   const router = useRouter();
 
   async function withdraw(thenPick: boolean): Promise<string | null> {
     const result = await withdrawMyShowcase();
     if (result.status !== 204) return result.message ?? labels.failed;
+    // A refusal only means a search just ran: the list is fresh enough.
+    if (thenPick) await rescanMyRepositories();
     router.refresh();
     if (thenPick) router.replace("#me-portfolio", { scroll: true });
     return null;

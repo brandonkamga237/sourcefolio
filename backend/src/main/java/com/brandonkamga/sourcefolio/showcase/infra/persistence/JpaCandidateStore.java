@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -31,7 +32,8 @@ class JpaCandidateStore implements CandidateStore {
     @Transactional
     public void replace(UUID memberId, CandidateScan scan) {
         candidates.deleteAllOfMember(memberId);
-        scans.save(new CandidateScanEntity(memberId, scan.scannedAt()));
+        scans.save(new CandidateScanEntity(memberId, scan.scannedAt(),
+                scan.withoutSite().stream().map(RepositoryCoordinates::toString).toArray(String[]::new)));
         List<CandidateEntity> rows = new ArrayList<>();
         for (int position = 0; position < scan.candidates().size(); position++) {
             ShowcaseCandidate found = scan.candidates().get(position);
@@ -45,7 +47,8 @@ class JpaCandidateStore implements CandidateStore {
     @Transactional(readOnly = true)
     public Optional<CandidateScan> find(UUID memberId) {
         return scans.findById(memberId).map(scan -> new CandidateScan(scan.getScannedAt(),
-                candidates.findByMemberIdOrderByPosition(memberId).stream().map(JpaCandidateStore::toDomain).toList()));
+                candidates.findByMemberIdOrderByPosition(memberId).stream().map(JpaCandidateStore::toDomain).toList(),
+                Arrays.stream(scan.getRepositoriesWithoutSite()).flatMap(raw -> RepositoryCoordinates.parse(raw).stream()).toList()));
     }
 
     private static ShowcaseCandidate toDomain(CandidateEntity row) {
