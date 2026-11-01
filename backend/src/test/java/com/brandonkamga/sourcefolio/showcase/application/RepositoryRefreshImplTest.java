@@ -22,7 +22,7 @@ import java.util.OptionalInt;
 import java.util.UUID;
 import static org.assertj.core.api.Assertions.assertThat;
 
-class RepositoryStarsImplTest {
+class RepositoryRefreshImplTest {
 
     private static final Instant NOW = Instant.parse("2026-10-30T09:00:00Z");
 
@@ -30,7 +30,7 @@ class RepositoryStarsImplTest {
     private final Map<String, Integer> github = new HashMap<>();
     private final List<String> read = new ArrayList<>();
     private final List<ShowcaseStarsChanged> announced = new ArrayList<>();
-    private final RepositoryStars stars = new RepositoryStarsImpl(showcases, new RepositoryHost() {
+    private final RepositoryRefresh stars = new RepositoryRefreshImpl(showcases, new RepositoryHost() {
         @Override
         public List<PublicRepository> listPublicRepositories(String login) {
             throw new AssertionError("stars list no repositories");

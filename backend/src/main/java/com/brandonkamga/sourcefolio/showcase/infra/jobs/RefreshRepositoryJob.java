@@ -1,6 +1,6 @@
 package com.brandonkamga.sourcefolio.showcase.infra.jobs;
 
-import com.brandonkamga.sourcefolio.showcase.application.RepositoryStars;
+import com.brandonkamga.sourcefolio.showcase.application.RepositoryRefresh;
 import java.util.UUID;
 import org.jobrunr.jobs.annotations.Job;
 import org.jobrunr.jobs.annotations.Recurring;
@@ -13,14 +13,14 @@ import org.springframework.stereotype.Component;
  * allows without a token, shared with detection.
  */
 @Component
-public class RefreshStarsJob {
+public class RefreshRepositoryJob {
 
     private static final int PER_HOUR = 40;
 
-    private final RepositoryStars stars;
+    private final RepositoryRefresh stars;
     private final JobScheduler jobs;
 
-    public RefreshStarsJob(RepositoryStars stars, JobScheduler jobs) {
+    public RefreshRepositoryJob(RepositoryRefresh stars, JobScheduler jobs) {
         this.stars = stars;
         this.jobs = jobs;
     }
@@ -28,7 +28,7 @@ public class RefreshStarsJob {
     @Recurring(id = "repository-stars", cron = "23 * * * *")
     @Job(name = "Pick the repositories whose stars are due", labels = "github")
     public void sweep() {
-        stars.listDue(PER_HOUR).forEach(showcaseId -> jobs.<RefreshStarsJob>enqueue(job -> job.refresh(showcaseId)));
+        stars.listDue(PER_HOUR).forEach(showcaseId -> jobs.<RefreshRepositoryJob>enqueue(job -> job.refresh(showcaseId)));
     }
 
     // A rate limit or an outage throws: one retry, and the next sweep picks it up anyway.

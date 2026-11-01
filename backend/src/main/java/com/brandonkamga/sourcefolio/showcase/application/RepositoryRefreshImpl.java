@@ -12,7 +12,7 @@ import java.util.Objects;
 import java.util.OptionalInt;
 import java.util.UUID;
 
-public class RepositoryStarsImpl implements RepositoryStars {
+public class RepositoryRefreshImpl implements RepositoryRefresh {
 
     private static final Duration FRESH_FOR = Duration.ofHours(24);
 
@@ -21,7 +21,7 @@ public class RepositoryStarsImpl implements RepositoryStars {
     private final ShowcaseEvents events;
     private final Clock clock;
 
-    public RepositoryStarsImpl(ShowcaseStore showcases, RepositoryHost repositories, ShowcaseEvents events, Clock clock) {
+    public RepositoryRefreshImpl(ShowcaseStore showcases, RepositoryHost repositories, ShowcaseEvents events, Clock clock) {
         this.showcases = showcases;
         this.repositories = repositories;
         this.events = events;
