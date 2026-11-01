@@ -78,7 +78,7 @@
     "foundTitle": "On a trouvé ces sites dans tes dépôts publics",
     "othersTitle": "Autres sites trouvés",
     "noneTitle": "Aucun site trouvé dans tes dépôts publics",
-    "noneHint": "Ajoute l’adresse de ton portfolio dans le champ « Website » de son dépôt GitHub, puis reconnecte-toi : on cherchera à nouveau.",
+    "noneHint": "Ton portfolio n’a pas été reconnu ? Choisis son dépôt juste en dessous.",
     "visitSite": "Voir le site",
     "viewCode": "Voir le code",
     "reason": {
@@ -90,7 +90,23 @@
     "publish": "Oui, c’est mon portfolio : publier",
     "publishThis": "C’est celui-ci : publier",
     "publishing": "On vérifie ton site…",
-    "publishFailed": "La publication n’a pas abouti. Réessaie dans un instant."
+    "publishFailed": "La publication n’a pas abouti. Réessaie dans un instant.",
+    "lastSearch": "Dernière recherche {ago}",
+    "rescan": "Rechercher à nouveau",
+    "rescanning": "Recherche en cours…",
+    "rescanFailed": "La recherche n’a pas pu être lancée. Réessaie dans un instant.",
+    "missingTitle": "Ton portfolio n’est pas dans la liste ?",
+    "missingLead": "Choisis son dépôt. Pour savoir que le site est bien à toi, on lit l’adresse indiquée sur GitHub : seul le propriétaire du dépôt peut la changer.",
+    "searchRepositories": "Chercher un dépôt",
+    "noRepositoryMatch": "Aucun dépôt ne correspond.",
+    "noRepositories": "Aucun autre dépôt public sur ton compte GitHub.",
+    "showAll": "Afficher les {count} dépôts",
+    "pick": "C’est celui-ci",
+    "stepsTitle": "Pour publier {repository} :",
+    "step1": "Ouvre le dépôt sur GitHub, puis touche la roue dentée à côté de « About ».",
+    "step2": "Colle l’adresse de ton site dans « Website », puis « Save changes ».",
+    "step3": "Reviens ici et touche « Rechercher à nouveau » : ton portfolio apparaîtra en haut, prêt à publier.",
+    "openOnGithub": "Ouvrir le dépôt sur GitHub"
   },
   "myShowcase": {
     "status": {
