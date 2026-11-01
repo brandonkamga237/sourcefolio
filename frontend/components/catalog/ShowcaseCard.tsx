@@ -89,14 +89,15 @@ export function ShowcaseCard({ card, href, index, selected, onOpen, locale, labe
             </span>
           </span>
         </MemberSheet>
-        {/* Sharing a portfolio is what brings visitors: one tap from every card. */}
+        {/* Sharing a portfolio is what brings visitors: one tap from every card, shown on hover
+            (or keyboard focus) where a mouse can hover, always there on a phone. */}
         <ShareAction
           path={href}
           title={labels.shareTitle.replace("{login}", card.ownerLogin)}
           label={labels.share}
           copiedLabel={labels.copied}
           iconOnly
-          className="press mr-1.5 flex size-11 shrink-0 items-center justify-center rounded-full text-ink-muted transition-colors duration-150 hover:bg-surface-sunken hover:text-ink"
+          className="press mr-1.5 flex size-11 shrink-0 items-center justify-center rounded-full text-ink-muted transition-[color,background-color,opacity] duration-150 hover:bg-surface-sunken hover:text-ink focus-visible:opacity-100 pointer-fine:opacity-0 pointer-fine:group-hover:opacity-100"
         />
       </div>
     </article>
