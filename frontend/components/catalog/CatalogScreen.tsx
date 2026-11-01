@@ -89,6 +89,9 @@ async function Feed({ locale, sort }: CatalogScreenProps) {
         loadFailed: t("loadFailed"),
         card: {
           member: memberLabels,
+          share: t("panel.share"),
+          shareTitle: t.raw("panel.shareTitle") as string,
+          copied: t("panel.copied"),
           likes: { one: tl.raw("countOne") as string, other: tl.raw("countOther") as string },
           stars: { one: ts.raw("one") as string, other: ts.raw("other") as string },
         },
