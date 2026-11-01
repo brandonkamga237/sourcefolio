@@ -14,6 +14,7 @@ import { Avatar } from "@/components/members/Avatar";
 import { LikeButton, type LikeButtonLabels } from "@/components/likes/LikeButton";
 import type { CatalogCard } from "@/services/catalog-types";
 import { Preview } from "./Preview";
+import { ProjectFacts, type ProjectFactsLabels } from "./ProjectFacts";
 
 export interface ShowcasePanelLabels {
   close: string;
@@ -36,6 +37,7 @@ export interface ShowcasePanelLabels {
   copied: string;
   githubProfile: string;
   member: MemberSheetLabels;
+  project: ProjectFactsLabels;
 }
 
 
@@ -143,6 +145,13 @@ export function ShowcasePanel({ card, position, direction, onPrev, onNext, href,
             {sinceLabel(card.publishedAt, locale)}
           </span>
         </p>
+
+        <ProjectFacts
+          description={card.repositoryDescription}
+          languages={card.repositoryLanguages}
+          updatedSince={card.repositoryPushedAt ? sinceLabel(card.repositoryPushedAt, locale) : null}
+          labels={labels.project}
+        />
 
         {/* One main action, the site; the like next to it, since it answers what one just saw. */}
         <div className="flex gap-2">
