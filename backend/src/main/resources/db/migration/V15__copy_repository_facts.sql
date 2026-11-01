@@ -11,3 +11,7 @@ ALTER TABLE catalog_entries
     ADD COLUMN repository_description VARCHAR(350),
     ADD COLUMN repository_languages   VARCHAR(40)[] NOT NULL DEFAULT '{}',
     ADD COLUMN repository_pushed_at   TIMESTAMPTZ;
+
+-- Every repository is due again, so the next hourly read fills these columns instead of
+-- waiting a day after the last stars read.
+UPDATE source_repos SET stars_checked_at = NULL;
