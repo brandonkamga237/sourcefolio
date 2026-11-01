@@ -11,6 +11,7 @@ import { SortTabs, StaticSortTabs } from "./SortTabs";
 import { CatalogFeed } from "./CatalogFeed";
 import { DiscoverIntro } from "./DiscoverIntro";
 import { memberSheetLabels } from "@/components/members/labels";
+import { ROLES } from "@/services/profile-types";
 
 interface CatalogScreenProps {
   locale: Locale;
@@ -36,7 +37,7 @@ async function SortNav({ locale, sort }: { locale: Locale; sort: CatalogSort }) 
   );
 }
 
-// The search bar offers only the countries and source languages some portfolio carries. Read per
+// The search bar offers only the countries, source languages and roles some portfolio carries. Read per
 // request (then cached a few minutes): the build has no API, and the facets grow with the catalogue.
 async function Search({ locale }: { locale: Locale }) {
   await connection();
@@ -51,6 +52,9 @@ async function Search({ locale }: { locale: Locale }) {
         anyCountry: t("catalog.search.anyCountry"),
         language: t("catalog.search.language"),
         anyLanguage: t("catalog.search.anyLanguage"),
+        role: t("catalog.search.role"),
+        anyRole: t("catalog.search.anyRole"),
+        roleNames: Object.fromEntries(ROLES.map((slug) => [slug, t(`role.${slug}`)])),
         clear: t("catalog.search.clear"),
         filters: t("catalog.search.filters"),
       }}
