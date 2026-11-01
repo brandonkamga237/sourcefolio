@@ -72,7 +72,7 @@ export function ShowcaseCard({ card, href, index, selected, onOpen, locale, labe
               {/* The numbers, quiet and named on hover: a heart is a like here, a star is GitHub's. */}
               <span className="flex shrink-0 items-center gap-2 font-mono tabular-nums">
                 <span className="flex items-center gap-0.5" title={plural(labels.likes, card.likes, locale)}>
-                  <IconHeart aria-hidden="true" className={`size-3 ${card.likes > 0 ? "fill-accent text-accent" : ""}`} />
+                  <IconHeart aria-hidden="true" className={`size-3 ${card.likes > 0 ? "fill-like text-like" : ""}`} />
                   {compactNumber(card.likes, locale)}
                 </span>
                 {card.repositoryStars != null ? (
