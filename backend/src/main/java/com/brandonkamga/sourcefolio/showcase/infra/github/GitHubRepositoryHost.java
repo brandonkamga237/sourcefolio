@@ -2,6 +2,7 @@ package com.brandonkamga.sourcefolio.showcase.infra.github;
 
 import com.brandonkamga.sourcefolio.showcase.domain.model.PublicRepository;
 import com.brandonkamga.sourcefolio.showcase.domain.model.RepositoryCoordinates;
+import com.brandonkamga.sourcefolio.showcase.domain.model.RepositorySnapshot;
 import com.brandonkamga.sourcefolio.showcase.domain.port.RepositoryHost;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -9,12 +10,14 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestClient;
 
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.OptionalInt;
+import java.util.Map;
+import java.util.Optional;
 
 /**
  * Anti-corruption layer over GitHub's REST API: public data only, through the token of the
@@ -26,6 +29,8 @@ public class GitHubRepositoryHost implements RepositoryHost {
     // recently pushed repositories, and three calls keep the rate limit in check.
     private static final int MAX_PAGES = 3;
     private static final ParameterizedTypeReference<List<GitHubRepository>> PAGE = new ParameterizedTypeReference<>() {
+    };
+    private static final ParameterizedTypeReference<Map<String, Long>> LANGUAGES = new ParameterizedTypeReference<>() {
     };
 
     private final RestClient github;
@@ -56,15 +61,34 @@ public class GitHubRepositoryHost implements RepositoryHost {
         return repositories;
     }
 
-    // One call; a private or deleted repository answers 404 to an anonymous or app token.
+    // Two calls: the repository, then its languages. A private or deleted repository answers 404
+    // to an anonymous or app token. Languages that cannot be read leave the rest standing.
     @Override
-    public OptionalInt stars(RepositoryCoordinates repository) {
+    public Optional<RepositorySnapshot> snapshot(RepositoryCoordinates repository) {
+        GitHubRepositoryFacts body;
         try {
-            GitHubStars body = github.get().uri("/repos/{owner}/{name}", repository.owner(), repository.name())
-                    .retrieve().body(GitHubStars.class);
-            return body == null || body.stargazersCount() == null ? OptionalInt.empty() : OptionalInt.of(body.stargazersCount());
+            body = github.get().uri("/repos/{owner}/{name}", repository.owner(), repository.name())
+                    .retrieve().body(GitHubRepositoryFacts.class);
         } catch (HttpClientErrorException.NotFound gone) {
-            return OptionalInt.empty();
+            return Optional.empty();
+        }
+        if (body == null || body.stargazersCount() == null) {
+            return Optional.empty();
+        }
+        return Optional.of(new RepositorySnapshot(body.stargazersCount(), body.description(), body.pushedAt(), languages(repository)));
+    }
+
+    // GitHub lists bytes of code per language; the largest come first.
+    private List<String> languages(RepositoryCoordinates repository) {
+        try {
+            Map<String, Long> bytes = github.get().uri("/repos/{owner}/{name}/languages", repository.owner(), repository.name())
+                    .retrieve().body(LANGUAGES);
+            return bytes == null ? List.of() : bytes.entrySet().stream()
+                    .sorted(Map.Entry.<String, Long>comparingByValue().reversed())
+                    .map(Map.Entry::getKey)
+                    .toList();
+        } catch (RestClientException unreadable) {
+            return List.of();
         }
     }
 
@@ -90,6 +114,7 @@ public class GitHubRepositoryHost implements RepositoryHost {
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
-    record GitHubStars(@JsonProperty("stargazers_count") Integer stargazersCount) {
+    record GitHubRepositoryFacts(@JsonProperty("stargazers_count") Integer stargazersCount, String description,
+                                 @JsonProperty("pushed_at") Instant pushedAt) {
     }
 }

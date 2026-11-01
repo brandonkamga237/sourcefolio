@@ -1,6 +1,7 @@
 package com.brandonkamga.sourcefolio.showcase.application;
 
 import com.brandonkamga.sourcefolio.showcase.domain.model.Showcase;
+import com.brandonkamga.sourcefolio.showcase.domain.model.RepositorySnapshot;
 import com.brandonkamga.sourcefolio.showcase.domain.model.ShowcaseId;
 import com.brandonkamga.sourcefolio.showcase.domain.port.RepositoryHost;
 import com.brandonkamga.sourcefolio.showcase.domain.port.ShowcaseStore;
@@ -9,7 +10,6 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.List;
 import java.util.Objects;
-import java.util.OptionalInt;
 import java.util.UUID;
 
 public class RepositoryRefreshImpl implements RepositoryRefresh {
@@ -40,8 +40,7 @@ public class RepositoryRefreshImpl implements RepositoryRefresh {
         if (showcase == null) {
             return;
         }
-        OptionalInt read = repositories.stars(showcase.sourceRepo().coordinates());
-        Integer stars = read.isPresent() ? read.getAsInt() : null;
+        Integer stars = repositories.snapshot(showcase.sourceRepo().coordinates()).map(RepositorySnapshot::stars).orElse(null);
         Instant now = clock.instant();
         showcases.saveRepositoryStars(showcase.id(), stars, now);
         if (!Objects.equals(stars, showcase.sourceRepo().stars())) {

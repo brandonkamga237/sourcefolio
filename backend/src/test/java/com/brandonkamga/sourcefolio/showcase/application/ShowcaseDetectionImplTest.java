@@ -1,11 +1,12 @@
 package com.brandonkamga.sourcefolio.showcase.application;
 
-import java.util.OptionalInt;
+import java.util.Optional;
 import com.brandonkamga.sourcefolio.showcase.domain.port.RepositoryHost;
 import com.brandonkamga.sourcefolio.showcase.domain.model.CandidateReason;
 import com.brandonkamga.sourcefolio.showcase.domain.model.CandidateScan;
 import com.brandonkamga.sourcefolio.showcase.domain.model.PublicRepository;
 import com.brandonkamga.sourcefolio.showcase.domain.model.RepositoryCoordinates;
+import com.brandonkamga.sourcefolio.showcase.domain.model.RepositorySnapshot;
 import com.brandonkamga.sourcefolio.showcase.domain.model.ShowcaseCandidate;
 import com.brandonkamga.sourcefolio.showcase.domain.port.CandidateStore;
 import org.junit.jupiter.api.DisplayName;
@@ -39,8 +40,8 @@ class ShowcaseDetectionImplTest {
                 }
 
                 @Override
-                public OptionalInt stars(RepositoryCoordinates repository) {
-                    throw new AssertionError("detection reads no stars");
+                public Optional<RepositorySnapshot> snapshot(RepositoryCoordinates repository) {
+                    throw new AssertionError("detection reads no repository facts");
                 }
             }, store,
             (memberId, login) -> scheduled.add(memberId + " " + login), Clock.fixed(NOW, ZoneOffset.UTC));

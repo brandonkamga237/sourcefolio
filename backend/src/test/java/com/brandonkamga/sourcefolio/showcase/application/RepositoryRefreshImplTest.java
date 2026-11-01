@@ -3,6 +3,7 @@ package com.brandonkamga.sourcefolio.showcase.application;
 import com.brandonkamga.sourcefolio.showcase.domain.model.CandidateReason;
 import com.brandonkamga.sourcefolio.showcase.domain.model.PublicRepository;
 import com.brandonkamga.sourcefolio.showcase.domain.model.RepositoryCoordinates;
+import com.brandonkamga.sourcefolio.showcase.domain.model.RepositorySnapshot;
 import com.brandonkamga.sourcefolio.showcase.domain.model.Showcase;
 import com.brandonkamga.sourcefolio.showcase.domain.model.ShowcaseCandidate;
 import com.brandonkamga.sourcefolio.showcase.domain.model.ShowcaseSlug;
@@ -18,13 +19,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.OptionalInt;
+import java.util.Optional;
 import java.util.UUID;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class RepositoryRefreshImplTest {
 
     private static final Instant NOW = Instant.parse("2026-10-30T09:00:00Z");
+    private static final Instant PUSHED = Instant.parse("2026-10-28T18:00:00Z");
 
     private final ShowcasePublicationImplTest.InMemoryShowcaseStore showcases = new ShowcasePublicationImplTest.InMemoryShowcaseStore();
     private final Map<String, Integer> github = new HashMap<>();
@@ -37,10 +39,10 @@ class RepositoryRefreshImplTest {
         }
 
         @Override
-        public OptionalInt stars(RepositoryCoordinates repository) {
+        public Optional<RepositorySnapshot> snapshot(RepositoryCoordinates repository) {
             read.add(repository.toString());
             Integer count = github.get(repository.toString());
-            return count == null ? OptionalInt.empty() : OptionalInt.of(count);
+            return count == null ? Optional.empty() : Optional.of(new RepositorySnapshot(count, "A portfolio", PUSHED, List.of("TypeScript", "CSS")));
         }
     }, new ShowcaseEvents() {
         @Override
