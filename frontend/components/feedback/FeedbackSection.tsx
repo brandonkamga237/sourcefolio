@@ -6,7 +6,7 @@ import { feedbackKey, fetchFeedback } from "@/services/feedback";
 import { fetchLikes, likesKey } from "@/services/likes";
 import { FeedbackForm } from "./FeedbackForm";
 import { FeedbackItem } from "./FeedbackItem";
-import type { FeedbackLabels } from "./labels";
+import type { FeedbackLabels } from "./types";
 
 interface FeedbackSectionProps {
   slug: string;

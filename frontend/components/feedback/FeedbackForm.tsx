@@ -6,7 +6,7 @@ import { useEffect, useId, useRef, useState } from "react";
 import { plural } from "@/lib/plural";
 import { FEEDBACK_ANGLES, FEEDBACK_MAX, FEEDBACK_MIN, postFeedback, type FeedbackAngle } from "@/services/feedback";
 import { fetchSignedIn, sessionKey } from "@/services/session";
-import type { FeedbackLabels } from "./labels";
+import type { FeedbackLabels } from "./types";
 
 interface FeedbackFormProps {
   slug: string;

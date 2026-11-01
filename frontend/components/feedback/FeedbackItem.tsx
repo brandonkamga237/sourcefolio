@@ -5,7 +5,7 @@ import { useState } from "react";
 import { Avatar } from "@/components/members/Avatar";
 import { sinceLabel } from "@/lib/relative-time";
 import { deleteFeedback, type Feedback } from "@/services/feedback";
-import type { FeedbackLabels } from "./labels";
+import type { FeedbackLabels } from "./types";
 
 interface FeedbackItemProps {
   item: Feedback;

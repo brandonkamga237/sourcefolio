@@ -1,32 +1,35 @@
-import type { PluralTemplates } from "@/lib/plural";
-import type { FeedbackAngle } from "@/services/feedback";
+import { getTranslations } from "next-intl/server";
+import type { Locale } from "@/i18n/routing";
+import { FEEDBACK_ANGLES, type FeedbackAngle } from "@/services/feedback";
+import type { FeedbackLabels } from "./types";
 
-// Raw strings, filled in the browser: client components carry no ICU parser.
-export interface FeedbackLabels {
-  title: string;
-  lead: string;
-  angleLabel: string;
-  angles: Record<FeedbackAngle, string>;
-  bodyLabel: string;
-  placeholder: string;
-  /** Contains {count} and {max}. */
-  counter: string;
-  /** Contains {count}. */
-  missing: PluralTemplates;
-  submit: string;
-  sending: string;
-  signInHint: string;
-  posted: string;
-  failed: string;
-  own: string;
-  empty: string;
-  emptyOwn: string;
-  loadFailed: string;
-  more: string;
-  you: string;
-  remove: string;
-  confirmRemove: string;
-  cancel: string;
-  removeFailed: string;
-  writtenIn: Record<string, string>;
+/** The feedback section's strings, translated on the server and handed to the client as props. */
+export async function feedbackLabels(locale: Locale): Promise<FeedbackLabels> {
+  const t = await getTranslations({ locale, namespace: "feedback" });
+  return {
+    title: t("title"),
+    lead: t("lead"),
+    angleLabel: t("angleLabel"),
+    angles: Object.fromEntries(FEEDBACK_ANGLES.map((angle) => [angle, t(`angles.${angle}`)])) as Record<FeedbackAngle, string>,
+    bodyLabel: t("bodyLabel"),
+    placeholder: t("placeholder"),
+    counter: t.raw("counter") as string,
+    missing: { one: t.raw("missingOne") as string, other: t.raw("missingOther") as string },
+    submit: t("submit"),
+    sending: t("sending"),
+    signInHint: t("signInHint"),
+    posted: t("posted"),
+    failed: t("failed"),
+    own: t("own"),
+    empty: t("empty"),
+    emptyOwn: t("emptyOwn"),
+    loadFailed: t("loadFailed"),
+    more: t("more"),
+    you: t("you"),
+    remove: t("remove"),
+    confirmRemove: t("confirmRemove"),
+    cancel: t("cancel"),
+    removeFailed: t("removeFailed"),
+    writtenIn: { fr: t("writtenIn.fr"), en: t("writtenIn.en") },
+  };
 }
