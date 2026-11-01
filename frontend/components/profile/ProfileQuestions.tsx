@@ -2,7 +2,8 @@
 
 import Link from "next/link";
 import { useState, type FormEvent } from "react";
-import { MAX_SPECIALTIES, type MyAnswers, type Specialty } from "@/services/profile";
+import type { MyAnswers } from "@/services/profile";
+import { MAX_SPECIALTIES, type Specialty } from "@/services/profile-types";
 import { answerCountry, answerSpecialties, saveEmail } from "@/services/profile-answers";
 
 type Step = "country" | "specialty" | "email";
