@@ -208,7 +208,16 @@
   "me": {
     "portfolioTitle": "My portfolio",
     "preferencesTitle": "Preferences",
-    "accountTitle": "Account and preferences"
+    "accountTitle": "Account and preferences",
+    "overview": {
+      "likes": "likes received",
+      "stars": "GitHub stars",
+      "rank": "in the ranking",
+      "unranked": "not ranked yet",
+      "days": "days online",
+      "publicProfile": "My public profile",
+      "noCountry": "Country not given"
+    }
   },
   "ranking": {
     "title": "Ranking",
