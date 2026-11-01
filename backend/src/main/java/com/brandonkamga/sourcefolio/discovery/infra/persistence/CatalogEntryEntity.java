@@ -4,6 +4,8 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 import java.time.Instant;
 import java.util.UUID;
 
@@ -49,6 +51,16 @@ class CatalogEntryEntity {
     @Column(name = "repository_stars")
     private Integer repositoryStars;
 
+    // CHAR(2) in the schema: without this, Hibernate validates it as a VARCHAR and refuses to start.
+    @Column(name = "country_code", length = 2)
+    @JdbcTypeCode(SqlTypes.CHAR)
+    private String countryCode;
+
+    // VARCHAR(20)[] in the schema, most important first.
+    @Column(name = "specialties", nullable = false, columnDefinition = "varchar(20)[]")
+    @JdbcTypeCode(SqlTypes.ARRAY)
+    private String[] specialties = new String[0];
+
     protected CatalogEntryEntity() {
     }
 
@@ -64,4 +76,6 @@ class CatalogEntryEntity {
     String getPreviewImageUrl() { return previewImageUrl; }
     String getPreviewVideoUrl() { return previewVideoUrl; }
     Integer getRepositoryStars() { return repositoryStars; }
+    String getCountryCode() { return countryCode; }
+    String[] getSpecialties() { return specialties; }
 }

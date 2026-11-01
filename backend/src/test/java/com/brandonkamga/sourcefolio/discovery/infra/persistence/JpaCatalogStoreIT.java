@@ -154,6 +154,37 @@ class JpaCatalogStoreIT extends PostgresIT {
     }
 
     @Test
+    @DisplayName("the author's country and ranked specialties are copied onto every card of theirs, and replaced on change")
+    void authorProfile() {
+        CatalogEntry entry = entry("profiled", NOW);
+        catalog.upsert(entry);
+
+        catalog.setAuthorProfile(entry.ownerId(), "CM", List.of("backend", "devops"));
+        assertThat(catalog.recent(null, 10)).singleElement().satisfies(card -> {
+            assertThat(card.countryCode()).isEqualTo("CM");
+            assertThat(card.specialties()).containsExactly("backend", "devops");
+        });
+
+        catalog.setAuthorProfile(entry.ownerId(), "SN", List.of("mobile"));
+        assertThat(catalog.recent(null, 10)).singleElement().satisfies(card -> {
+            assertThat(card.countryCode()).isEqualTo("SN");
+            assertThat(card.specialties()).containsExactly("mobile");
+        });
+    }
+
+    @Test
+    @DisplayName("a member's cards are found by login in any case, newest first, and nobody else's")
+    void byOwnerLogin() {
+        CatalogEntry mine = entry("found-by-login", NOW);
+        CatalogEntry other = entry("someone-else", NOW);
+        catalog.upsert(mine);
+        catalog.upsert(other);
+
+        assertThat(catalog.byOwnerLogin(mine.ownerLogin().toUpperCase())).extracting(CatalogEntry::slug).containsExactly("found-by-login");
+        assertThat(catalog.byOwnerLogin("nobody-here")).isEmpty();
+    }
+
+    @Test
     @DisplayName("the Ranking reads the like counts, most liked first, and leaves out unliked showcases")
     void ranking() {
         CatalogEntry popular = entry("popular", NOW.minus(Duration.ofDays(3)));

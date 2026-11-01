@@ -23,3 +23,13 @@ export function countryOptions(locale: string): { code: string; name: string }[]
   const collator = new Intl.Collator(locale);
   return COUNTRY_CODES.map((code) => ({ code, name: names.of(code) ?? code })).sort((a, b) => collator.compare(a.name, b.name));
 }
+
+/** The flag emoji of an ISO code, from its two regional indicator letters ("CM" → 🇨🇲). */
+export function flagOf(code: string): string {
+  return String.fromCodePoint(...[...code.toUpperCase()].map((letter) => 0x1f1e6 + letter.charCodeAt(0) - 65));
+}
+
+/** The country's name in {@code locale}; the code itself when the runtime does not know it. */
+export function countryName(code: string, locale: string): string {
+  return new Intl.DisplayNames([locale], { type: "region" }).of(code) ?? code;
+}

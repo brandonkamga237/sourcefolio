@@ -37,6 +37,14 @@ interface CatalogEntryJpaRepository extends JpaRepository<CatalogEntryEntity, UU
     @Query("update CatalogEntryEntity e set e.repositoryStars = :stars where e.showcaseId = :showcaseId")
     void setRepositoryStars(@Param("showcaseId") UUID showcaseId, @Param("stars") Integer stars);
 
+    // lower() on both sides: the expression index catalog_entries_owner_login answers it.
+    @Query("select e from CatalogEntryEntity e where lower(e.ownerLogin) = lower(:login) order by e.publishedAt desc")
+    List<CatalogEntryEntity> byOwnerLogin(@Param("login") String login);
+
+    @Modifying
+    @Query("update CatalogEntryEntity e set e.countryCode = :countryCode, e.specialties = :specialties where e.ownerUserId = :ownerId")
+    void setAuthorProfile(@Param("ownerId") UUID ownerId, @Param("countryCode") String countryCode, @Param("specialties") String[] specialties);
+
     @Query("""
             select e from CatalogEntryEntity e where e.likeCount > 0
             order by e.likeCount desc, e.publishedAt desc, e.showcaseId desc

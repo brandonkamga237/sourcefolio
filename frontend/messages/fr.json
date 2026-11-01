@@ -110,7 +110,6 @@
   "showcasePage": {
     "metaTitle": "{site}, le portfolio de {login}",
     "metaDescription": "Le portfolio de {login} et le code qui le construit, sur SourceFolio.",
-    "by": "par <profile>{login}</profile>",
     "publishedOn": "Publié le {date, date, long}",
     "visitSite": "Voir le site",
     "viewCode": "Voir le code",
@@ -123,7 +122,9 @@
     "ctaLink": "Publier mon portfolio",
     "ogBy": "par {login}",
     "ogTagline": "Un portfolio dont tu peux lire le code",
-    "ogStars": "{formatted} {count, plural, one {étoile} other {étoiles}} sur GitHub"
+    "ogStars": "{formatted} {count, plural, one {étoile} other {étoiles}} sur GitHub",
+    "byLogin": "par {login}",
+    "seeProfile": "Voir le profil"
   },
   "catalog": {
     "sort": {
@@ -295,5 +296,22 @@
     "one": "{count} étoile sur GitHub",
     "other": "{count} étoiles sur GitHub",
     "badge": "GitHub"
+  },
+  "member": {
+    "open": "Voir le profil de {login}",
+    "close": "Fermer",
+    "loading": "Chargement…",
+    "failed": "Ce profil n’a pas pu être chargé. Réessaie.",
+    "since": "Depuis {date}",
+    "likesOne": "{count} appréciation reçue",
+    "likesOther": "{count} appréciations reçues",
+    "specialtiesTitle": "Spécialités",
+    "noSpecialty": "Spécialités pas encore renseignées",
+    "noCountry": "Pays non renseigné",
+    "portfolioTitle": "Son portfolio",
+    "openPage": "Voir la fiche",
+    "visitSite": "Voir le site",
+    "viewCode": "Voir le code",
+    "githubProfile": "Profil GitHub"
   }
 }

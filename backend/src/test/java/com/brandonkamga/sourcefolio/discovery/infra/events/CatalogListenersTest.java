@@ -4,6 +4,7 @@ import com.brandonkamga.sourcefolio.account.application.MemberSignedIn;
 import com.brandonkamga.sourcefolio.discovery.application.CatalogProjection;
 import com.brandonkamga.sourcefolio.discovery.domain.model.CatalogEntry;
 import com.brandonkamga.sourcefolio.engagement.application.ShowcaseLikesChanged;
+import com.brandonkamga.sourcefolio.profile.application.ProfileChanged;
 import com.brandonkamga.sourcefolio.showcase.application.ShowcasePreviewChanged;
 import com.brandonkamga.sourcefolio.showcase.application.ShowcasePublished;
 import com.brandonkamga.sourcefolio.showcase.application.ShowcaseStarsChanged;
@@ -53,6 +54,14 @@ class CatalogListenersTest {
     }
 
     @Test
+    @DisplayName("a changed profile reaches every card of its author")
+    void profileReachesCatalogue() {
+        new CatalogListeners(recording()).on(new ProfileChanged(MEMBER, "CM", List.of("backend", "devops")));
+
+        assertThat(calls).containsExactly(MEMBER + " profile CM [backend, devops]");
+    }
+
+    @Test
     @DisplayName("new repository stars reach the catalogue")
     void starsReachCatalogue() {
         new CatalogListeners(recording()).on(new ShowcaseStarsChanged(SHOWCASE, 7));
@@ -96,6 +105,11 @@ class CatalogListenersTest {
             public void updateRepositoryStars(UUID showcaseId, Integer stars) {
                 throw new IllegalStateException("database down");
             }
+
+            @Override
+            public void updateAuthorProfile(UUID ownerId, String countryCode, List<String> specialties) {
+                throw new IllegalStateException("database down");
+            }
         });
 
         assertThatCode(() -> listeners.on(PUBLISHED)).doesNotThrowAnyException();
@@ -128,6 +142,11 @@ class CatalogListenersTest {
             @Override
             public void updateRepositoryStars(UUID showcaseId, Integer stars) {
                 calls.add(showcaseId + " stars " + stars);
+            }
+
+            @Override
+            public void updateAuthorProfile(UUID ownerId, String countryCode, List<String> specialties) {
+                calls.add(ownerId + " profile " + countryCode + " " + specialties);
             }
         };
     }

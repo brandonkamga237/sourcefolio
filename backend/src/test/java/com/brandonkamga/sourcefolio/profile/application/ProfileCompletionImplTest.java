@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Test;
 import java.time.Clock;
 import java.time.Instant;
 import java.time.ZoneOffset;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -37,7 +38,8 @@ class ProfileCompletionImplTest {
             return profile;
         }
     };
-    private final ProfileCompletion profiles = new ProfileCompletionImpl(store, Clock.fixed(NOW, ZoneOffset.UTC));
+    private final List<ProfileChanged> announced = new ArrayList<>();
+    private final ProfileCompletion profiles = new ProfileCompletionImpl(store, announced::add, Clock.fixed(NOW, ZoneOffset.UTC));
 
     @Test
     @DisplayName("before any answer the profile is blank, and nothing is stored")
@@ -90,5 +92,21 @@ class ProfileCompletionImplTest {
                     .extracting(thrown -> ((AppException) thrown).messageKey()).isEqualTo("profile.specialties-invalid");
         }
         assertThat(rows.get(MEMBER).specialties().slugs()).containsExactly("mobile");
+    }
+
+    @Test
+    @DisplayName("every saved answer announces the public profile; a refused one announces nothing")
+    void announcesChanges() {
+        profiles.answerCountry(MEMBER, "cm");
+        profiles.answerSpecialties(MEMBER, List.of("backend", "devops"));
+        try {
+            profiles.answerSpecialties(MEMBER, List.of("wizard"));
+        } catch (AppException refused) {
+            // expected
+        }
+
+        assertThat(announced).containsExactly(
+                new ProfileChanged(MEMBER, "CM", List.of()),
+                new ProfileChanged(MEMBER, "CM", List.of("backend", "devops")));
     }
 }

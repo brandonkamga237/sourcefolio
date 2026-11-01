@@ -4,6 +4,7 @@ import com.brandonkamga.sourcefolio.account.application.MemberSignedIn;
 import com.brandonkamga.sourcefolio.discovery.application.CatalogProjection;
 import com.brandonkamga.sourcefolio.discovery.domain.model.CatalogEntry;
 import com.brandonkamga.sourcefolio.engagement.application.ShowcaseLikesChanged;
+import com.brandonkamga.sourcefolio.profile.application.ProfileChanged;
 import com.brandonkamga.sourcefolio.showcase.application.ShowcasePreviewChanged;
 import com.brandonkamga.sourcefolio.showcase.application.ShowcasePublished;
 import com.brandonkamga.sourcefolio.showcase.application.ShowcaseStarsChanged;
@@ -63,6 +64,15 @@ class CatalogListeners {
             catalog.updateRepositoryStars(event.showcaseId(), event.stars());
         } catch (RuntimeException failure) {
             log.error("Repository stars of showcase {} not copied to the catalogue", event.showcaseId(), failure);
+        }
+    }
+
+    @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT, fallbackExecution = true)
+    void on(ProfileChanged event) {
+        try {
+            catalog.updateAuthorProfile(event.memberId(), event.countryCode(), event.specialties());
+        } catch (RuntimeException failure) {
+            log.error("Profile of member {} not copied to the catalogue", event.memberId(), failure);
         }
     }
 

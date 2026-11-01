@@ -17,6 +17,9 @@ export interface CatalogCard {
   repositoryStars: number | null;
   /** Public like count, shown on the card; Discover never orders by it. */
   likes: number;
+  /** The author's country (ISO code) and specialties, most important first; empty until answered. */
+  countryCode: string | null;
+  specialties: string[];
 }
 
 export interface CatalogPage {

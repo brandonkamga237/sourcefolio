@@ -8,6 +8,9 @@ import { LikeButton } from "@/components/likes/LikeButton";
 import { Preview } from "@/components/catalog/Preview";
 import { StarCount } from "@/components/stars/StarCount";
 import { CommitGraph } from "@/components/illustrations/CommitGraph";
+import { memberSheetLabels } from "@/components/members/labels";
+import { MemberSheet } from "@/components/members/MemberSheet";
+import { Avatar } from "@/components/members/Avatar";
 import { localizedPath } from "@/i18n/paths";
 import { toLocale } from "@/i18n/routing";
 import { siteLabel } from "@/lib/site-label";
@@ -63,11 +66,12 @@ export default async function ShowcasePage({ params }: PageProps<"/[locale]/p/[s
   const { locale: raw, slug } = await params;
   const locale = toLocale(raw);
   setRequestLocale(locale);
-  const [t, tl, ts, showcase] = await Promise.all([
+  const [t, tl, ts, showcase, memberLabels] = await Promise.all([
     getTranslations({ locale, namespace: "showcasePage" }),
     getTranslations({ locale, namespace: "likes" }),
     getTranslations({ locale, namespace: "stars" }),
     getPublicShowcase(slug),
+    memberSheetLabels(locale),
   ]);
   if (!showcase) notFound();
 
@@ -100,16 +104,19 @@ export default async function ShowcasePage({ params }: PageProps<"/[locale]/p/[s
         <h1 className="font-display text-[32px] leading-[1.05] font-bold tracking-[-0.035em] break-all lg:text-[44px]">
           {siteLabel(showcase.siteUrl)}
         </h1>
-        <p className="text-[15px] text-ink-body">
-          {t.rich("by", {
-            login: showcase.ownerLogin,
-            profile: (chunks) => (
-              <a href={showcase.ownerUrl} target="_blank" rel="noopener noreferrer" className="font-semibold text-ink underline underline-offset-2">
-                {chunks}
-              </a>
-            ),
-          })}
-        </p>
+        {/* The person behind the site, one tap from their public profile. */}
+        <MemberSheet
+          login={showcase.ownerLogin}
+          locale={locale}
+          labels={memberLabels}
+          triggerClassName="press -mx-2 flex w-fit items-center gap-2.5 rounded-full py-1 pr-4 pl-1 text-left transition-colors duration-150 hover:bg-surface-sunken"
+        >
+          <Avatar login={showcase.ownerLogin} size={36} />
+          <span className="text-[15px] text-ink-body">
+            {t("byLogin", { login: showcase.ownerLogin })}
+            <span className="ml-2 text-[13px] font-semibold text-accent-ink">{t("seeProfile")}</span>
+          </span>
+        </MemberSheet>
         <p className="flex flex-wrap items-center gap-x-3 gap-y-1 font-mono text-xs text-ink-soft">
           <span className="break-all">{showcase.repository}</span>
           {showcase.repositoryStars != null ? (
