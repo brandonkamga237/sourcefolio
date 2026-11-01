@@ -84,7 +84,7 @@ class JpaCatalogStore implements CatalogStore {
     @Transactional(readOnly = true)
     public List<Shuffled> shuffled(LocalDate day, boolean young, Instant youngSince, String afterKey, int limit, CatalogFilter filter) {
         List<String[]> idsAndKeys = entries.shuffledIdsAndKeys(day.toString(), young, youngSince, afterKey, limit,
-                        filter.countryCode(), filter.specialty(), pattern(filter)).stream()
+                        filter.countryCode(), filter.language(), pattern(filter)).stream()
                 .map(row -> row.split(":", 2))
                 .toList();
         Map<UUID, CatalogEntryEntity> rows = rowsById(idsAndKeys.stream().map(row -> UUID.fromString(row[0])).toList());
@@ -100,13 +100,13 @@ class JpaCatalogStore implements CatalogStore {
     public CatalogFacets facets() {
         return new CatalogFacets(
                 entries.countryFacets().stream().map(row -> new CatalogFacets.Facet(row.getValue().strip(), row.getCount())).toList(),
-                entries.specialtyFacets().stream().map(row -> new CatalogFacets.Facet(row.getValue(), row.getCount())).toList());
+                entries.languageFacets().stream().map(row -> new CatalogFacets.Facet(row.getValue(), row.getCount())).toList());
     }
 
     @Override
     @Transactional(readOnly = true)
     public long count(CatalogFilter filter) {
-        return filter.isEmpty() ? entries.count() : entries.countMatching(filter.countryCode(), filter.specialty(), pattern(filter));
+        return filter.isEmpty() ? entries.count() : entries.countMatching(filter.countryCode(), filter.language(), pattern(filter));
     }
 
     // Two queries as well: the ordered ids, then their rows.
@@ -114,7 +114,7 @@ class JpaCatalogStore implements CatalogStore {
     @Transactional(readOnly = true)
     public List<CatalogEntry> recent(RecentCursor after, int limit, CatalogFilter filter) {
         List<UUID> ids = entries.recentIds(after == null ? null : after.publishedAt(), after == null ? null : after.showcaseId(), limit,
-                filter.countryCode(), filter.specialty(), pattern(filter));
+                filter.countryCode(), filter.language(), pattern(filter));
         Map<UUID, CatalogEntryEntity> rows = rowsById(ids);
         return ids.stream().filter(rows::containsKey).map(id -> toDomain(rows.get(id))).toList();
     }

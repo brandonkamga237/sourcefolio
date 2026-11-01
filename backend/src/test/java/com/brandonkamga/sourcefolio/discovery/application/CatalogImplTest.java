@@ -140,11 +140,14 @@ class CatalogImplTest {
         profiled(add("ada", NOW.minus(Duration.ofDays(1))), "CM", List.of("backend", "cloud"), "Backend Java à Douala");
         profiled(add("bola", NOW.minus(Duration.ofDays(2))), "NG", List.of("frontend"), "React developer");
         profiled(add("chidi", NOW.minus(Duration.ofDays(3))), "CM", List.of("frontend", "backend"), null);
+        written(slug("bola"), "TypeScript", "CSS");
+        written(slug("chidi"), "Java", "TypeScript");
 
         CatalogPage cameroon = catalog().listRecent(null, 10, new CatalogFilter(null, "CM", null));
         assertThat(slugs(cameroon)).containsExactly("ada", "chidi");
         assertThat(cameroon.total()).isEqualTo(2);
-        assertThat(slugs(catalog().listRecent(null, 10, new CatalogFilter(null, null, "frontend")))).containsExactly("bola", "chidi");
+        assertThat(slugs(catalog().listRecent(null, 10, new CatalogFilter(null, null, "TypeScript")))).containsExactly("bola", "chidi");
+        assertThat(slugs(catalog().listRecent(null, 10, new CatalogFilter(null, null, "frontend")))).isEmpty();
         assertThat(slugs(catalog().listRecent(null, 10, new CatalogFilter("java", null, null)))).containsExactly("ada");
         assertThat(slugs(catalog().listRecent(null, 10, new CatalogFilter("java", "NG", null)))).isEmpty();
     }
@@ -170,18 +173,29 @@ class CatalogImplTest {
     }
 
     @Test
-    @DisplayName("the filters offer the countries and interests present, most frequent first")
+    @DisplayName("the filters offer the countries and source languages present, most frequent first")
     void facets() {
         profiled(add("ada", NOW), "CM", List.of("backend", "cloud"), null);
         profiled(add("bola", NOW), "NG", List.of("frontend", "backend"), null);
         profiled(add("chidi", NOW), "CM", List.of("frontend"), null);
         add("dayo", NOW);
+        written(slug("ada"), "Java", "HCL");
+        written(slug("bola"), "TypeScript", "Java");
+        written(slug("chidi"), "TypeScript");
 
         CatalogFacets facets = catalog().findFacets();
 
         assertThat(facets.countries()).containsExactly(new CatalogFacets.Facet("CM", 2), new CatalogFacets.Facet("NG", 1));
-        assertThat(facets.specialties()).containsExactly(new CatalogFacets.Facet("backend", 2), new CatalogFacets.Facet("frontend", 2),
-                new CatalogFacets.Facet("cloud", 1));
+        assertThat(facets.languages()).containsExactly(new CatalogFacets.Facet("Java", 2), new CatalogFacets.Facet("TypeScript", 2),
+                new CatalogFacets.Facet("HCL", 1));
+    }
+
+    private void written(CatalogEntry entry, String... languages) {
+        store.setRepository(entry.showcaseId(), 0, null, List.of(languages), NOW);
+    }
+
+    private CatalogEntry slug(String slug) {
+        return store.recent(null, 100, CatalogFilter.none()).stream().filter(entry -> entry.slug().equals(slug)).findFirst().orElseThrow();
     }
 
     private void profiled(CatalogEntry entry, String country, List<String> interests, String headline) {

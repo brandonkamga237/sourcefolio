@@ -124,14 +124,14 @@ class InMemoryCatalogStore implements CatalogStore {
                 .map(entry -> new CatalogFacets.Facet(entry.getKey(), entry.getValue()))
                 .toList();
         return new CatalogFacets(count.apply(rows.values().stream().map(CatalogEntry::countryCode).filter(java.util.Objects::nonNull)),
-                count.apply(rows.values().stream().flatMap(entry -> entry.specialties().stream())));
+                count.apply(rows.values().stream().flatMap(entry -> entry.repositoryLanguages().stream())));
     }
 
     // The same rules as the SQL filters: any part left null matches everything.
     private static boolean matches(CatalogEntry entry, CatalogFilter filter) {
         String haystack = (entry.ownerLogin() + " " + entry.siteUrl() + " " + (entry.headline() == null ? "" : entry.headline())).toLowerCase();
         return (filter.countryCode() == null || filter.countryCode().equals(entry.countryCode()))
-                && (filter.specialty() == null || entry.specialties().contains(filter.specialty()))
+                && (filter.language() == null || entry.repositoryLanguages().contains(filter.language()))
                 && (filter.text() == null || haystack.contains(filter.text()));
     }
 
