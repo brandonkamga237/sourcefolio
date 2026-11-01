@@ -76,7 +76,8 @@ export function ShowcaseCard({ card, href, index, selected, onOpen, locale, labe
                   {compactNumber(card.likes, locale)}
                 </span>
                 {card.repositoryStars != null ? (
-                  <span className="flex items-center gap-0.5" title={plural(labels.stars, card.repositoryStars, locale)}>
+                  // Secondary on a phone's narrow card: the panel and the page still show them.
+                  <span className="flex items-center gap-0.5 max-sm:hidden" title={plural(labels.stars, card.repositoryStars, locale)}>
                     <IconStar aria-hidden="true" className="size-3 fill-star text-star" />
                     {compactNumber(card.repositoryStars, locale)}
                   </span>
