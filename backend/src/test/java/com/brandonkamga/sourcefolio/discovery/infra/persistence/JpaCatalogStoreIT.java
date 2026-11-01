@@ -187,6 +187,25 @@ class JpaCatalogStoreIT extends PostgresIT {
     }
 
     @Test
+    @DisplayName("filters by country, interest and words reach SQL; % and _ typed by a visitor are taken literally")
+    void filters() {
+        CatalogEntry ada = entry("ada-filter", NOW.minus(Duration.ofDays(1)));
+        CatalogEntry bola = entry("bola-filter", NOW.minus(Duration.ofDays(2)));
+        List.of(ada, bola).forEach(catalog::upsert);
+        catalog.setAuthorProfile(ada.ownerId(), "CM", List.of("backend", "cloud"), "Backend Java 100% à Douala");
+        catalog.setAuthorProfile(bola.ownerId(), "NG", List.of("frontend"), "React developer");
+
+        assertThat(catalog.recent(null, 10, new CatalogFilter(null, "CM", null))).extracting(CatalogEntry::slug).containsExactly("ada-filter");
+        assertThat(catalog.recent(null, 10, new CatalogFilter(null, null, "frontend"))).extracting(CatalogEntry::slug).containsExactly("bola-filter");
+        assertThat(catalog.recent(null, 10, new CatalogFilter("java 100%", null, null))).extracting(CatalogEntry::slug).containsExactly("ada-filter");
+        assertThat(catalog.recent(null, 10, new CatalogFilter("100_", null, null))).isEmpty();
+        assertThat(catalog.recent(null, 10, new CatalogFilter("login-bola", null, null))).extracting(CatalogEntry::slug).containsExactly("bola-filter");
+        assertThat(catalog.count(new CatalogFilter(null, "NG", "frontend"))).isEqualTo(1);
+        assertThat(catalog.shuffled(DAY, false, NOW.plus(Duration.ofDays(1)), "", 10, new CatalogFilter(null, "CM", "cloud")))
+                .extracting(item -> item.entry().slug()).containsExactly("ada-filter");
+    }
+
+    @Test
     @DisplayName("the Ranking reads the like counts, most liked first, and leaves out unliked showcases")
     void ranking() {
         CatalogEntry popular = entry("popular", NOW.minus(Duration.ofDays(3)));
