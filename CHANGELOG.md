@@ -1,5 +1,62 @@
 # Changelog
 
+## [0.14.0](https://github.com/brandonkamga237/sourcefolio/compare/v0.13.0...v0.14.0) (2026-11-01)
+
+
+### Features
+
+* **discover:** come back from a showcase to the same place in the catalogue ([8412cd8](https://github.com/brandonkamga237/sourcefolio/commit/8412cd8ce82fc55ae3cd385c87b5c0bd99989e59))
+* **discover:** come back from a showcase to the same place in the catalogue ([#66](https://github.com/brandonkamga237/sourcefolio/issues/66)) ([8412cd8](https://github.com/brandonkamga237/sourcefolio/commit/8412cd8ce82fc55ae3cd385c87b5c0bd99989e59))
+* **discover:** search by words, filter by country and interest ([42ecf7f](https://github.com/brandonkamga237/sourcefolio/commit/42ecf7f14312dde39cc29310e3e6542276443e0e))
+* **discover:** search by words, filter by country and interest ([#65](https://github.com/brandonkamga237/sourcefolio/issues/65)) ([42ecf7f](https://github.com/brandonkamga237/sourcefolio/commit/42ecf7f14312dde39cc29310e3e6542276443e0e))
+* **discovery:** copy authors' headlines onto their cards ([716662f](https://github.com/brandonkamga237/sourcefolio/commit/716662f1d92b8fc60394dfbb29c15e07f6a3dfe3))
+* **discovery:** index the catalogue by country and interest ([de6d128](https://github.com/brandonkamga237/sourcefolio/commit/de6d128eccad35d33a031dd935eb3d7cc47e87b9))
+* **discovery:** model the filters a visitor narrows the catalogue with ([57fa72e](https://github.com/brandonkamga237/sourcefolio/commit/57fa72e929485a34ee96b192f91fa89ef0fd1551))
+* **discovery:** narrow Discover and Recent by words, country and interest ([c068bc5](https://github.com/brandonkamga237/sourcefolio/commit/c068bc5d67981a99ccb418d60e7ebb915aae3254))
+* **discovery:** offer the countries and interests present as filter facets ([9573d28](https://github.com/brandonkamga237/sourcefolio/commit/9573d28024bb788a90dca2b3515b379906125637))
+* **discovery:** show the author's headline on cards and member pages ([4d8cb2d](https://github.com/brandonkamga237/sourcefolio/commit/4d8cb2da5d832bfbb355ebd23d791c9044e0bbe7))
+* **frontend:** add a search bar with country and interest filters ([e4d894a](https://github.com/brandonkamga237/sourcefolio/commit/e4d894a04d71defc1b3e9f537e08050fe12c843a))
+* **frontend:** ask members to write their own headline ([1f66f4e](https://github.com/brandonkamga237/sourcefolio/commit/1f66f4e94080e0e4a88dc02303eff45384a23177))
+* **frontend:** ask the API whether a showcase exists, with a short memory ([626e136](https://github.com/brandonkamga237/sourcefolio/commit/626e1360937cab98b8db396007296ff426d14f30))
+* **frontend:** fold the filter pickers behind a button on phones ([b61aedf](https://github.com/brandonkamga237/sourcefolio/commit/b61aedf26eabea36f79dc928f241a8add60feac3))
+* **frontend:** keep the visitor's filters when switching the catalogue order ([01f096e](https://github.com/brandonkamga237/sourcefolio/commit/01f096e24e9f9f779cbe7edb97f7e1c0433e6209))
+* **frontend:** let the share action show as an icon alone ([920f5e9](https://github.com/brandonkamga237/sourcefolio/commit/920f5e9ef956058e3d07122fbe059974eb7678f3))
+* **frontend:** list the fifty grouped interests with their labels ([cc99a4b](https://github.com/brandonkamga237/sourcefolio/commit/cc99a4b03510c7544e29b2886e2d160ac65cfe62))
+* **frontend:** pick up to four interests among fifty, grouped and searchable ([a95f786](https://github.com/brandonkamga237/sourcefolio/commit/a95f786c5a9547dd92ca43d0da00cc64876a62ae))
+* **frontend:** put a share button on every catalogue card ([9530ec8](https://github.com/brandonkamga237/sourcefolio/commit/9530ec8c788226c3825786ccacf30975fd544fdf))
+* **frontend:** read and save the member's headline ([6098f19](https://github.com/brandonkamga237/sourcefolio/commit/6098f1953676f3858180e8e27f0ece26823e3873))
+* **frontend:** read the catalogue and its facets under the visitor's filters ([1a726d2](https://github.com/brandonkamga237/sourcefolio/commit/1a726d22d80fa06860508a002a3352b520b456d7))
+* **frontend:** remember a feed's loaded cards and scroll for the tab's session ([3ba0b0d](https://github.com/brandonkamga237/sourcefolio/commit/3ba0b0d421887d7e9319b178036838d77a16349b))
+* **frontend:** restore the catalogue where it was left when coming back from a showcase ([1a302b4](https://github.com/brandonkamga237/sourcefolio/commit/1a302b4167d77dc049be648bbf830e6fd14b0956))
+* **frontend:** search and filter Discover and Recent from the sticky bar ([75e3442](https://github.com/brandonkamga237/sourcefolio/commit/75e3442231b4fa610937d962b3f87de9cd2edf59))
+* **frontend:** show the author's headline in the detail panel ([0347d11](https://github.com/brandonkamga237/sourcefolio/commit/0347d113078d0b3ce311c00d3e6c08af3b8bac86))
+* **frontend:** show the author's headline on cards ([03f14c2](https://github.com/brandonkamga237/sourcefolio/commit/03f14c2c586de759aa7f0949a20915bc3067181e))
+* **frontend:** show the member's headline in their profile sheet ([67adca8](https://github.com/brandonkamga237/sourcefolio/commit/67adca828ce452939d1541f323d3a76841f5f17b))
+* **frontend:** show the member's headline on Me ([150b85d](https://github.com/brandonkamga237/sourcefolio/commit/150b85dc4706df4e989a765af4170525410668ca))
+* **frontend:** tell a Back navigation from an arrival ([47177bc](https://github.com/brandonkamga237/sourcefolio/commit/47177bc97f7463efa19c7fce5acde84ad8cd1b77))
+* **profile:** allow fifty interests, four ranked, and a member headline in the schema ([e82a2c8](https://github.com/brandonkamga237/sourcefolio/commit/e82a2c8da216bb6b931359ae5000247ffe3a19fc))
+* **profile:** fifty ranked interests (four kept) and the member's own headline ([569a8dd](https://github.com/brandonkamga237/sourcefolio/commit/569a8dd8751df23b7329126e15d4fb7f66e2194b))
+* **profile:** fifty ranked interests (four kept) and the member's own headline ([#63](https://github.com/brandonkamga237/sourcefolio/issues/63)) ([569a8dd](https://github.com/brandonkamga237/sourcefolio/commit/569a8dd8751df23b7329126e15d4fb7f66e2194b))
+* **profile:** include the headline in the public profile and its event ([5386e66](https://github.com/brandonkamga237/sourcefolio/commit/5386e66095428eac4fb30da9f7c0a4074c8f3ad8))
+* **profile:** keep a headline on the member's profile ([9d9eaa9](https://github.com/brandonkamga237/sourcefolio/commit/9d9eaa929d8d5162002ada95eeb47b4f45b59135))
+* **profile:** let members write their own headline ([6b3c7b8](https://github.com/brandonkamga237/sourcefolio/commit/6b3c7b8c79b9e2fcd16df84e0f2c13330badd57a))
+* **profile:** model the member's own headline ([347b6d0](https://github.com/brandonkamga237/sourcefolio/commit/347b6d0d55393f69d967d71ea6f2cc73cfa6cb54))
+* **profile:** offer fifty interests and keep up to four, ranked ([d3b51b3](https://github.com/brandonkamga237/sourcefolio/commit/d3b51b3507b086a6919a6db540b0b58e16f22662))
+* **profile:** save and return the headline through the API ([5a7d3f4](https://github.com/brandonkamga237/sourcefolio/commit/5a7d3f4653ad7e830e6f1f72f9ef493a72fcdf4d))
+* **profile:** store the member's headline ([d360f12](https://github.com/brandonkamga237/sourcefolio/commit/d360f123f5dc6ec240608bf3ee10a63c55baa127))
+
+
+### Bug Fixes
+
+* **frontend:** answer 404 for showcase pages that do not exist ([dd1fde1](https://github.com/brandonkamga237/sourcefolio/commit/dd1fde17f6a3bc8ece36750df1fa80f85cad5b6e))
+* **frontend:** answer a real 404 for showcases that do not exist ([7ee293e](https://github.com/brandonkamga237/sourcefolio/commit/7ee293efcb9e57d64e9e382e5fb7356eb71ec9d7))
+* **frontend:** answer a real 404 for showcases that do not exist ([#64](https://github.com/brandonkamga237/sourcefolio/issues/64)) ([7ee293e](https://github.com/brandonkamga237/sourcefolio/commit/7ee293efcb9e57d64e9e382e5fb7356eb71ec9d7))
+* **frontend:** keep the sticky bar on one row on wide screens and the panel below it ([2488cf0](https://github.com/brandonkamga237/sourcefolio/commit/2488cf0dde92ab6fe93c50bb8c7b8b4b53b810fc))
+* **frontend:** read the filter facets per request, not at build time ([0f65912](https://github.com/brandonkamga237/sourcefolio/commit/0f659126b0a4d85b12efa85650b85a615254e81a))
+* **frontend:** share from every card, whole member sheet visible on computers ([e299f96](https://github.com/brandonkamga237/sourcefolio/commit/e299f9619b28289a3314f187091fc4cc9d2cbff9))
+* **frontend:** share from every card, whole member sheet visible on computers ([#62](https://github.com/brandonkamga237/sourcefolio/issues/62)) ([e299f96](https://github.com/brandonkamga237/sourcefolio/commit/e299f9619b28289a3314f187091fc4cc9d2cbff9))
+* **frontend:** show the whole member sheet at once on wide screens ([20ddab0](https://github.com/brandonkamga237/sourcefolio/commit/20ddab08234c93ad7b7eefd2706e86b84f9d83b4))
+
 ## [0.13.0](https://github.com/brandonkamga237/sourcefolio/compare/v0.12.1...v0.13.0) (2026-11-01)
 
 
