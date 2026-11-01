@@ -29,8 +29,10 @@ class JpaFeedbackStore implements FeedbackStore {
 
     @Override
     public List<Feedback> page(UUID showcaseId, FeedbackCursor after, int limit) {
-        return feedback.page(showcaseId, after == null ? null : after.createdAt(), after == null ? null : after.id(), Limit.of(limit))
-                .stream().map(JpaFeedbackStore::toDomain).toList();
+        List<FeedbackEntity> rows = after == null
+                ? feedback.firstPage(showcaseId, Limit.of(limit))
+                : feedback.pageAfter(showcaseId, after.createdAt(), after.id(), Limit.of(limit));
+        return rows.stream().map(JpaFeedbackStore::toDomain).toList();
     }
 
     @Override
