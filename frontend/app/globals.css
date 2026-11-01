@@ -29,6 +29,11 @@
   --color-danger: #b42318;
   --color-danger-soft: #fdecea;
 
+  /* Two signals that must never be confused: a SourceFolio like (the community's heart) and a
+     GitHub star (the repository's popularity, in GitHub's own amber). */
+  --color-like: #e5484d;
+  --color-star: #bf8700;
+
   --radius-tag: 7px;
   --radius-segment: 9px;
   --radius-control: 12px;
@@ -65,6 +70,8 @@
       --color-success-ink: #7fd4a6;
       --color-danger: #f0705f;
       --color-danger-soft: #3a1714;
+      --color-like: #ff6369;
+      --color-star: #e3b341;
     }
   }
 
@@ -89,6 +96,8 @@
     --color-success-ink: #7fd4a6;
     --color-danger: #f0705f;
     --color-danger-soft: #3a1714;
+    --color-like: #ff6369;
+    --color-star: #e3b341;
   }
 
   html {
