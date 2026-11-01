@@ -167,6 +167,17 @@
       "lead": "Ouvre un portfolio, visite le site, puis lis le code qui le fait tourner.",
       "cta": "Publier le mien",
       "close": "Masquer ce message"
+    },
+    "search": {
+      "placeholder": "Chercher un nom, un site, un titre…",
+      "country": "Pays",
+      "anyCountry": "Tous les pays",
+      "interest": "Domaine",
+      "anyInterest": "Tous les domaines",
+      "clear": "Effacer les filtres",
+      "filters": "Filtres",
+      "noMatchTitle": "Aucun portfolio ne correspond",
+      "noMatchLead": "Essaie d’autres mots, ou retire un filtre."
     }
   },
   "profile": {
