@@ -2,8 +2,8 @@
 
 import Link from "next/link";
 import { useState, type FormEvent } from "react";
-import type { MyAnswers, Specialty } from "@/services/profile";
-import { answerCountry, answerSpecialty, saveEmail } from "@/services/profile-answers";
+import { MAX_SPECIALTIES, type MyAnswers, type Specialty } from "@/services/profile";
+import { answerCountry, answerSpecialties, saveEmail } from "@/services/profile-answers";
 
 type Step = "country" | "specialty" | "email";
 
@@ -13,6 +13,8 @@ export interface ProfileQuestionsLabels {
   countryTitle: string;
   countryPlaceholder: string;
   specialtyTitle: string;
+  /** Tells to tap in order of importance, up to three. */
+  specialtyHint: string;
   specialties: Record<Specialty, string>;
   emailTitle: string;
   emailHint: string;
@@ -41,7 +43,7 @@ interface ProfileQuestionsProps {
 function firstRun(answers: MyAnswers): Step[] {
   const missing: Step[] = [];
   if (!answers.country) missing.push("country");
-  if (!answers.specialty) missing.push("specialty");
+  if (answers.specialties.length === 0) missing.push("specialty");
   if (missing.length > 0 && !answers.email) missing.push("email");
   return missing;
 }
@@ -55,6 +57,7 @@ export function ProfileQuestions({ initial, countries, labels, doneHref }: Profi
   const [total, setTotal] = useState(queue.length);
   const [country, setCountry] = useState(initial.country ?? "");
   const [email, setEmail] = useState(initial.email ?? "");
+  const [picked, setPicked] = useState<Specialty[]>(initial.specialties);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -89,8 +92,22 @@ export function ProfileQuestions({ initial, countries, labels, doneHref }: Profi
     if (country) void save(() => answerCountry(country), () => setAnswers((current) => ({ ...current, country })));
   }
 
-  function chooseSpecialty(specialty: Specialty) {
-    void save(() => answerSpecialty(specialty), () => setAnswers((current) => ({ ...current, specialty })));
+  // A tap adds the specialty after the others (its rank is its importance); a second tap takes
+  // it out and the ones after it move up.
+  function toggleSpecialty(specialty: Specialty) {
+    setPicked((current) =>
+      current.includes(specialty)
+        ? current.filter((item) => item !== specialty)
+        : current.length < MAX_SPECIALTIES
+          ? [...current, specialty]
+          : current,
+    );
+  }
+
+  function submitSpecialties(event: FormEvent) {
+    event.preventDefault();
+    const specialties = picked;
+    if (specialties.length > 0) void save(() => answerSpecialties(specialties), () => setAnswers((current) => ({ ...current, specialties })));
   }
 
   function submitEmail(event: FormEvent) {
@@ -103,7 +120,11 @@ export function ProfileQuestions({ initial, countries, labels, doneHref }: Profi
     const countryName = countries.find((option) => option.code === answers.country)?.name;
     const rows: { step: Step; label: string; value: string | null }[] = [
       { step: "country", label: labels.countryLabel, value: countryName ?? null },
-      { step: "specialty", label: labels.specialtyLabel, value: answers.specialty ? labels.specialties[answers.specialty] : null },
+      {
+        step: "specialty",
+        label: labels.specialtyLabel,
+        value: answers.specialties.length > 0 ? answers.specialties.map((specialty) => labels.specialties[specialty]).join(" · ") : null,
+      },
       { step: "email", label: labels.emailLabel, value: answers.email },
     ];
     return (
@@ -176,25 +197,40 @@ export function ProfileQuestions({ initial, countries, labels, doneHref }: Profi
       ) : null}
 
       {step === "specialty" ? (
-        <fieldset className="flex flex-col gap-4">
-          <legend className="mb-4 font-display text-[26px] leading-tight font-bold tracking-[-0.03em]">{labels.specialtyTitle}</legend>
-          <div className="flex flex-wrap gap-2">
-            {(Object.keys(labels.specialties) as Specialty[]).map((specialty) => (
-              <button
-                key={specialty}
-                type="button"
-                disabled={saving}
-                aria-pressed={answers.specialty === specialty}
-                onClick={() => chooseSpecialty(specialty)}
-                className={`press flex h-11 items-center rounded-full px-4 text-[15px] font-semibold disabled:opacity-60 ${
-                  answers.specialty === specialty ? "bg-ink text-canvas" : "border border-line bg-surface text-ink"
-                }`}
-              >
-                {labels.specialties[specialty]}
-              </button>
-            ))}
-          </div>
-        </fieldset>
+        <form onSubmit={submitSpecialties} className="flex flex-col gap-4">
+          <fieldset className="flex flex-col gap-3">
+            <legend className="mb-1 font-display text-[26px] leading-tight font-bold tracking-[-0.03em]">{labels.specialtyTitle}</legend>
+            <p className="text-sm leading-normal text-ink-body">{labels.specialtyHint}</p>
+            <div className="flex flex-wrap gap-2">
+              {(Object.keys(labels.specialties) as Specialty[]).map((specialty) => {
+                const rank = picked.indexOf(specialty) + 1;
+                const full = rank === 0 && picked.length >= MAX_SPECIALTIES;
+                return (
+                  <button
+                    key={specialty}
+                    type="button"
+                    disabled={saving || full}
+                    aria-pressed={rank > 0}
+                    onClick={() => toggleSpecialty(specialty)}
+                    className={`press flex h-11 items-center gap-2 rounded-full pr-4 text-[15px] font-semibold transition-colors duration-150 disabled:opacity-40 ${
+                      rank > 0 ? "bg-ink pl-1.5 text-canvas" : "border border-line bg-surface pl-4 text-ink"
+                    }`}
+                  >
+                    {rank > 0 ? (
+                      <span aria-hidden="true" className="flex size-8 items-center justify-center rounded-full bg-accent font-mono text-sm text-white">
+                        {rank}
+                      </span>
+                    ) : null}
+                    {labels.specialties[specialty]}
+                  </button>
+                );
+              })}
+            </div>
+          </fieldset>
+          <button type="submit" disabled={picked.length === 0 || saving} className={primaryButton}>
+            {saving ? labels.saving : labels.next}
+          </button>
+        </form>
       ) : null}
 
       {step === "email" ? (

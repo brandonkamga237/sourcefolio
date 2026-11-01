@@ -29,8 +29,11 @@ export const SPECIALTIES: readonly Specialty[] = [
 export interface Profile {
   /** ISO 3166-1 alpha-2, null until answered. */
   country: string | null;
-  specialty: Specialty | null;
+  /** Up to three, most important first; empty until answered. */
+  specialties: Specialty[];
 }
+
+export const MAX_SPECIALTIES = 3;
 
 export interface MyAnswers extends Profile {
   /** The alert address, null when the member gave none. */

@@ -174,7 +174,7 @@
     "progress": "Question {current} sur {total}",
     "countryTitle": "Dans quel pays vis-tu ?",
     "countryPlaceholder": "Choisis ton pays",
-    "specialtyTitle": "Quelle est ta spécialité ?",
+    "specialtyTitle": "Tes spécialités",
     "emailTitle": "Ton e-mail, pour être prévenu si ton site tombe",
     "emailHint": "Facultatif. Il n’est jamais affiché ni partagé.",
     "next": "Continuer",
@@ -183,13 +183,14 @@
     "failed": "Ta réponse n’a pas pu être enregistrée. Réessaie.",
     "summaryTitle": "Mon profil",
     "countryLabel": "Pays",
-    "specialtyLabel": "Spécialité",
+    "specialtyLabel": "Spécialités",
     "emailLabel": "E-mail d’alerte",
     "notGiven": "Non renseigné",
     "edit": "Modifier",
     "done": "Retour à Moi",
     "reminder": "Ajoute ton pays et ta spécialité : deux questions, dix secondes.",
-    "reminderLink": "Compléter mon profil"
+    "reminderLink": "Compléter mon profil",
+    "specialtyHint": "Touche-les dans l’ordre d’importance, jusqu’à trois : la première est celle qu’on verra d’abord."
   },
   "specialty": {
     "frontend": "Frontend",
