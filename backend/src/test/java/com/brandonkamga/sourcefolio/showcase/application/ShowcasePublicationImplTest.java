@@ -8,6 +8,7 @@ import com.brandonkamga.sourcefolio.showcase.domain.model.CandidateReason;
 import com.brandonkamga.sourcefolio.showcase.domain.model.CandidateScan;
 import com.brandonkamga.sourcefolio.showcase.domain.model.RepositoryCoordinates;
 import com.brandonkamga.sourcefolio.showcase.domain.model.RepositoryProvider;
+import com.brandonkamga.sourcefolio.showcase.domain.model.RepositorySnapshot;
 import com.brandonkamga.sourcefolio.showcase.domain.model.Showcase;
 import com.brandonkamga.sourcefolio.showcase.domain.model.SourceRepo;
 import com.brandonkamga.sourcefolio.showcase.domain.model.ShowcaseId;
@@ -253,11 +254,13 @@ class ShowcasePublicationImplTest {
         }
 
         @Override
-        public void saveRepositoryStars(ShowcaseId id, Integer stars, Instant checkedAt) {
+        public void saveRepositorySnapshot(ShowcaseId id, RepositorySnapshot snapshot, Instant checkedAt) {
             Showcase row = rows.get(id.value());
             SourceRepo repo = row.sourceRepo();
             rows.put(id.value(), new Showcase(row.id(), row.slug(), row.ownerId(), row.kind(), row.siteUrl(),
-                    new SourceRepo(repo.provider(), repo.coordinates(), repo.isPublic(), stars, checkedAt), row.status(), row.createdAt(),
+                    new SourceRepo(repo.provider(), repo.coordinates(), repo.isPublic(), snapshot == null ? null : snapshot.stars(),
+                            snapshot == null ? null : snapshot.description(), snapshot == null ? List.of() : snapshot.languages(),
+                            snapshot == null ? null : snapshot.pushedAt(), checkedAt), row.status(), row.createdAt(),
                     row.publishedAt(), List.of(), row.previewImage(), row.previewVideo()));
         }
 

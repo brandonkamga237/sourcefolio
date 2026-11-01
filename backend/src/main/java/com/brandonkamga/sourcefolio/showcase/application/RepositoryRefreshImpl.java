@@ -33,16 +33,17 @@ public class RepositoryRefreshImpl implements RepositoryRefresh {
         return showcases.findDueForStars(clock.instant().minus(FRESH_FOR), limit).stream().map(ShowcaseId::value).toList();
     }
 
-    // A repository gone private or deleted loses its count rather than showing a stale one.
+    // A repository gone private or deleted loses its count and facts rather than showing stale ones.
     @Override
     public void refresh(UUID showcaseId) {
         Showcase showcase = showcases.findById(new ShowcaseId(showcaseId)).orElse(null);
         if (showcase == null) {
             return;
         }
-        Integer stars = repositories.snapshot(showcase.sourceRepo().coordinates()).map(RepositorySnapshot::stars).orElse(null);
+        RepositorySnapshot snapshot = repositories.snapshot(showcase.sourceRepo().coordinates()).orElse(null);
+        Integer stars = snapshot == null ? null : snapshot.stars();
         Instant now = clock.instant();
-        showcases.saveRepositoryStars(showcase.id(), stars, now);
+        showcases.saveRepositorySnapshot(showcase.id(), snapshot, now);
         if (!Objects.equals(stars, showcase.sourceRepo().stars())) {
             events.starsChanged(new ShowcaseStarsChanged(showcaseId, stars));
         }

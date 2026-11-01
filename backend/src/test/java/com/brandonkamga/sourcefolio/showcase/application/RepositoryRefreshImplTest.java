@@ -120,8 +120,8 @@ class RepositoryRefreshImplTest {
         Showcase fresh = showcases.save(published("fresh"));
         Showcase stale = showcases.save(published("stale"));
         Showcase never = showcases.save(published("never"));
-        showcases.saveRepositoryStars(fresh.id(), 1, NOW.minus(Duration.ofHours(2)));
-        showcases.saveRepositoryStars(stale.id(), 1, NOW.minus(Duration.ofHours(30)));
+        showcases.saveRepositorySnapshot(fresh.id(), new RepositorySnapshot(1, null, null, List.of()), NOW.minus(Duration.ofHours(2)));
+        showcases.saveRepositorySnapshot(stale.id(), new RepositorySnapshot(1, null, null, List.of()), NOW.minus(Duration.ofHours(30)));
 
         assertThat(stars.listDue(10)).containsExactly(never.id().value(), stale.id().value());
         assertThat(stars.listDue(1)).containsExactly(never.id().value());
