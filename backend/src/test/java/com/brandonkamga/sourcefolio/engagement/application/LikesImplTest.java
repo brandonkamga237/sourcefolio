@@ -78,7 +78,17 @@ class LikesImplTest {
     private final List<ShowcaseLikesChanged> announced = new ArrayList<>();
     private final Likes likes = new LikesImpl(
             slug -> slug.equals("nekwalla") ? Optional.of(new PublicShowcase(SHOWCASE, "nekwalla")) : Optional.empty(),
-            store, announced::add, Clock.fixed(NOW, ZoneOffset.UTC));
+            store, new EngagementEvents() {
+                @Override
+                public void likesChanged(ShowcaseLikesChanged event) {
+                    announced.add(event);
+                }
+
+                @Override
+                public void feedbackChanged(ShowcaseFeedbackChanged event) {
+                    throw new AssertionError("likes announce no feedback");
+                }
+            }, Clock.fixed(NOW, ZoneOffset.UTC));
 
     @Test
     @DisplayName("a like counts once however many times it is sent, and the new count is announced once")

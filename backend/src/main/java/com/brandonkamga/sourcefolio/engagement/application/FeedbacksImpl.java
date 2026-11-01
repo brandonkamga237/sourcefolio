@@ -22,12 +22,15 @@ public class FeedbacksImpl implements Feedbacks {
     private final PublicShowcases showcases;
     private final FeedbackStore feedback;
     private final SignInService members;
+    private final EngagementEvents events;
     private final Clock clock;
 
-    public FeedbacksImpl(PublicShowcases showcases, FeedbackStore feedback, SignInService members, Clock clock) {
+    public FeedbacksImpl(PublicShowcases showcases, FeedbackStore feedback, SignInService members, EngagementEvents events,
+                         Clock clock) {
         this.showcases = showcases;
         this.feedback = feedback;
         this.members = members;
+        this.events = events;
         this.clock = clock;
     }
 
@@ -65,6 +68,7 @@ public class FeedbacksImpl implements Feedbacks {
         String login = members.requireMember(new UserId(memberId)).login();
         Feedback written = Feedback.write(found.showcase().id().value(), memberId, login, parsedAngle, parsedBody, language, clock.instant());
         feedback.add(written);
+        announceCount(written.showcaseId());
         return written;
     }
 
@@ -75,11 +79,21 @@ public class FeedbacksImpl implements Feedbacks {
             throw new ForbiddenException("feedback.not-yours");
         }
         feedback.delete(feedbackId);
+        announceCount(found.showcaseId());
     }
 
     @Override
     public void followRename(UUID memberId, String login) {
         feedback.renameAuthor(memberId, login);
+    }
+
+    @Override
+    public void withdrawAllBy(UUID memberId) {
+        feedback.removeAllBy(memberId).forEach(this::announceCount);
+    }
+
+    private void announceCount(UUID showcaseId) {
+        events.feedbackChanged(new ShowcaseFeedbackChanged(showcaseId, feedback.count(showcaseId)));
     }
 
     private PublicShowcase require(String slug) {

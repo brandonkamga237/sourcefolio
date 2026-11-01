@@ -19,4 +19,7 @@ public interface Feedbacks {
 
     /** Keeps the author's login on their feedback in step with GitHub. */
     void followRename(UUID memberId, String login);
+
+    /** A member leaving takes their feedback with them; each showcase's new count is announced. */
+    void withdrawAllBy(UUID memberId);
 }

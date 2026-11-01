@@ -33,4 +33,11 @@ interface FeedbackJpaRepository extends JpaRepository<FeedbackEntity, UUID> {
     @Modifying
     @Query("update FeedbackEntity f set f.authorLogin = :login where f.authorId = :authorId")
     void renameAuthor(@Param("authorId") UUID authorId, @Param("login") String login);
+
+    @Query("select distinct f.showcaseId from FeedbackEntity f where f.authorId = :authorId")
+    List<UUID> showcasesFeedbackBy(@Param("authorId") UUID authorId);
+
+    @Modifying
+    @Query("delete from FeedbackEntity f where f.authorId = :authorId")
+    void deleteAllBy(@Param("authorId") UUID authorId);
 }

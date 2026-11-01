@@ -4,4 +4,6 @@ package com.brandonkamga.sourcefolio.engagement.application;
 public interface EngagementEvents {
 
     void likesChanged(ShowcaseLikesChanged event);
+
+    void feedbackChanged(ShowcaseFeedbackChanged event);
 }

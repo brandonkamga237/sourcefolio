@@ -22,4 +22,7 @@ public interface FeedbackStore {
 
     /** Follows a GitHub rename on every piece of feedback the member wrote. */
     void renameAuthor(UUID authorId, String login);
+
+    /** Removes everything a member wrote; answers the showcases that lost feedback, each once. */
+    List<UUID> removeAllBy(UUID authorId);
 }

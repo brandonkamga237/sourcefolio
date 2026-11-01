@@ -69,6 +69,26 @@ class JpaFeedbackStoreIT extends PostgresIT {
         assertThat(feedback.count(showcase)).isEqualTo(2);
     }
 
+    @Test
+    @DisplayName("removing a member's feedback answers each showcase it was on once, and leaves the others' feedback")
+    void removeAllBy() {
+        UUID mine = showcase(member());
+        UUID theirs = showcase(member());
+        UUID leaving = member();
+        UUID staying = member();
+        List.of(write(mine, leaving, null, "Le menu déborde sur mon téléphone.", NOW),
+                write(mine, leaving, null, "Et le footer aussi, en paysage.", NOW.plusSeconds(1)),
+                write(theirs, leaving, null, "Très clair, j’ai compris en 10 secondes.", NOW),
+                write(mine, staying, null, "Le README mériterait une section setup.", NOW)).forEach(feedback::add);
+        entityManager.flush();
+
+        assertThat(feedback.removeAllBy(leaving)).containsExactlyInAnyOrder(mine, theirs);
+        entityManager.flush();
+        entityManager.clear();
+        assertThat(feedback.count(mine)).isEqualTo(1);
+        assertThat(feedback.count(theirs)).isZero();
+    }
+
     private static Feedback write(UUID showcase, UUID author, FeedbackAngle angle, String body, Instant at) {
         return new Feedback(UUID.randomUUID(), showcase, author, "author-dev", angle, FeedbackBody.parse(body), Language.FR, at);
     }
