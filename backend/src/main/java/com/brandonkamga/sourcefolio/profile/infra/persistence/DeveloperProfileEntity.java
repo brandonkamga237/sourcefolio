@@ -27,6 +27,9 @@ class DeveloperProfileEntity {
     @JdbcTypeCode(SqlTypes.ARRAY)
     private String[] specialties = new String[0];
 
+    @Column(length = 80)
+    private String headline;
+
     @Column(name = "updated_at", nullable = false)
     private Instant updatedAt;
 
@@ -37,14 +40,16 @@ class DeveloperProfileEntity {
         this.memberId = memberId;
     }
 
-    void update(String countryCode, String[] specialties, Instant updatedAt) {
+    void update(String countryCode, String[] specialties, String headline, Instant updatedAt) {
         this.countryCode = countryCode;
         this.specialties = specialties;
+        this.headline = headline;
         this.updatedAt = updatedAt;
     }
 
     UUID getMemberId() { return memberId; }
     String getCountryCode() { return countryCode; }
     String[] getSpecialties() { return specialties; }
+    String getHeadline() { return headline; }
     Instant getUpdatedAt() { return updatedAt; }
 }
