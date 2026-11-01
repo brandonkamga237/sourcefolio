@@ -85,6 +85,7 @@ export function MemberSheet({ login, locale, labels, children, triggerClassName 
               <Avatar login={login} size={88} className="border-4 border-surface" />
               <div className="flex min-w-0 flex-col pb-1">
                 <Dialog.Title className="truncate font-display text-[24px] leading-tight font-bold tracking-[-0.025em]">{data?.login ?? login}</Dialog.Title>
+                {data?.headline ? <p className="line-clamp-2 text-sm leading-snug font-medium text-ink-body">{data.headline}</p> : null}
                 <Dialog.Description className="truncate text-[13px] text-ink-muted">
                   {data ? (data.countryCode ? `${flagOf(data.countryCode)} ${countryName(data.countryCode, locale)}` : labels.noCountry) : labels.loading}
                 </Dialog.Description>
