@@ -394,5 +394,42 @@
     "craft": "Quality and open source",
     "sectors": "Industries",
     "roles": "Roles and involvement"
+  },
+  "feedback": {
+    "title": "Feedback",
+    "lead": "Say what works and what could work better. A specific note helps more than a “Nice!”.",
+    "angleLabel": "Angle (optional)",
+    "angles": {
+      "DESIGN": "Design",
+      "CLARITY": "Clarity",
+      "PERFORMANCE": "Performance",
+      "MOBILE": "Mobile",
+      "CODE": "Code"
+    },
+    "bodyLabel": "Your feedback",
+    "placeholder": "E.g. the page loads fast, but the contact link is hard to find on a phone.",
+    "counter": "{count} / {max}",
+    "missingOne": "{count} more character",
+    "missingOther": "{count} more characters",
+    "submit": "Send my feedback",
+    "sending": "Sending…",
+    "signInHint": "You will sign in with GitHub; your text is kept.",
+    "posted": "Thanks, your feedback is published.",
+    "failed": "Your feedback could not be sent. Try again.",
+    "own": "This is your portfolio: visitors’ feedback shows up here.",
+    "empty": "No feedback yet. Be the first to leave some.",
+    "emptyOwn": "No feedback yet. Share your link to get some.",
+    "loadFailed": "Feedback is not answering right now. Try again in a moment.",
+    "more": "See more feedback",
+    "you": "you",
+    "justNow": "just now",
+    "remove": "Remove",
+    "confirmRemove": "Remove for good",
+    "cancel": "Cancel",
+    "removeFailed": "This feedback could not be removed. Try again.",
+    "writtenIn": {
+      "fr": "Written in French",
+      "en": "Written in English"
+    }
   }
 }

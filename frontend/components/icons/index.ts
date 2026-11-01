@@ -7,6 +7,7 @@ export { default as IconCopy } from "./Copy";
 export { default as IconDiscover } from "./Discover";
 export { default as IconDiscoverActive } from "./DiscoverActive";
 export { default as IconExternal } from "./External";
+export { default as IconFeedback } from "./Feedback";
 export { default as IconFilters } from "./Filters";
 export { default as IconGithub } from "./Github";
 export { default as IconHeart } from "./Heart";
