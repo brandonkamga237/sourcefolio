@@ -2,7 +2,7 @@ package com.brandonkamga.sourcefolio.profile.api;
 
 import com.brandonkamga.sourcefolio.profile.api.dto.CountryAnswer;
 import com.brandonkamga.sourcefolio.profile.api.dto.ProfileResponse;
-import com.brandonkamga.sourcefolio.profile.api.dto.SpecialtyAnswer;
+import com.brandonkamga.sourcefolio.profile.api.dto.SpecialtiesAnswer;
 import com.brandonkamga.sourcefolio.profile.application.ProfileCompletion;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
@@ -35,10 +35,10 @@ class ProfileController {
         return ProfileResponse.of(profiles.answerCountry(memberId(authentication), answer.country()));
     }
 
-    @PutMapping("/api/me/profile/specialty")
-    @Operation(operationId = "answerMySpecialty")
-    ProfileResponse specialty(Authentication authentication, @Valid @RequestBody SpecialtyAnswer answer) {
-        return ProfileResponse.of(profiles.answerSpecialty(memberId(authentication), answer.specialty()));
+    @PutMapping("/api/me/profile/specialties")
+    @Operation(operationId = "answerMySpecialties")
+    ProfileResponse specialties(Authentication authentication, @Valid @RequestBody SpecialtiesAnswer answer) {
+        return ProfileResponse.of(profiles.answerSpecialties(memberId(authentication), answer.specialties()));
     }
 
     private static UUID memberId(Authentication authentication) {

@@ -2,10 +2,12 @@ package com.brandonkamga.sourcefolio.profile.application;
 
 import com.brandonkamga.sourcefolio.profile.domain.model.CountryCode;
 import com.brandonkamga.sourcefolio.profile.domain.model.DeveloperProfile;
+import com.brandonkamga.sourcefolio.profile.domain.model.Specialties;
 import com.brandonkamga.sourcefolio.profile.domain.model.Specialty;
 import com.brandonkamga.sourcefolio.profile.domain.port.ProfileStore;
 import com.brandonkamga.sourcefolio.shared.exception.BadRequestException;
 import java.time.Clock;
+import java.util.List;
 import java.util.UUID;
 
 public class ProfileCompletionImpl implements ProfileCompletion {
@@ -30,8 +32,13 @@ public class ProfileCompletionImpl implements ProfileCompletion {
     }
 
     @Override
-    public DeveloperProfile answerSpecialty(UUID memberId, String specialtySlug) {
-        Specialty specialty = Specialty.fromSlug(specialtySlug).orElseThrow(() -> new BadRequestException("profile.specialty-invalid"));
-        return profiles.save(findMyProfile(memberId).withSpecialty(specialty, clock.instant()));
+    public DeveloperProfile answerSpecialties(UUID memberId, List<String> specialtySlugs) {
+        List<Specialty> ranked = specialtySlugs.stream()
+                .map(slug -> Specialty.fromSlug(slug).orElseThrow(() -> new BadRequestException("profile.specialty-invalid")))
+                .toList();
+        if (ranked.isEmpty() || ranked.size() > Specialties.MAX || ranked.stream().distinct().count() != ranked.size()) {
+            throw new BadRequestException("profile.specialties-invalid");
+        }
+        return profiles.save(findMyProfile(memberId).withSpecialties(new Specialties(ranked), clock.instant()));
     }
 }
