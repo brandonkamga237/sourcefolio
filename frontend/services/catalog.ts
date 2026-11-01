@@ -25,8 +25,8 @@ export async function getCatalogFacets(): Promise<CatalogFacets> {
   const api = process.env.API_INTERNAL_URL ?? "http://localhost:8080";
   try {
     const response = await fetch(`${api}/api/catalog/facets`, { headers: { accept: "application/json" } });
-    return response.ok ? ((await response.json()) as CatalogFacets) : { countries: [], specialties: [] };
+    return response.ok ? ((await response.json()) as CatalogFacets) : { countries: [], languages: [] };
   } catch {
-    return { countries: [], specialties: [] };
+    return { countries: [], languages: [] };
   }
 }
