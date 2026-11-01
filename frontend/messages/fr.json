@@ -150,7 +150,10 @@
       "publishedOn": "Publié le {date}",
       "previous": "Portfolio précédent (flèche gauche)",
       "next": "Portfolio suivant (flèche droite)",
-      "position": "{current} sur {total}"
+      "position": "{current} sur {total}",
+      "statLikes": "appréciations",
+      "statStars": "étoiles",
+      "statPublished": "publié"
     },
     "feedTitle": "Les portfolios",
     "recentTitle": "Les derniers publiés",

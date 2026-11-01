@@ -99,7 +99,7 @@ async function Feed({ locale, sort }: CatalogScreenProps) {
           openPage: t("panel.openPage"),
           sourceRepo: t("panel.sourceRepo"),
           publishedOn: t.raw("panel.publishedOn") as string,
-          stars: { one: ts.raw("one") as string, other: ts.raw("other") as string },
+          stats: { likes: t("panel.statLikes"), stars: t("panel.statStars"), published: t("panel.statPublished") },
           likes: { like: tl.raw("like") as string, unlike: tl.raw("unlike") as string, own: tl.raw("own") as string, failed: tl("failed") },
         },
       }}

@@ -2,10 +2,10 @@
 
 import Link from "next/link";
 import { Suspense } from "react";
-import { IconChevronLeft, IconChevronRight, IconClose, IconCode, IconExternal } from "@/components/icons";
+import { IconChevronLeft, IconChevronRight, IconClose, IconCode, IconExternal, IconGithub, IconHeart, IconStar } from "@/components/icons";
+import { compactNumber } from "@/lib/plural";
 import { LikeButton, type LikeButtonLabels } from "@/components/likes/LikeButton";
 import type { CatalogCard } from "@/services/catalog-types";
-import { StarCount } from "@/components/stars/StarCount";
 import { Preview } from "./Preview";
 
 export interface ShowcasePanelLabels {
@@ -21,8 +21,18 @@ export interface ShowcasePanelLabels {
   /** Contains {current} and {total}. */
   position: string;
   likes: LikeButtonLabels;
-  /** Contains {count}; picked by the plural rule of the locale. */
-  stars: { one: string; other: string };
+  stats: { likes: string; stars: string; published: string };
+}
+
+// "3 days ago", in the reader's language, from the largest unit that fits.
+function sinceLabel(iso: string, locale: string): string {
+  const seconds = (new Date(iso).getTime() - Date.now()) / 1000;
+  const units: [Intl.RelativeTimeFormatUnit, number][] = [["year", 31536000], ["month", 2592000], ["week", 604800], ["day", 86400], ["hour", 3600], ["minute", 60]];
+  const format = new Intl.RelativeTimeFormat(locale, { numeric: "auto", style: "short" });
+  for (const [unit, size] of units) {
+    if (Math.abs(seconds) >= size) return format.format(Math.round(seconds / size), unit);
+  }
+  return format.format(0, "minute");
 }
 
 interface ShowcasePanelProps {
@@ -93,11 +103,36 @@ export function ShowcasePanel({ card, position, direction, onPrev, onNext, href,
             <h2 id="panel-name" className="truncate font-display text-[22px] leading-tight font-bold tracking-[-0.025em]">
               {card.ownerLogin}
             </h2>
-            <span className="text-[13px] text-ink-muted">
-              <span className="font-mono">@{card.ownerLogin}</span> · {labels.publishedOn.replace("{date}", published)}
-            </span>
+            <span className="font-mono text-[13px] text-ink-muted">@{card.ownerLogin}</span>
           </div>
         </div>
+
+        {/* The numbers a visitor weighs first, side by side. */}
+        <dl className="grid grid-cols-3 divide-x divide-line-soft rounded-control border border-line-soft bg-surface-raised">
+          <div className="flex flex-col items-center gap-0.5 px-2 py-2.5">
+            <dt className="order-2 text-[11px] text-ink-muted">{labels.stats.likes}</dt>
+            <dd className="order-1 flex items-center gap-1 font-mono text-base font-semibold tabular-nums">
+              <IconHeart aria-hidden="true" className={`size-4 ${card.likes > 0 ? "fill-accent text-accent" : "text-ink-muted"}`} />
+              {compactNumber(card.likes, locale)}
+            </dd>
+          </div>
+          <div className="flex flex-col items-center gap-0.5 px-2 py-2.5">
+            <dt className="order-2 flex items-center gap-1 text-[11px] text-ink-muted">
+              <IconGithub aria-hidden="true" className="size-3" />
+              {labels.stats.stars}
+            </dt>
+            <dd className="order-1 flex items-center gap-1 font-mono text-base font-semibold tabular-nums">
+              <IconStar aria-hidden="true" className="size-4 fill-accent text-accent" />
+              {card.repositoryStars != null ? compactNumber(card.repositoryStars, locale) : "–"}
+            </dd>
+          </div>
+          <div className="flex flex-col items-center gap-0.5 px-2 py-2.5">
+            <dt className="order-2 text-[11px] text-ink-muted">{labels.stats.published}</dt>
+            <dd className="order-1 text-sm font-semibold" title={labels.publishedOn.replace("{date}", published)} suppressHydrationWarning>
+              {sinceLabel(card.publishedAt, locale)}
+            </dd>
+          </div>
+        </dl>
 
         <div className="flex gap-2">
           <a
@@ -125,18 +160,7 @@ export function ShowcasePanel({ card, position, direction, onPrev, onNext, href,
 
         <div className="flex flex-col gap-1 border-t border-line-soft pt-4">
           <span className="text-xs text-ink-muted">{labels.sourceRepo}</span>
-          <div className="flex items-start justify-between gap-3">
-            <span className="font-mono text-[13px] break-all">{card.repository}</span>
-            {card.repositoryStars != null ? (
-              <a href={card.repositoryUrl} target="_blank" rel="noopener noreferrer" className="press -my-2 flex min-h-11 shrink-0 items-center font-semibold text-ink">
-                <StarCount
-                  count={card.repositoryStars}
-                  locale={locale}
-                  label={labels.stars[new Intl.PluralRules(locale).select(card.repositoryStars) === "one" ? "one" : "other"].replace("{count}", String(card.repositoryStars))}
-                />
-              </a>
-            ) : null}
-          </div>
+          <span className="font-mono text-[13px] break-all">{card.repository}</span>
         </div>
 
         <Link href={href} className="flex h-11 items-center text-sm font-semibold text-accent-ink">
