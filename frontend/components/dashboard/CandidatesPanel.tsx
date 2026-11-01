@@ -1,9 +1,12 @@
 import { getTranslations } from "next-intl/server";
 import type { Locale } from "@/i18n/routing";
+import { sinceLabel } from "@/lib/relative-time";
 import { siteLabel } from "@/lib/site-label";
-import { getMyCandidates, type ShowcaseCandidate } from "@/services/showcases";
+import { getMyCandidates, type ShowcaseCandidate, type ShowcaseCandidates } from "@/services/showcases";
 import { PublishButton } from "./PublishButton";
 import { RefreshWhilePending } from "./RefreshWhilePending";
+import { RepositoryPicker, type RepositoryPickerLabels } from "./RepositoryPicker";
+import { RescanButton, type RescanLabels } from "./RescanButton";
 import { ShowcaseLinks } from "./ShowcaseLinks";
 
 interface CandidatesPanelProps {
@@ -41,6 +44,37 @@ function CandidateActions({ t, candidate, primary }: { t: Translate; candidate: 
   );
 }
 
+function rescanLabels(t: Translate): RescanLabels {
+  return { rescan: t("rescan"), rescanning: t("rescanning"), failed: t("rescanFailed") };
+}
+
+function pickerLabels(t: Translate): RepositoryPickerLabels {
+  return {
+    title: t("missingTitle"),
+    lead: t("missingLead"),
+    search: t("searchRepositories"),
+    noMatch: t("noRepositoryMatch"),
+    none: t("noRepositories"),
+    showAll: t.raw("showAll") as string,
+    pick: t("pick"),
+    stepsTitle: t.raw("stepsTitle") as string,
+    steps: [t("step1"), t("step2"), t("step3")],
+    openOnGithub: t("openOnGithub"),
+    rescan: rescanLabels(t),
+  };
+}
+
+// When the list was made and how to make it again: the member is never stuck with an old
+// search after filling a "Website" field on GitHub.
+function SearchStatus({ t, detection, locale }: { t: Translate; detection: ShowcaseCandidates; locale: Locale }) {
+  return (
+    <div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-2">
+      <p className="text-[13px] text-ink-muted">{t("lastSearch", { ago: sinceLabel(detection.scannedAt ?? "", locale) })}</p>
+      <RescanButton scannedAt={detection.scannedAt} labels={rescanLabels(t)} />
+    </div>
+  );
+}
+
 export async function CandidatesPanel({ locale }: CandidatesPanelProps) {
   const [t, detection] = await Promise.all([getTranslations({ locale, namespace: "detection" }), getMyCandidates()]);
 
@@ -60,9 +94,13 @@ export async function CandidatesPanel({ locale }: CandidatesPanelProps) {
 
   if (detection.candidates.length === 0) {
     return (
-      <section aria-labelledby="detection-none" className="flex flex-col gap-2 rounded-card border border-line bg-surface p-4">
-        <h2 id="detection-none" className="text-[15px] font-semibold">{t("noneTitle")}</h2>
-        <p className="text-sm leading-normal text-ink-body">{t("noneHint")}</p>
+      <section aria-labelledby="detection-none" className="flex flex-col gap-4">
+        <div className="flex flex-col gap-2 rounded-card border border-line bg-surface p-4">
+          <h2 id="detection-none" className="text-[15px] font-semibold">{t("noneTitle")}</h2>
+          <p className="text-sm leading-normal text-ink-body">{t("noneHint")}</p>
+        </div>
+        <RepositoryPicker repositories={detection.withoutSite} scannedAt={detection.scannedAt} labels={pickerLabels(t)} open />
+        <SearchStatus t={t} detection={detection} locale={locale} />
       </section>
     );
   }
@@ -99,6 +137,9 @@ export async function CandidatesPanel({ locale }: CandidatesPanelProps) {
           </ul>
         </div>
       ) : null}
+
+      <RepositoryPicker repositories={detection.withoutSite} scannedAt={detection.scannedAt} labels={pickerLabels(t)} />
+      <SearchStatus t={t} detection={detection} locale={locale} />
     </section>
   );
 }
