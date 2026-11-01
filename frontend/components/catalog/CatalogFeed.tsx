@@ -28,11 +28,11 @@ const WIDE = "(min-width: 1024px)";
 
 // The first page arrives rendered by the server; the next ones load on request, with a button
 // rather than an endless scroll, so a phone loads only what is asked for. On a wide screen the
-// first card starts open in the side panel, as in the mockup.
+// panel opens only when a card is chosen: until then the grid has the whole width to explore.
 export function CatalogFeed({ locale, sort, filters, firstPage, labels }: CatalogFeedProps) {
   const [cards, setCards] = useState(firstPage.items);
   const [cursor, setCursor] = useState(firstPage.nextCursor);
-  const [selected, setSelected] = useState<string | null>(firstPage.items[0]?.slug ?? null);
+  const [selected, setSelected] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [failed, setFailed] = useState(false);
   const [direction, setDirection] = useState<"next" | "prev" | "none">("none");
