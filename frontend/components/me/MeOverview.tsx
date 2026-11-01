@@ -1,10 +1,8 @@
 import { getTranslations } from "next-intl/server";
-import { ShareAction } from "@/components/actions/ShareAction";
 import { IconGithub, IconHeart, IconRanking, IconStar } from "@/components/icons";
 import { Avatar } from "@/components/members/Avatar";
 import { memberSheetLabels } from "@/components/members/labels";
 import { MemberSheet } from "@/components/members/MemberSheet";
-import { localizedPath } from "@/i18n/paths";
 import type { Locale } from "@/i18n/routing";
 import { countryName, flagOf } from "@/lib/countries";
 import { compactNumber } from "@/lib/plural";
@@ -39,7 +37,6 @@ export async function MeOverview({ locale, login, countryCode, specialties, show
   ]);
   const rank = showcase ? ranking.find((row) => row.slug === showcase.slug)?.rank ?? null : null;
   const days = showcase?.publishedAt ? daysSince(showcase.publishedAt) : null;
-  const pagePath = showcase ? localizedPath(locale, `/p/${showcase.slug}`) : null;
 
   const stats = [
     { key: "likes", icon: <IconHeart className="size-4 fill-accent text-accent" />, value: member ? compactNumber(member.likesReceived, locale) : "–", label: t("likes") },
@@ -72,9 +69,8 @@ export async function MeOverview({ locale, login, countryCode, specialties, show
               </a>
             </div>
           </div>
-          {published && pagePath ? (
-            <div className="flex gap-2">
-              <MemberSheet
+          {published ? (
+            <MemberSheet
                 login={login}
                 locale={locale}
                 labels={labels}
@@ -82,14 +78,6 @@ export async function MeOverview({ locale, login, countryCode, specialties, show
               >
                 {t("publicProfile")}
               </MemberSheet>
-              <ShareAction
-                path={pagePath}
-                title={ts("myShowcase.shareTitle", { site: showcase?.siteUrl ?? "" })}
-                label={ts("myShowcase.share")}
-                copiedLabel={ts("myShowcase.shareCopied")}
-                className="press flex h-11 items-center gap-1.5 rounded-control bg-accent px-3.5 text-sm font-semibold text-white transition-colors duration-150 hover:bg-accent-hover"
-              />
-            </div>
           ) : null}
         </div>
 
