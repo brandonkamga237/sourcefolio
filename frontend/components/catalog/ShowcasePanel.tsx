@@ -144,7 +144,7 @@ export function ShowcasePanel({ card, position, direction, onPrev, onNext, href,
           </span>
           {card.repositoryStars != null ? (
             <span className="flex items-center gap-1">
-              <IconStar aria-hidden="true" className="size-3.5 fill-accent text-accent" />
+              <IconStar aria-hidden="true" className="size-3.5 fill-star text-star" />
               <span className="font-semibold text-ink tabular-nums">{compactNumber(card.repositoryStars, locale)}</span> {labels.stats.stars}
             </span>
           ) : null}

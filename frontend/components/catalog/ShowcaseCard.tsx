@@ -77,7 +77,7 @@ export function ShowcaseCard({ card, href, index, selected, onOpen, locale, labe
                 </span>
                 {card.repositoryStars != null ? (
                   <span className="flex items-center gap-0.5" title={plural(labels.stars, card.repositoryStars, locale)}>
-                    <IconStar aria-hidden="true" className="size-3" />
+                    <IconStar aria-hidden="true" className="size-3 fill-star text-star" />
                     {compactNumber(card.repositoryStars, locale)}
                   </span>
                 ) : null}
