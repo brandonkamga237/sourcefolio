@@ -1,9 +1,7 @@
 import Link from "next/link";
-import { cookies } from "next/headers";
 import { getTranslations } from "next-intl/server";
 import { localizedPath } from "@/i18n/paths";
 import type { Locale } from "@/i18n/routing";
-import { INTRO_COOKIE } from "@/lib/intro";
 import { DismissibleIntro } from "./DismissIntro";
 
 interface DiscoverIntroProps {
@@ -11,16 +9,13 @@ interface DiscoverIntroProps {
 }
 
 // The promise in one line and the way in for an author, in a slim band: browsing stays the main
-// action of Discover, so the cards start right below. Dismissed, it is gone for two weeks and
-// the feed's own title becomes the page's heading. Reads a cookie: render inside Suspense.
+// action of Discover, so the cards start right below. Closing it lasts until the next visit or
+// reload, where it shows again: a reminder, never a setting to find back.
 export async function DiscoverIntro({ locale }: DiscoverIntroProps) {
-  const [t, jar] = await Promise.all([getTranslations({ locale }), cookies()]);
-  if (jar.get(INTRO_COOKIE)?.value === "hidden") {
-    return <h1 className="sr-only">{t("brand.tagline")}</h1>;
-  }
+  const t = await getTranslations({ locale });
 
   return (
-    <DismissibleIntro closeLabel={t("catalog.intro.close")}>
+    <DismissibleIntro closeLabel={t("catalog.intro.close")} heading={t("brand.tagline")}>
       <section
         aria-labelledby="discover-title"
         className="relative isolate flex items-center gap-4 overflow-hidden rounded-panel border border-line bg-surface/85 py-3.5 pr-12 pl-4 backdrop-blur-sm sm:py-4 sm:pl-5 lg:gap-6 lg:py-5 lg:pr-16 lg:pl-6"
