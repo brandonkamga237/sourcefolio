@@ -42,60 +42,8 @@ class FeedbacksImplTest {
             CandidateReason.USER_PAGES), NOW).stored();
     private static final String BODY = "The hero loads fast, but the contact link is hard to find on a phone.";
 
-    private final List<Feedback> rows = new ArrayList<>();
-    private final FeedbackStore store = new FeedbackStore() {
-        private static final Comparator<Feedback> NEWEST_FIRST =
-                Comparator.comparing(Feedback::createdAt).thenComparing(Feedback::id).reversed();
-
-        @Override
-        public void add(Feedback feedback) {
-            rows.add(feedback);
-        }
-
-        @Override
-        public List<Feedback> page(UUID showcaseId, FeedbackCursor after, int limit) {
-            return rows.stream()
-                    .filter(row -> row.showcaseId().equals(showcaseId))
-                    .filter(row -> after == null || row.createdAt().isBefore(after.createdAt())
-                            || row.createdAt().equals(after.createdAt()) && row.id().compareTo(after.id()) < 0)
-                    .sorted(NEWEST_FIRST).limit(limit).toList();
-        }
-
-        @Override
-        public Optional<Feedback> find(UUID id) {
-            return rows.stream().filter(row -> row.id().equals(id)).findFirst();
-        }
-
-        @Override
-        public void delete(UUID id) {
-            rows.removeIf(row -> row.id().equals(id));
-        }
-
-        @Override
-        public int count(UUID showcaseId) {
-            return (int) rows.stream().filter(row -> row.showcaseId().equals(showcaseId)).count();
-        }
-
-        @Override
-        public int countSince(UUID showcaseId, Instant after) {
-            return (int) rows.stream().filter(row -> row.showcaseId().equals(showcaseId))
-                    .filter(row -> after == null || row.createdAt().isAfter(after)).count();
-        }
-
-        @Override
-        public List<UUID> removeAllBy(UUID authorId) {
-            List<UUID> showcases = rows.stream().filter(row -> row.authorId().equals(authorId)).map(Feedback::showcaseId).distinct().toList();
-            rows.removeIf(row -> row.authorId().equals(authorId));
-            return showcases;
-        }
-
-        @Override
-        public void renameAuthor(UUID authorId, String login) {
-            rows.replaceAll(row -> row.authorId().equals(authorId)
-                    ? new Feedback(row.id(), row.showcaseId(), authorId, login, row.angle(), row.body(), row.language(), row.createdAt())
-                    : row);
-        }
-    };
+    private final InMemoryFeedbackStore store = new InMemoryFeedbackStore();
+    private final List<Feedback> rows = store.rows;
     private final SignInService members = new SignInService() {
         @Override
         public Member signIn(ExternalIdentity identity) {
