@@ -57,7 +57,7 @@ export function CatalogSearch({ locale, facets, labels }: CatalogSearchProps) {
   }
 
   return (
-    <div role="search" className="flex w-full flex-col gap-2 sm:flex-row sm:items-center xl:order-1 xl:w-auto xl:min-w-0 xl:flex-1">
+    <div role="search" className="flex w-full flex-col gap-2 sm:flex-row sm:items-center">
       <div className="flex gap-2 sm:contents">
         <label className="relative flex min-w-0 flex-1 items-center">
           <span className="sr-only">{labels.search}</span>
@@ -89,7 +89,7 @@ export function CatalogSearch({ locale, facets, labels }: CatalogSearchProps) {
           aria-label={labels.country}
           value={current.country ?? ""}
           onChange={(event) => apply({ ...current, country: event.target.value || undefined })}
-          className={`${control} sm:w-44`}
+          className={`${control} sm:w-36 xl:w-44`}
         >
           <option value="">{labels.anyCountry}</option>
           {facets.countries.map((facet) => (
@@ -103,7 +103,7 @@ export function CatalogSearch({ locale, facets, labels }: CatalogSearchProps) {
           aria-label={labels.language}
           value={current.language ?? ""}
           onChange={(event) => apply({ ...current, language: event.target.value || undefined })}
-          className={`${control} sm:w-48`}
+          className={`${control} sm:w-36 xl:w-44`}
         >
           <option value="">{labels.anyLanguage}</option>
           {facets.languages.map((facet) => (
@@ -116,7 +116,7 @@ export function CatalogSearch({ locale, facets, labels }: CatalogSearchProps) {
           aria-label={labels.role}
           value={current.role ?? ""}
           onChange={(event) => apply({ ...current, role: event.target.value || undefined })}
-          className={`${control} col-span-2 sm:col-span-1 sm:w-44`}
+          className={`${control} col-span-2 sm:col-span-1 sm:w-36 xl:w-44`}
         >
           <option value="">{labels.anyRole}</option>
           {facets.roles.map((facet) => (
@@ -136,7 +136,7 @@ export function CatalogSearch({ locale, facets, labels }: CatalogSearchProps) {
           className="press flex h-11 shrink-0 items-center justify-center gap-1.5 rounded-control px-3 text-sm font-semibold text-ink-muted transition-colors duration-150 hover:bg-surface-sunken hover:text-ink"
         >
           <IconClose aria-hidden="true" className="size-4" />
-          {labels.clear}
+          <span className="sm:max-xl:sr-only">{labels.clear}</span>
         </button>
       ) : null}
     </div>
