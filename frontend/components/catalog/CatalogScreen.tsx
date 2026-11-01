@@ -115,11 +115,7 @@ export async function CatalogScreen({ locale, sort }: CatalogScreenProps) {
   const t = await getTranslations({ locale });
   return (
     <div className="mx-auto flex w-full max-w-[1500px] flex-col gap-4 px-4 py-4 sm:gap-5 lg:px-8 lg:py-7">
-      {sort === "discover" ? (
-        <Suspense fallback={<div aria-hidden="true" className="h-[76px] animate-pulse rounded-panel bg-surface-sunken sm:h-[84px] lg:h-[96px]" />}>
-          <DiscoverIntro locale={locale} />
-        </Suspense>
-      ) : null}
+      {sort === "discover" ? <DiscoverIntro locale={locale} /> : null}
       {/* Stays at the top while the cards scroll: the order (and soon search and filters) is
           always one tap away, under the phone's top bar or at the top of the desktop window. */}
       <div className="sticky top-14 z-20 -mx-4 flex flex-wrap items-center justify-between gap-3 bg-canvas/85 px-4 py-2 backdrop-blur-md lg:top-0 lg:-mx-8 lg:px-8 lg:py-3">
