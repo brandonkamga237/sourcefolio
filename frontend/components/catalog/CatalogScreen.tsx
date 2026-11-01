@@ -85,6 +85,10 @@ async function Feed({ locale, sort }: CatalogScreenProps) {
         loadMore: t("loadMore"),
         loading: t("loading"),
         loadFailed: t("loadFailed"),
+        card: {
+          likes: { one: tl.raw("countOne") as string, other: tl.raw("countOther") as string },
+          stars: { one: ts.raw("one") as string, other: ts.raw("other") as string },
+        },
         panel: {
           close: t("panel.close"),
           visitSite: t("panel.visitSite"),

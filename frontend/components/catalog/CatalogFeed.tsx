@@ -5,7 +5,7 @@ import type { Locale } from "@/i18n/routing";
 import { localizedPath } from "@/i18n/paths";
 import type { CatalogPage, CatalogSort } from "@/services/catalog-types";
 import { fetchCatalogPage } from "@/services/catalog-client";
-import { ShowcaseCard } from "./ShowcaseCard";
+import { ShowcaseCard, type ShowcaseCardLabels } from "./ShowcaseCard";
 import { ShowcasePanel, type ShowcasePanelLabels } from "./ShowcasePanel";
 
 interface CatalogFeedProps {
@@ -17,6 +17,7 @@ interface CatalogFeedProps {
     loading: string;
     loadFailed: string;
     panel: ShowcasePanelLabels;
+    card: ShowcaseCardLabels;
   };
 }
 
@@ -64,6 +65,8 @@ export function CatalogFeed({ locale, sort, firstPage, labels }: CatalogFeedProp
                 card={card}
                 href={localizedPath(locale, `/p/${card.slug}`)}
                 index={index}
+                locale={locale}
+                labels={labels.card}
                 selected={open?.slug === card.slug}
                 onOpen={(event) => openInPanel(card.slug, event)}
               />
