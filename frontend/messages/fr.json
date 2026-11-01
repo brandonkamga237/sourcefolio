@@ -178,7 +178,8 @@
       "githubProfile": "GitHub",
       "projectTitle": "Le projet",
       "projectLanguages": "Technologies du dépôt",
-      "projectUpdated": "Code mis à jour {when}"
+      "projectUpdated": "Code mis à jour {when}",
+      "statFeedback": "retours"
     },
     "feedTitle": "Les portfolios",
     "recentTitle": "Les derniers publiés",
@@ -452,7 +453,9 @@
     "writtenIn": {
       "fr": "Écrit en français",
       "en": "Écrit en anglais"
-    }
+    },
+    "countOne": "{count} retour",
+    "countOther": "{count} retours"
   },
   "role": {
     "frontend": "Frontend",

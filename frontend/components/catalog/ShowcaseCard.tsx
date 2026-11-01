@@ -1,6 +1,6 @@
 import Link from "next/link";
 import type { CSSProperties, MouseEvent } from "react";
-import { IconHeart, IconStar } from "@/components/icons";
+import { IconFeedback, IconHeart, IconStar } from "@/components/icons";
 import { MemberSheet, type MemberSheetLabels } from "@/components/members/MemberSheet";
 import type { Locale } from "@/i18n/routing";
 import { flagOf } from "@/lib/countries";
@@ -25,6 +25,7 @@ interface ShowcaseCardProps {
 export interface ShowcaseCardLabels {
   likes: PluralTemplates;
   stars: PluralTemplates;
+  feedback: PluralTemplates;
   member: MemberSheetLabels;
   share: string;
   /** Contains {login}. */
@@ -79,6 +80,12 @@ export function ShowcaseCard({ card, href, index, selected, onOpen, locale, labe
                   <IconHeart aria-hidden="true" className={`size-3 ${card.likes > 0 ? "fill-like text-like" : ""}`} />
                   {compactNumber(card.likes, locale)}
                 </span>
+                {card.feedbackCount > 0 ? (
+                  <span className="flex items-center gap-0.5" title={plural(labels.feedback, card.feedbackCount, locale)}>
+                    <IconFeedback aria-hidden="true" className="size-3 text-accent-ink" />
+                    {compactNumber(card.feedbackCount, locale)}
+                  </span>
+                ) : null}
                 {card.repositoryStars != null ? (
                   // Secondary on a phone's narrow card: the panel and the page still show them.
                   <span className="flex items-center gap-0.5 max-sm:hidden" title={plural(labels.stars, card.repositoryStars, locale)}>
@@ -88,6 +95,7 @@ export function ShowcaseCard({ card, href, index, selected, onOpen, locale, labe
                 ) : null}
                 <span className="sr-only">
                   {plural(labels.likes, card.likes, locale)}
+                  {card.feedbackCount > 0 ? `, ${plural(labels.feedback, card.feedbackCount, locale)}` : ""}
                   {card.repositoryStars != null ? `, ${plural(labels.stars, card.repositoryStars, locale)}` : ""}
                 </span>
               </span>

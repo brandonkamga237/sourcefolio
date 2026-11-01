@@ -28,6 +28,8 @@ export interface CatalogCard {
   repositoryPushedAt: string | null;
   /** The role the author declares (a slug), null until answered: their claim, not proven by the code. */
   authorRole: string | null;
+  /** How much feedback the showcase shows; never used to order Discover. */
+  feedbackCount: number;
 }
 
 export interface CatalogPage {
