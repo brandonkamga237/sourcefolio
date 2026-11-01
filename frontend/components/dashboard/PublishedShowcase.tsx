@@ -5,12 +5,15 @@ import { IconCode, IconExternal } from "@/components/icons";
 import { localizedPath } from "@/i18n/paths";
 import type { Locale } from "@/i18n/routing";
 import { siteLabel } from "@/lib/site-label";
+import type { ReactNode } from "react";
 import type { MyShowcase } from "@/services/showcases";
 import { ShareButton } from "./ShareButton";
 
 interface PublishedShowcaseProps {
   locale: Locale;
   showcase: MyShowcase;
+  /** Changing or withdrawing it: in sight on the card, not folded away under the page. */
+  manage: ReactNode;
 }
 
 const iconLink = "flex size-11 shrink-0 items-center justify-center rounded-control border border-line bg-surface text-ink";
@@ -18,7 +21,7 @@ const iconLink = "flex size-11 shrink-0 items-center justify-center rounded-cont
 // The author's view of their portfolio: what visitors see on the card, its status, and the
 // actions they come here for. Anything but PUBLISHED means visitors no longer find it in the
 // catalogue.
-export async function PublishedShowcase({ locale, showcase }: PublishedShowcaseProps) {
+export async function PublishedShowcase({ locale, showcase, manage }: PublishedShowcaseProps) {
   const t = await getTranslations({ locale, namespace: "myShowcase" });
   const published = showcase.status === "PUBLISHED";
   const pagePath = localizedPath(locale, `/p/${showcase.slug}`);
@@ -67,6 +70,7 @@ export async function PublishedShowcase({ locale, showcase }: PublishedShowcaseP
             <IconCode className="size-4" />
           </a>
         </div>
+        <div className="border-t border-line-soft pt-1">{manage}</div>
       </div>
     </section>
   );
