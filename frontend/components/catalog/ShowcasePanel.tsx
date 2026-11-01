@@ -124,7 +124,7 @@ export function ShowcasePanel({ card, position, direction, onPrev, onNext, href,
             <span id="panel-name" className="truncate font-display text-[22px] leading-tight font-bold tracking-[-0.025em]">
               {card.ownerLogin}
             </span>
-            <span className="truncate text-xs text-ink-muted">
+            <span className="truncate text-[13px] text-ink-muted">
               {[
                 card.headline,
                 card.countryCode ? `${flagOf(card.countryCode)} ${countryName(card.countryCode, locale)}` : null,
