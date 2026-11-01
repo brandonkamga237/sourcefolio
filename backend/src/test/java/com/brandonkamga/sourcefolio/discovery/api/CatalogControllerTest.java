@@ -39,6 +39,26 @@ class CatalogControllerTest {
             Instant.parse("2026-10-30T09:00:00Z"), null, null, 12, 4, "CM", List.of("backend", "devops"), "Backend à Douala");
 
     @Test
+    @DisplayName("search words, country and interest reach the use case, tidied")
+    void filters() throws Exception {
+        CatalogFilter filter = new CatalogFilter("react", "CM", "frontend");
+        when(catalog.listRecent(null, 20, filter)).thenReturn(new CatalogPage(List.of(ENTRY), null, 1));
+
+        mvc.perform(get("/api/catalog").param("sort", "recent").param("q", " React ").param("country", "cm").param("specialty", "frontend"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.total").value(1));
+    }
+
+    @Test
+    @DisplayName("an invalid filter is a 400 in the visitor's language, before the use case")
+    void invalidFilter() throws Exception {
+        mvc.perform(get("/api/catalog").param("country", "Cameroun").header("Accept-Language", "fr"))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.code").value("BAD_REQUEST"));
+        verifyNoInteractions(catalog);
+    }
+
+    @Test
     @DisplayName("a visitor gets the Discover feed by default, without an account, and without ids")
     void discoverByDefault() throws Exception {
         when(catalog.listDiscover(null, 20, CatalogFilter.none())).thenReturn(new CatalogPage(List.of(ENTRY), "next", 124));
