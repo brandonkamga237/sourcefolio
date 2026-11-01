@@ -153,7 +153,12 @@
       "position": "{current} sur {total}",
       "statLikes": "appréciations",
       "statStars": "étoiles",
-      "statPublished": "publié"
+      "statPublished": "publié",
+      "share": "Partager",
+      "shareTitle": "Le portfolio de {login} sur SourceFolio",
+      "clone": "Copier git clone",
+      "copied": "Copié",
+      "githubProfile": "Profil GitHub"
     },
     "feedTitle": "Les portfolios",
     "recentTitle": "Les derniers publiés",

@@ -3,6 +3,9 @@
 import Link from "next/link";
 import { Suspense } from "react";
 import { IconChevronLeft, IconChevronRight, IconClose, IconCode, IconExternal, IconGithub, IconHeart, IconStar } from "@/components/icons";
+import { CopyAction } from "@/components/actions/CopyAction";
+import { ShareAction } from "@/components/actions/ShareAction";
+import { IconCopy } from "@/components/icons";
 import { compactNumber } from "@/lib/plural";
 import { LikeButton, type LikeButtonLabels } from "@/components/likes/LikeButton";
 import type { CatalogCard } from "@/services/catalog-types";
@@ -22,6 +25,12 @@ export interface ShowcasePanelLabels {
   position: string;
   likes: LikeButtonLabels;
   stats: { likes: string; stars: string; published: string };
+  share: string;
+  /** Contains {login}. */
+  shareTitle: string;
+  clone: string;
+  copied: string;
+  githubProfile: string;
 }
 
 // "3 days ago", in the reader's language, from the largest unit that fits.
@@ -54,6 +63,9 @@ const entrance = {
   prev: "animate-[slide-from-left_260ms_var(--ease-out-soft)]",
   none: "animate-rise",
 };
+
+const tileAction =
+  "press flex min-h-[60px] flex-col items-center justify-center gap-1 rounded-control bg-surface-sunken px-1 text-center text-[11px] leading-tight font-semibold text-ink transition-colors duration-150 hover:bg-line-soft";
 
 const navButton =
   "press flex size-11 items-center justify-center rounded-full text-ink transition-colors duration-150 hover:bg-surface-sunken disabled:pointer-events-none disabled:text-line";
@@ -158,12 +170,37 @@ export function ShowcasePanel({ card, position, direction, onPrev, onNext, href,
           </Suspense>
         </div>
 
+        {/* Everything else a visitor may want to do with this portfolio, one tap each. */}
+        <div className="grid grid-cols-3 gap-2">
+          <ShareAction
+            path={href}
+            title={labels.shareTitle.replace("{login}", card.ownerLogin)}
+            label={labels.share}
+            copiedLabel={labels.copied}
+            className={tileAction}
+          />
+          <CopyAction
+            text={`git clone ${card.repositoryUrl}.git`}
+            label={labels.clone}
+            copiedLabel={labels.copied}
+            icon={<IconCopy aria-hidden="true" className="size-4" />}
+            className={tileAction}
+          />
+          <a href={`https://github.com/${card.ownerLogin}`} target="_blank" rel="noopener noreferrer" className={tileAction}>
+            <IconGithub aria-hidden="true" className="size-4" />
+            <span>{labels.githubProfile}</span>
+          </a>
+        </div>
+
         <div className="flex flex-col gap-1 border-t border-line-soft pt-4">
           <span className="text-xs text-ink-muted">{labels.sourceRepo}</span>
           <span className="font-mono text-[13px] break-all">{card.repository}</span>
         </div>
 
-        <Link href={href} className="flex h-11 items-center text-sm font-semibold text-accent-ink">
+        <Link
+          href={href}
+          className="press flex h-11 items-center justify-center rounded-control border border-line text-sm font-semibold text-ink transition-colors duration-150 hover:border-ink"
+        >
           {labels.openPage}
         </Link>
       </div>
