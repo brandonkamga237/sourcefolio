@@ -27,6 +27,7 @@ export async function AppShell({ children }: AppShellProps) {
     discover: t("nav.discover"),
     ranking: t("nav.ranking"),
     me: t("nav.me"),
+    unread: { one: t.raw("nav.unreadOne") as string, other: t.raw("nav.unreadOther") as string },
   };
 
   return (

@@ -5,7 +5,6 @@ import com.brandonkamga.sourcefolio.account.domain.model.UserId;
 import com.brandonkamga.sourcefolio.engagement.domain.model.Feedback;
 import com.brandonkamga.sourcefolio.engagement.domain.model.FeedbackAngle;
 import com.brandonkamga.sourcefolio.engagement.domain.model.FeedbackBody;
-import com.brandonkamga.sourcefolio.engagement.domain.model.FeedbackCursor;
 import com.brandonkamga.sourcefolio.engagement.domain.port.FeedbackStore;
 import com.brandonkamga.sourcefolio.shared.domain.Language;
 import com.brandonkamga.sourcefolio.shared.exception.BadRequestException;
@@ -14,7 +13,6 @@ import com.brandonkamga.sourcefolio.shared.exception.NotFoundException;
 import com.brandonkamga.sourcefolio.showcase.application.PublicShowcase;
 import com.brandonkamga.sourcefolio.showcase.application.PublicShowcases;
 import java.time.Clock;
-import java.util.List;
 import java.util.UUID;
 
 public class FeedbacksImpl implements Feedbacks {
@@ -34,19 +32,9 @@ public class FeedbacksImpl implements Feedbacks {
         this.clock = clock;
     }
 
-    // One more than asked, to know whether a next page exists without counting.
     @Override
     public FeedbackPage list(String slug, String cursor, int size) {
-        UUID showcaseId = require(slug).showcase().id().value();
-        int limit = Math.clamp(size, 1, MAX_PAGE_SIZE);
-        List<Feedback> rows = feedback.page(showcaseId, FeedbackCursor.decode(cursor).orElse(null), limit + 1);
-        int total = feedback.count(showcaseId);
-        if (rows.size() <= limit) {
-            return new FeedbackPage(rows, null, total);
-        }
-        List<Feedback> page = rows.subList(0, limit);
-        Feedback last = page.getLast();
-        return new FeedbackPage(page, new FeedbackCursor(last.createdAt(), last.id()).encode(), total);
+        return FeedbackPages.read(feedback, require(slug).showcase().id().value(), cursor, size);
     }
 
     @Override

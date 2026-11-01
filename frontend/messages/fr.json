@@ -13,7 +13,9 @@
     "me": "Moi",
     "publish": "Publier ton portfolio",
     "ranking": "Classement",
-    "publishShort": "Publier"
+    "publishShort": "Publier",
+    "unreadOne": "{count} nouveau retour",
+    "unreadOther": "{count} nouveaux retours"
   },
   "language": {
     "label": "Langue",
@@ -301,6 +303,13 @@
       "days": "jours en ligne",
       "publicProfile": "Mon profil public",
       "noCountry": "Pays non renseigné"
+    },
+    "received": {
+      "title": "Retours reçus",
+      "empty": "Pas encore de retour. Partage ton lien : les visiteurs pourront te dire ce qui marche et ce qui pourrait mieux marcher.",
+      "fresh": "Nouveau",
+      "unreadOne": "{count} nouveau",
+      "unreadOther": "{count} nouveaux"
     }
   },
   "ranking": {

@@ -19,6 +19,8 @@ import { JourneyCard } from "./JourneyCard";
 import { ForgetJourneyDismissal } from "./JourneyDismissal";
 import { CommitGraph } from "@/components/illustrations/CommitGraph";
 import { MeOverview } from "./MeOverview";
+import { ReceivedFeedback } from "@/components/feedback/ReceivedFeedback";
+import { feedbackLabels } from "@/components/feedback/labels";
 import { MePreferences } from "./MePreferences";
 
 interface MeScreenProps {
@@ -66,7 +68,7 @@ export async function MeScreen({ locale }: MeScreenProps) {
     );
   }
 
-  const [mine, answers, jar] = await Promise.all([getMyShowcase(), getMyAnswers(), cookies()]);
+  const [mine, answers, jar, feedback] = await Promise.all([getMyShowcase(), getMyAnswers(), cookies(), feedbackLabels(locale)]);
   const showcase = mine?.showcase ?? null;
   const countryName = answers?.country ? countryOptions(locale).find((option) => option.code === answers.country)?.name : null;
   const profileRows = [
@@ -145,6 +147,18 @@ export async function MeScreen({ locale }: MeScreenProps) {
             </>
           )}
         </section>
+        {showcase ? (
+          <ReceivedFeedback
+            locale={locale}
+            item={feedback}
+            labels={{
+              title: t("me.received.title"),
+              empty: t("me.received.empty"),
+              fresh: t("me.received.fresh"),
+              unread: { one: t.raw("me.received.unreadOne") as string, other: t.raw("me.received.unreadOther") as string },
+            }}
+          />
+        ) : null}
       </div>
 
       <div className="flex min-w-0 flex-col gap-6">
