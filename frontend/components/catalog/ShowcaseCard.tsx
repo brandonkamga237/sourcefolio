@@ -68,9 +68,10 @@ export function ShowcaseCard({ card, href, index, selected, onOpen, locale, labe
           <Avatar login={card.ownerLogin} size={30} className="ring-2 ring-surface transition-[box-shadow] duration-200 group-hover:ring-accent-soft max-sm:hidden" />
           <span className="flex min-w-0 flex-1 flex-col gap-0.5">
             <span className="truncate text-sm font-semibold sm:text-[15px]">{card.ownerLogin}</span>
-            {/* Two narrow columns on a phone: the numbers take their own line under the subtitle. */}
-            <span className="flex min-w-0 flex-col gap-0.5 text-xs text-ink-muted sm:flex-row sm:items-center sm:gap-2">
-              <span className="w-full min-w-0 truncate sm:w-auto sm:flex-1" title={subtitle}>
+            {/* The numbers take their own line under the subtitle: up to three of them would
+                otherwise squeeze it to a couple of letters. */}
+            <span className="flex min-w-0 flex-col gap-0.5 text-xs text-ink-muted">
+              <span className="w-full min-w-0 truncate" title={subtitle}>
                 {card.countryCode ? `${flagOf(card.countryCode)} ` : ""}
                 {subtitle}
               </span>
