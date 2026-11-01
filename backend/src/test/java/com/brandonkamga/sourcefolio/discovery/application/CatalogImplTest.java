@@ -133,6 +133,45 @@ class CatalogImplTest {
         assertThat(catalog().listDiscover(null, 20, CatalogFilter.none())).isEqualTo(new CatalogPage(List.of(), null, 0));
     }
 
+    @Test
+    @DisplayName("filters narrow Recent and the count to the matching authors, and keep the order")
+    void filteredRecent() {
+        profiled(add("ada", NOW.minus(Duration.ofDays(1))), "CM", List.of("backend", "cloud"), "Backend Java à Douala");
+        profiled(add("bola", NOW.minus(Duration.ofDays(2))), "NG", List.of("frontend"), "React developer");
+        profiled(add("chidi", NOW.minus(Duration.ofDays(3))), "CM", List.of("frontend", "backend"), null);
+
+        CatalogPage cameroon = catalog().listRecent(null, 10, new CatalogFilter(null, "CM", null));
+        assertThat(slugs(cameroon)).containsExactly("ada", "chidi");
+        assertThat(cameroon.total()).isEqualTo(2);
+        assertThat(slugs(catalog().listRecent(null, 10, new CatalogFilter(null, null, "frontend")))).containsExactly("bola", "chidi");
+        assertThat(slugs(catalog().listRecent(null, 10, new CatalogFilter("java", null, null)))).containsExactly("ada");
+        assertThat(slugs(catalog().listRecent(null, 10, new CatalogFilter("java", "NG", null)))).isEmpty();
+    }
+
+    @Test
+    @DisplayName("Discover under a filter still shows each matching portfolio exactly once, and nothing else")
+    void filteredDiscover() {
+        for (int index = 0; index < 9; index++) {
+            profiled(add("cm" + index, NOW.minus(Duration.ofDays(index * 3))), "CM", List.of("mobile"), null);
+            profiled(add("sn" + index, NOW.minus(Duration.ofDays(index * 3 + 1))), "SN", List.of("mobile"), null);
+        }
+
+        List<String> seen = new ArrayList<>();
+        String cursor = null;
+        do {
+            CatalogPage page = catalog().listDiscover(cursor, 4, new CatalogFilter(null, "SN", null));
+            assertThat(page.total()).isEqualTo(9);
+            seen.addAll(slugs(page));
+            cursor = page.nextCursor();
+        } while (cursor != null);
+
+        assertThat(seen).hasSize(9).doesNotHaveDuplicates().allMatch(slug -> slug.startsWith("sn"));
+    }
+
+    private void profiled(CatalogEntry entry, String country, List<String> interests, String headline) {
+        store.setAuthorProfile(entry.ownerId(), country, interests, headline);
+    }
+
     private CatalogEntry add(String slug, Instant publishedAt) {
         CatalogEntry entry = new CatalogEntry(UUID.randomUUID(), slug, "https://" + slug + ".example.org/", "a/" + slug,
                 "https://github.com/a/" + slug, UUID.randomUUID(), slug, publishedAt);
