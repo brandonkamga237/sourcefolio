@@ -1,6 +1,7 @@
 package com.brandonkamga.sourcefolio.discovery.infra.persistence;
 
 import com.brandonkamga.sourcefolio.discovery.domain.model.CatalogEntry;
+import com.brandonkamga.sourcefolio.discovery.domain.model.CatalogFacets;
 import com.brandonkamga.sourcefolio.discovery.domain.model.CatalogFilter;
 import com.brandonkamga.sourcefolio.discovery.domain.model.RankedEntry;
 import com.brandonkamga.sourcefolio.discovery.domain.model.RecentCursor;
@@ -91,6 +92,15 @@ class JpaCatalogStore implements CatalogStore {
                 .filter(row -> rows.containsKey(UUID.fromString(row[0])))
                 .map(row -> new Shuffled(toDomain(rows.get(UUID.fromString(row[0]))), row[1]))
                 .toList();
+    }
+
+    // Two grouped queries, whatever the size of the catalogue: PostgreSQL counts.
+    @Override
+    @Transactional(readOnly = true)
+    public CatalogFacets facets() {
+        return new CatalogFacets(
+                entries.countryFacets().stream().map(row -> new CatalogFacets.Facet(row.getValue().strip(), row.getCount())).toList(),
+                entries.specialtyFacets().stream().map(row -> new CatalogFacets.Facet(row.getValue(), row.getCount())).toList());
     }
 
     @Override

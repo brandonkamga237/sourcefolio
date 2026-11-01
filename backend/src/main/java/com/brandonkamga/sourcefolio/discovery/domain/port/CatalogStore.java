@@ -1,6 +1,7 @@
 package com.brandonkamga.sourcefolio.discovery.domain.port;
 
 import com.brandonkamga.sourcefolio.discovery.domain.model.CatalogEntry;
+import com.brandonkamga.sourcefolio.discovery.domain.model.CatalogFacets;
 import com.brandonkamga.sourcefolio.discovery.domain.model.CatalogFilter;
 import com.brandonkamga.sourcefolio.discovery.domain.model.RankedEntry;
 import com.brandonkamga.sourcefolio.discovery.domain.model.RecentCursor;
@@ -41,6 +42,9 @@ public interface CatalogStore {
 
     /** The cards of the member with this GitHub login, any case, newest first. */
     List<CatalogEntry> byOwnerLogin(String login);
+
+    /** The countries and interests the catalogue's cards carry, with their counts, most frequent first. */
+    CatalogFacets facets();
 
     /** How many showcases the catalogue lists under these filters. */
     long count(CatalogFilter filter);

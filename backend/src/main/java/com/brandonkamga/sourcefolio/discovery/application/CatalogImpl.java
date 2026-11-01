@@ -1,6 +1,7 @@
 package com.brandonkamga.sourcefolio.discovery.application;
 
 import com.brandonkamga.sourcefolio.discovery.domain.model.CatalogEntry;
+import com.brandonkamga.sourcefolio.discovery.domain.model.CatalogFacets;
 import com.brandonkamga.sourcefolio.discovery.domain.model.CatalogFilter;
 import com.brandonkamga.sourcefolio.discovery.domain.model.CatalogPage;
 import com.brandonkamga.sourcefolio.discovery.domain.model.DiscoverCursor;
@@ -55,6 +56,11 @@ public class CatalogImpl implements Catalog {
         List<CatalogEntry> page = rows.subList(0, limit);
         CatalogEntry last = page.getLast();
         return new CatalogPage(page, new RecentCursor(last.publishedAt(), last.showcaseId()).encode(), store.count(filter));
+    }
+
+    @Override
+    public CatalogFacets findFacets() {
+        return store.facets();
     }
 
     @Override

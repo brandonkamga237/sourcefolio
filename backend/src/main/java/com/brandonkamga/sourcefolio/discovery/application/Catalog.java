@@ -1,5 +1,6 @@
 package com.brandonkamga.sourcefolio.discovery.application;
 
+import com.brandonkamga.sourcefolio.discovery.domain.model.CatalogFacets;
 import com.brandonkamga.sourcefolio.discovery.domain.model.CatalogFilter;
 import com.brandonkamga.sourcefolio.discovery.domain.model.CatalogPage;
 import com.brandonkamga.sourcefolio.discovery.domain.model.RankedEntry;
@@ -15,6 +16,9 @@ public interface Catalog {
 
     /** Newest publications first, narrowed by the filters. */
     CatalogPage listRecent(String cursor, int size, CatalogFilter filter);
+
+    /** The countries and interests to filter by, with how many portfolios each would show. */
+    CatalogFacets findFacets();
 
     int MAX_RANKING_SIZE = 100;
 

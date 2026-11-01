@@ -98,6 +98,24 @@ interface CatalogEntryJpaRepository extends JpaRepository<CatalogEntryEntity, UU
     List<UUID> recentIds(@Param("afterAt") Instant afterAt, @Param("afterId") UUID afterId, @Param("limit") int limit,
                          @Param("country") String country, @Param("specialty") String specialty, @Param("pattern") String pattern);
 
+    @Query(value = """
+            SELECT country_code AS value, count(*) AS count FROM catalog_entries
+            WHERE country_code IS NOT NULL GROUP BY country_code ORDER BY count DESC, value
+            """, nativeQuery = true)
+    List<FacetRow> countryFacets();
+
+    @Query(value = """
+            SELECT interest AS value, count(*) AS count FROM catalog_entries, unnest(specialties) AS interest
+            GROUP BY interest ORDER BY count DESC, value
+            """, nativeQuery = true)
+    List<FacetRow> specialtyFacets();
+
+    interface FacetRow {
+        String getValue();
+
+        long getCount();
+    }
+
     @Query(value = "SELECT count(*) FROM catalog_entries WHERE TRUE" + FILTERS, nativeQuery = true)
     long countMatching(@Param("country") String country, @Param("specialty") String specialty, @Param("pattern") String pattern);
 

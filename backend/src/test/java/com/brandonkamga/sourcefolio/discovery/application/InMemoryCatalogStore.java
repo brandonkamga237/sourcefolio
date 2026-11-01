@@ -1,6 +1,7 @@
 package com.brandonkamga.sourcefolio.discovery.application;
 
 import com.brandonkamga.sourcefolio.discovery.domain.model.CatalogEntry;
+import com.brandonkamga.sourcefolio.discovery.domain.model.CatalogFacets;
 import com.brandonkamga.sourcefolio.discovery.domain.model.CatalogFilter;
 import com.brandonkamga.sourcefolio.discovery.domain.model.RankedEntry;
 import com.brandonkamga.sourcefolio.discovery.domain.model.RecentCursor;
@@ -111,6 +112,18 @@ class InMemoryCatalogStore implements CatalogStore {
                 .sorted(newestFirst)
                 .limit(limit)
                 .toList();
+    }
+
+    @Override
+    public CatalogFacets facets() {
+        java.util.function.Function<java.util.stream.Stream<String>, List<CatalogFacets.Facet>> count = values -> values
+                .collect(java.util.stream.Collectors.groupingBy(value -> value, java.util.stream.Collectors.counting()))
+                .entrySet().stream()
+                .sorted(Map.Entry.<String, Long>comparingByValue().reversed().thenComparing(Map.Entry.comparingByKey()))
+                .map(entry -> new CatalogFacets.Facet(entry.getKey(), entry.getValue()))
+                .toList();
+        return new CatalogFacets(count.apply(rows.values().stream().map(CatalogEntry::countryCode).filter(java.util.Objects::nonNull)),
+                count.apply(rows.values().stream().flatMap(entry -> entry.specialties().stream())));
     }
 
     // The same rules as the SQL filters: any part left null matches everything.

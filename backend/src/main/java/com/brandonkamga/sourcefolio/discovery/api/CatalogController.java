@@ -1,6 +1,7 @@
 package com.brandonkamga.sourcefolio.discovery.api;
 
 import com.brandonkamga.sourcefolio.discovery.api.dto.CatalogResponse;
+import com.brandonkamga.sourcefolio.discovery.api.dto.FacetsResponse;
 import com.brandonkamga.sourcefolio.discovery.api.dto.RankingResponse;
 import com.brandonkamga.sourcefolio.discovery.application.Catalog;
 import com.brandonkamga.sourcefolio.discovery.domain.model.CatalogFilter;
@@ -33,6 +34,12 @@ class CatalogController {
             case "recent" -> catalog.listRecent(cursor, size, filter);
             default -> throw new BadRequestException("catalog.sort-invalid");
         });
+    }
+
+    @GetMapping("/api/catalog/facets")
+    @Operation(operationId = "getCatalogFacets")
+    FacetsResponse facets() {
+        return FacetsResponse.of(catalog.findFacets());
     }
 
     @GetMapping("/api/ranking")
