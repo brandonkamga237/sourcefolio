@@ -9,6 +9,7 @@ import { MemberSheet, type MemberSheetLabels } from "@/components/members/Member
 import type { Locale } from "@/i18n/routing";
 import { countryName, flagOf } from "@/lib/countries";
 import { compactNumber } from "@/lib/plural";
+import { sinceLabel } from "@/lib/relative-time";
 import { Avatar } from "@/components/members/Avatar";
 import { LikeButton, type LikeButtonLabels } from "@/components/likes/LikeButton";
 import type { CatalogCard } from "@/services/catalog-types";
@@ -37,16 +38,6 @@ export interface ShowcasePanelLabels {
   member: MemberSheetLabels;
 }
 
-// "3 days ago", in the reader's language, from the largest unit that fits.
-function sinceLabel(iso: string, locale: string): string {
-  const seconds = (new Date(iso).getTime() - Date.now()) / 1000;
-  const units: [Intl.RelativeTimeFormatUnit, number][] = [["year", 31536000], ["month", 2592000], ["week", 604800], ["day", 86400], ["hour", 3600], ["minute", 60]];
-  const format = new Intl.RelativeTimeFormat(locale, { numeric: "auto", style: "short" });
-  for (const [unit, size] of units) {
-    if (Math.abs(seconds) >= size) return format.format(Math.round(seconds / size), unit);
-  }
-  return format.format(0, "minute");
-}
 
 interface ShowcasePanelProps {
   card: CatalogCard;
