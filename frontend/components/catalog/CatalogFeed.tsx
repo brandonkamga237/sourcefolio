@@ -4,6 +4,7 @@ import { useCallback, useEffect, useState, type MouseEvent } from "react";
 import type { Locale } from "@/i18n/routing";
 import { localizedPath } from "@/i18n/paths";
 import type { CatalogFilters, CatalogPage, CatalogSort } from "@/services/catalog-types";
+import { useFeedMemory } from "@/hooks/useFeedMemory";
 import { fetchCatalogPage } from "@/services/catalog-client";
 import { ShowcaseCard, type ShowcaseCardLabels } from "./ShowcaseCard";
 import { ShowcasePanel, type ShowcasePanelLabels } from "./ShowcasePanel";
@@ -35,6 +36,13 @@ export function CatalogFeed({ locale, sort, filters, firstPage, labels }: Catalo
   const [loading, setLoading] = useState(false);
   const [failed, setFailed] = useState(false);
   const [direction, setDirection] = useState<"next" | "prev" | "none">("none");
+  // Back from a showcase finds the same cards (pages loaded on request included) and the same
+  // place in the list.
+  useFeedMemory({ cards, cursor, selected }, (saved) => {
+    setCards(saved.cards);
+    setCursor(saved.cursor);
+    setSelected(saved.selected);
+  });
   const openIndex = cards.findIndex((card) => card.slug === selected);
   const open = openIndex >= 0 ? cards[openIndex] : null;
 
