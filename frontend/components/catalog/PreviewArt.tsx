@@ -5,7 +5,7 @@ interface PreviewArtProps {
   siteUrl: string;
   /** thumb: a small square in lists; card: the feed; large: the side panel. */
   size?: "thumb" | "card" | "large";
-  /** Overrides the 16:10 frame, e.g. a shorter one on phones. */
+  /** Overrides the 16:9 frame shared by every card, e.g. a shorter one on phones. */
   aspectClass?: string;
 }
 
@@ -31,7 +31,7 @@ const nameSize = {
   large: "line-clamp-2 break-words text-[40px]",
 };
 
-export function PreviewArt({ slug, siteUrl, size = "card", aspectClass = "aspect-[16/10]" }: PreviewArtProps) {
+export function PreviewArt({ slug, siteUrl, size = "card", aspectClass = "aspect-video" }: PreviewArtProps) {
   const name = new URL(siteUrl).hostname.split(".")[0];
   return (
     <div

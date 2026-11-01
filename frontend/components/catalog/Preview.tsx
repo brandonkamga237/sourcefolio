@@ -19,7 +19,7 @@ interface PreviewProps {
 // The author's preview: their image, and their short video played on hover where a mouse can
 // hover (spec: never autoplayed on a phone, where it would cost data). Without an image, the
 // site's own name stands in (PreviewArt).
-export function Preview({ slug, siteUrl, imageUrl, videoUrl, size = "card", aspectClass = "aspect-[16/10]", sizes, priority }: PreviewProps) {
+export function Preview({ slug, siteUrl, imageUrl, videoUrl, size = "card", aspectClass = "aspect-video", sizes, priority }: PreviewProps) {
   const video = useRef<HTMLVideoElement>(null);
   if (!imageUrl) {
     return <PreviewArt slug={slug} siteUrl={siteUrl} size={size} aspectClass={aspectClass} />;
