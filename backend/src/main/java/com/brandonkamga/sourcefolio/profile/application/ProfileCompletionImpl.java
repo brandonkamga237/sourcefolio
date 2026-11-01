@@ -13,10 +13,12 @@ import java.util.UUID;
 public class ProfileCompletionImpl implements ProfileCompletion {
 
     private final ProfileStore profiles;
+    private final ProfileEvents events;
     private final Clock clock;
 
-    public ProfileCompletionImpl(ProfileStore profiles, Clock clock) {
+    public ProfileCompletionImpl(ProfileStore profiles, ProfileEvents events, Clock clock) {
         this.profiles = profiles;
+        this.events = events;
         this.clock = clock;
     }
 
@@ -28,7 +30,7 @@ public class ProfileCompletionImpl implements ProfileCompletion {
     @Override
     public DeveloperProfile answerCountry(UUID memberId, String countryCode) {
         CountryCode country = CountryCode.parse(countryCode).orElseThrow(() -> new BadRequestException("profile.country-invalid"));
-        return profiles.save(findMyProfile(memberId).withCountry(country, clock.instant()));
+        return saveAndAnnounce(findMyProfile(memberId).withCountry(country, clock.instant()));
     }
 
     @Override
@@ -39,6 +41,14 @@ public class ProfileCompletionImpl implements ProfileCompletion {
         if (ranked.isEmpty() || ranked.size() > Specialties.MAX || ranked.stream().distinct().count() != ranked.size()) {
             throw new BadRequestException("profile.specialties-invalid");
         }
-        return profiles.save(findMyProfile(memberId).withSpecialties(new Specialties(ranked), clock.instant()));
+        return saveAndAnnounce(findMyProfile(memberId).withSpecialties(new Specialties(ranked), clock.instant()));
+    }
+
+    // Cards and member popups show the country and specialties: the catalogue keeps a copy.
+    private DeveloperProfile saveAndAnnounce(DeveloperProfile profile) {
+        DeveloperProfile saved = profiles.save(profile);
+        events.profileChanged(new ProfileChanged(saved.memberId(), saved.country() == null ? null : saved.country().value(),
+                saved.specialties().slugs()));
+        return saved;
     }
 }
