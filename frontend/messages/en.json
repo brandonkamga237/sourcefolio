@@ -110,7 +110,6 @@
   "showcasePage": {
     "metaTitle": "{site}, {login}’s portfolio",
     "metaDescription": "{login}’s portfolio and the code that builds it, on SourceFolio.",
-    "by": "by <profile>{login}</profile>",
     "publishedOn": "Published on {date, date, long}",
     "visitSite": "Visit the site",
     "viewCode": "View the code",
@@ -123,7 +122,9 @@
     "ctaLink": "Publish my portfolio",
     "ogBy": "by {login}",
     "ogTagline": "A portfolio you can read the code of",
-    "ogStars": "{formatted} {count, plural, one {star} other {stars}} on GitHub"
+    "ogStars": "{formatted} {count, plural, one {star} other {stars}} on GitHub",
+    "byLogin": "by {login}",
+    "seeProfile": "See profile"
   },
   "catalog": {
     "sort": {
