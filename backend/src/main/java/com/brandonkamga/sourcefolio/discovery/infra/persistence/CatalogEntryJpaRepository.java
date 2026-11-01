@@ -42,8 +42,11 @@ interface CatalogEntryJpaRepository extends JpaRepository<CatalogEntryEntity, UU
     List<CatalogEntryEntity> byOwnerLogin(@Param("login") String login);
 
     @Modifying
-    @Query("update CatalogEntryEntity e set e.countryCode = :countryCode, e.specialties = :specialties where e.ownerUserId = :ownerId")
-    void setAuthorProfile(@Param("ownerId") UUID ownerId, @Param("countryCode") String countryCode, @Param("specialties") String[] specialties);
+    @Query("""
+            update CatalogEntryEntity e set e.countryCode = :countryCode, e.specialties = :specialties, e.headline = :headline
+            where e.ownerUserId = :ownerId""")
+    void setAuthorProfile(@Param("ownerId") UUID ownerId, @Param("countryCode") String countryCode, @Param("specialties") String[] specialties,
+                          @Param("headline") String headline);
 
     @Query("""
             select e from CatalogEntryEntity e where e.likeCount > 0
