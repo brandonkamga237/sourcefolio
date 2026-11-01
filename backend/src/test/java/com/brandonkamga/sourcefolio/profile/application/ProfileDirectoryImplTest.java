@@ -36,7 +36,7 @@ class ProfileDirectoryImplTest {
             }
         });
 
-        assertThat(directory.findPublicProfile(MEMBER)).contains(new PublicProfile("SN", List.of("mobile", "frontend"), "Mobile Flutter à Dakar"));
+        assertThat(directory.findPublicProfile(MEMBER)).contains(new PublicProfile("SN", List.of("mobile", "frontend"), "Mobile Flutter à Dakar", "mobile"));
         assertThat(directory.findPublicProfile(UUID.randomUUID())).isEmpty();
     }
 }

@@ -4,6 +4,7 @@ import com.brandonkamga.sourcefolio.profile.application.ProfileCompletion;
 import com.brandonkamga.sourcefolio.profile.domain.model.CountryCode;
 import com.brandonkamga.sourcefolio.profile.domain.model.DeveloperProfile;
 import com.brandonkamga.sourcefolio.profile.domain.model.Headline;
+import com.brandonkamga.sourcefolio.profile.domain.model.Role;
 import com.brandonkamga.sourcefolio.profile.domain.model.Specialties;
 import com.brandonkamga.sourcefolio.profile.domain.model.Specialty;
 import com.brandonkamga.sourcefolio.shared.exception.BadRequestException;
@@ -115,6 +116,29 @@ class ProfileControllerTest {
                         .contentType(MediaType.APPLICATION_JSON).content("{\"headline\":\"" + "x".repeat(81) + "\"}"))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.message").value("Ton titre fait entre 2 et 80 caractères, sur une seule ligne."));
+    }
+
+    @Test
+    @DisplayName("the member's role is saved and comes back with the profile, as a slug")
+    void role() throws Exception {
+        when(profiles.answerRole(MEMBER, "devops")).thenReturn(DeveloperProfile.blank(MEMBER)
+                .withRole(Role.DEVOPS, Instant.parse("2026-11-01T09:00:00Z")));
+
+        mvc.perform(put("/api/me/profile/role").with(member()).with(csrf())
+                        .contentType(MediaType.APPLICATION_JSON).content("{\"role\":\"devops\"}"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.role").value("devops"));
+    }
+
+    @Test
+    @DisplayName("a role outside the list is a 400 in the member's language")
+    void roleRefused() throws Exception {
+        when(profiles.answerRole(MEMBER, "wizard")).thenThrow(new BadRequestException("profile.role-invalid"));
+
+        mvc.perform(put("/api/me/profile/role").with(member()).with(csrf()).header("Accept-Language", "fr")
+                        .contentType(MediaType.APPLICATION_JSON).content("{\"role\":\"wizard\"}"))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message").value("Choisis un rôle de la liste."));
     }
 
     @Test

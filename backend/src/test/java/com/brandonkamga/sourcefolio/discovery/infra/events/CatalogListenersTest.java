@@ -56,7 +56,7 @@ class CatalogListenersTest {
     @Test
     @DisplayName("a changed profile reaches every card of its author")
     void profileReachesCatalogue() {
-        new CatalogListeners(recording()).on(new ProfileChanged(MEMBER, "CM", List.of("backend", "devops"), "Backend à Douala"));
+        new CatalogListeners(recording()).on(new ProfileChanged(MEMBER, "CM", List.of("backend", "devops"), "Backend à Douala", "devops"));
 
         assertThat(calls).containsExactly(MEMBER + " profile CM [backend, devops] Backend à Douala");
     }

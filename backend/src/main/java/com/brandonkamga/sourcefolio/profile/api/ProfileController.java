@@ -3,6 +3,7 @@ package com.brandonkamga.sourcefolio.profile.api;
 import com.brandonkamga.sourcefolio.profile.api.dto.CountryAnswer;
 import com.brandonkamga.sourcefolio.profile.api.dto.HeadlineAnswer;
 import com.brandonkamga.sourcefolio.profile.api.dto.ProfileResponse;
+import com.brandonkamga.sourcefolio.profile.api.dto.RoleAnswer;
 import com.brandonkamga.sourcefolio.profile.api.dto.SpecialtiesAnswer;
 import com.brandonkamga.sourcefolio.profile.application.ProfileCompletion;
 import io.swagger.v3.oas.annotations.Operation;
@@ -46,6 +47,12 @@ class ProfileController {
     @Operation(operationId = "answerMyHeadline")
     ProfileResponse headline(Authentication authentication, @RequestBody HeadlineAnswer answer) {
         return ProfileResponse.of(profiles.answerHeadline(memberId(authentication), answer.headline()));
+    }
+
+    @PutMapping("/api/me/profile/role")
+    @Operation(operationId = "answerMyRole")
+    ProfileResponse role(Authentication authentication, @RequestBody RoleAnswer answer) {
+        return ProfileResponse.of(profiles.answerRole(memberId(authentication), answer.role()));
     }
 
     private static UUID memberId(Authentication authentication) {

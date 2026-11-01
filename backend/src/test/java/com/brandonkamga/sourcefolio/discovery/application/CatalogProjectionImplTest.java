@@ -17,7 +17,7 @@ class CatalogProjectionImplTest {
     private static final UUID NEWCOMER = UUID.fromString("5d1e7a40-2b9c-4c55-8f0e-6a3b2c1d0e99");
 
     private final InMemoryCatalogStore store = new InMemoryCatalogStore();
-    private final Map<UUID, PublicProfile> profiles = Map.of(AUTHOR, new PublicProfile("CM", List.of("backend", "devops"), "Backend à Douala"));
+    private final Map<UUID, PublicProfile> profiles = Map.of(AUTHOR, new PublicProfile("CM", List.of("backend", "devops"), "Backend à Douala", "devops"));
     private final CatalogProjection projection = new CatalogProjectionImpl(store, memberId -> Optional.ofNullable(profiles.get(memberId)));
 
     @Test
