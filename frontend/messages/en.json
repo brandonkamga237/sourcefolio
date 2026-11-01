@@ -110,7 +110,6 @@
   "showcasePage": {
     "metaTitle": "{site}, {login}’s portfolio",
     "metaDescription": "{login}’s portfolio and the code that builds it, on SourceFolio.",
-    "by": "by <profile>{login}</profile>",
     "publishedOn": "Published on {date, date, long}",
     "visitSite": "Visit the site",
     "viewCode": "View the code",
@@ -123,7 +122,9 @@
     "ctaLink": "Publish my portfolio",
     "ogBy": "by {login}",
     "ogTagline": "A portfolio you can read the code of",
-    "ogStars": "{formatted} {count, plural, one {star} other {stars}} on GitHub"
+    "ogStars": "{formatted} {count, plural, one {star} other {stars}} on GitHub",
+    "byLogin": "by {login}",
+    "seeProfile": "See profile"
   },
   "catalog": {
     "sort": {
@@ -147,7 +148,18 @@
       "viewCode": "Code",
       "openPage": "Open the full page",
       "sourceRepo": "Source repository",
-      "publishedOn": "Published on {date}"
+      "publishedOn": "Published on {date}",
+      "previous": "Previous portfolio (left arrow)",
+      "next": "Next portfolio (right arrow)",
+      "position": "{current} of {total}",
+      "statLikes": "likes",
+      "statStars": "stars",
+      "statPublished": "published",
+      "share": "Share",
+      "shareTitle": "{login}’s portfolio on SourceFolio",
+      "clone": "Copy git clone",
+      "copied": "Copied",
+      "githubProfile": "GitHub profile"
     },
     "feedTitle": "Portfolios",
     "recentTitle": "Latest published",
@@ -163,7 +175,7 @@
     "progress": "Question {current} of {total}",
     "countryTitle": "Which country do you live in?",
     "countryPlaceholder": "Choose your country",
-    "specialtyTitle": "What is your specialty?",
+    "specialtyTitle": "Your specialties",
     "emailTitle": "Your email, to hear about it if your site goes down",
     "emailHint": "Optional. It is never shown or shared.",
     "next": "Continue",
@@ -172,13 +184,14 @@
     "failed": "Your answer could not be saved. Try again.",
     "summaryTitle": "My profile",
     "countryLabel": "Country",
-    "specialtyLabel": "Specialty",
+    "specialtyLabel": "Specialties",
     "emailLabel": "Alert email",
     "notGiven": "Not given",
     "edit": "Edit",
     "done": "Back to Me",
     "reminder": "Add your country and specialty: two questions, ten seconds.",
-    "reminderLink": "Complete my profile"
+    "reminderLink": "Complete my profile",
+    "specialtyHint": "Tap them in order of importance, up to three: the first is the one people see first."
   },
   "specialty": {
     "frontend": "Frontend",
@@ -195,7 +208,16 @@
   "me": {
     "portfolioTitle": "My portfolio",
     "preferencesTitle": "Preferences",
-    "accountTitle": "Account and preferences"
+    "accountTitle": "Account and preferences",
+    "overview": {
+      "likes": "likes received",
+      "stars": "GitHub stars",
+      "rank": "in the ranking",
+      "unranked": "not ranked yet",
+      "days": "days online",
+      "publicProfile": "My public profile",
+      "noCountry": "Country not given"
+    }
   },
   "ranking": {
     "title": "Ranking",
@@ -208,7 +230,9 @@
     "like": "Like this portfolio ({count})",
     "unlike": "Take back my like ({count})",
     "failed": "Your like could not be saved. Try again.",
-    "own": "This is your portfolio: {count} like(s)"
+    "own": "This is your portfolio: {count} like(s)",
+    "countOne": "{count} like",
+    "countOther": "{count} likes"
   },
   "preview": {
     "title": "Your card preview",
@@ -281,5 +305,22 @@
     "one": "{count} star on GitHub",
     "other": "{count} stars on GitHub",
     "badge": "GitHub"
+  },
+  "member": {
+    "open": "See {login}’s profile",
+    "close": "Close",
+    "loading": "Loading…",
+    "failed": "This profile could not be loaded. Try again.",
+    "since": "Since {date}",
+    "likesOne": "{count} like received",
+    "likesOther": "{count} likes received",
+    "specialtiesTitle": "Specialties",
+    "noSpecialty": "Specialties not given yet",
+    "noCountry": "Country not given",
+    "portfolioTitle": "Their portfolio",
+    "openPage": "Open the page",
+    "visitSite": "Visit the site",
+    "viewCode": "View the code",
+    "githubProfile": "GitHub profile"
   }
 }

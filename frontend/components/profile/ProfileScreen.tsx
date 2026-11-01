@@ -40,6 +40,7 @@ export async function ProfileScreen({ locale }: ProfileScreenProps) {
         countryTitle: t("profile.countryTitle"),
         countryPlaceholder: t("profile.countryPlaceholder"),
         specialtyTitle: t("profile.specialtyTitle"),
+        specialtyHint: t("profile.specialtyHint"),
         specialties,
         emailTitle: t("profile.emailTitle"),
         emailHint: t("profile.emailHint"),

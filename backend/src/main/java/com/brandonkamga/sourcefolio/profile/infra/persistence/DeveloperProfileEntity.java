@@ -22,8 +22,10 @@ class DeveloperProfileEntity {
     @JdbcTypeCode(SqlTypes.CHAR)
     private String countryCode;
 
-    @Column(length = 20)
-    private String specialty;
+    // VARCHAR(20)[] in the schema, most important first.
+    @Column(name = "specialties", nullable = false, columnDefinition = "varchar(20)[]")
+    @JdbcTypeCode(SqlTypes.ARRAY)
+    private String[] specialties = new String[0];
 
     @Column(name = "updated_at", nullable = false)
     private Instant updatedAt;
@@ -35,14 +37,14 @@ class DeveloperProfileEntity {
         this.memberId = memberId;
     }
 
-    void update(String countryCode, String specialty, Instant updatedAt) {
+    void update(String countryCode, String[] specialties, Instant updatedAt) {
         this.countryCode = countryCode;
-        this.specialty = specialty;
+        this.specialties = specialties;
         this.updatedAt = updatedAt;
     }
 
     UUID getMemberId() { return memberId; }
     String getCountryCode() { return countryCode; }
-    String getSpecialty() { return specialty; }
+    String[] getSpecialties() { return specialties; }
     Instant getUpdatedAt() { return updatedAt; }
 }

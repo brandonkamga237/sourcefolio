@@ -35,7 +35,7 @@ Chaque question ouverte a une réponse par défaut ; elle peut être revue aprè
 | Changement d'URL | Même dépôt source → même portfolio, retours conservés. Nouveau dépôt → nouveau portfolio, l'ancien est archivé avec ses retours. | Règle explicite demandée par la spec initiale. |
 | Organisation GitHub comme auteur ? | Non. Dépôts personnels publiés automatiquement ; dépôt d'organisation → vérification manuelle. | Pas de scope read:org à demander. |
 | E-mail | Facultatif, demandé à l'étape de publication, prérempli avec l'e-mail public GitHub s'il existe. Texte : « pour être prévenu si ton site tombe ». | Seul moyen fiable d'avertir avant un retrait, sans permission GitHub supplémentaire. |
-| Nombre d'appréciations public ? | Oui : affiché sur la fiche et dans l'onglet Classement, qui ordonne les portfolios publiés par appréciations. Le flux Découvrir reste mélangé chaque jour. | Décision du 30/10/2026, qui remplace la règle initiale « caché, visible par l'auteur seul ». Le classement donne une raison de revenir ; Découvrir garde l'exposition équitable des nouveaux. la visibilité. |
+| Nombre d'appréciations public ? | Oui : affiché sur chaque carte, sur la fiche et dans l'onglet Classement, qui ordonne les portfolios publiés par appréciations (décision du 01/11/2026 pour les cartes). Le flux Découvrir reste mélangé chaque jour. | Décision du 30/10/2026, qui remplace la règle initiale « caché, visible par l'auteur seul ». Le classement donne une raison de revenir ; Découvrir garde l'exposition équitable des nouveaux. la visibilité. |
 | Tri par défaut | Découvrir : mélange aléatoire renouvelé chaque jour, avec 1 carte sur 5 réservée aux portfolios de moins de 14 jours. Tri Récents disponible. Pas de tri Populaires. | Exposition équitable mesurable. |
 | Publication automatique | Oui si : dépôt appartenant au membre connecté, champ homepage du dépôt égal à l'URL (ou GitHub Pages du membre), site qui répond. Sinon file de vérification manuelle. | Le manuel ne passe pas à l'échelle pour une petite équipe. |
 | Langue par défaut | Langue du navigateur ; à défaut, anglais. Choix mémorisé par compte. | Portée internationale, français natif. |
@@ -121,8 +121,9 @@ GitHub, sans formulaire.
   barre de progression, **Passer** sur les questions facultatives, balayage pour revenir.
 - Pays : prérempli depuis le champ `location` de GitHub quand il est reconnaissable, à
   confirmer d'un toucher.
-- Spécialité : puces à choix unique (Frontend, Backend, Full-stack, Mobile, DevOps, Data/IA,
-  Jeu, Embarqué, Sécurité, Autre).
+- Spécialités : jusqu'à trois puces, touchées par ordre d'importance (la première est celle
+  qu'on voit d'abord) parmi Frontend, Backend, Full-stack, Mobile, DevOps, Data/IA, Jeu,
+  Embarqué, Sécurité, Autre. Décision du 01/11/2026, qui remplace le choix unique.
 - Technologies : puces avec autocomplétion ; suggestions issues des langages de ses dépôts.
 - Présentation : préremplie avec la bio GitHub, 280 caractères maximum.
 - Sauvegarde à chaque réponse. Une question déjà répondue n'est jamais reposée. Rappel discret

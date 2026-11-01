@@ -35,7 +35,7 @@ class CatalogControllerTest {
 
     private static final CatalogEntry ENTRY = new CatalogEntry(UUID.randomUUID(), "nekwalla", "https://nekwalla.github.io/",
             "nekwalla/nekwalla.github.io", "https://github.com/nekwalla/nekwalla.github.io", UUID.randomUUID(), "Nekwalla",
-            Instant.parse("2026-10-30T09:00:00Z"));
+            Instant.parse("2026-10-30T09:00:00Z"), null, null, 12, 4, "CM", List.of("backend", "devops"));
 
     @Test
     @DisplayName("a visitor gets the Discover feed by default, without an account, and without ids")
@@ -48,6 +48,10 @@ class CatalogControllerTest {
                 .andExpect(jsonPath("$.items[0].siteUrl").value("https://nekwalla.github.io/"))
                 .andExpect(jsonPath("$.items[0].ownerLogin").value("Nekwalla"))
                 .andExpect(jsonPath("$.items[0].publishedAt").value("2026-10-30T09:00:00Z"))
+                .andExpect(jsonPath("$.items[0].likes").value(4))
+                .andExpect(jsonPath("$.items[0].repositoryStars").value(12))
+                .andExpect(jsonPath("$.items[0].countryCode").value("CM"))
+                .andExpect(jsonPath("$.items[0].specialties[0]").value("backend"))
                 .andExpect(jsonPath("$.items[0].showcaseId").doesNotExist())
                 .andExpect(jsonPath("$.items[0].ownerId").doesNotExist())
                 .andExpect(jsonPath("$.nextCursor").value("next"))

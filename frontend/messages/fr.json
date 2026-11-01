@@ -110,7 +110,6 @@
   "showcasePage": {
     "metaTitle": "{site}, le portfolio de {login}",
     "metaDescription": "Le portfolio de {login} et le code qui le construit, sur SourceFolio.",
-    "by": "par <profile>{login}</profile>",
     "publishedOn": "Publié le {date, date, long}",
     "visitSite": "Voir le site",
     "viewCode": "Voir le code",
@@ -123,7 +122,9 @@
     "ctaLink": "Publier mon portfolio",
     "ogBy": "par {login}",
     "ogTagline": "Un portfolio dont tu peux lire le code",
-    "ogStars": "{formatted} {count, plural, one {étoile} other {étoiles}} sur GitHub"
+    "ogStars": "{formatted} {count, plural, one {étoile} other {étoiles}} sur GitHub",
+    "byLogin": "par {login}",
+    "seeProfile": "Voir le profil"
   },
   "catalog": {
     "sort": {
@@ -147,7 +148,18 @@
       "viewCode": "Code",
       "openPage": "Ouvrir la fiche complète",
       "sourceRepo": "Dépôt source",
-      "publishedOn": "Publié le {date}"
+      "publishedOn": "Publié le {date}",
+      "previous": "Portfolio précédent (flèche gauche)",
+      "next": "Portfolio suivant (flèche droite)",
+      "position": "{current} sur {total}",
+      "statLikes": "appréciations",
+      "statStars": "étoiles",
+      "statPublished": "publié",
+      "share": "Partager",
+      "shareTitle": "Le portfolio de {login} sur SourceFolio",
+      "clone": "Copier git clone",
+      "copied": "Copié",
+      "githubProfile": "Profil GitHub"
     },
     "feedTitle": "Les portfolios",
     "recentTitle": "Les derniers publiés",
@@ -163,7 +175,7 @@
     "progress": "Question {current} sur {total}",
     "countryTitle": "Dans quel pays vis-tu ?",
     "countryPlaceholder": "Choisis ton pays",
-    "specialtyTitle": "Quelle est ta spécialité ?",
+    "specialtyTitle": "Tes spécialités",
     "emailTitle": "Ton e-mail, pour être prévenu si ton site tombe",
     "emailHint": "Facultatif. Il n’est jamais affiché ni partagé.",
     "next": "Continuer",
@@ -172,13 +184,14 @@
     "failed": "Ta réponse n’a pas pu être enregistrée. Réessaie.",
     "summaryTitle": "Mon profil",
     "countryLabel": "Pays",
-    "specialtyLabel": "Spécialité",
+    "specialtyLabel": "Spécialités",
     "emailLabel": "E-mail d’alerte",
     "notGiven": "Non renseigné",
     "edit": "Modifier",
     "done": "Retour à Moi",
     "reminder": "Ajoute ton pays et ta spécialité : deux questions, dix secondes.",
-    "reminderLink": "Compléter mon profil"
+    "reminderLink": "Compléter mon profil",
+    "specialtyHint": "Touche-les dans l’ordre d’importance, jusqu’à trois : la première est celle qu’on verra d’abord."
   },
   "specialty": {
     "frontend": "Frontend",
@@ -195,7 +208,16 @@
   "me": {
     "portfolioTitle": "Mon portfolio",
     "preferencesTitle": "Préférences",
-    "accountTitle": "Compte et préférences"
+    "accountTitle": "Compte et préférences",
+    "overview": {
+      "likes": "appréciations reçues",
+      "stars": "étoiles GitHub",
+      "rank": "au classement",
+      "unranked": "pas encore classé",
+      "days": "jours en ligne",
+      "publicProfile": "Mon profil public",
+      "noCountry": "Pays non renseigné"
+    }
   },
   "ranking": {
     "title": "Classement",
@@ -208,7 +230,9 @@
     "like": "Apprécier ce portfolio ({count})",
     "unlike": "Retirer mon appréciation ({count})",
     "failed": "Ton appréciation n’a pas pu être enregistrée. Réessaie.",
-    "own": "C’est ton portfolio : {count} appréciation(s)"
+    "own": "C’est ton portfolio : {count} appréciation(s)",
+    "countOne": "{count} appréciation",
+    "countOther": "{count} appréciations"
   },
   "preview": {
     "title": "Aperçu de ta carte",
@@ -281,5 +305,22 @@
     "one": "{count} étoile sur GitHub",
     "other": "{count} étoiles sur GitHub",
     "badge": "GitHub"
+  },
+  "member": {
+    "open": "Voir le profil de {login}",
+    "close": "Fermer",
+    "loading": "Chargement…",
+    "failed": "Ce profil n’a pas pu être chargé. Réessaie.",
+    "since": "Depuis {date}",
+    "likesOne": "{count} appréciation reçue",
+    "likesOther": "{count} appréciations reçues",
+    "specialtiesTitle": "Spécialités",
+    "noSpecialty": "Spécialités pas encore renseignées",
+    "noCountry": "Pays non renseigné",
+    "portfolioTitle": "Son portfolio",
+    "openPage": "Voir la fiche",
+    "visitSite": "Voir le site",
+    "viewCode": "Voir le code",
+    "githubProfile": "Profil GitHub"
   }
 }

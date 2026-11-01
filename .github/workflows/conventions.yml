@@ -1,6 +1,6 @@
 # Enforces the commit rules on every pull request, since a local hook can be skipped.
-# PRs are squash-merged: the title becomes the commit on develop/main, so it is checked
-# like a commit header, and the description (the squash body) like a commit body.
+# PRs are merged with a merge commit: every commit of the branch lands on develop/main and is
+# checked, and the merge commit takes the PR title, so the title is checked like a header.
 name: Conventions
 
 on:

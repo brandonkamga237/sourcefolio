@@ -5,7 +5,9 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.NullSource;
 import org.junit.jupiter.params.provider.ValueSource;
+import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class ProfileValuesTest {
 
@@ -31,5 +33,23 @@ class ProfileValuesTest {
         assertThat(Specialty.fromSlug("data-ai")).contains(Specialty.DATA_AI);
         assertThat(Specialty.fromSlug("DATA_AI")).isEmpty();
         assertThat(Specialty.fromSlug("wizard")).isEmpty();
+    }
+
+    @Test
+    @DisplayName("up to three specialties keep the member's order")
+    void rankedSpecialties() {
+        Specialties ranked = new Specialties(List.of(Specialty.BACKEND, Specialty.DEVOPS, Specialty.FRONTEND));
+
+        assertThat(ranked.slugs()).containsExactly("backend", "devops", "frontend");
+        assertThat(Specialties.none().isEmpty()).isTrue();
+    }
+
+    @Test
+    @DisplayName("a fourth specialty, or one named twice, is refused")
+    void rankedSpecialtiesRefused() {
+        assertThatThrownBy(() -> new Specialties(List.of(Specialty.BACKEND, Specialty.DEVOPS, Specialty.FRONTEND, Specialty.MOBILE)))
+                .isInstanceOf(IllegalArgumentException.class);
+        assertThatThrownBy(() -> new Specialties(List.of(Specialty.BACKEND, Specialty.BACKEND)))
+                .isInstanceOf(IllegalArgumentException.class);
     }
 }

@@ -18,6 +18,7 @@ import { DeleteAccount } from "./DeleteAccount";
 import { JourneyCard } from "./JourneyCard";
 import { ForgetJourneyDismissal } from "./JourneyDismissal";
 import { CommitGraph } from "@/components/illustrations/CommitGraph";
+import { MeOverview } from "./MeOverview";
 import { MePreferences } from "./MePreferences";
 
 interface MeScreenProps {
@@ -70,10 +71,13 @@ export async function MeScreen({ locale }: MeScreenProps) {
   const countryName = answers?.country ? countryOptions(locale).find((option) => option.code === answers.country)?.name : null;
   const profileRows = [
     { label: t("profile.countryLabel"), value: countryName ?? null },
-    { label: t("profile.specialtyLabel"), value: answers?.specialty ? t(`specialty.${answers.specialty}`) : null },
+    {
+      label: t("profile.specialtyLabel"),
+      value: answers && answers.specialties.length > 0 ? answers.specialties.map((slug) => t(`specialty.${slug}`)).join(" · ") : null,
+    },
     { label: t("profile.emailLabel"), value: answers?.email ?? null },
   ];
-  const profileIncomplete = answers !== null && (!answers.country || !answers.specialty);
+  const profileIncomplete = answers !== null && (!answers.country || answers.specialties.length === 0);
   const allDone = showcase !== null && showcase.previewImageUrl !== null && !profileIncomplete;
   const journeyDismissed = jar.get(JOURNEY_COOKIE)?.value === "dismissed";
   const dialog = (key: "manage.changeDialog" | "manage.withdrawDialog" | "account.deleteDialog", extra?: { typeToConfirm: string }) => ({
@@ -90,17 +94,13 @@ export async function MeScreen({ locale }: MeScreenProps) {
   return (
     <div className={columns}>
       <div className="flex min-w-0 flex-col gap-6">
-        <header className="flex items-center gap-3">
-          <span aria-hidden="true" className="flex size-12 shrink-0 items-center justify-center rounded-full bg-accent-soft text-base font-semibold text-accent-ink uppercase">
-            {member.login.slice(0, 2)}
-          </span>
-          <div className="flex min-w-0 flex-1 flex-col">
-            <h1 className="truncate font-display text-[24px] leading-tight font-bold tracking-[-0.025em]">{member.login}</h1>
-            <a href={`https://github.com/${member.login}`} target="_blank" rel="noopener noreferrer" className="w-fit font-mono text-[13px] text-ink-muted">
-              @{member.login}
-            </a>
-          </div>
-        </header>
+        <MeOverview
+          locale={locale}
+          login={member.login}
+          countryCode={answers?.country ?? null}
+          specialties={answers?.specialties ?? []}
+          showcase={showcase}
+        />
 
         {allDone && journeyDismissed ? null : <JourneyCard locale={locale} showcase={showcase} profileComplete={!profileIncomplete} />}
         {!allDone && journeyDismissed ? <ForgetJourneyDismissal /> : null}

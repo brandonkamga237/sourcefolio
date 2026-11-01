@@ -26,6 +26,9 @@ public interface CatalogStore {
     /** Keeps the copy of the repository's GitHub stars; null when unknown. */
     void setRepositoryStars(UUID showcaseId, Integer stars);
 
+    /** Keeps the copy of an author's public profile on every card of theirs; null country when unanswered. */
+    void setAuthorProfile(UUID ownerId, String countryCode, List<String> specialties);
+
     /** The most liked showcases first, ties broken by the most recent; liked ones only. */
     List<RankedEntry> ranking(int limit);
 
@@ -34,6 +37,9 @@ public interface CatalogStore {
      * (not young), after {@code afterKey} (empty for the start), at most {@code limit}.
      */
     List<Shuffled> shuffled(LocalDate day, boolean young, Instant youngSince, String afterKey, int limit);
+
+    /** The cards of the member with this GitHub login, any case, newest first. */
+    List<CatalogEntry> byOwnerLogin(String login);
 
     /** How many showcases the catalogue lists. */
     long count();

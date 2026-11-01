@@ -7,6 +7,7 @@ import type { Locale } from "@/i18n/routing";
 import { getCatalogFirstPage, type CatalogPage, type CatalogSort } from "@/services/catalog";
 import { CatalogFeed } from "./CatalogFeed";
 import { DiscoverIntro } from "./DiscoverIntro";
+import { memberSheetLabels } from "@/components/members/labels";
 
 interface CatalogScreenProps {
   locale: Locale;
@@ -48,6 +49,7 @@ async function Feed({ locale, sort }: CatalogScreenProps) {
     getTranslations({ locale, namespace: "likes" }),
     getTranslations({ locale, namespace: "stars" }),
   ]);
+  const memberLabels = await memberSheetLabels(locale);
   let firstPage: CatalogPage;
   try {
     firstPage = await getCatalogFirstPage(sort);
@@ -85,14 +87,28 @@ async function Feed({ locale, sort }: CatalogScreenProps) {
         loadMore: t("loadMore"),
         loading: t("loading"),
         loadFailed: t("loadFailed"),
+        card: {
+          member: memberLabels,
+          likes: { one: tl.raw("countOne") as string, other: tl.raw("countOther") as string },
+          stars: { one: ts.raw("one") as string, other: ts.raw("other") as string },
+        },
         panel: {
           close: t("panel.close"),
+          previous: t("panel.previous"),
+          next: t("panel.next"),
+          position: t.raw("panel.position") as string,
           visitSite: t("panel.visitSite"),
           viewCode: t("panel.viewCode"),
           openPage: t("panel.openPage"),
           sourceRepo: t("panel.sourceRepo"),
           publishedOn: t.raw("panel.publishedOn") as string,
-          stars: { one: ts.raw("one") as string, other: ts.raw("other") as string },
+          stats: { likes: t("panel.statLikes"), stars: t("panel.statStars"), published: t("panel.statPublished") },
+          share: t("panel.share"),
+          shareTitle: t.raw("panel.shareTitle") as string,
+          clone: t("panel.clone"),
+          copied: t("panel.copied"),
+          githubProfile: t("panel.githubProfile"),
+          member: memberLabels,
           likes: { like: tl.raw("like") as string, unlike: tl.raw("unlike") as string, own: tl.raw("own") as string, failed: tl("failed") },
         },
       }}
@@ -115,11 +131,7 @@ export async function CatalogScreen({ locale, sort }: CatalogScreenProps) {
   const t = await getTranslations({ locale });
   return (
     <div className="mx-auto flex w-full max-w-[1500px] flex-col gap-4 px-4 py-4 sm:gap-5 lg:px-8 lg:py-7">
-      {sort === "discover" ? (
-        <Suspense fallback={<div aria-hidden="true" className="h-[76px] animate-pulse rounded-panel bg-surface-sunken sm:h-[84px] lg:h-[96px]" />}>
-          <DiscoverIntro locale={locale} />
-        </Suspense>
-      ) : null}
+      {sort === "discover" ? <DiscoverIntro locale={locale} /> : null}
       {/* Stays at the top while the cards scroll: the order (and soon search and filters) is
           always one tap away, under the phone's top bar or at the top of the desktop window. */}
       <div className="sticky top-14 z-20 -mx-4 flex flex-wrap items-center justify-between gap-3 bg-canvas/85 px-4 py-2 backdrop-blur-md lg:top-0 lg:-mx-8 lg:px-8 lg:py-3">
