@@ -1,3 +1,5 @@
+export { default as IconChevronLeft } from "./ChevronLeft";
+export { default as IconChevronRight } from "./ChevronRight";
 export { default as IconClose } from "./Close";
 export { default as IconCode } from "./Code";
 export { default as IconDiscover } from "./Discover";
