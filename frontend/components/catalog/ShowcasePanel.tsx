@@ -1,11 +1,16 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { Suspense } from "react";
 import { IconChevronLeft, IconChevronRight, IconClose, IconCode, IconCopy, IconExternal, IconGithub, IconHeart, IconStar } from "@/components/icons";
 import { CopyAction } from "@/components/actions/CopyAction";
 import { ShareAction } from "@/components/actions/ShareAction";
+import { MemberSheet, type MemberSheetLabels } from "@/components/members/MemberSheet";
+import type { Locale } from "@/i18n/routing";
+import { countryName, flagOf } from "@/lib/countries";
 import { compactNumber } from "@/lib/plural";
+import { avatarUrl } from "@/services/members";
 import { LikeButton, type LikeButtonLabels } from "@/components/likes/LikeButton";
 import type { CatalogCard } from "@/services/catalog-types";
 import { Preview } from "./Preview";
@@ -30,6 +35,7 @@ export interface ShowcasePanelLabels {
   clone: string;
   copied: string;
   githubProfile: string;
+  member: MemberSheetLabels;
 }
 
 // "3 days ago", in the reader's language, from the largest unit that fits.
@@ -52,7 +58,7 @@ interface ShowcasePanelProps {
   onPrev: (() => void) | null;
   onNext: (() => void) | null;
   href: string;
-  locale: string;
+  locale: Locale;
   labels: ShowcasePanelLabels;
   onClose: () => void;
 }
@@ -107,19 +113,28 @@ export function ShowcasePanel({ card, position, direction, onPrev, onNext, href,
       />
 
       <div className="flex flex-col gap-3 p-4">
-        <div className="flex items-center gap-3">
-          <span aria-hidden="true" className="flex size-11 shrink-0 items-center justify-center rounded-full bg-accent-soft text-sm font-semibold text-accent-ink uppercase">
-            {card.ownerLogin.slice(0, 2)}
-          </span>
-          <div className="flex min-w-0 flex-col">
-            <h2 id="panel-name" className="truncate font-display text-[22px] leading-tight font-bold tracking-[-0.025em]">
+        {/* The author, one tap from their public profile: who made this, from where, doing what. */}
+        <MemberSheet
+          login={card.ownerLogin}
+          locale={locale}
+          labels={labels.member}
+          triggerClassName="press -mx-2 flex items-center gap-3 rounded-control px-2 py-1 text-left transition-colors duration-150 hover:bg-surface-sunken"
+        >
+          <Image src={avatarUrl(card.ownerLogin, 96)} alt="" width={44} height={44} unoptimized className="size-11 shrink-0 rounded-full bg-accent-soft object-cover" />
+          <span className="flex min-w-0 flex-1 flex-col">
+            <span id="panel-name" className="truncate font-display text-[22px] leading-tight font-bold tracking-[-0.025em]">
               {card.ownerLogin}
-            </h2>
-            <span className="truncate font-mono text-xs text-ink-muted" title={`${labels.sourceRepo} : ${card.repository}`}>
-              {card.repository}
             </span>
-          </div>
-        </div>
+            <span className="truncate text-xs text-ink-muted">
+              {[
+                card.countryCode ? `${flagOf(card.countryCode)} ${countryName(card.countryCode, locale)}` : null,
+                ...card.specialties.map((slug) => labels.member.specialtyNames[slug] ?? slug),
+              ]
+                .filter(Boolean)
+                .join(" · ") || card.repository}
+            </span>
+          </span>
+        </MemberSheet>
 
         {/* The numbers a visitor weighs first, side by side. */}
         <dl className="grid grid-cols-3 divide-x divide-line-soft rounded-control border border-line-soft bg-surface-raised">

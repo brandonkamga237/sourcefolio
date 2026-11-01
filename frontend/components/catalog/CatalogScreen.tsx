@@ -49,6 +49,7 @@ async function Feed({ locale, sort }: CatalogScreenProps) {
     getTranslations({ locale, namespace: "likes" }),
     getTranslations({ locale, namespace: "stars" }),
   ]);
+  const memberLabels = await memberSheetLabels(locale);
   let firstPage: CatalogPage;
   try {
     firstPage = await getCatalogFirstPage(sort);
@@ -87,7 +88,7 @@ async function Feed({ locale, sort }: CatalogScreenProps) {
         loading: t("loading"),
         loadFailed: t("loadFailed"),
         card: {
-          member: await memberSheetLabels(locale),
+          member: memberLabels,
           likes: { one: tl.raw("countOne") as string, other: tl.raw("countOther") as string },
           stars: { one: ts.raw("one") as string, other: ts.raw("other") as string },
         },
@@ -107,6 +108,7 @@ async function Feed({ locale, sort }: CatalogScreenProps) {
           clone: t("panel.clone"),
           copied: t("panel.copied"),
           githubProfile: t("panel.githubProfile"),
+          member: memberLabels,
           likes: { like: tl.raw("like") as string, unlike: tl.raw("unlike") as string, own: tl.raw("own") as string, failed: tl("failed") },
         },
       }}
