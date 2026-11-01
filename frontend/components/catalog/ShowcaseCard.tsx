@@ -70,30 +70,30 @@ export function ShowcaseCard({ card, href, index, selected, onOpen, locale, labe
       </span>
       </Link>
       <div className="flex items-center">
-      <MemberSheet
-        login={card.ownerLogin}
-        locale={locale}
-        labels={labels.member}
-        triggerClassName="flex min-w-0 flex-1 items-center gap-2.5 py-2.5 pr-1 pl-3 text-left transition-colors duration-150 hover:bg-surface-raised sm:py-3 sm:pl-3.5"
-      >
-        <Avatar login={card.ownerLogin} size={30} className="ring-2 ring-surface transition-[box-shadow] duration-200 group-hover:ring-accent-soft" />
-        <span className="flex min-w-0 flex-col gap-0.5">
-          <span className="truncate text-sm font-semibold sm:text-[15px]">{card.ownerLogin}</span>
-          <span className="truncate text-[11px] text-ink-muted sm:text-xs">
-            {card.countryCode ? `${flagOf(card.countryCode)} ` : ""}
-            {card.specialties.length > 0 ? labels.member.specialtyNames[card.specialties[0]] : card.repository}
+        <MemberSheet
+          login={card.ownerLogin}
+          locale={locale}
+          labels={labels.member}
+          triggerClassName="flex min-w-0 flex-1 items-center gap-2.5 py-2.5 pr-1 pl-3 text-left transition-colors duration-150 hover:bg-surface-raised sm:py-3 sm:pl-3.5"
+        >
+          <Avatar login={card.ownerLogin} size={30} className="ring-2 ring-surface transition-[box-shadow] duration-200 group-hover:ring-accent-soft" />
+          <span className="flex min-w-0 flex-col gap-0.5">
+            <span className="truncate text-sm font-semibold sm:text-[15px]">{card.ownerLogin}</span>
+            <span className="truncate text-[11px] text-ink-muted sm:text-xs">
+              {card.countryCode ? `${flagOf(card.countryCode)} ` : ""}
+              {card.specialties.length > 0 ? labels.member.specialtyNames[card.specialties[0]] : card.repository}
+            </span>
           </span>
-        </span>
-      </MemberSheet>
-      {/* Sharing a portfolio is what brings visitors: one tap from every card. */}
-      <ShareAction
-        path={href}
-        title={labels.shareTitle.replace("{login}", card.ownerLogin)}
-        label={labels.share}
-        copiedLabel={labels.copied}
-        iconOnly
-        className="press mr-1.5 flex size-11 shrink-0 items-center justify-center rounded-full text-ink-muted transition-colors duration-150 hover:bg-surface-sunken hover:text-ink"
-      />
+        </MemberSheet>
+        {/* Sharing a portfolio is what brings visitors: one tap from every card. */}
+        <ShareAction
+          path={href}
+          title={labels.shareTitle.replace("{login}", card.ownerLogin)}
+          label={labels.share}
+          copiedLabel={labels.copied}
+          iconOnly
+          className="press mr-1.5 flex size-11 shrink-0 items-center justify-center rounded-full text-ink-muted transition-colors duration-150 hover:bg-surface-sunken hover:text-ink"
+        />
       </div>
     </article>
   );
