@@ -1,5 +1,42 @@
 # Changelog
 
+## [0.19.0](https://github.com/brandonkamga237/sourcefolio/compare/v0.18.0...v0.19.0) (2026-11-01)
+
+
+### Features
+
+* **account:** ask GitHub for its account picker when the member signed out before ([1236fb7](https://github.com/brandonkamga237/sourcefolio/commit/1236fb7a9669f98f42f03bbc7c7fb215970398c9))
+* **account:** go back to a one-step sign-in once signed in ([1144b35](https://github.com/brandonkamga237/sourcefolio/commit/1144b3579782452b9f8d4d1dfd10a3a51b482aed))
+* **account:** remember on sign-out to offer another GitHub account next time ([aab6318](https://github.com/brandonkamga237/sourcefolio/commit/aab6318d0922858fc0302cbce58ae89cc1898e5e))
+* **discovery:** copy each showcase's feedback count onto its card ([014e8c8](https://github.com/brandonkamga237/sourcefolio/commit/014e8c84d5f92fa40721a9e0a680bb9f9e3125d1))
+* **discovery:** keep a feedback count on every card ([65992d7](https://github.com/brandonkamga237/sourcefolio/commit/65992d7f141995065cbbd2e9b360a377277f4eb4))
+* **discovery:** show how much feedback each portfolio received ([44bc013](https://github.com/brandonkamga237/sourcefolio/commit/44bc01378c77a866e9f97ed2bb5635452842e9f5))
+* **discovery:** show how much feedback each portfolio received ([#86](https://github.com/brandonkamga237/sourcefolio/issues/86)) ([44bc013](https://github.com/brandonkamga237/sourcefolio/commit/44bc01378c77a866e9f97ed2bb5635452842e9f5))
+* **engagement:** announce each showcase's feedback count, and take a leaving member's feedback away ([ee35db4](https://github.com/brandonkamga237/sourcefolio/commit/ee35db489702e7efa7cb40069ca2f078d4cdc53d))
+* **engagement:** describe received feedback and the unread count for the web ([cad97a4](https://github.com/brandonkamga237/sourcefolio/commit/cad97a469b853f2ff69d40160ddba03636b8f8c6))
+* **engagement:** expose received feedback, its unread count and reading it over HTTP ([1af09a8](https://github.com/brandonkamga237/sourcefolio/commit/1af09a8825c61723e4a86bbcd1ef481ead553502))
+* **engagement:** let an author read the feedback they received and count what is new ([e5842f8](https://github.com/brandonkamga237/sourcefolio/commit/e5842f88fda4cad2a23fc50fe3f4a30b25bd7699))
+* **engagement:** remember when an author last read their feedback ([68167cb](https://github.com/brandonkamga237/sourcefolio/commit/68167cbaa4ef8c002a7d143cf9d71d8e1f3bb4f2))
+* **engagement:** store when an author last read their feedback and count what came after ([8cf858c](https://github.com/brandonkamga237/sourcefolio/commit/8cf858c7826a732555121a07fb05b3e5593ba9d9))
+* **engagement:** tell authors about new feedback and list what they received ([945ab95](https://github.com/brandonkamga237/sourcefolio/commit/945ab95c48dccf2d890c44e514af7a49a77c5352))
+* **engagement:** tell authors about new feedback and list what they received ([#87](https://github.com/brandonkamga237/sourcefolio/issues/87)) ([945ab95](https://github.com/brandonkamga237/sourcefolio/commit/945ab95c48dccf2d890c44e514af7a49a77c5352))
+* **frontend:** fold the preview editor once the card has its image ([34e7655](https://github.com/brandonkamga237/sourcefolio/commit/34e76551d3ad198abe0399cd344478825e99329f))
+* **frontend:** list the feedback an author received, marking what is new, and read it ([68a98aa](https://github.com/brandonkamga237/sourcefolio/commit/68a98aacecb932b2a98d939c728975352296271e))
+* **frontend:** put the portfolio and its actions first in Me, in one card per state ([88c3473](https://github.com/brandonkamga237/sourcefolio/commit/88c34734c39b709eed7090c29619d409cc2bdfb1))
+* **frontend:** read received feedback, its unread count, and mark it read ([2b6d084](https://github.com/brandonkamga237/sourcefolio/commit/2b6d084175c04b03a248c9ebe136cfbe8ee34c0c))
+* **frontend:** show how much feedback a portfolio has on its card and in the panel ([5fe49a9](https://github.com/brandonkamga237/sourcefolio/commit/5fe49a9e8d7703b503ad950694a33daa7e8459c4))
+* **frontend:** show the author's new feedback as a badge on the Me tab ([e4b3d0a](https://github.com/brandonkamga237/sourcefolio/commit/e4b3d0a58d8e730996d21c9c668d18bdcb3057e8))
+* **frontend:** show the feedback received right under the portfolio in Me ([1bd1cf1](https://github.com/brandonkamga237/sourcefolio/commit/1bd1cf16baad91a5e45452e9e8d2e851b85e9641))
+
+
+### Bug Fixes
+
+* **account:** let a member sign in with another GitHub account after signing out ([8d093b4](https://github.com/brandonkamga237/sourcefolio/commit/8d093b4880544ebb9fc480839ed7fbbddf955a10))
+* **account:** let a member sign in with another GitHub account after signing out ([#85](https://github.com/brandonkamga237/sourcefolio/issues/85)) ([8d093b4](https://github.com/brandonkamga237/sourcefolio/commit/8d093b4880544ebb9fc480839ed7fbbddf955a10))
+* **frontend:** give the card's numbers their own line so the subtitle stays readable ([7207605](https://github.com/brandonkamga237/sourcefolio/commit/7207605929cdf4d660f65c2174d372e2c65bae98))
+* **frontend:** put the portfolio and its actions first in Me ([52a5bbb](https://github.com/brandonkamga237/sourcefolio/commit/52a5bbbfddf056dc9e256bc97f180b3c5572d00f))
+* **frontend:** put the portfolio and its actions first in Me ([#84](https://github.com/brandonkamga237/sourcefolio/issues/84)) ([52a5bbb](https://github.com/brandonkamga237/sourcefolio/commit/52a5bbbfddf056dc9e256bc97f180b3c5572d00f))
+
 ## [0.18.0](https://github.com/brandonkamga237/sourcefolio/compare/v0.17.0...v0.18.0) (2026-11-01)
 
 
