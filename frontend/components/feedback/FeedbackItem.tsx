@@ -34,7 +34,7 @@ export function FeedbackItem({ item, locale, labels, onRemoved }: FeedbackItemPr
           <span className="font-semibold break-all text-ink">{item.authorLogin}</span>
           {item.mine ? <span className="text-ink-muted">· {labels.you}</span> : null}
           <time dateTime={item.createdAt} className="text-ink-muted">
-            {sinceLabel(item.createdAt, locale)}
+            {ageLabel(item.createdAt, locale, labels.justNow)}
           </time>
           {item.angle ? (
             <span className="rounded-full bg-accent-soft px-2 py-0.5 text-xs font-semibold text-accent-ink">{labels.angles[item.angle]}</span>
@@ -77,4 +77,8 @@ export function FeedbackItem({ item, locale, labels, onRemoved }: FeedbackItemPr
       </div>
     </li>
   );
+}
+
+function ageLabel(iso: string, locale: string, justNow: string): string {
+  return Date.now() - new Date(iso).getTime() < 60_000 ? justNow : sinceLabel(iso, locale);
 }

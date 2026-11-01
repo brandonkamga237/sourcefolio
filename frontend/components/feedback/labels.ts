@@ -26,6 +26,7 @@ export async function feedbackLabels(locale: Locale): Promise<FeedbackLabels> {
     loadFailed: t("loadFailed"),
     more: t("more"),
     you: t("you"),
+    justNow: t("justNow"),
     remove: t("remove"),
     confirmRemove: t("confirmRemove"),
     cancel: t("cancel"),

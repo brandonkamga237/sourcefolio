@@ -24,6 +24,8 @@ export interface FeedbackLabels {
   loadFailed: string;
   more: string;
   you: string;
+  /** Under a minute old: "this minute" reads oddly in French. */
+  justNow: string;
   remove: string;
   confirmRemove: string;
   cancel: string;
