@@ -1,7 +1,13 @@
+import Image from "next/image";
 import Link from "next/link";
 import type { CSSProperties, MouseEvent } from "react";
 import { IconHeart, IconStar } from "@/components/icons";
+import { MemberSheet, type MemberSheetLabels } from "@/components/members/MemberSheet";
+import type { Locale } from "@/i18n/routing";
+import { flagOf } from "@/lib/countries";
 import { compactNumber, plural, type PluralTemplates } from "@/lib/plural";
+import { siteLabel } from "@/lib/site-label";
+import { avatarUrl } from "@/services/members";
 import type { CatalogCard } from "@/services/catalog-types";
 import { Preview } from "./Preview";
 
@@ -12,28 +18,28 @@ interface ShowcaseCardProps {
   index: number;
   selected: boolean;
   onOpen: (event: MouseEvent<HTMLAnchorElement>) => void;
-  locale: string;
+  locale: Locale;
   labels: ShowcaseCardLabels;
 }
 
 export interface ShowcaseCardLabels {
   likes: PluralTemplates;
   stars: PluralTemplates;
+  member: MemberSheetLabels;
 }
 
 // A real link to the showcase page (phones open it; crawlers follow it). On a wide screen the
 // feed intercepts the click and shows the side panel instead, as the mockup does.
 export function ShowcaseCard({ card, href, index, selected, onOpen, locale, labels }: ShowcaseCardProps) {
   return (
-    <Link
-      href={href}
-      onClick={onOpen}
-      aria-current={selected ? "true" : undefined}
+    <article
       style={{ "--index": index % 24 } as CSSProperties}
-      className={`group rise-in relative block overflow-hidden rounded-card border bg-surface transition-[transform,box-shadow,border-color] duration-300 ease-out-soft active:scale-[0.98] pointer-fine:hover:-translate-y-1 pointer-fine:hover:shadow-[0_16px_34px_-16px_rgba(18,20,18,0.35)] ${
+      className={`group rise-in relative overflow-hidden rounded-card border bg-surface transition-[transform,box-shadow,border-color] duration-300 ease-out-soft pointer-fine:hover:-translate-y-1 pointer-fine:hover:shadow-[0_16px_34px_-16px_rgba(18,20,18,0.35)] ${
         selected ? "border-line lg:border-accent lg:ring-1 lg:ring-accent" : "border-line pointer-fine:hover:border-ink-muted"
       }`}
     >
+      {/* The top opens the portfolio; the bottom, the person who made it. */}
+      <Link href={href} onClick={onOpen} aria-current={selected ? "true" : undefined} aria-label={siteLabel(card.siteUrl)} className="relative block active:opacity-90">
       <Preview
         slug={card.slug}
         siteUrl={card.siteUrl}
@@ -58,18 +64,29 @@ export function ShowcaseCard({ card, href, index, selected, onOpen, locale, labe
           {card.repositoryStars != null ? `, ${plural(labels.stars, card.repositoryStars, locale)}` : ""}
         </span>
       </span>
-      <span className="flex items-center gap-2.5 px-3 pt-2.5 pb-3 sm:px-3.5 sm:pt-3 sm:pb-3.5">
-        <span
-          aria-hidden="true"
-          className="hidden size-8 shrink-0 items-center justify-center rounded-full bg-accent-soft text-[11px] font-semibold text-accent-ink uppercase transition-colors duration-200 group-hover:bg-accent group-hover:text-white sm:flex"
-        >
-          {card.ownerLogin.slice(0, 2)}
-        </span>
+      </Link>
+      <MemberSheet
+        login={card.ownerLogin}
+        locale={locale}
+        labels={labels.member}
+        triggerClassName="flex w-full items-center gap-2.5 px-3 pt-2.5 pb-3 text-left transition-colors duration-150 hover:bg-surface-raised sm:px-3.5 sm:pt-3 sm:pb-3.5"
+      >
+        <Image
+          src={avatarUrl(card.ownerLogin, 64)}
+          alt=""
+          width={32}
+          height={32}
+          unoptimized
+          className="size-7 shrink-0 rounded-full bg-accent-soft object-cover ring-2 ring-surface transition-[box-shadow] duration-200 group-hover:ring-accent-soft sm:size-8"
+        />
         <span className="flex min-w-0 flex-col gap-0.5">
           <span className="truncate text-sm font-semibold sm:text-[15px]">{card.ownerLogin}</span>
-          <span className="truncate font-mono text-[11px] text-ink-muted sm:text-xs">{card.repository}</span>
+          <span className="truncate text-[11px] text-ink-muted sm:text-xs">
+            {card.countryCode ? `${flagOf(card.countryCode)} ` : ""}
+            {card.specialties.length > 0 ? labels.member.specialtyNames[card.specialties[0]] : card.repository}
+          </span>
         </span>
-      </span>
-    </Link>
+      </MemberSheet>
+    </article>
   );
 }

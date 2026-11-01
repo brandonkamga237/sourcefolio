@@ -7,6 +7,7 @@ import type { Locale } from "@/i18n/routing";
 import { getCatalogFirstPage, type CatalogPage, type CatalogSort } from "@/services/catalog";
 import { CatalogFeed } from "./CatalogFeed";
 import { DiscoverIntro } from "./DiscoverIntro";
+import { memberSheetLabels } from "@/components/members/labels";
 
 interface CatalogScreenProps {
   locale: Locale;
@@ -86,6 +87,7 @@ async function Feed({ locale, sort }: CatalogScreenProps) {
         loading: t("loading"),
         loadFailed: t("loadFailed"),
         card: {
+          member: await memberSheetLabels(locale),
           likes: { one: tl.raw("countOne") as string, other: tl.raw("countOther") as string },
           stars: { one: ts.raw("one") as string, other: ts.raw("other") as string },
         },
