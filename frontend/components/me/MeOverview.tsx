@@ -16,6 +16,7 @@ interface MeOverviewProps {
   login: string;
   countryCode: string | null;
   specialties: Specialty[];
+  headline: string | null;
   showcase: MyShowcase | null;
 }
 
@@ -26,7 +27,7 @@ function daysSince(iso: string): number {
 
 // Who the member is to the community, and how their portfolio is doing: the numbers that make
 // coming back worth it. Read from the same public data visitors see, so nothing is invented.
-export async function MeOverview({ locale, login, countryCode, specialties, showcase }: MeOverviewProps) {
+export async function MeOverview({ locale, login, countryCode, specialties, headline, showcase }: MeOverviewProps) {
   const published = showcase?.status === "PUBLISHED";
   const [t, ts, labels, member, ranking] = await Promise.all([
     getTranslations({ locale, namespace: "me.overview" }),
@@ -80,6 +81,8 @@ export async function MeOverview({ locale, login, countryCode, specialties, show
               </MemberSheet>
           ) : null}
         </div>
+
+        {headline ? <p className="text-[15px] leading-snug font-medium text-ink-body">{headline}</p> : null}
 
         <div className="flex flex-wrap items-center gap-1.5 text-[13px]">
           <span className="flex h-8 items-center rounded-full bg-surface-sunken px-3 text-ink-body">

@@ -70,6 +70,7 @@ export async function MeScreen({ locale }: MeScreenProps) {
   const showcase = mine?.showcase ?? null;
   const countryName = answers?.country ? countryOptions(locale).find((option) => option.code === answers.country)?.name : null;
   const profileRows = [
+    { label: t("profile.headlineLabel"), value: answers?.headline ?? null },
     { label: t("profile.countryLabel"), value: countryName ?? null },
     {
       label: t("profile.specialtyLabel"),
@@ -99,6 +100,7 @@ export async function MeScreen({ locale }: MeScreenProps) {
           login={member.login}
           countryCode={answers?.country ?? null}
           specialties={answers?.specialties ?? []}
+          headline={answers?.headline ?? null}
           showcase={showcase}
         />
 
