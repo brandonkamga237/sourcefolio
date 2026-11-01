@@ -13,7 +13,9 @@
     "me": "Me",
     "publish": "Publish your portfolio",
     "ranking": "Ranking",
-    "publishShort": "Publish"
+    "publishShort": "Publish",
+    "unreadOne": "{count} new piece of feedback",
+    "unreadOther": "{count} new pieces of feedback"
   },
   "language": {
     "label": "Language",

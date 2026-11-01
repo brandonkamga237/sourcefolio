@@ -10,7 +10,11 @@ export interface Section {
   activeIcon: Icon;
 }
 
-export type SectionLabels = Record<Section["key"], string> & { label: string };
+export type SectionLabels = Record<Section["key"], string> & {
+  label: string;
+  /** Contains {count}: the author's new feedback, announced on the Me tab. */
+  unread: { one: string; other: string };
+};
 
 // The three tabs of the spec, in the same order in the sidebar and in the bottom bar.
 export const sections: readonly Section[] = [

@@ -13,7 +13,9 @@
     "me": "Moi",
     "publish": "Publier ton portfolio",
     "ranking": "Classement",
-    "publishShort": "Publier"
+    "publishShort": "Publier",
+    "unreadOne": "{count} nouveau retour",
+    "unreadOther": "{count} nouveaux retours"
   },
   "language": {
     "label": "Langue",

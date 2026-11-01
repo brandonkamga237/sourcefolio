@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { localizedPath, withoutLocale } from "@/i18n/paths";
 import type { Locale } from "@/i18n/routing";
 import { isActive, sections, type SectionLabels } from "./sections";
+import { UnreadBadge } from "./UnreadBadge";
 
 interface SidebarNavProps {
   locale: Locale;
@@ -32,6 +33,7 @@ export function SidebarNav({ locale, labels }: SidebarNavProps) {
           >
             <Icon className="size-5 shrink-0" />
             {labels[section.key]}
+            {section.key === "me" ? <UnreadBadge locale={locale} label={labels.unread} className="ml-auto" /> : null}
           </Link>
         );
       })}
