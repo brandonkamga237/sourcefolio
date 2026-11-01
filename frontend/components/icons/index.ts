@@ -1,7 +1,9 @@
+export { default as IconCheck } from "./Check";
 export { default as IconChevronLeft } from "./ChevronLeft";
 export { default as IconChevronRight } from "./ChevronRight";
 export { default as IconClose } from "./Close";
 export { default as IconCode } from "./Code";
+export { default as IconCopy } from "./Copy";
 export { default as IconDiscover } from "./Discover";
 export { default as IconDiscoverActive } from "./DiscoverActive";
 export { default as IconExternal } from "./External";
@@ -14,4 +16,5 @@ export { default as IconPortfolio } from "./Portfolio";
 export { default as IconRanking } from "./Ranking";
 export { default as IconRankingActive } from "./RankingActive";
 export { default as IconSearch } from "./Search";
+export { default as IconShare } from "./Share";
 export { default as IconStar } from "./Star";
