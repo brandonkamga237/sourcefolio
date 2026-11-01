@@ -60,11 +60,12 @@ export function ShowcaseCard({ card, href, index, selected, onOpen, locale, labe
           labels={labels.member}
           triggerClassName="flex min-w-0 flex-1 items-center gap-3 py-3 pr-1 pl-3 text-left transition-colors duration-150 hover:bg-surface-raised sm:py-3.5 sm:pl-4"
         >
-          <Avatar login={card.ownerLogin} size={30} className="ring-2 ring-surface transition-[box-shadow] duration-200 group-hover:ring-accent-soft" />
+          <Avatar login={card.ownerLogin} size={30} className="ring-2 ring-surface transition-[box-shadow] duration-200 group-hover:ring-accent-soft max-sm:hidden" />
           <span className="flex min-w-0 flex-1 flex-col gap-0.5">
             <span className="truncate text-sm font-semibold sm:text-[15px]">{card.ownerLogin}</span>
-            <span className="flex min-w-0 items-center gap-2 text-xs text-ink-muted">
-              <span className="min-w-0 flex-1 truncate" title={subtitle}>
+            {/* Two narrow columns on a phone: the numbers take their own line under the subtitle. */}
+            <span className="flex min-w-0 flex-col gap-0.5 text-xs text-ink-muted sm:flex-row sm:items-center sm:gap-2">
+              <span className="w-full min-w-0 truncate sm:w-auto sm:flex-1" title={subtitle}>
                 {card.countryCode ? `${flagOf(card.countryCode)} ` : ""}
                 {subtitle}
               </span>
