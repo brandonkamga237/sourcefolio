@@ -77,7 +77,7 @@ export function MemberSheet({ login, locale, labels, children, triggerClassName 
             </Dialog.Close>
           </div>
 
-          <div className="-mt-12 flex flex-col gap-4 overflow-y-auto px-5 pb-[calc(1.25rem+env(safe-area-inset-bottom))] sm:pb-5">
+          <div className="relative -mt-12 flex flex-col gap-4 overflow-y-auto px-5 pb-[calc(1.25rem+env(safe-area-inset-bottom))] sm:pb-5">
             <div className="flex items-end gap-3">
               <Image
                 src={avatarUrl(login)}
