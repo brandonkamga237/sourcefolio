@@ -1,16 +1,26 @@
 package com.brandonkamga.sourcefolio.discovery.domain.model;
 
 import java.time.Instant;
+import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
 /**
  * One published showcase as the catalogue shows it. A copy, fed by events from showcase and
- * engagement; the like count is shown on the card, never used to order Discover.
+ * engagement, and the author's public profile (country, ranked specialties) from profile; the
+ * like count is shown on the card, never used to order Discover.
  */
 public record CatalogEntry(UUID showcaseId, String slug, String siteUrl, String repository, String repositoryUrl,
                            UUID ownerId, String ownerLogin, Instant publishedAt, String previewImageUrl, String previewVideoUrl,
-                           Integer repositoryStars, int likes) {
+                           Integer repositoryStars, int likes, String countryCode, List<String> specialties) {
+
+    /** An entry whose author's profile is not copied yet. */
+    public CatalogEntry(UUID showcaseId, String slug, String siteUrl, String repository, String repositoryUrl,
+                        UUID ownerId, String ownerLogin, Instant publishedAt, String previewImageUrl, String previewVideoUrl,
+                        Integer repositoryStars, int likes) {
+        this(showcaseId, slug, siteUrl, repository, repositoryUrl, ownerId, ownerLogin, publishedAt, previewImageUrl, previewVideoUrl,
+                repositoryStars, likes, null, List.of());
+    }
 
     /** An entry as first published: no like yet. */
     public CatalogEntry(UUID showcaseId, String slug, String siteUrl, String repository, String repositoryUrl,
@@ -38,5 +48,6 @@ public record CatalogEntry(UUID showcaseId, String slug, String siteUrl, String 
         Objects.requireNonNull(siteUrl, "siteUrl");
         Objects.requireNonNull(ownerId, "ownerId");
         Objects.requireNonNull(publishedAt, "publishedAt");
+        specialties = specialties == null ? List.of() : List.copyOf(specialties);
     }
 }
