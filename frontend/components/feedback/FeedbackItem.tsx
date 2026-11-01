@@ -12,11 +12,13 @@ interface FeedbackItemProps {
   locale: string;
   labels: FeedbackLabels;
   onRemoved: () => void;
+  /** Marked "new": written since the author last read their feedback. */
+  fresh?: string;
 }
 
 // Shown as written: member content is never translated in V1, so the language it was written
 // in is named when it differs from the page's.
-export function FeedbackItem({ item, locale, labels, onRemoved }: FeedbackItemProps) {
+export function FeedbackItem({ item, locale, labels, onRemoved, fresh }: FeedbackItemProps) {
   const [confirming, setConfirming] = useState(false);
   const removal = useMutation({
     mutationFn: async () => {
@@ -36,6 +38,7 @@ export function FeedbackItem({ item, locale, labels, onRemoved }: FeedbackItemPr
           <time dateTime={item.createdAt} className="text-ink-muted">
             {ageLabel(item.createdAt, locale, labels.justNow)}
           </time>
+          {fresh ? <span className="rounded-full bg-like px-2 py-0.5 text-xs font-semibold text-white">{fresh}</span> : null}
           {item.angle ? (
             <span className="rounded-full bg-accent-soft px-2 py-0.5 text-xs font-semibold text-accent-ink">{labels.angles[item.angle]}</span>
           ) : null}
