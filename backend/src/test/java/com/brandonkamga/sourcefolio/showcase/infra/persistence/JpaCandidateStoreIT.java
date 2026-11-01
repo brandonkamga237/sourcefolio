@@ -37,12 +37,13 @@ class JpaCandidateStoreIT extends PostgresIT {
     private EntityManager entityManager;
 
     @Test
-    @DisplayName("a scan is stored and read back with its candidates in order")
+    @DisplayName("a scan is stored and read back with its candidates and its repositories without a site, in order")
     void roundTrip() {
         UUID member = member();
         CandidateScan scan = new CandidateScan(NOW, List.of(
                 candidate("nekwalla.github.io", "https://nekwalla.github.io/", CandidateReason.USER_PAGES),
-                candidate("api", "https://api.example.org/", CandidateReason.HOMEPAGE)));
+                candidate("api", "https://api.example.org/", CandidateReason.HOMEPAGE)),
+                List.of(new RepositoryCoordinates("nekwalla", "portfolio-next"), new RepositoryCoordinates("nekwalla", "dotfiles")));
 
         candidates.replace(member, scan);
         entityManager.flush();
@@ -56,7 +57,8 @@ class JpaCandidateStoreIT extends PostgresIT {
     void replaceRemovesPreviousCandidates() {
         UUID member = member();
         candidates.replace(member, new CandidateScan(NOW, List.of(
-                candidate("site", "https://nekwalla.dev/", CandidateReason.NAMED_REPOSITORY))));
+                candidate("site", "https://nekwalla.dev/", CandidateReason.NAMED_REPOSITORY)),
+                List.of(new RepositoryCoordinates("nekwalla", "dotfiles"))));
         entityManager.flush();
 
         candidates.replace(member, new CandidateScan(NOW.plusSeconds(60), List.of()));
@@ -66,6 +68,7 @@ class JpaCandidateStoreIT extends PostgresIT {
         assertThat(candidates.find(member)).hasValueSatisfying(scan -> {
             assertThat(scan.scannedAt()).isEqualTo(NOW.plusSeconds(60));
             assertThat(scan.candidates()).isEmpty();
+            assertThat(scan.withoutSite()).isEmpty();
         });
     }
 
