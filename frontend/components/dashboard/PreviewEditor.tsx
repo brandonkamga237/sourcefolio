@@ -59,12 +59,8 @@ export function PreviewEditor({ hasImage, hasVideo, labels }: PreviewEditorProps
     { kind: "video", label: labels.videoLabel, hint: labels.videoHint, present: hasVideo },
   ];
 
-  return (
-    <section aria-labelledby="preview-editor" className="flex flex-col gap-3 rounded-card border border-line bg-surface p-4">
-      <div className="flex flex-col gap-0.5">
-        <h3 id="preview-editor" className="text-[15px] font-semibold">{labels.title}</h3>
-        <p className="text-[13px] leading-snug text-ink-muted">{labels.lead}</p>
-      </div>
+  const editor = (
+    <>
       <div className="grid gap-3 sm:grid-cols-2">
         {rows.map((row) => (
           <div key={row.kind} className="flex flex-col gap-2 rounded-control bg-surface-sunken p-3">
@@ -100,6 +96,33 @@ export function PreviewEditor({ hasImage, hasVideo, labels }: PreviewEditorProps
           {error}
         </p>
       ) : null}
+    </>
+  );
+
+  // Once the card has its image, changing it is occasional: folded under its title, so the
+  // portfolio and its actions keep the attention. Without one, it is the next thing to do.
+  if (hasImage) {
+    return (
+      <details className="group/preview rounded-card border border-line bg-surface [&_summary::-webkit-details-marker]:hidden">
+        <summary className="flex min-h-12 cursor-pointer list-none items-center justify-between gap-3 px-4 py-3 text-sm font-semibold select-none">
+          {labels.title}
+          <span aria-hidden="true" className="size-2 shrink-0 rotate-45 border-r-2 border-b-2 border-ink-muted transition-transform duration-200 group-open/preview:-rotate-135" />
+        </summary>
+        <div className="flex flex-col gap-3 border-t border-line-soft p-4">
+          <p className="text-[13px] leading-snug text-ink-muted">{labels.lead}</p>
+          {editor}
+        </div>
+      </details>
+    );
+  }
+
+  return (
+    <section aria-labelledby="preview-editor" className="flex flex-col gap-3 rounded-card border border-line bg-surface p-4">
+      <div className="flex flex-col gap-0.5">
+        <h3 id="preview-editor" className="text-[15px] font-semibold">{labels.title}</h3>
+        <p className="text-[13px] leading-snug text-ink-muted">{labels.lead}</p>
+      </div>
+      {editor}
     </section>
   );
 }
