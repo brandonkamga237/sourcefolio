@@ -15,6 +15,8 @@ export interface CatalogCard {
   previewVideoUrl: string | null;
   /** GitHub stars of the repository, null until read. Shown, never used to order. */
   repositoryStars: number | null;
+  /** Public like count, shown on the card; Discover never orders by it. */
+  likes: number;
 }
 
 export interface CatalogPage {
