@@ -3,6 +3,7 @@ package com.brandonkamga.sourcefolio.discovery.application;
 import com.brandonkamga.sourcefolio.discovery.domain.model.CatalogEntry;
 import com.brandonkamga.sourcefolio.discovery.domain.port.CatalogStore;
 import com.brandonkamga.sourcefolio.profile.application.ProfileDirectory;
+import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
 
@@ -40,8 +41,8 @@ public class CatalogProjectionImpl implements CatalogProjection {
     }
 
     @Override
-    public void updateRepositoryStars(UUID showcaseId, Integer stars) {
-        store.setRepositoryStars(showcaseId, stars);
+    public void updateRepository(UUID showcaseId, Integer stars, String description, List<String> languages, Instant pushedAt) {
+        store.setRepository(showcaseId, stars, description, languages, pushedAt);
     }
 
     @Override

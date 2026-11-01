@@ -7,7 +7,7 @@ import com.brandonkamga.sourcefolio.engagement.application.ShowcaseLikesChanged;
 import com.brandonkamga.sourcefolio.profile.application.ProfileChanged;
 import com.brandonkamga.sourcefolio.showcase.application.ShowcasePreviewChanged;
 import com.brandonkamga.sourcefolio.showcase.application.ShowcasePublished;
-import com.brandonkamga.sourcefolio.showcase.application.ShowcaseStarsChanged;
+import com.brandonkamga.sourcefolio.showcase.application.ShowcaseRepositoryChanged;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -59,11 +59,11 @@ class CatalogListeners {
     }
 
     @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT, fallbackExecution = true)
-    void on(ShowcaseStarsChanged event) {
+    void on(ShowcaseRepositoryChanged event) {
         try {
-            catalog.updateRepositoryStars(event.showcaseId(), event.stars());
+            catalog.updateRepository(event.showcaseId(), event.stars(), event.description(), event.languages(), event.pushedAt());
         } catch (RuntimeException failure) {
-            log.error("Repository stars of showcase {} not copied to the catalogue", event.showcaseId(), failure);
+            log.error("Repository facts of showcase {} not copied to the catalogue", event.showcaseId(), failure);
         }
     }
 

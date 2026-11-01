@@ -64,6 +64,17 @@ class CatalogEntryEntity {
     @Column(length = 80)
     private String headline;
 
+    @Column(name = "repository_description", length = 350)
+    private String repositoryDescription;
+
+    // VARCHAR(40)[] in the schema, largest share first.
+    @Column(name = "repository_languages", nullable = false, columnDefinition = "varchar(40)[]")
+    @JdbcTypeCode(SqlTypes.ARRAY)
+    private String[] repositoryLanguages = new String[0];
+
+    @Column(name = "repository_pushed_at")
+    private Instant repositoryPushedAt;
+
     protected CatalogEntryEntity() {
     }
 
@@ -82,4 +93,7 @@ class CatalogEntryEntity {
     String getCountryCode() { return countryCode; }
     String[] getSpecialties() { return specialties; }
     String getHeadline() { return headline; }
+    String getRepositoryDescription() { return repositoryDescription; }
+    String[] getRepositoryLanguages() { return repositoryLanguages; }
+    Instant getRepositoryPushedAt() { return repositoryPushedAt; }
 }

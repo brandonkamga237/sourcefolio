@@ -31,7 +31,7 @@ class RepositoryRefreshImplTest {
     private final ShowcasePublicationImplTest.InMemoryShowcaseStore showcases = new ShowcasePublicationImplTest.InMemoryShowcaseStore();
     private final Map<String, Integer> github = new HashMap<>();
     private final List<String> read = new ArrayList<>();
-    private final List<ShowcaseStarsChanged> announced = new ArrayList<>();
+    private final List<ShowcaseRepositoryChanged> announced = new ArrayList<>();
     private final RepositoryRefresh stars = new RepositoryRefreshImpl(showcases, new RepositoryHost() {
         @Override
         public List<PublicRepository> listPublicRepositories(String login) {
@@ -61,7 +61,7 @@ class RepositoryRefreshImplTest {
         }
 
         @Override
-        public void starsChanged(ShowcaseStarsChanged event) {
+        public void repositoryChanged(ShowcaseRepositoryChanged event) {
             announced.add(event);
         }
     }, Clock.fixed(NOW, ZoneOffset.UTC));
@@ -76,7 +76,9 @@ class RepositoryRefreshImplTest {
 
         assertThat(showcases.rows.get(showcase.id().value()).sourceRepo().stars()).isEqualTo(12);
         assertThat(showcases.rows.get(showcase.id().value()).sourceRepo().starsCheckedAt()).isEqualTo(NOW);
-        assertThat(announced).containsExactly(new ShowcaseStarsChanged(showcase.id().value(), 12));
+        assertThat(announced).containsExactly(
+                new ShowcaseRepositoryChanged(showcase.id().value(), 12, "A portfolio", List.of("TypeScript", "CSS"), PUSHED));
+        assertThat(showcases.rows.get(showcase.id().value()).sourceRepo().languages()).containsExactly("TypeScript", "CSS");
     }
 
     @Test
@@ -103,7 +105,7 @@ class RepositoryRefreshImplTest {
         stars.refresh(showcase.id().value());
 
         assertThat(showcases.rows.get(showcase.id().value()).sourceRepo().stars()).isNull();
-        assertThat(announced).extracting(ShowcaseStarsChanged::stars).containsExactly(12, null);
+        assertThat(announced).extracting(ShowcaseRepositoryChanged::stars).containsExactly(12, null);
     }
 
     @Test

@@ -77,11 +77,12 @@ class InMemoryCatalogStore implements CatalogStore {
     }
 
     @Override
-    public void setRepositoryStars(UUID showcaseId, Integer stars) {
+    public void setRepository(UUID showcaseId, Integer stars, String description, List<String> languages, Instant pushedAt) {
         CatalogEntry entry = rows.get(showcaseId);
         if (entry != null) {
             rows.put(showcaseId, new CatalogEntry(entry.showcaseId(), entry.slug(), entry.siteUrl(), entry.repository(), entry.repositoryUrl(),
-                    entry.ownerId(), entry.ownerLogin(), entry.publishedAt(), entry.previewImageUrl(), entry.previewVideoUrl(), stars));
+                    entry.ownerId(), entry.ownerLogin(), entry.publishedAt(), entry.previewImageUrl(), entry.previewVideoUrl(), stars,
+                    entry.likes(), entry.countryCode(), entry.specialties(), entry.headline(), description, languages, pushedAt));
         }
     }
 

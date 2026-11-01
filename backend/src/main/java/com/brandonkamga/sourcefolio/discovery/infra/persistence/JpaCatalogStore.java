@@ -57,8 +57,8 @@ class JpaCatalogStore implements CatalogStore {
 
     @Override
     @Transactional(propagation = Propagation.REQUIRES_NEW)
-    public void setRepositoryStars(UUID showcaseId, Integer stars) {
-        entries.setRepositoryStars(showcaseId, stars);
+    public void setRepository(UUID showcaseId, Integer stars, String description, List<String> languages, Instant pushedAt) {
+        entries.setRepository(showcaseId, stars, description, languages.toArray(String[]::new), pushedAt);
     }
 
     @Override
@@ -135,6 +135,7 @@ class JpaCatalogStore implements CatalogStore {
         return new CatalogEntry(row.getShowcaseId(), row.getSlug(), row.getSiteUrl(), row.getRepository(),
                 row.getRepositoryUrl(), row.getOwnerUserId(), row.getOwnerLogin(), row.getPublishedAt(),
                 row.getPreviewImageUrl(), row.getPreviewVideoUrl(), row.getRepositoryStars(), row.getLikeCount(),
-                row.getCountryCode(), List.of(row.getSpecialties()), row.getHeadline());
+                row.getCountryCode(), List.of(row.getSpecialties()), row.getHeadline(), row.getRepositoryDescription(),
+                List.of(row.getRepositoryLanguages()), row.getRepositoryPushedAt());
     }
 }

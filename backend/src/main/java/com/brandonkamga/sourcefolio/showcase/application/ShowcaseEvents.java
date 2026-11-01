@@ -9,5 +9,5 @@ public interface ShowcaseEvents {
 
     void showcaseRemoved(ShowcaseRemoved event);
 
-    void starsChanged(ShowcaseStarsChanged event);
+    void repositoryChanged(ShowcaseRepositoryChanged event);
 }

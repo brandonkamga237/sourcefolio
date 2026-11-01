@@ -3,13 +3,12 @@ package com.brandonkamga.sourcefolio.showcase.application;
 import com.brandonkamga.sourcefolio.showcase.domain.model.Showcase;
 import com.brandonkamga.sourcefolio.showcase.domain.model.RepositorySnapshot;
 import com.brandonkamga.sourcefolio.showcase.domain.model.ShowcaseId;
+import com.brandonkamga.sourcefolio.showcase.domain.model.SourceRepo;
 import com.brandonkamga.sourcefolio.showcase.domain.port.RepositoryHost;
 import com.brandonkamga.sourcefolio.showcase.domain.port.ShowcaseStore;
 import java.time.Clock;
 import java.time.Duration;
-import java.time.Instant;
 import java.util.List;
-import java.util.Objects;
 import java.util.UUID;
 
 public class RepositoryRefreshImpl implements RepositoryRefresh {
@@ -41,11 +40,14 @@ public class RepositoryRefreshImpl implements RepositoryRefresh {
             return;
         }
         RepositorySnapshot snapshot = repositories.snapshot(showcase.sourceRepo().coordinates()).orElse(null);
-        Integer stars = snapshot == null ? null : snapshot.stars();
-        Instant now = clock.instant();
-        showcases.saveRepositorySnapshot(showcase.id(), snapshot, now);
-        if (!Objects.equals(stars, showcase.sourceRepo().stars())) {
-            events.starsChanged(new ShowcaseStarsChanged(showcaseId, stars));
+        showcases.saveRepositorySnapshot(showcase.id(), snapshot, clock.instant());
+        ShowcaseRepositoryChanged now = snapshot == null
+                ? new ShowcaseRepositoryChanged(showcaseId, null, null, List.of(), null)
+                : new ShowcaseRepositoryChanged(showcaseId, snapshot.stars(), snapshot.description(), snapshot.languages(), snapshot.pushedAt());
+        SourceRepo before = showcase.sourceRepo();
+        // Announced only when something moved: most days a repository says the same thing.
+        if (!now.equals(new ShowcaseRepositoryChanged(showcaseId, before.stars(), before.description(), before.languages(), before.pushedAt()))) {
+            events.repositoryChanged(now);
         }
     }
 }

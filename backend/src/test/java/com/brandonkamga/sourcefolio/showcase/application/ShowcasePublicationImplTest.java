@@ -70,7 +70,7 @@ class ShowcasePublicationImplTest {
         }
 
         @Override
-        public void starsChanged(ShowcaseStarsChanged event) {
+        public void repositoryChanged(ShowcaseRepositoryChanged event) {
             throw new AssertionError("publishing reads no stars");
         }
     }, Clock.fixed(NOW, ZoneOffset.UTC));
