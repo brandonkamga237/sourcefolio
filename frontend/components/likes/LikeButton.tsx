@@ -89,7 +89,7 @@ export function LikeButton({ slug, labels, showCount }: LikeButtonProps) {
         aria-label={label}
         title={label}
         className={`flex h-[46px] min-w-[46px] items-center justify-center gap-1.5 rounded-control border px-3 text-sm font-semibold transition-[transform,background-color,border-color] duration-200 active:scale-95 disabled:cursor-not-allowed disabled:border-dashed disabled:text-ink-muted disabled:active:scale-100 ${
-          state.liked ? "border-accent bg-accent-soft text-accent-ink" : "border-line bg-surface text-ink"
+          state.liked ? "border-like/40 bg-like/10 text-like" : "border-line bg-surface text-ink hover:border-like/40 hover:text-like"
         }`}
       >
         {/* Pops when the reader fills it, not when a page opens on a heart already filled. */}
