@@ -2,10 +2,9 @@
 
 import Link from "next/link";
 import { Suspense } from "react";
-import { IconChevronLeft, IconChevronRight, IconClose, IconCode, IconExternal, IconGithub, IconHeart, IconStar } from "@/components/icons";
+import { IconChevronLeft, IconChevronRight, IconClose, IconCode, IconCopy, IconExternal, IconGithub, IconHeart, IconStar } from "@/components/icons";
 import { CopyAction } from "@/components/actions/CopyAction";
 import { ShareAction } from "@/components/actions/ShareAction";
-import { IconCopy } from "@/components/icons";
 import { compactNumber } from "@/lib/plural";
 import { LikeButton, type LikeButtonLabels } from "@/components/likes/LikeButton";
 import type { CatalogCard } from "@/services/catalog-types";
