@@ -57,30 +57,30 @@ export function CatalogSearch({ locale, facets, labels }: CatalogSearchProps) {
   return (
     <div role="search" className="flex w-full flex-col gap-2 sm:flex-row sm:items-center">
       <div className="flex gap-2 sm:contents">
-      <label className="relative flex min-w-0 flex-1 items-center">
-        <span className="sr-only">{labels.search}</span>
-        <IconSearch aria-hidden="true" className="pointer-events-none absolute left-3 size-[18px] text-ink-muted" />
-        <input
-          type="search"
-          value={text}
-          maxLength={60}
-          onChange={(event) => onText(event.target.value)}
-          placeholder={labels.search}
-          className={`${control} w-full pl-10`}
-        />
-      </label>
-      <button
-        type="button"
-        onClick={() => setOpen((value) => !value)}
-        aria-expanded={open}
-        className={`press flex h-11 shrink-0 items-center gap-1.5 rounded-control border px-3 text-sm font-semibold sm:hidden ${
-          active > 0 ? "border-ink bg-ink text-ink-inverse" : "border-line bg-surface text-ink"
-        }`}
-      >
-        <IconFilters aria-hidden="true" className="size-4" />
-        {labels.filters}
-        {active > 0 ? <span className="font-mono text-xs">{active}</span> : null}
-      </button>
+        <label className="relative flex min-w-0 flex-1 items-center">
+          <span className="sr-only">{labels.search}</span>
+          <IconSearch aria-hidden="true" className="pointer-events-none absolute left-3 size-[18px] text-ink-muted" />
+          <input
+            type="search"
+            value={text}
+            maxLength={60}
+            onChange={(event) => onText(event.target.value)}
+            placeholder={labels.search}
+            className={`${control} w-full pl-10`}
+          />
+        </label>
+        <button
+          type="button"
+          onClick={() => setOpen((value) => !value)}
+          aria-expanded={open}
+          className={`press flex h-11 shrink-0 items-center gap-1.5 rounded-control border px-3 text-sm font-semibold sm:hidden ${
+            active > 0 ? "border-ink bg-ink text-ink-inverse" : "border-line bg-surface text-ink"
+          }`}
+        >
+          <IconFilters aria-hidden="true" className="size-4" />
+          {labels.filters}
+          {active > 0 ? <span className="font-mono text-xs">{active}</span> : null}
+        </button>
       </div>
       <div className={`grid-cols-2 gap-2 sm:flex ${open ? "grid" : "hidden"}`}>
         <select
