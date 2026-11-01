@@ -3,6 +3,7 @@ package com.brandonkamga.sourcefolio.discovery.infra.persistence;
 import com.brandonkamga.sourcefolio.account.domain.model.User;
 import com.brandonkamga.sourcefolio.account.domain.port.UserStore;
 import com.brandonkamga.sourcefolio.discovery.domain.model.CatalogEntry;
+import com.brandonkamga.sourcefolio.discovery.domain.model.CatalogFacets;
 import com.brandonkamga.sourcefolio.discovery.domain.model.CatalogFilter;
 import com.brandonkamga.sourcefolio.discovery.domain.model.RankedEntry;
 import com.brandonkamga.sourcefolio.discovery.domain.model.RecentCursor;
@@ -203,6 +204,21 @@ class JpaCatalogStoreIT extends PostgresIT {
         assertThat(catalog.count(new CatalogFilter(null, "NG", "frontend"))).isEqualTo(1);
         assertThat(catalog.shuffled(DAY, false, NOW.plus(Duration.ofDays(1)), "", 10, new CatalogFilter(null, "CM", "cloud")))
                 .extracting(item -> item.entry().slug()).containsExactly("ada-filter");
+    }
+
+    @Test
+    @DisplayName("facets count countries and interests in SQL, most frequent first")
+    void facets() {
+        CatalogEntry ada = entry("ada-facets", NOW);
+        CatalogEntry bola = entry("bola-facets", NOW);
+        List.of(ada, bola).forEach(catalog::upsert);
+        catalog.setAuthorProfile(ada.ownerId(), "CM", List.of("backend", "cloud"), null);
+        catalog.setAuthorProfile(bola.ownerId(), "CM", List.of("backend"), null);
+
+        CatalogFacets facets = catalog.facets();
+
+        assertThat(facets.countries()).contains(new CatalogFacets.Facet("CM", 2));
+        assertThat(facets.specialties()).startsWith(new CatalogFacets.Facet("backend", 2)).contains(new CatalogFacets.Facet("cloud", 1));
     }
 
     @Test

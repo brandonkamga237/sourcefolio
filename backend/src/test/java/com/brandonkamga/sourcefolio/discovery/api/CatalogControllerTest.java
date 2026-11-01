@@ -2,6 +2,7 @@ package com.brandonkamga.sourcefolio.discovery.api;
 
 import com.brandonkamga.sourcefolio.discovery.application.Catalog;
 import com.brandonkamga.sourcefolio.discovery.domain.model.CatalogEntry;
+import com.brandonkamga.sourcefolio.discovery.domain.model.CatalogFacets;
 import com.brandonkamga.sourcefolio.discovery.domain.model.CatalogFilter;
 import com.brandonkamga.sourcefolio.discovery.domain.model.CatalogPage;
 import com.brandonkamga.sourcefolio.discovery.domain.model.RankedEntry;
@@ -56,6 +57,19 @@ class CatalogControllerTest {
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.code").value("BAD_REQUEST"));
         verifyNoInteractions(catalog);
+    }
+
+    @Test
+    @DisplayName("a visitor gets the countries and interests to filter by, with their counts")
+    void facets() throws Exception {
+        when(catalog.findFacets()).thenReturn(new CatalogFacets(List.of(new CatalogFacets.Facet("CM", 3)),
+                List.of(new CatalogFacets.Facet("backend", 2))));
+
+        mvc.perform(get("/api/catalog/facets"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.countries[0].value").value("CM"))
+                .andExpect(jsonPath("$.countries[0].count").value(3))
+                .andExpect(jsonPath("$.specialties[0].value").value("backend"));
     }
 
     @Test

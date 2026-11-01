@@ -1,6 +1,7 @@
 package com.brandonkamga.sourcefolio.discovery.application;
 
 import com.brandonkamga.sourcefolio.discovery.domain.model.CatalogEntry;
+import com.brandonkamga.sourcefolio.discovery.domain.model.CatalogFacets;
 import com.brandonkamga.sourcefolio.discovery.domain.model.CatalogFilter;
 import com.brandonkamga.sourcefolio.discovery.domain.model.CatalogPage;
 import org.junit.jupiter.api.DisplayName;
@@ -166,6 +167,21 @@ class CatalogImplTest {
         } while (cursor != null);
 
         assertThat(seen).hasSize(9).doesNotHaveDuplicates().allMatch(slug -> slug.startsWith("sn"));
+    }
+
+    @Test
+    @DisplayName("the filters offer the countries and interests present, most frequent first")
+    void facets() {
+        profiled(add("ada", NOW), "CM", List.of("backend", "cloud"), null);
+        profiled(add("bola", NOW), "NG", List.of("frontend", "backend"), null);
+        profiled(add("chidi", NOW), "CM", List.of("frontend"), null);
+        add("dayo", NOW);
+
+        CatalogFacets facets = catalog().findFacets();
+
+        assertThat(facets.countries()).containsExactly(new CatalogFacets.Facet("CM", 2), new CatalogFacets.Facet("NG", 1));
+        assertThat(facets.specialties()).containsExactly(new CatalogFacets.Facet("backend", 2), new CatalogFacets.Facet("frontend", 2),
+                new CatalogFacets.Facet("cloud", 1));
     }
 
     private void profiled(CatalogEntry entry, String country, List<String> interests, String headline) {
