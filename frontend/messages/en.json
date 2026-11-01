@@ -304,6 +304,13 @@
       "days": "days online",
       "publicProfile": "My public profile",
       "noCountry": "Country not given"
+    },
+    "received": {
+      "title": "Feedback received",
+      "empty": "No feedback yet. Share your link: visitors can tell you what works and what could work better.",
+      "fresh": "New",
+      "unreadOne": "{count} new",
+      "unreadOther": "{count} new"
     }
   },
   "ranking": {
