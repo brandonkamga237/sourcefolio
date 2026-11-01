@@ -98,6 +98,6 @@ class JpaCatalogStore implements CatalogStore {
     private static CatalogEntry toDomain(CatalogEntryEntity row) {
         return new CatalogEntry(row.getShowcaseId(), row.getSlug(), row.getSiteUrl(), row.getRepository(),
                 row.getRepositoryUrl(), row.getOwnerUserId(), row.getOwnerLogin(), row.getPublishedAt(),
-                row.getPreviewImageUrl(), row.getPreviewVideoUrl(), row.getRepositoryStars());
+                row.getPreviewImageUrl(), row.getPreviewVideoUrl(), row.getRepositoryStars(), row.getLikeCount());
     }
 }
