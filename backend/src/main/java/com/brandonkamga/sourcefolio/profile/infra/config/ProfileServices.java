@@ -2,6 +2,8 @@ package com.brandonkamga.sourcefolio.profile.infra.config;
 
 import com.brandonkamga.sourcefolio.profile.application.ProfileCompletion;
 import com.brandonkamga.sourcefolio.profile.application.ProfileCompletionImpl;
+import com.brandonkamga.sourcefolio.profile.application.ProfileDirectory;
+import com.brandonkamga.sourcefolio.profile.application.ProfileDirectoryImpl;
 import com.brandonkamga.sourcefolio.profile.application.ProfileEvents;
 import com.brandonkamga.sourcefolio.profile.domain.port.ProfileStore;
 import com.brandonkamga.sourcefolio.shared.config.TransactionalServices;
@@ -15,5 +17,10 @@ class ProfileServices {
     @Bean
     ProfileCompletion profileCompletion(ProfileStore profiles, ProfileEvents events, Clock clock, TransactionalServices transactional) {
         return transactional.wrap(ProfileCompletion.class, new ProfileCompletionImpl(profiles, events, clock));
+    }
+
+    @Bean
+    ProfileDirectory profileDirectory(ProfileStore profiles, TransactionalServices transactional) {
+        return transactional.wrap(ProfileDirectory.class, new ProfileDirectoryImpl(profiles));
     }
 }
