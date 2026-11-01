@@ -39,12 +39,18 @@ interface ShowcasePanelProps {
   onClose: () => void;
 }
 
+const entrance = {
+  next: "animate-[slide-from-right_260ms_var(--ease-out-soft)]",
+  prev: "animate-[slide-from-left_260ms_var(--ease-out-soft)]",
+  none: "animate-rise",
+};
+
 const navButton =
   "press flex size-11 items-center justify-center rounded-full text-ink transition-colors duration-150 hover:bg-surface-sunken disabled:pointer-events-none disabled:text-line";
 
 // The showcase opened beside the catalogue on a wide screen (spec), so browsing goes on without
 // losing the place in the feed. External sites open in a new tab.
-export function ShowcasePanel({ card, position, onPrev, onNext, href, locale, labels, onClose }: ShowcasePanelProps) {
+export function ShowcasePanel({ card, position, direction, onPrev, onNext, href, locale, labels, onClose }: ShowcasePanelProps) {
   const published = new Intl.DateTimeFormat(locale, { dateStyle: "long" }).format(new Date(card.publishedAt));
   return (
     <section aria-labelledby="panel-name" className="overflow-hidden rounded-panel border border-line bg-surface shadow-[0_18px_44px_-28px_rgba(18,20,18,0.45)]">
@@ -66,8 +72,9 @@ export function ShowcasePanel({ card, position, onPrev, onNext, href, locale, la
         </button>
       </div>
 
-      {/* Keyed on the card, so the content plays its entrance again on each switch. */}
-      <div key={card.slug} className="animate-rise">
+      {/* Keyed on the card, so the content enters again on each switch: from the side the reader
+          moved towards, or rising when a card was picked in the grid. */}
+      <div key={card.slug} className={entrance[direction]}>
       <Preview
         slug={card.slug}
         siteUrl={card.siteUrl}

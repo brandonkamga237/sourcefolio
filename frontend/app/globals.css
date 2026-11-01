@@ -152,6 +152,20 @@
     }
   }
 
+  @keyframes slide-from-right {
+    from {
+      opacity: 0;
+      transform: translateX(28px);
+    }
+  }
+
+  @keyframes slide-from-left {
+    from {
+      opacity: 0;
+      transform: translateX(-28px);
+    }
+  }
+
   @keyframes pop {
     40% {
       transform: scale(1.22);
