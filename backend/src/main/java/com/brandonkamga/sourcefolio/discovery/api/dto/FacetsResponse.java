@@ -3,8 +3,8 @@ package com.brandonkamga.sourcefolio.discovery.api.dto;
 import com.brandonkamga.sourcefolio.discovery.domain.model.CatalogFacets;
 import java.util.List;
 
-/** Country codes, which the frontend translates, and GitHub language names, with their counts. */
-public record FacetsResponse(List<Facet> countries, List<Facet> languages) {
+/** Country codes and role slugs, which the frontend translates, and GitHub language names, with their counts. */
+public record FacetsResponse(List<Facet> countries, List<Facet> languages, List<Facet> roles) {
 
     public record Facet(String value, long count) {
 
@@ -14,6 +14,7 @@ public record FacetsResponse(List<Facet> countries, List<Facet> languages) {
     }
 
     public static FacetsResponse of(CatalogFacets facets) {
-        return new FacetsResponse(facets.countries().stream().map(Facet::of).toList(), facets.languages().stream().map(Facet::of).toList());
+        return new FacetsResponse(facets.countries().stream().map(Facet::of).toList(), facets.languages().stream().map(Facet::of).toList(),
+                facets.roles().stream().map(Facet::of).toList());
     }
 }

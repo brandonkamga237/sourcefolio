@@ -30,6 +30,9 @@ class DeveloperProfileEntity {
     @Column(length = 80)
     private String headline;
 
+    @Column(length = 20)
+    private String role;
+
     @Column(name = "updated_at", nullable = false)
     private Instant updatedAt;
 
@@ -40,10 +43,11 @@ class DeveloperProfileEntity {
         this.memberId = memberId;
     }
 
-    void update(String countryCode, String[] specialties, String headline, Instant updatedAt) {
+    void update(String countryCode, String[] specialties, String headline, String role, Instant updatedAt) {
         this.countryCode = countryCode;
         this.specialties = specialties;
         this.headline = headline;
+        this.role = role;
         this.updatedAt = updatedAt;
     }
 
@@ -51,5 +55,6 @@ class DeveloperProfileEntity {
     String getCountryCode() { return countryCode; }
     String[] getSpecialties() { return specialties; }
     String getHeadline() { return headline; }
+    String getRole() { return role; }
     Instant getUpdatedAt() { return updatedAt; }
 }

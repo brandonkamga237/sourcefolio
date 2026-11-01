@@ -64,6 +64,9 @@ class CatalogEntryEntity {
     @Column(length = 80)
     private String headline;
 
+    @Column(name = "author_role", length = 20)
+    private String authorRole;
+
     @Column(name = "repository_description", length = 350)
     private String repositoryDescription;
 
@@ -93,6 +96,7 @@ class CatalogEntryEntity {
     String getCountryCode() { return countryCode; }
     String[] getSpecialties() { return specialties; }
     String getHeadline() { return headline; }
+    String getAuthorRole() { return authorRole; }
     String getRepositoryDescription() { return repositoryDescription; }
     String[] getRepositoryLanguages() { return repositoryLanguages; }
     Instant getRepositoryPushedAt() { return repositoryPushedAt; }

@@ -16,6 +16,11 @@ export function answerHeadline(headline: string | null): Promise<ClientResult<Pr
   return clientPut<Profile>("/api/me/profile/headline", { headline });
 }
 
+/** A role slug; null removes it. */
+export function answerRole(role: string | null): Promise<ClientResult<Profile>> {
+  return clientPut<Profile>("/api/me/profile/role", { role });
+}
+
 /** null or blank removes the address. */
 export function saveEmail(email: string | null): Promise<ClientResult<{ email: string | null }>> {
   return clientPut<{ email: string | null }>("/api/me/email", { email });

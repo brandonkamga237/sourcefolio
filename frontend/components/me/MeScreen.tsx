@@ -71,6 +71,7 @@ export async function MeScreen({ locale }: MeScreenProps) {
   const countryName = answers?.country ? countryOptions(locale).find((option) => option.code === answers.country)?.name : null;
   const profileRows = [
     { label: t("profile.headlineLabel"), value: answers?.headline ?? null },
+    { label: t("profile.roleLabel"), value: answers?.role ? t(`role.${answers.role}`) : null },
     { label: t("profile.countryLabel"), value: countryName ?? null },
     {
       label: t("profile.specialtyLabel"),

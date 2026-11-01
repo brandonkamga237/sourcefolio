@@ -17,4 +17,7 @@ public interface ProfileCompletion {
 
     /** The member's own line; blank or null removes it. */
     DeveloperProfile answerHeadline(UUID memberId, String headline);
+
+    /** The one role the member says they work in, as a slug; blank or null removes it. */
+    DeveloperProfile answerRole(UUID memberId, String roleSlug);
 }

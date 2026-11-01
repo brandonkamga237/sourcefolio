@@ -3,6 +3,7 @@ package com.brandonkamga.sourcefolio.profile.application;
 import com.brandonkamga.sourcefolio.profile.domain.model.CountryCode;
 import com.brandonkamga.sourcefolio.profile.domain.model.DeveloperProfile;
 import com.brandonkamga.sourcefolio.profile.domain.model.Headline;
+import com.brandonkamga.sourcefolio.profile.domain.model.Role;
 import com.brandonkamga.sourcefolio.profile.domain.model.Specialties;
 import com.brandonkamga.sourcefolio.profile.domain.model.Specialty;
 import com.brandonkamga.sourcefolio.profile.domain.port.ProfileStore;
@@ -58,11 +59,21 @@ public class ProfileCompletionImpl implements ProfileCompletion {
         return saveAndAnnounce(findMyProfile(memberId).withHeadline(parsed, clock.instant()));
     }
 
-    // Cards and member popups show the country and specialties: the catalogue keeps a copy.
+    @Override
+    public DeveloperProfile answerRole(UUID memberId, String roleSlug) {
+        Role role = roleSlug == null || roleSlug.isBlank()
+                ? null
+                : Role.fromSlug(roleSlug.strip()).orElseThrow(() -> new BadRequestException("profile.role-invalid"));
+        return saveAndAnnounce(findMyProfile(memberId).withRole(role, clock.instant()));
+    }
+
+    // Cards and member popups show the profile, Discover filters on the country and the role:
+    // the catalogue keeps a copy.
     private DeveloperProfile saveAndAnnounce(DeveloperProfile profile) {
         DeveloperProfile saved = profiles.save(profile);
         events.profileChanged(new ProfileChanged(saved.memberId(), saved.country() == null ? null : saved.country().value(),
-                saved.specialties().slugs(), saved.headline() == null ? null : saved.headline().value()));
+                saved.specialties().slugs(), saved.headline() == null ? null : saved.headline().value(),
+                saved.role() == null ? null : saved.role().slug()));
         return saved;
     }
 }

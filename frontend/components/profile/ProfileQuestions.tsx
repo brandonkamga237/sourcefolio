@@ -3,10 +3,10 @@
 import Link from "next/link";
 import { useState, type FormEvent } from "react";
 import type { MyAnswers } from "@/services/profile";
-import { MAX_HEADLINE, MAX_SPECIALTIES, SPECIALTIES, SPECIALTY_GROUPS, type Specialty, type SpecialtyGroup } from "@/services/profile-types";
-import { answerCountry, answerHeadline, answerSpecialties, saveEmail } from "@/services/profile-answers";
+import { MAX_HEADLINE, MAX_SPECIALTIES, ROLES, SPECIALTIES, SPECIALTY_GROUPS, type Role, type Specialty, type SpecialtyGroup } from "@/services/profile-types";
+import { answerCountry, answerHeadline, answerRole, answerSpecialties, saveEmail } from "@/services/profile-answers";
 
-type Step = "headline" | "country" | "specialty" | "email";
+type Step = "headline" | "role" | "country" | "specialty" | "email";
 
 export interface ProfileQuestionsLabels {
   /** Contains {current} and {total}. */
@@ -17,6 +17,10 @@ export interface ProfileQuestionsLabels {
   /** Contains {count} and {max}. */
   headlineCounter: string;
   headlineLabel: string;
+  roleTitle: string;
+  roleHint: string;
+  roleLabel: string;
+  roles: Record<Role, string>;
   countryTitle: string;
   countryPlaceholder: string;
   specialtyTitle: string;
@@ -52,11 +56,12 @@ interface ProfileQuestionsProps {
 }
 
 // The spec's rule: a question already answered is never asked again. The first run asks what
-// is missing, the headline first (it is what people read under the name), the email last; both
-// can be skipped. Afterwards each answer is changed from the summary.
+// is missing, the headline first (it is what people read under the name), then the role, the
+// email last; those three can be skipped. Afterwards each answer is changed from the summary.
 function firstRun(answers: MyAnswers): Step[] {
   const missing: Step[] = [];
   if (!answers.headline) missing.push("headline");
+  if (!answers.role) missing.push("role");
   if (!answers.country) missing.push("country");
   if (answers.specialties.length === 0) missing.push("specialty");
   if (missing.length > 0 && !answers.email) missing.push("email");
@@ -80,6 +85,7 @@ export function ProfileQuestions({ initial, countries, labels, doneHref }: Profi
   const [email, setEmail] = useState(initial.email ?? "");
   const [headline, setHeadline] = useState(initial.headline ?? "");
   const [picked, setPicked] = useState<Specialty[]>(initial.specialties);
+  const [role, setRole] = useState<Role | null>(initial.role);
   const [query, setQuery] = useState("");
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -116,6 +122,11 @@ export function ProfileQuestions({ initial, countries, labels, doneHref }: Profi
     void save(() => answerHeadline(value), () => setAnswers((current) => ({ ...current, headline: value })));
   }
 
+  function submitRole(event: FormEvent) {
+    event.preventDefault();
+    void save(() => answerRole(role), () => setAnswers((current) => ({ ...current, role })));
+  }
+
   function submitCountry(event: FormEvent) {
     event.preventDefault();
     if (country) void save(() => answerCountry(country), () => setAnswers((current) => ({ ...current, country })));
@@ -149,6 +160,7 @@ export function ProfileQuestions({ initial, countries, labels, doneHref }: Profi
     const countryName = countries.find((option) => option.code === answers.country)?.name;
     const rows: { step: Step; label: string; value: string | null }[] = [
       { step: "headline", label: labels.headlineLabel, value: answers.headline },
+      { step: "role", label: labels.roleLabel, value: answers.role ? labels.roles[answers.role] : null },
       { step: "country", label: labels.countryLabel, value: countryName ?? null },
       {
         step: "specialty",
@@ -227,6 +239,38 @@ export function ProfileQuestions({ initial, countries, labels, doneHref }: Profi
             {saving ? labels.saving : labels.next}
           </button>
           <button type="button" onClick={advance} disabled={saving} className="flex h-11 items-center justify-center text-sm font-semibold text-ink">
+            {labels.skip}
+          </button>
+        </form>
+      ) : null}
+
+      {step === "role" ? (
+        <form onSubmit={submitRole} className="flex flex-col gap-4">
+          <fieldset className="flex flex-col gap-3">
+            <legend className="mb-1 font-display text-[26px] leading-tight font-bold tracking-[-0.03em]">{labels.roleTitle}</legend>
+            <p className="text-sm leading-normal text-ink-body">{labels.roleHint}</p>
+            {/* One at most: a second tap on the chosen role clears it. */}
+            <div role="radiogroup" aria-label={labels.roleTitle} className="flex flex-wrap gap-2">
+              {ROLES.map((option) => (
+                <button
+                  key={option}
+                  type="button"
+                  role="radio"
+                  aria-checked={role === option}
+                  onClick={() => setRole(role === option ? null : option)}
+                  className={`press h-11 rounded-full px-4 text-[15px] font-semibold transition-colors duration-150 ${
+                    role === option ? "bg-ink text-canvas" : "border border-line bg-surface text-ink hover:border-ink-muted"
+                  }`}
+                >
+                  {labels.roles[option]}
+                </button>
+              ))}
+            </div>
+          </fieldset>
+          <button type="submit" disabled={saving || (!role && !answers.role)} className={primaryButton}>
+            {saving ? labels.saving : labels.next}
+          </button>
+          <button type="button" onClick={advance} disabled={saving} className="press flex h-11 items-center justify-center text-sm font-semibold text-ink">
             {labels.skip}
           </button>
         </form>
