@@ -82,15 +82,15 @@ class ProfileControllerTest {
     }
 
     @Test
-    @DisplayName("a fourth specialty is a 400 in the member's language")
+    @DisplayName("a fifth interest is a 400 in the member's language")
     void tooManySpecialties() throws Exception {
-        when(profiles.answerSpecialties(MEMBER, List.of("backend", "devops", "frontend", "mobile")))
+        when(profiles.answerSpecialties(MEMBER, List.of("backend", "devops", "frontend", "mobile", "cloud")))
                 .thenThrow(new BadRequestException("profile.specialties-invalid"));
 
         mvc.perform(put("/api/me/profile/specialties").with(member()).with(csrf()).header("Accept-Language", "fr")
-                        .contentType(MediaType.APPLICATION_JSON).content("{\"specialties\":[\"backend\",\"devops\",\"frontend\",\"mobile\"]}"))
+                        .contentType(MediaType.APPLICATION_JSON).content("{\"specialties\":[\"backend\",\"devops\",\"frontend\",\"mobile\",\"cloud\"]}"))
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.message").value("Choisis une à trois spécialités différentes."));
+                .andExpect(jsonPath("$.message").value("Choisis un à quatre domaines différents."));
     }
 
     @Test

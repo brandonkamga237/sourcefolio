@@ -27,27 +27,28 @@ class ProfileValuesTest {
     }
 
     @Test
-    @DisplayName("the ten specialties of the spec are read from their slugs, and nothing else")
+    @DisplayName("the fifty interests are read from their slugs, and nothing else")
     void specialties() {
-        assertThat(Specialty.values()).hasSize(10);
+        assertThat(Specialty.values()).hasSize(50);
+        assertThat(Specialty.fromSlug("generative-ai")).contains(Specialty.GENERATIVE_AI);
         assertThat(Specialty.fromSlug("data-ai")).contains(Specialty.DATA_AI);
         assertThat(Specialty.fromSlug("DATA_AI")).isEmpty();
         assertThat(Specialty.fromSlug("wizard")).isEmpty();
     }
 
     @Test
-    @DisplayName("up to three specialties keep the member's order")
+    @DisplayName("up to four interests keep the member's order")
     void rankedSpecialties() {
-        Specialties ranked = new Specialties(List.of(Specialty.BACKEND, Specialty.DEVOPS, Specialty.FRONTEND));
+        Specialties ranked = new Specialties(List.of(Specialty.BACKEND, Specialty.DEVOPS, Specialty.FRONTEND, Specialty.CLOUD));
 
-        assertThat(ranked.slugs()).containsExactly("backend", "devops", "frontend");
+        assertThat(ranked.slugs()).containsExactly("backend", "devops", "frontend", "cloud");
         assertThat(Specialties.none().isEmpty()).isTrue();
     }
 
     @Test
-    @DisplayName("a fourth specialty, or one named twice, is refused")
+    @DisplayName("a fifth interest, or one named twice, is refused")
     void rankedSpecialtiesRefused() {
-        assertThatThrownBy(() -> new Specialties(List.of(Specialty.BACKEND, Specialty.DEVOPS, Specialty.FRONTEND, Specialty.MOBILE)))
+        assertThatThrownBy(() -> new Specialties(List.of(Specialty.BACKEND, Specialty.DEVOPS, Specialty.FRONTEND, Specialty.MOBILE, Specialty.CLOUD)))
                 .isInstanceOf(IllegalArgumentException.class);
         assertThatThrownBy(() -> new Specialties(List.of(Specialty.BACKEND, Specialty.BACKEND)))
                 .isInstanceOf(IllegalArgumentException.class);

@@ -76,17 +76,17 @@ class ProfileCompletionImplTest {
     @DisplayName("ranked specialties keep the member's order and replace the earlier answer")
     void rankedSpecialties() {
         profiles.answerSpecialties(MEMBER, List.of("mobile"));
-        profiles.answerSpecialties(MEMBER, List.of("backend", "devops", "frontend"));
+        profiles.answerSpecialties(MEMBER, List.of("backend", "devops", "frontend", "open-source"));
 
-        assertThat(rows.get(MEMBER).specialties().slugs()).containsExactly("backend", "devops", "frontend");
+        assertThat(rows.get(MEMBER).specialties().slugs()).containsExactly("backend", "devops", "frontend", "open-source");
     }
 
     @Test
-    @DisplayName("none, more than three, or the same specialty twice is refused and changes nothing")
+    @DisplayName("none, more than four, or the same interest twice is refused and changes nothing")
     void rankedSpecialtiesRefused() {
         profiles.answerSpecialties(MEMBER, List.of("mobile"));
 
-        for (List<String> answer : List.of(List.<String>of(), List.of("backend", "devops", "frontend", "mobile"), List.of("backend", "backend"))) {
+        for (List<String> answer : List.of(List.<String>of(), List.of("backend", "devops", "frontend", "mobile", "cloud"), List.of("backend", "backend"))) {
             assertThatThrownBy(() -> profiles.answerSpecialties(MEMBER, answer))
                     .isInstanceOf(AppException.class)
                     .extracting(thrown -> ((AppException) thrown).messageKey()).isEqualTo("profile.specialties-invalid");
