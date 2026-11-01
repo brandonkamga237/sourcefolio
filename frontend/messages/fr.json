@@ -153,13 +153,13 @@
       "next": "Portfolio suivant (flèche droite)",
       "position": "{current} sur {total}",
       "statLikes": "appréciations",
-      "statStars": "étoiles",
+      "statStars": "étoiles GitHub",
       "statPublished": "publié",
       "share": "Partager",
       "shareTitle": "Le portfolio de {login} sur SourceFolio",
-      "clone": "Copier git clone",
+      "clone": "git clone",
       "copied": "Copié",
-      "githubProfile": "Profil GitHub"
+      "githubProfile": "GitHub"
     },
     "feedTitle": "Les portfolios",
     "recentTitle": "Les derniers publiés",

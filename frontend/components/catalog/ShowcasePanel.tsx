@@ -68,8 +68,8 @@ const entrance = {
   none: "animate-rise",
 };
 
-const tileAction =
-  "press flex min-h-[60px] flex-col items-center justify-center gap-1 rounded-control bg-surface-sunken px-1 text-center text-[11px] leading-tight font-semibold text-ink transition-colors duration-150 hover:bg-line-soft";
+const toolAction =
+  "press flex h-16 flex-col items-center justify-center gap-1.5 rounded-control border border-line-soft px-1 text-center text-xs leading-tight font-medium text-ink transition-colors duration-150 hover:border-line hover:bg-surface-raised";
 
 const navButton =
   "press flex size-11 items-center justify-center rounded-full text-ink transition-colors duration-150 hover:bg-surface-sunken disabled:pointer-events-none disabled:text-line";
@@ -136,83 +136,66 @@ export function ShowcasePanel({ card, position, direction, onPrev, onNext, href,
           </span>
         </MemberSheet>
 
-        {/* The numbers a visitor weighs first, side by side. */}
-        <dl className="grid grid-cols-3 divide-x divide-line-soft rounded-control border border-line-soft bg-surface-raised">
-          <div className="flex flex-col items-center gap-0.5 px-2 py-2.5">
-            <dt className="order-2 text-[11px] text-ink-muted">{labels.stats.likes}</dt>
-            <dd className="order-1 flex items-center gap-1 font-mono text-base font-semibold tabular-nums">
-              <IconHeart aria-hidden="true" className={`size-4 ${card.likes > 0 ? "fill-accent text-accent" : "text-ink-muted"}`} />
-              {compactNumber(card.likes, locale)}
-            </dd>
-          </div>
-          <div className="flex flex-col items-center gap-0.5 px-2 py-2.5">
-            <dt className="order-2 flex items-center gap-1 text-[11px] text-ink-muted">
-              <IconGithub aria-hidden="true" className="size-3" />
-              {labels.stats.stars}
-            </dt>
-            <dd className="order-1 flex items-center gap-1 font-mono text-base font-semibold tabular-nums">
-              <IconStar aria-hidden="true" className="size-4 fill-accent text-accent" />
-              {card.repositoryStars != null ? compactNumber(card.repositoryStars, locale) : "–"}
-            </dd>
-          </div>
-          <div className="flex flex-col items-center gap-0.5 px-2 py-2.5">
-            <dt className="order-2 text-[11px] text-ink-muted">{labels.stats.published}</dt>
-            <dd className="order-1 text-sm font-semibold" title={labels.publishedOn.replace("{date}", published)} suppressHydrationWarning>
-              {sinceLabel(card.publishedAt, locale)}
-            </dd>
-          </div>
-        </dl>
+        {/* The numbers, said in words: what a heart and a star count is never left to guess. */}
+        <p className="flex flex-wrap items-center gap-x-3 gap-y-1 text-[13px] text-ink-muted">
+          <span className="flex items-center gap-1">
+            <IconHeart aria-hidden="true" className={`size-3.5 ${card.likes > 0 ? "fill-accent text-accent" : ""}`} />
+            <span className="font-semibold text-ink tabular-nums">{compactNumber(card.likes, locale)}</span> {labels.stats.likes}
+          </span>
+          {card.repositoryStars != null ? (
+            <span className="flex items-center gap-1">
+              <IconStar aria-hidden="true" className="size-3.5 fill-accent text-accent" />
+              <span className="font-semibold text-ink tabular-nums">{compactNumber(card.repositoryStars, locale)}</span> {labels.stats.stars}
+            </span>
+          ) : null}
+          <span title={labels.publishedOn.replace("{date}", published)} suppressHydrationWarning>
+            {sinceLabel(card.publishedAt, locale)}
+          </span>
+        </p>
 
+        {/* One main action, the site; the like next to it, since it answers what one just saw. */}
         <div className="flex gap-2">
           <a
             href={card.siteUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="press flex h-[46px] flex-1 items-center justify-center gap-1.5 rounded-control bg-accent text-sm font-semibold text-white transition-colors duration-150 hover:bg-accent-hover"
+            className="press flex h-12 flex-1 items-center justify-center gap-1.5 rounded-control bg-accent text-[15px] font-semibold text-white transition-colors duration-150 hover:bg-accent-hover"
           >
             {labels.visitSite}
             <IconExternal className="size-4" />
           </a>
-          <a
-            href={card.repositoryUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="press flex h-[46px] items-center gap-1.5 rounded-control border border-ink px-4 text-sm font-semibold text-ink transition-colors duration-150 hover:bg-ink hover:text-ink-inverse"
-          >
-            <IconCode className="size-4" />
-            {labels.viewCode}
-          </a>
-          <Suspense fallback={<div className="size-[46px] rounded-control border border-line" />}>
+          <Suspense fallback={<div className="size-12 rounded-control border border-line" />}>
             <LikeButton key={card.slug} slug={card.slug} labels={labels.likes} showCount />
           </Suspense>
         </div>
 
-        {/* Everything else a visitor may want to do with this portfolio, one tap each. */}
-        <div className="grid grid-cols-3 gap-2">
+        {/* The rest, one row of equal, light buttons, each named. */}
+        <div className="grid grid-cols-4 gap-1.5">
+          <a href={card.repositoryUrl} target="_blank" rel="noopener noreferrer" className={toolAction}>
+            <IconCode aria-hidden="true" className="size-[18px]" />
+            <span>{labels.viewCode}</span>
+          </a>
           <ShareAction
             path={href}
             title={labels.shareTitle.replace("{login}", card.ownerLogin)}
             label={labels.share}
             copiedLabel={labels.copied}
-            className={tileAction}
+            className={toolAction}
           />
           <CopyAction
             text={`git clone ${card.repositoryUrl}.git`}
             label={labels.clone}
             copiedLabel={labels.copied}
-            icon={<IconCopy aria-hidden="true" className="size-4" />}
-            className={tileAction}
+            icon={<IconCopy aria-hidden="true" className="size-[18px]" />}
+            className={toolAction}
           />
-          <a href={`https://github.com/${card.ownerLogin}`} target="_blank" rel="noopener noreferrer" className={tileAction}>
-            <IconGithub aria-hidden="true" className="size-4" />
+          <a href={`https://github.com/${card.ownerLogin}`} target="_blank" rel="noopener noreferrer" className={toolAction}>
+            <IconGithub aria-hidden="true" className="size-[18px]" />
             <span>{labels.githubProfile}</span>
           </a>
         </div>
 
-        <Link
-          href={href}
-          className="press flex h-11 items-center justify-center rounded-control border border-line text-sm font-semibold text-ink transition-colors duration-150 hover:border-ink"
-        >
+        <Link href={href} className="press -my-1 flex h-11 items-center justify-center gap-1 text-sm font-semibold text-accent-ink hover:underline">
           {labels.openPage}
         </Link>
       </div>

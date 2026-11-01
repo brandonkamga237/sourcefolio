@@ -153,13 +153,13 @@
       "next": "Next portfolio (right arrow)",
       "position": "{current} of {total}",
       "statLikes": "likes",
-      "statStars": "stars",
+      "statStars": "GitHub stars",
       "statPublished": "published",
       "share": "Share",
       "shareTitle": "{login}’s portfolio on SourceFolio",
-      "clone": "Copy git clone",
+      "clone": "git clone",
       "copied": "Copied",
-      "githubProfile": "GitHub profile"
+      "githubProfile": "GitHub"
     },
     "feedTitle": "Portfolios",
     "recentTitle": "Latest published",
