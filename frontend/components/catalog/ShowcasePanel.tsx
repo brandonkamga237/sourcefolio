@@ -108,7 +108,7 @@ export function ShowcasePanel({ card, position, direction, onPrev, onNext, href,
         videoUrl={card.previewVideoUrl}
         size="large"
         aspectClass="aspect-[2/1]"
-        sizes="400px"
+        sizes="352px"
       />
 
       <div className="flex flex-col gap-3 p-4">
