@@ -37,6 +37,19 @@ public final class CandidateDetection {
                 .toList();
     }
 
+    /**
+     * The repositories that are not a candidate, most recently pushed first: the member's
+     * portfolio when its site is hosted where detection cannot see it, until its GitHub
+     * "Website" field points there.
+     */
+    public static List<RepositoryCoordinates> withoutSite(List<PublicRepository> repositories, List<ShowcaseCandidate> candidates) {
+        return repositories.stream()
+                .sorted(Comparator.comparing(PublicRepository::pushedAt, Comparator.nullsLast(Comparator.reverseOrder())))
+                .map(PublicRepository::coordinates)
+                .filter(coordinates -> candidates.stream().noneMatch(found -> found.repository().sameAs(coordinates)))
+                .toList();
+    }
+
     private static Optional<ShowcaseCandidate> candidate(PublicRepository repository, String pagesHost) {
         String name = repository.coordinates().name().toLowerCase(Locale.ROOT);
         Optional<SiteUrl> homepage = SiteUrl.parse(repository.homepage());
