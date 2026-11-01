@@ -121,8 +121,9 @@ GitHub, sans formulaire.
   barre de progression, **Passer** sur les questions facultatives, balayage pour revenir.
 - Pays : prérempli depuis le champ `location` de GitHub quand il est reconnaissable, à
   confirmer d'un toucher.
-- Spécialité : puces à choix unique (Frontend, Backend, Full-stack, Mobile, DevOps, Data/IA,
-  Jeu, Embarqué, Sécurité, Autre).
+- Spécialités : jusqu'à trois puces, touchées par ordre d'importance (la première est celle
+  qu'on voit d'abord) parmi Frontend, Backend, Full-stack, Mobile, DevOps, Data/IA, Jeu,
+  Embarqué, Sécurité, Autre. Décision du 01/11/2026, qui remplace le choix unique.
 - Technologies : puces avec autocomplétion ; suggestions issues des langages de ses dépôts.
 - Présentation : préremplie avec la bio GitHub, 280 caractères maximum.
 - Sauvegarde à chaque réponse. Une question déjà répondue n'est jamais reposée. Rappel discret
