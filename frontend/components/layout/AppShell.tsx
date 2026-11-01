@@ -42,20 +42,23 @@ export async function AppShell({ children }: AppShellProps) {
         <div className="px-2">
           <Logo />
         </div>
-        <SidebarNav locale={locale} labels={labels} />
-        <div className="mt-auto px-1">
-          <Terminal />
-        </div>
-        <div className="flex flex-col gap-3">
-          <Suspense fallback={null}>
-            <ProjectStars locale={locale} />
-          </Suspense>
+        {/* Three groups, top to bottom: where to go, the one thing to do, then settings and links. */}
+        <div className="flex flex-col gap-4">
+          <SidebarNav locale={locale} labels={labels} />
           <PublishLink
             locale={locale}
             label={t("nav.publish")}
             className="press flex h-11 items-center justify-center rounded-control bg-ink text-sm font-semibold text-ink-inverse"
           />
+        </div>
+        <div className="mt-auto px-1">
+          <Terminal />
+        </div>
+        <div className="flex flex-col gap-2.5 border-t border-line pt-4">
           <LanguageSwitch current={locale} label={t("language.label")} names={{ fr: t("language.fr"), en: t("language.en") }} />
+          <Suspense fallback={null}>
+            <ProjectStars locale={locale} />
+          </Suspense>
         </div>
       </aside>
 

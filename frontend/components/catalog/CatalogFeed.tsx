@@ -28,11 +28,11 @@ const WIDE = "(min-width: 1024px)";
 
 // The first page arrives rendered by the server; the next ones load on request, with a button
 // rather than an endless scroll, so a phone loads only what is asked for. On a wide screen the
-// first card starts open in the side panel, as in the mockup.
+// panel opens only when a card is chosen: until then the grid has the whole width to explore.
 export function CatalogFeed({ locale, sort, filters, firstPage, labels }: CatalogFeedProps) {
   const [cards, setCards] = useState(firstPage.items);
   const [cursor, setCursor] = useState(firstPage.nextCursor);
-  const [selected, setSelected] = useState<string | null>(firstPage.items[0]?.slug ?? null);
+  const [selected, setSelected] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [failed, setFailed] = useState(false);
   const [direction, setDirection] = useState<"next" | "prev" | "none">("none");
@@ -98,9 +98,9 @@ export function CatalogFeed({ locale, sort, filters, firstPage, labels }: Catalo
   }, [open, step]);
 
   return (
-    <div className="flex items-start gap-7">
+    <div className="flex items-start gap-6 xl:gap-8">
       <div className="flex min-w-0 flex-1 flex-col gap-4">
-        <ul className="grid grid-cols-2 gap-3 sm:gap-4 md:[grid-template-columns:repeat(auto-fill,minmax(210px,1fr))]">
+        <ul className="grid grid-cols-2 gap-3 sm:gap-5 md:[grid-template-columns:repeat(auto-fill,minmax(220px,1fr))] lg:gap-6">
           {cards.map((card, index) => (
             <li key={card.slug} data-card={card.slug} className="scroll-mt-28">
               <ShowcaseCard
@@ -134,7 +134,7 @@ export function CatalogFeed({ locale, sort, filters, firstPage, labels }: Catalo
       </div>
 
       {open ? (
-        <aside className="sticky top-[148px] hidden w-[360px] shrink-0 lg:block xl:top-[84px] xl:w-[400px]">
+        <aside className="sticky top-[148px] hidden w-[320px] shrink-0 lg:block xl:top-[84px] xl:w-[352px]">
           <ShowcasePanel
               card={open}
               position={{ index: openIndex, total: cards.length, more: cursor !== null }}
