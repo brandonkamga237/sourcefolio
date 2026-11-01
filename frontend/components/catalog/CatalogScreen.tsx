@@ -91,6 +91,9 @@ async function Feed({ locale, sort }: CatalogScreenProps) {
         },
         panel: {
           close: t("panel.close"),
+          previous: t("panel.previous"),
+          next: t("panel.next"),
+          position: t.raw("panel.position") as string,
           visitSite: t("panel.visitSite"),
           viewCode: t("panel.viewCode"),
           openPage: t("panel.openPage"),

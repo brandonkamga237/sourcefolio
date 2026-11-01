@@ -147,7 +147,10 @@
       "viewCode": "Code",
       "openPage": "Open the full page",
       "sourceRepo": "Source repository",
-      "publishedOn": "Published on {date}"
+      "publishedOn": "Published on {date}",
+      "previous": "Previous portfolio (left arrow)",
+      "next": "Next portfolio (right arrow)",
+      "position": "{current} of {total}"
     },
     "feedTitle": "Portfolios",
     "recentTitle": "Latest published",

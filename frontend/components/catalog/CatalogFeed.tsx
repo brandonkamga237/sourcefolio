@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, type MouseEvent } from "react";
+import { useCallback, useEffect, useState, type MouseEvent } from "react";
 import type { Locale } from "@/i18n/routing";
 import { localizedPath } from "@/i18n/paths";
 import type { CatalogPage, CatalogSort } from "@/services/catalog-types";
@@ -32,11 +32,14 @@ export function CatalogFeed({ locale, sort, firstPage, labels }: CatalogFeedProp
   const [selected, setSelected] = useState<string | null>(firstPage.items[0]?.slug ?? null);
   const [loading, setLoading] = useState(false);
   const [failed, setFailed] = useState(false);
-  const open = cards.find((card) => card.slug === selected) ?? null;
+  const [direction, setDirection] = useState<"next" | "prev" | "none">("none");
+  const openIndex = cards.findIndex((card) => card.slug === selected);
+  const open = openIndex >= 0 ? cards[openIndex] : null;
 
   function openInPanel(slug: string, event: MouseEvent<HTMLAnchorElement>) {
     if (!window.matchMedia(WIDE).matches || event.metaKey || event.ctrlKey) return;
     event.preventDefault();
+    setDirection("none");
     setSelected(slug);
   }
 
@@ -55,12 +58,41 @@ export function CatalogFeed({ locale, sort, firstPage, labels }: CatalogFeedProp
     setCursor(page.nextCursor);
   }
 
+  // Browse from the panel without reaching for the grid: the card follows into view, and the
+  // next page loads by itself past the last card.
+  const step = useCallback(
+    (delta: 1 | -1) => {
+      const target = cards[openIndex + delta];
+      if (!target) return;
+      setDirection(delta === 1 ? "next" : "prev");
+      setSelected(target.slug);
+      if (openIndex + delta === cards.length - 1 && cursor && !loading) void loadMore();
+      document.querySelector(`[data-card="${CSS.escape(target.slug)}"]`)?.scrollIntoView({ block: "nearest", behavior: "smooth" });
+    },
+    // loadMore is redefined each render and reads the latest cursor itself.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [cards, openIndex, cursor, loading],
+  );
+
+  useEffect(() => {
+    if (!open) return;
+    function onKey(event: KeyboardEvent) {
+      const target = event.target as HTMLElement | null;
+      if (target?.closest("input, textarea, select, [contenteditable=true], [role=dialog]")) return;
+      if (event.key === "ArrowRight") step(1);
+      else if (event.key === "ArrowLeft") step(-1);
+      else if (event.key === "Escape") setSelected(null);
+    }
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [open, step]);
+
   return (
     <div className="flex items-start gap-7">
       <div className="flex min-w-0 flex-1 flex-col gap-4">
         <ul className="grid grid-cols-2 gap-3 sm:gap-4 md:[grid-template-columns:repeat(auto-fill,minmax(210px,1fr))]">
           {cards.map((card, index) => (
-            <li key={card.slug}>
+            <li key={card.slug} data-card={card.slug} className="scroll-mt-28">
               <ShowcaseCard
                 card={card}
                 href={localizedPath(locale, `/p/${card.slug}`)}
@@ -93,17 +125,17 @@ export function CatalogFeed({ locale, sort, firstPage, labels }: CatalogFeedProp
 
       {open ? (
         <aside className="sticky top-[84px] hidden w-[360px] shrink-0 lg:block xl:w-[400px]">
-          {/* Keyed on the card, so the panel rises again on each switch and the eye sees the change.
-              A CSS animation: Motion did the same for 47 KB more on the page phones open first. */}
-          <div key={open.slug} className="animate-rise">
-            <ShowcasePanel
+          <ShowcasePanel
               card={open}
+              position={{ index: openIndex, total: cards.length, more: cursor !== null }}
+              direction={direction}
+              onPrev={openIndex > 0 ? () => step(-1) : null}
+              onNext={openIndex < cards.length - 1 ? () => step(1) : null}
               href={localizedPath(locale, `/p/${open.slug}`)}
               locale={locale}
               labels={labels.panel}
               onClose={() => setSelected(null)}
             />
-          </div>
         </aside>
       ) : null}
     </div>

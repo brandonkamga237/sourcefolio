@@ -147,7 +147,10 @@
       "viewCode": "Code",
       "openPage": "Ouvrir la fiche complète",
       "sourceRepo": "Dépôt source",
-      "publishedOn": "Publié le {date}"
+      "publishedOn": "Publié le {date}",
+      "previous": "Portfolio précédent (flèche gauche)",
+      "next": "Portfolio suivant (flèche droite)",
+      "position": "{current} sur {total}"
     },
     "feedTitle": "Les portfolios",
     "recentTitle": "Les derniers publiés",

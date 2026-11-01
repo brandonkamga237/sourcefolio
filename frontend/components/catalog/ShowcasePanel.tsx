@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { Suspense } from "react";
-import { IconClose, IconCode, IconExternal } from "@/components/icons";
+import { IconChevronLeft, IconChevronRight, IconClose, IconCode, IconExternal } from "@/components/icons";
 import { LikeButton, type LikeButtonLabels } from "@/components/likes/LikeButton";
 import type { CatalogCard } from "@/services/catalog-types";
 import { StarCount } from "@/components/stars/StarCount";
@@ -16,6 +16,10 @@ export interface ShowcasePanelLabels {
   sourceRepo: string;
   /** Contains {date}. */
   publishedOn: string;
+  previous: string;
+  next: string;
+  /** Contains {current} and {total}. */
+  position: string;
   likes: LikeButtonLabels;
   /** Contains {count}; picked by the plural rule of the locale. */
   stars: { one: string; other: string };
@@ -23,36 +27,55 @@ export interface ShowcasePanelLabels {
 
 interface ShowcasePanelProps {
   card: CatalogCard;
+  /** Where the open card sits among those loaded; more: further pages exist. */
+  position: { index: number; total: number; more: boolean };
+  /** Which way the reader moved, so the content slides from that side. */
+  direction: "next" | "prev" | "none";
+  onPrev: (() => void) | null;
+  onNext: (() => void) | null;
   href: string;
   locale: string;
   labels: ShowcasePanelLabels;
   onClose: () => void;
 }
 
+const navButton =
+  "press flex size-11 items-center justify-center rounded-full text-ink transition-colors duration-150 hover:bg-surface-sunken disabled:pointer-events-none disabled:text-line";
+
 // The showcase opened beside the catalogue on a wide screen (spec), so browsing goes on without
 // losing the place in the feed. External sites open in a new tab.
-export function ShowcasePanel({ card, href, locale, labels, onClose }: ShowcasePanelProps) {
+export function ShowcasePanel({ card, position, onPrev, onNext, href, locale, labels, onClose }: ShowcasePanelProps) {
   const published = new Intl.DateTimeFormat(locale, { dateStyle: "long" }).format(new Date(card.publishedAt));
   return (
-    <section aria-labelledby="panel-name" className="overflow-hidden rounded-panel border border-line bg-surface">
-      <div className="relative">
-        <Preview
-          slug={card.slug}
-          siteUrl={card.siteUrl}
-          imageUrl={card.previewImageUrl}
-          videoUrl={card.previewVideoUrl}
-          size="large"
-          sizes="400px"
-        />
-        <button
-          type="button"
-          onClick={onClose}
-          aria-label={labels.close}
-          className="press absolute top-3 right-3 flex size-11 items-center justify-center rounded-full bg-surface/95 text-ink shadow-sm transition-colors duration-150 hover:bg-surface"
-        >
+    <section aria-labelledby="panel-name" className="overflow-hidden rounded-panel border border-line bg-surface shadow-[0_18px_44px_-28px_rgba(18,20,18,0.45)]">
+      {/* Stays put while the content changes: browse, see where you are, close. */}
+      <div className="flex items-center justify-between gap-2 border-b border-line-soft px-2 py-1.5">
+        <div className="flex items-center gap-1">
+          <button type="button" onClick={onPrev ?? undefined} disabled={!onPrev} aria-label={labels.previous} title={labels.previous} className={navButton}>
+            <IconChevronLeft className="size-5" />
+          </button>
+          <button type="button" onClick={onNext ?? undefined} disabled={!onNext} aria-label={labels.next} title={labels.next} className={navButton}>
+            <IconChevronRight className="size-5" />
+          </button>
+          <span className="px-1 font-mono text-xs text-ink-muted tabular-nums" aria-live="polite">
+            {labels.position.replace("{current}", String(position.index + 1)).replace("{total}", `${position.total}${position.more ? "+" : ""}`)}
+          </span>
+        </div>
+        <button type="button" onClick={onClose} aria-label={labels.close} title={labels.close} className={navButton}>
           <IconClose className="size-[18px]" />
         </button>
       </div>
+
+      {/* Keyed on the card, so the content plays its entrance again on each switch. */}
+      <div key={card.slug} className="animate-rise">
+      <Preview
+        slug={card.slug}
+        siteUrl={card.siteUrl}
+        imageUrl={card.previewImageUrl}
+        videoUrl={card.previewVideoUrl}
+        size="large"
+        sizes="400px"
+      />
 
       <div className="flex flex-col gap-4 p-5">
         <div className="flex items-center gap-3">
@@ -112,6 +135,7 @@ export function ShowcasePanel({ card, href, locale, labels, onClose }: ShowcaseP
         <Link href={href} className="flex h-11 items-center text-sm font-semibold text-accent-ink">
           {labels.openPage}
         </Link>
+      </div>
       </div>
     </section>
   );
