@@ -31,7 +31,7 @@ export async function ProjectStars({ locale, compact }: ProjectStarsProps) {
       </span>
       {count === null ? null : (
         <span aria-hidden="true" className="flex shrink-0 items-center gap-1 border-l border-line bg-surface-sunken px-3 font-mono tabular-nums">
-          <IconStar className="size-4 fill-accent text-accent" />
+          <IconStar className="size-4 fill-star text-star" />
           {count}
         </span>
       )}

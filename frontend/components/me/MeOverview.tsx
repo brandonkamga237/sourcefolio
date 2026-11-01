@@ -40,10 +40,10 @@ export async function MeOverview({ locale, login, countryCode, specialties, head
   const days = showcase?.publishedAt ? daysSince(showcase.publishedAt) : null;
 
   const stats = [
-    { key: "likes", icon: <IconHeart className="size-4 fill-accent text-accent" />, value: member ? compactNumber(member.likesReceived, locale) : "–", label: t("likes") },
+    { key: "likes", icon: <IconHeart className="size-4 fill-like text-like" />, value: member ? compactNumber(member.likesReceived, locale) : "–", label: t("likes") },
     {
       key: "stars",
-      icon: <IconStar className="size-4 fill-accent text-accent" />,
+      icon: <IconStar className="size-4 fill-star text-star" />,
       value: member?.showcase.repositoryStars != null ? compactNumber(member.showcase.repositoryStars, locale) : "–",
       label: t("stars"),
     },

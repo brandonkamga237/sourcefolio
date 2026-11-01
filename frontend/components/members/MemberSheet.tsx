@@ -124,7 +124,7 @@ export function MemberSheet({ login, locale, labels, children, triggerClassName 
                   <div className="flex flex-col gap-0.5 px-2 py-2.5">
                     <dt className="order-2 text-xs text-ink-muted">{plural(labels.likesReceived, data.likesReceived, locale).replace(/^\S+\s/, "")}</dt>
                     <dd className="order-1 flex items-center justify-center gap-1 font-mono text-base font-semibold tabular-nums">
-                      <IconHeart aria-hidden="true" className="size-4 fill-accent text-accent" />
+                      <IconHeart aria-hidden="true" className="size-4 fill-like text-like" />
                       {compactNumber(data.likesReceived, locale)}
                     </dd>
                   </div>
@@ -134,7 +134,7 @@ export function MemberSheet({ login, locale, labels, children, triggerClassName 
                       {plural(labels.stars, data.showcase.repositoryStars ?? 0, locale).replace(/^\S+\s/, "")}
                     </dt>
                     <dd className="order-1 flex items-center justify-center gap-1 font-mono text-base font-semibold tabular-nums">
-                      <IconStar aria-hidden="true" className="size-4 fill-accent text-accent" />
+                      <IconStar aria-hidden="true" className="size-4 fill-star text-star" />
                       {data.showcase.repositoryStars != null ? compactNumber(data.showcase.repositoryStars, locale) : "–"}
                     </dd>
                   </div>

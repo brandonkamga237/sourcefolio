@@ -139,12 +139,12 @@ export function ShowcasePanel({ card, position, direction, onPrev, onNext, href,
         {/* The numbers, said in words: what a heart and a star count is never left to guess. */}
         <p className="flex flex-wrap items-center gap-x-3 gap-y-1 text-[13px] text-ink-muted">
           <span className="flex items-center gap-1">
-            <IconHeart aria-hidden="true" className={`size-3.5 ${card.likes > 0 ? "fill-accent text-accent" : ""}`} />
+            <IconHeart aria-hidden="true" className={`size-3.5 ${card.likes > 0 ? "fill-like text-like" : ""}`} />
             <span className="font-semibold text-ink tabular-nums">{compactNumber(card.likes, locale)}</span> {labels.stats.likes}
           </span>
           {card.repositoryStars != null ? (
             <span className="flex items-center gap-1">
-              <IconStar aria-hidden="true" className="size-3.5 fill-accent text-accent" />
+              <IconStar aria-hidden="true" className="size-3.5 fill-star text-star" />
               <span className="font-semibold text-ink tabular-nums">{compactNumber(card.repositoryStars, locale)}</span> {labels.stats.stars}
             </span>
           ) : null}

@@ -55,7 +55,7 @@ async function RankingList({ locale }: { locale: Locale }) {
               <span className="truncate font-mono text-xs text-ink-muted">{siteLabel(row.siteUrl)}</span>
             </span>
             <span className="flex shrink-0 items-center gap-1.5 text-sm font-semibold" aria-label={t("likes", { count: row.likes })}>
-              <IconHeart className="size-[18px] fill-current text-accent" />
+              <IconHeart className="size-[18px] fill-like text-like" />
               <span className="font-mono tabular-nums">{row.likes}</span>
             </span>
           </Link>
