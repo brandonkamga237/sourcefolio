@@ -159,13 +159,14 @@ class JpaCatalogStoreIT extends PostgresIT {
         CatalogEntry entry = entry("profiled", NOW);
         catalog.upsert(entry);
 
-        catalog.setAuthorProfile(entry.ownerId(), "CM", List.of("backend", "devops"));
+        catalog.setAuthorProfile(entry.ownerId(), "CM", List.of("backend", "devops"), "Backend à Douala");
         assertThat(catalog.recent(null, 10)).singleElement().satisfies(card -> {
             assertThat(card.countryCode()).isEqualTo("CM");
             assertThat(card.specialties()).containsExactly("backend", "devops");
+            assertThat(card.headline()).isEqualTo("Backend à Douala");
         });
 
-        catalog.setAuthorProfile(entry.ownerId(), "SN", List.of("mobile"));
+        catalog.setAuthorProfile(entry.ownerId(), "SN", List.of("mobile"), null);
         assertThat(catalog.recent(null, 10)).singleElement().satisfies(card -> {
             assertThat(card.countryCode()).isEqualTo("SN");
             assertThat(card.specialties()).containsExactly("mobile");

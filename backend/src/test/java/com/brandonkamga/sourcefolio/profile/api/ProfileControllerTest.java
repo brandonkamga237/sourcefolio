@@ -3,6 +3,7 @@ package com.brandonkamga.sourcefolio.profile.api;
 import com.brandonkamga.sourcefolio.profile.application.ProfileCompletion;
 import com.brandonkamga.sourcefolio.profile.domain.model.CountryCode;
 import com.brandonkamga.sourcefolio.profile.domain.model.DeveloperProfile;
+import com.brandonkamga.sourcefolio.profile.domain.model.Headline;
 import com.brandonkamga.sourcefolio.profile.domain.model.Specialties;
 import com.brandonkamga.sourcefolio.profile.domain.model.Specialty;
 import com.brandonkamga.sourcefolio.shared.exception.BadRequestException;
@@ -82,15 +83,38 @@ class ProfileControllerTest {
     }
 
     @Test
-    @DisplayName("a fourth specialty is a 400 in the member's language")
+    @DisplayName("a fifth interest is a 400 in the member's language")
     void tooManySpecialties() throws Exception {
-        when(profiles.answerSpecialties(MEMBER, List.of("backend", "devops", "frontend", "mobile")))
+        when(profiles.answerSpecialties(MEMBER, List.of("backend", "devops", "frontend", "mobile", "cloud")))
                 .thenThrow(new BadRequestException("profile.specialties-invalid"));
 
         mvc.perform(put("/api/me/profile/specialties").with(member()).with(csrf()).header("Accept-Language", "fr")
-                        .contentType(MediaType.APPLICATION_JSON).content("{\"specialties\":[\"backend\",\"devops\",\"frontend\",\"mobile\"]}"))
+                        .contentType(MediaType.APPLICATION_JSON).content("{\"specialties\":[\"backend\",\"devops\",\"frontend\",\"mobile\",\"cloud\"]}"))
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.message").value("Choisis une à trois spécialités différentes."));
+                .andExpect(jsonPath("$.message").value("Choisis un à quatre domaines différents."));
+    }
+
+    @Test
+    @DisplayName("the member's headline is saved and comes back with the profile")
+    void headline() throws Exception {
+        when(profiles.answerHeadline(MEMBER, "Backend à Douala")).thenReturn(DeveloperProfile.blank(MEMBER)
+                .withHeadline(new Headline("Backend à Douala"), Instant.parse("2026-11-01T09:00:00Z")));
+
+        mvc.perform(put("/api/me/profile/headline").with(member()).with(csrf())
+                        .contentType(MediaType.APPLICATION_JSON).content("{\"headline\":\"Backend à Douala\"}"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.headline").value("Backend à Douala"));
+    }
+
+    @Test
+    @DisplayName("a headline too long is a 400 in the member's language")
+    void headlineRefused() throws Exception {
+        when(profiles.answerHeadline(MEMBER, "x".repeat(81))).thenThrow(new BadRequestException("profile.headline-invalid"));
+
+        mvc.perform(put("/api/me/profile/headline").with(member()).with(csrf()).header("Accept-Language", "fr")
+                        .contentType(MediaType.APPLICATION_JSON).content("{\"headline\":\"" + "x".repeat(81) + "\"}"))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message").value("Ton titre fait entre 2 et 80 caractères, sur une seule ligne."));
     }
 
     @Test

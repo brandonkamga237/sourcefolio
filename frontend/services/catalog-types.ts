@@ -20,6 +20,8 @@ export interface CatalogCard {
   /** The author's country (ISO code) and specialties, most important first; empty until answered. */
   countryCode: string | null;
   specialties: string[];
+  /** The author's own line, null until written. */
+  headline: string | null;
 }
 
 export interface CatalogPage {

@@ -81,7 +81,7 @@ export function ShowcaseCard({ card, href, index, selected, onOpen, locale, labe
             <span className="truncate text-sm font-semibold sm:text-[15px]">{card.ownerLogin}</span>
             <span className="truncate text-[11px] text-ink-muted sm:text-xs">
               {card.countryCode ? `${flagOf(card.countryCode)} ` : ""}
-              {card.specialties.length > 0 ? labels.member.specialtyNames[card.specialties[0]] : card.repository}
+              {card.headline ?? (card.specialties.length > 0 ? labels.member.specialtyNames[card.specialties[0]] : card.repository)}
             </span>
           </span>
         </MemberSheet>

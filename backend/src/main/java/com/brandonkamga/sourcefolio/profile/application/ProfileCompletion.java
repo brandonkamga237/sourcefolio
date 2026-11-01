@@ -14,4 +14,7 @@ public interface ProfileCompletion {
 
     /** One to three specialty slugs, most important first; replaces the earlier answer. */
     DeveloperProfile answerSpecialties(UUID memberId, List<String> specialtySlugs);
+
+    /** The member's own line; blank or null removes it. */
+    DeveloperProfile answerHeadline(UUID memberId, String headline);
 }

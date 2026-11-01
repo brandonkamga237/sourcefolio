@@ -7,6 +7,8 @@ export interface PublicMember {
   githubUrl: string;
   countryCode: string | null;
   specialties: string[];
+  /** The member's own line, null until written. */
+  headline: string | null;
   onSourceFolioSince: string;
   likesReceived: number;
   showcase: {

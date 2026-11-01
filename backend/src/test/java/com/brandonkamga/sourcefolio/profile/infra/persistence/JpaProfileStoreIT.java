@@ -4,6 +4,7 @@ import com.brandonkamga.sourcefolio.account.domain.model.User;
 import com.brandonkamga.sourcefolio.account.domain.port.UserStore;
 import com.brandonkamga.sourcefolio.profile.domain.model.CountryCode;
 import com.brandonkamga.sourcefolio.profile.domain.model.DeveloperProfile;
+import com.brandonkamga.sourcefolio.profile.domain.model.Headline;
 import com.brandonkamga.sourcefolio.profile.domain.model.Specialties;
 import com.brandonkamga.sourcefolio.profile.domain.model.Specialty;
 import com.brandonkamga.sourcefolio.profile.domain.port.ProfileStore;
@@ -48,6 +49,11 @@ class JpaProfileStoreIT extends PostgresIT {
         assertThat(profiles.find(member)).contains(updated);
         assertThat(updated).isEqualTo(new DeveloperProfile(member, new CountryCode("CM"), ranked, NOW.plusSeconds(5)));
         assertThat(profiles.find(member).orElseThrow().specialties().slugs()).containsExactly("data-ai", "backend", "devops");
+
+        DeveloperProfile titled = profiles.save(updated.withHeadline(new Headline("Data et backend à Yaoundé"), NOW.plusSeconds(9)));
+        entityManager.flush();
+        entityManager.clear();
+        assertThat(profiles.find(member)).contains(titled);
     }
 
     @Test

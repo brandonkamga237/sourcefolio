@@ -21,7 +21,7 @@ public class CatalogProjectionImpl implements CatalogProjection {
     public void add(CatalogEntry entry) {
         store.upsert(entry);
         profiles.findPublicProfile(entry.ownerId())
-                .ifPresent(profile -> store.setAuthorProfile(entry.ownerId(), profile.countryCode(), profile.specialties()));
+                .ifPresent(profile -> store.setAuthorProfile(entry.ownerId(), profile.countryCode(), profile.specialties(), profile.headline()));
     }
 
     @Override
@@ -45,7 +45,7 @@ public class CatalogProjectionImpl implements CatalogProjection {
     }
 
     @Override
-    public void updateAuthorProfile(UUID ownerId, String countryCode, List<String> specialties) {
-        store.setAuthorProfile(ownerId, countryCode, specialties);
+    public void updateAuthorProfile(UUID ownerId, String countryCode, List<String> specialties, String headline) {
+        store.setAuthorProfile(ownerId, countryCode, specialties, headline);
     }
 }

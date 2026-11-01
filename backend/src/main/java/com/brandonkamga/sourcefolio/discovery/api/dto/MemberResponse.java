@@ -6,7 +6,7 @@ import java.time.Instant;
 import java.util.List;
 
 /** A published member as anyone sees them. No ids: the login is the public handle. */
-public record MemberResponse(String login, String githubUrl, String countryCode, List<String> specialties,
+public record MemberResponse(String login, String githubUrl, String countryCode, List<String> specialties, String headline,
                              Instant onSourceFolioSince, int likesReceived, Showcase showcase) {
 
     public record Showcase(String slug, String siteUrl, String repository, String repositoryUrl, String previewImageUrl,
@@ -19,7 +19,7 @@ public record MemberResponse(String login, String githubUrl, String countryCode,
     }
 
     public static MemberResponse of(MemberCard card) {
-        return new MemberResponse(card.login(), "https://github.com/" + card.login(), card.countryCode(), card.specialties(),
+        return new MemberResponse(card.login(), "https://github.com/" + card.login(), card.countryCode(), card.specialties(), card.headline(),
                 card.onSourceFolioSince(), card.likesReceived(), Showcase.of(card.showcase()));
     }
 }
