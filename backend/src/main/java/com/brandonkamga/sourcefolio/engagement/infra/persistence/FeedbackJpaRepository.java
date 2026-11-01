@@ -30,6 +30,9 @@ interface FeedbackJpaRepository extends JpaRepository<FeedbackEntity, UUID> {
     @Query("select count(f) from FeedbackEntity f where f.showcaseId = :showcaseId and f.status = 'VISIBLE'")
     int countVisible(@Param("showcaseId") UUID showcaseId);
 
+    @Query("select count(f) from FeedbackEntity f where f.showcaseId = :showcaseId and f.status = 'VISIBLE' and f.createdAt > :after")
+    int countVisibleAfter(@Param("showcaseId") UUID showcaseId, @Param("after") Instant after);
+
     @Modifying
     @Query("update FeedbackEntity f set f.authorLogin = :login where f.authorId = :authorId")
     void renameAuthor(@Param("authorId") UUID authorId, @Param("login") String login);

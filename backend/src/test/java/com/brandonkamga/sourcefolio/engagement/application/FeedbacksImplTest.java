@@ -77,6 +77,12 @@ class FeedbacksImplTest {
         }
 
         @Override
+        public int countSince(UUID showcaseId, Instant after) {
+            return (int) rows.stream().filter(row -> row.showcaseId().equals(showcaseId))
+                    .filter(row -> after == null || row.createdAt().isAfter(after)).count();
+        }
+
+        @Override
         public List<UUID> removeAllBy(UUID authorId) {
             List<UUID> showcases = rows.stream().filter(row -> row.authorId().equals(authorId)).map(Feedback::showcaseId).distinct().toList();
             rows.removeIf(row -> row.authorId().equals(authorId));
