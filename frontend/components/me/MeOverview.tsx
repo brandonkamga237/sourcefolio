@@ -103,7 +103,7 @@ export async function MeOverview({ locale, login, countryCode, specialties, head
           <dl className="grid grid-cols-2 gap-2 sm:grid-cols-4">
             {stats.map((stat) => (
               <div key={stat.key} className="flex flex-col gap-0.5 rounded-control bg-surface-raised px-3 py-2.5 ring-1 ring-line-soft">
-                <dt className="order-2 text-[11px] leading-tight text-ink-muted">{stat.label}</dt>
+                <dt className="order-2 text-xs leading-tight text-ink-muted">{stat.label}</dt>
                 <dd className="order-1 flex items-center gap-1.5 font-mono text-lg font-semibold tabular-nums" suppressHydrationWarning>
                   {stat.icon}
                   {stat.value}

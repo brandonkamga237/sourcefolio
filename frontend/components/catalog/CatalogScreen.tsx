@@ -156,7 +156,7 @@ async function Feed({ locale, sort, searchParams }: CatalogScreenProps) {
 
 function FeedSkeleton() {
   return (
-    <div aria-hidden="true" className="grid grid-cols-2 gap-3 sm:gap-4 md:[grid-template-columns:repeat(auto-fill,minmax(210px,1fr))]">
+    <div aria-hidden="true" className="grid grid-cols-2 gap-3 sm:gap-5 md:[grid-template-columns:repeat(auto-fill,minmax(220px,1fr))] lg:gap-6">
       {[0, 1, 2, 3, 4, 5].map((index) => (
         <div key={index} className="aspect-[4/3] animate-pulse rounded-card bg-surface-sunken" />
       ))}

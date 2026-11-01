@@ -5,54 +5,40 @@ interface PreviewArtProps {
   siteUrl: string;
   /** thumb: a small square in lists; card: the feed; large: the side panel. */
   size?: "thumb" | "card" | "large";
-  /** Overrides the 16:10 frame, e.g. a shorter one on phones. */
+  /** Overrides the 16:9 frame shared by every card, e.g. a shorter one on phones. */
   aspectClass?: string;
 }
 
-// Stands in for the preview until the member uploads one or the screenshot exists: the site's
-// own name on a tint derived from the slug, so a card is recognisable without inventing data.
-const tints = [
-  "bg-ink text-ink-inverse",
-  "bg-accent text-white",
-  "bg-accent-soft text-accent-ink",
-  "bg-surface-sunken text-ink",
-  "bg-success text-white",
-];
-
-function tintOf(slug: string): string {
-  let hash = 0;
-  for (const char of slug) hash = (hash * 31 + char.charCodeAt(0)) >>> 0;
-  return tints[hash % tints.length];
-}
-
 const nameSize = {
-  thumb: "text-[15px] truncate sm:text-[18px]",
-  card: "line-clamp-2 break-words text-[19px] sm:text-[26px]",
-  large: "line-clamp-2 break-words text-[40px]",
+  thumb: "text-[13px] sm:text-[15px]",
+  card: "text-[17px] sm:text-[22px]",
+  large: "text-[30px]",
 };
 
-export function PreviewArt({ slug, siteUrl, size = "card", aspectClass = "aspect-[16/10]" }: PreviewArtProps) {
+// Stands in for the preview until the member uploads one or the screenshot exists: the same
+// quiet browser window for everyone, the site's own name in it, so cards stay comparable and
+// nothing about the site is invented.
+export function PreviewArt({ slug, siteUrl, size = "card", aspectClass = "aspect-video" }: PreviewArtProps) {
   const name = new URL(siteUrl).hostname.split(".")[0];
   return (
-    <div
-      aria-hidden="true"
-      className={`relative flex ${aspectClass} flex-col overflow-hidden ${size === "thumb" ? "justify-end p-2.5" : "justify-between"} ${
-        size === "large" ? "p-5" : size === "card" ? "p-3 sm:p-4" : ""
-      } ${tintOf(slug)}`}
-    >
+    <div aria-hidden="true" data-slug={slug} className={`relative flex ${aspectClass} flex-col overflow-hidden bg-surface-sunken`}>
       {size === "thumb" ? null : (
-        <span className="flex items-center gap-2">
-          <span className="size-2.5 shrink-0 rounded-full bg-current opacity-60" />
-          <span className="truncate font-mono text-[10px] opacity-70 sm:text-[11px]">{siteLabel(siteUrl)}</span>
-        </span>
+        <div className="flex items-center gap-1.5 border-b border-line-soft bg-surface/70 px-3 py-2">
+          <span className="size-2 rounded-full bg-line" />
+          <span className="size-2 rounded-full bg-line" />
+          <span className="size-2 rounded-full bg-line" />
+          <span className="ml-2 min-w-0 truncate rounded-full bg-surface px-2 py-0.5 font-mono text-[10px] text-ink-muted sm:text-[11px]">
+            {siteLabel(siteUrl)}
+          </span>
+        </div>
       )}
-      <span
-        className={`font-display leading-[0.92] font-bold tracking-[-0.045em] transition-transform duration-500 ease-out-soft group-hover:translate-x-1 ${nameSize[size]}`}
-      >
-        {name}
-      </span>
-      {/* A soft ring in the corner, so a card without an image still has some depth. */}
-      <span className="pointer-events-none absolute -right-8 -bottom-10 size-32 rounded-full border-[14px] border-current opacity-[0.08] transition-transform duration-700 ease-out-soft group-hover:scale-110 sm:size-40" />
+      <div className="flex flex-1 items-center justify-center px-4">
+        <span
+          className={`line-clamp-2 text-center font-display leading-tight font-bold tracking-[-0.03em] break-words text-ink-soft transition-transform duration-500 ease-out-soft group-hover:scale-[1.03] ${nameSize[size]}`}
+        >
+          {name}
+        </span>
+      </div>
     </div>
   );
 }

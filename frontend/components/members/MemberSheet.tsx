@@ -122,14 +122,14 @@ export function MemberSheet({ login, locale, labels, children, triggerClassName 
 
                 <dl className="grid grid-cols-3 divide-x divide-line-soft self-start rounded-control border border-line-soft bg-surface-raised text-center [grid-area:stats]">
                   <div className="flex flex-col gap-0.5 px-2 py-2.5">
-                    <dt className="order-2 text-[11px] text-ink-muted">{plural(labels.likesReceived, data.likesReceived, locale).replace(/^\S+\s/, "")}</dt>
+                    <dt className="order-2 text-xs text-ink-muted">{plural(labels.likesReceived, data.likesReceived, locale).replace(/^\S+\s/, "")}</dt>
                     <dd className="order-1 flex items-center justify-center gap-1 font-mono text-base font-semibold tabular-nums">
                       <IconHeart aria-hidden="true" className="size-4 fill-accent text-accent" />
                       {compactNumber(data.likesReceived, locale)}
                     </dd>
                   </div>
                   <div className="flex flex-col gap-0.5 px-2 py-2.5">
-                    <dt className="order-2 flex items-center justify-center gap-1 text-[11px] text-ink-muted">
+                    <dt className="order-2 flex items-center justify-center gap-1 text-xs text-ink-muted">
                       <IconGithub aria-hidden="true" className="size-3" />
                       {plural(labels.stars, data.showcase.repositoryStars ?? 0, locale).replace(/^\S+\s/, "")}
                     </dt>
