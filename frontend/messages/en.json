@@ -196,7 +196,9 @@
       "clear": "Clear filters",
       "filters": "Filters",
       "noMatchTitle": "No portfolio matches",
-      "noMatchLead": "Try other words, or remove a filter."
+      "noMatchLead": "Try other words, or remove a filter.",
+      "role": "Role",
+      "anyRole": "Any role"
     }
   },
   "profile": {
@@ -230,7 +232,10 @@
     "searchPlaceholder": "Search an interest",
     "noMatch": "No interest matches.",
     "selectionEmpty": "Your picks show here, in order.",
-    "removeChoice": "Remove {name}"
+    "removeChoice": "Remove {name}",
+    "roleTitle": "Your main role",
+    "roleHint": "What you do day to day, just one. It shows as your own claim, next to the languages your code shows.",
+    "roleLabel": "Role"
   },
   "specialty": {
     "frontend": "Frontend",
@@ -400,7 +405,8 @@
     "openPage": "Open the page",
     "visitSite": "Visit the site",
     "viewCode": "View the code",
-    "githubProfile": "GitHub profile"
+    "githubProfile": "GitHub profile",
+    "roleClaim": "Says they are {role}"
   },
   "specialtyGroup": {
     "dev": "Development",
@@ -447,5 +453,19 @@
       "fr": "Written in French",
       "en": "Written in English"
     }
+  },
+  "role": {
+    "frontend": "Frontend",
+    "backend": "Backend",
+    "fullstack": "Full-stack",
+    "mobile": "Mobile",
+    "devops": "DevOps / SRE",
+    "data-ai": "Data / AI",
+    "security": "Security",
+    "design": "UI/UX design",
+    "qa": "QA / testing",
+    "game": "Game development",
+    "embedded": "Embedded / IoT",
+    "learning": "Learning"
   }
 }
