@@ -5,6 +5,7 @@ import com.brandonkamga.sourcefolio.discovery.application.CatalogImpl;
 import com.brandonkamga.sourcefolio.discovery.application.CatalogProjection;
 import com.brandonkamga.sourcefolio.discovery.application.CatalogProjectionImpl;
 import com.brandonkamga.sourcefolio.discovery.domain.port.CatalogStore;
+import com.brandonkamga.sourcefolio.profile.application.ProfileDirectory;
 import com.brandonkamga.sourcefolio.shared.config.TransactionalServices;
 import java.time.Clock;
 import org.springframework.context.annotation.Bean;
@@ -21,7 +22,7 @@ class DiscoveryServices {
     // Not wrapped: it runs after another module's commit, and the store opens a new transaction
     // for each write (see JpaCatalogStore).
     @Bean
-    CatalogProjection catalogProjection(CatalogStore store) {
-        return new CatalogProjectionImpl(store);
+    CatalogProjection catalogProjection(CatalogStore store, ProfileDirectory profiles) {
+        return new CatalogProjectionImpl(store, profiles);
     }
 }

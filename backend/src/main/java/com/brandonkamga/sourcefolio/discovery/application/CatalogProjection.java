@@ -1,6 +1,7 @@
 package com.brandonkamga.sourcefolio.discovery.application;
 
 import com.brandonkamga.sourcefolio.discovery.domain.model.CatalogEntry;
+import java.util.List;
 import java.util.UUID;
 
 /** Keeps the catalogue in step with what other modules announce. Safe to call twice. */
@@ -15,4 +16,6 @@ public interface CatalogProjection {
     void updatePreview(UUID showcaseId, String imageUrl, String videoUrl);
 
     void updateRepositoryStars(UUID showcaseId, Integer stars);
+
+    void updateAuthorProfile(UUID ownerId, String countryCode, List<String> specialties);
 }
