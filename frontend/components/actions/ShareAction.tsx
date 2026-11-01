@@ -9,11 +9,13 @@ interface ShareActionProps {
   label: string;
   copiedLabel: string;
   className?: string;
+  /** Only the icon shows; the label becomes the button's accessible name and tooltip. */
+  iconOnly?: boolean;
 }
 
 // The phone's share sheet where there is one (WhatsApp first for most members), the link copied
 // otherwise. Built from the page's own origin.
-export function ShareAction({ path, title, label, copiedLabel, className = "" }: ShareActionProps) {
+export function ShareAction({ path, title, label, copiedLabel, className = "", iconOnly = false }: ShareActionProps) {
   const [copied, setCopied] = useState(false);
 
   async function share() {
@@ -36,9 +38,11 @@ export function ShareAction({ path, title, label, copiedLabel, className = "" }:
   }
 
   return (
-    <button type="button" onClick={share} className={className}>
+    <button type="button" onClick={share} className={className} aria-label={iconOnly ? (copied ? copiedLabel : label) : undefined} title={iconOnly ? label : undefined}>
       {copied ? <IconCheck aria-hidden="true" className="size-4 text-success" /> : <IconShare aria-hidden="true" className="size-4" />}
-      <span role="status">{copied ? copiedLabel : label}</span>
+      <span role="status" className={iconOnly ? "sr-only" : undefined}>
+        {copied ? copiedLabel : label}
+      </span>
     </button>
   );
 }

@@ -126,8 +126,9 @@ export function ShowcasePanel({ card, position, direction, onPrev, onNext, href,
             </span>
             <span className="truncate text-xs text-ink-muted">
               {[
+                card.headline,
                 card.countryCode ? `${flagOf(card.countryCode)} ${countryName(card.countryCode, locale)}` : null,
-                ...card.specialties.map((slug) => labels.member.specialtyNames[slug] ?? slug),
+                ...(card.headline ? [] : card.specialties.map((slug) => labels.member.specialtyNames[slug] ?? slug)),
               ]
                 .filter(Boolean)
                 .join(" · ") || card.repository}

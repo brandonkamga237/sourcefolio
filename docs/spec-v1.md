@@ -121,9 +121,13 @@ GitHub, sans formulaire.
   barre de progression, **Passer** sur les questions facultatives, balayage pour revenir.
 - Pays : prérempli depuis le champ `location` de GitHub quand il est reconnaissable, à
   confirmer d'un toucher.
-- Spécialités : jusqu'à trois puces, touchées par ordre d'importance (la première est celle
-  qu'on voit d'abord) parmi Frontend, Backend, Full-stack, Mobile, DevOps, Data/IA, Jeu,
-  Embarqué, Sécurité, Autre. Décision du 01/11/2026, qui remplace le choix unique.
+- Titre : une ligne écrite par le membre (2 à 80 caractères), affichée sous son nom sur les
+  cartes, la fiche et son profil public. Jamais traduite. Décision du 01/11/2026.
+- Domaines d'intérêt : jusqu'à quatre, touchés par ordre de priorité (le premier est celui
+  qu'on voit d'abord) parmi cinquante, rangés en sept groupes (développement, data et IA,
+  infra et sécurité, design et produit, qualité et open source, secteurs, rôles), avec une
+  recherche. Les dix spécialités de départ en font partie. Décision du 01/11/2026, qui
+  remplace le choix unique puis les trois spécialités.
 - Technologies : puces avec autocomplétion ; suggestions issues des langages de ses dépôts.
 - Présentation : préremplie avec la bio GitHub, 280 caractères maximum.
 - Sauvegarde à chaque réponse. Une question déjà répondue n'est jamais reposée. Rappel discret

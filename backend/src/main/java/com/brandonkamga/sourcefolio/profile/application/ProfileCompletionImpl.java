@@ -2,6 +2,7 @@ package com.brandonkamga.sourcefolio.profile.application;
 
 import com.brandonkamga.sourcefolio.profile.domain.model.CountryCode;
 import com.brandonkamga.sourcefolio.profile.domain.model.DeveloperProfile;
+import com.brandonkamga.sourcefolio.profile.domain.model.Headline;
 import com.brandonkamga.sourcefolio.profile.domain.model.Specialties;
 import com.brandonkamga.sourcefolio.profile.domain.model.Specialty;
 import com.brandonkamga.sourcefolio.profile.domain.port.ProfileStore;
@@ -44,11 +45,24 @@ public class ProfileCompletionImpl implements ProfileCompletion {
         return saveAndAnnounce(findMyProfile(memberId).withSpecialties(new Specialties(ranked), clock.instant()));
     }
 
+    @Override
+    public DeveloperProfile answerHeadline(UUID memberId, String headline) {
+        Headline parsed = null;
+        if (headline != null && !headline.isBlank()) {
+            try {
+                parsed = Headline.parse(headline);
+            } catch (IllegalArgumentException invalid) {
+                throw new BadRequestException("profile.headline-invalid");
+            }
+        }
+        return saveAndAnnounce(findMyProfile(memberId).withHeadline(parsed, clock.instant()));
+    }
+
     // Cards and member popups show the country and specialties: the catalogue keeps a copy.
     private DeveloperProfile saveAndAnnounce(DeveloperProfile profile) {
         DeveloperProfile saved = profiles.save(profile);
         events.profileChanged(new ProfileChanged(saved.memberId(), saved.country() == null ? null : saved.country().value(),
-                saved.specialties().slugs()));
+                saved.specialties().slugs(), saved.headline() == null ? null : saved.headline().value()));
         return saved;
     }
 }

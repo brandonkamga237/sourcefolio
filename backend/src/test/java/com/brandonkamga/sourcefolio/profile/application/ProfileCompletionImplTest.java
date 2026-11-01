@@ -76,17 +76,17 @@ class ProfileCompletionImplTest {
     @DisplayName("ranked specialties keep the member's order and replace the earlier answer")
     void rankedSpecialties() {
         profiles.answerSpecialties(MEMBER, List.of("mobile"));
-        profiles.answerSpecialties(MEMBER, List.of("backend", "devops", "frontend"));
+        profiles.answerSpecialties(MEMBER, List.of("backend", "devops", "frontend", "open-source"));
 
-        assertThat(rows.get(MEMBER).specialties().slugs()).containsExactly("backend", "devops", "frontend");
+        assertThat(rows.get(MEMBER).specialties().slugs()).containsExactly("backend", "devops", "frontend", "open-source");
     }
 
     @Test
-    @DisplayName("none, more than three, or the same specialty twice is refused and changes nothing")
+    @DisplayName("none, more than four, or the same interest twice is refused and changes nothing")
     void rankedSpecialtiesRefused() {
         profiles.answerSpecialties(MEMBER, List.of("mobile"));
 
-        for (List<String> answer : List.of(List.<String>of(), List.of("backend", "devops", "frontend", "mobile"), List.of("backend", "backend"))) {
+        for (List<String> answer : List.of(List.<String>of(), List.of("backend", "devops", "frontend", "mobile", "cloud"), List.of("backend", "backend"))) {
             assertThatThrownBy(() -> profiles.answerSpecialties(MEMBER, answer))
                     .isInstanceOf(AppException.class)
                     .extracting(thrown -> ((AppException) thrown).messageKey()).isEqualTo("profile.specialties-invalid");
@@ -106,7 +106,28 @@ class ProfileCompletionImplTest {
         }
 
         assertThat(announced).containsExactly(
-                new ProfileChanged(MEMBER, "CM", List.of()),
-                new ProfileChanged(MEMBER, "CM", List.of("backend", "devops")));
+                new ProfileChanged(MEMBER, "CM", List.of(), null),
+                new ProfileChanged(MEMBER, "CM", List.of("backend", "devops"), null));
+    }
+
+    @Test
+    @DisplayName("the member writes their own headline, tidied onto one line; a blank one removes it")
+    void headline() {
+        profiles.answerHeadline(MEMBER, "  Front-end React\n à Douala ");
+        assertThat(rows.get(MEMBER).headline().value()).isEqualTo("Front-end React à Douala");
+
+        profiles.answerHeadline(MEMBER, "   ");
+        assertThat(rows.get(MEMBER).headline()).isNull();
+    }
+
+    @Test
+    @DisplayName("a headline over eighty characters is refused and changes nothing")
+    void headlineRefused() {
+        profiles.answerHeadline(MEMBER, "Backend Java");
+
+        assertThatThrownBy(() -> profiles.answerHeadline(MEMBER, "x".repeat(81)))
+                .isInstanceOf(AppException.class)
+                .extracting(thrown -> ((AppException) thrown).messageKey()).isEqualTo("profile.headline-invalid");
+        assertThat(rows.get(MEMBER).headline().value()).isEqualTo("Backend Java");
     }
 }

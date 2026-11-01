@@ -12,8 +12,8 @@ export async function generateMetadata({ params }: PageProps<"/[locale]/recent">
   };
 }
 
-export default async function RecentPage({ params }: PageProps<"/[locale]/recent">) {
+export default async function RecentPage({ params, searchParams }: PageProps<"/[locale]/recent">) {
   const locale = toLocale((await params).locale);
   setRequestLocale(locale);
-  return <CatalogScreen locale={locale} sort="recent" />;
+  return <CatalogScreen locale={locale} sort="recent" searchParams={searchParams} />;
 }

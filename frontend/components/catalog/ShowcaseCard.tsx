@@ -6,6 +6,7 @@ import type { Locale } from "@/i18n/routing";
 import { flagOf } from "@/lib/countries";
 import { compactNumber, plural, type PluralTemplates } from "@/lib/plural";
 import { siteLabel } from "@/lib/site-label";
+import { ShareAction } from "@/components/actions/ShareAction";
 import { Avatar } from "@/components/members/Avatar";
 import type { CatalogCard } from "@/services/catalog-types";
 import { Preview } from "./Preview";
@@ -25,6 +26,10 @@ export interface ShowcaseCardLabels {
   likes: PluralTemplates;
   stars: PluralTemplates;
   member: MemberSheetLabels;
+  share: string;
+  /** Contains {login}. */
+  shareTitle: string;
+  copied: string;
 }
 
 // A real link to the showcase page (phones open it; crawlers follow it). On a wide screen the
@@ -64,21 +69,32 @@ export function ShowcaseCard({ card, href, index, selected, onOpen, locale, labe
         </span>
       </span>
       </Link>
-      <MemberSheet
-        login={card.ownerLogin}
-        locale={locale}
-        labels={labels.member}
-        triggerClassName="flex w-full items-center gap-2.5 px-3 pt-2.5 pb-3 text-left transition-colors duration-150 hover:bg-surface-raised sm:px-3.5 sm:pt-3 sm:pb-3.5"
-      >
-        <Avatar login={card.ownerLogin} size={30} className="ring-2 ring-surface transition-[box-shadow] duration-200 group-hover:ring-accent-soft" />
-        <span className="flex min-w-0 flex-col gap-0.5">
-          <span className="truncate text-sm font-semibold sm:text-[15px]">{card.ownerLogin}</span>
-          <span className="truncate text-[11px] text-ink-muted sm:text-xs">
-            {card.countryCode ? `${flagOf(card.countryCode)} ` : ""}
-            {card.specialties.length > 0 ? labels.member.specialtyNames[card.specialties[0]] : card.repository}
+      <div className="flex items-center">
+        <MemberSheet
+          login={card.ownerLogin}
+          locale={locale}
+          labels={labels.member}
+          triggerClassName="flex min-w-0 flex-1 items-center gap-2.5 py-2.5 pr-1 pl-3 text-left transition-colors duration-150 hover:bg-surface-raised sm:py-3 sm:pl-3.5"
+        >
+          <Avatar login={card.ownerLogin} size={30} className="ring-2 ring-surface transition-[box-shadow] duration-200 group-hover:ring-accent-soft" />
+          <span className="flex min-w-0 flex-col gap-0.5">
+            <span className="truncate text-sm font-semibold sm:text-[15px]">{card.ownerLogin}</span>
+            <span className="truncate text-[11px] text-ink-muted sm:text-xs">
+              {card.countryCode ? `${flagOf(card.countryCode)} ` : ""}
+              {card.headline ?? (card.specialties.length > 0 ? labels.member.specialtyNames[card.specialties[0]] : card.repository)}
+            </span>
           </span>
-        </span>
-      </MemberSheet>
+        </MemberSheet>
+        {/* Sharing a portfolio is what brings visitors: one tap from every card. */}
+        <ShareAction
+          path={href}
+          title={labels.shareTitle.replace("{login}", card.ownerLogin)}
+          label={labels.share}
+          copiedLabel={labels.copied}
+          iconOnly
+          className="press mr-1.5 flex size-11 shrink-0 items-center justify-center rounded-full text-ink-muted transition-colors duration-150 hover:bg-surface-sunken hover:text-ink"
+        />
+      </div>
     </article>
   );
 }

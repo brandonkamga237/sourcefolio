@@ -56,9 +56,9 @@ class CatalogListenersTest {
     @Test
     @DisplayName("a changed profile reaches every card of its author")
     void profileReachesCatalogue() {
-        new CatalogListeners(recording()).on(new ProfileChanged(MEMBER, "CM", List.of("backend", "devops")));
+        new CatalogListeners(recording()).on(new ProfileChanged(MEMBER, "CM", List.of("backend", "devops"), "Backend à Douala"));
 
-        assertThat(calls).containsExactly(MEMBER + " profile CM [backend, devops]");
+        assertThat(calls).containsExactly(MEMBER + " profile CM [backend, devops] Backend à Douala");
     }
 
     @Test
@@ -107,7 +107,7 @@ class CatalogListenersTest {
             }
 
             @Override
-            public void updateAuthorProfile(UUID ownerId, String countryCode, List<String> specialties) {
+            public void updateAuthorProfile(UUID ownerId, String countryCode, List<String> specialties, String headline) {
                 throw new IllegalStateException("database down");
             }
         });
@@ -145,8 +145,8 @@ class CatalogListenersTest {
             }
 
             @Override
-            public void updateAuthorProfile(UUID ownerId, String countryCode, List<String> specialties) {
-                calls.add(ownerId + " profile " + countryCode + " " + specialties);
+            public void updateAuthorProfile(UUID ownerId, String countryCode, List<String> specialties, String headline) {
+                calls.add(ownerId + " profile " + countryCode + " " + specialties + " " + headline);
             }
         };
     }

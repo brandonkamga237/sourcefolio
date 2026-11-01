@@ -67,7 +67,7 @@ export function MemberSheet({ login, locale, labels, children, triggerClassName 
       </Dialog.Trigger>
       <Dialog.Portal>
         <Dialog.Overlay className="fixed inset-0 z-50 bg-ink/40 backdrop-blur-[2px] data-[state=open]:animate-[fade-in_200ms_ease-out]" />
-        <Dialog.Content className="fixed inset-x-0 bottom-0 z-50 flex max-h-[92dvh] flex-col overflow-hidden rounded-t-panel border border-line bg-surface shadow-[0_-12px_40px_-12px_rgba(18,20,18,0.3)] data-[state=open]:animate-[sheet-up_320ms_var(--ease-out-soft)] sm:inset-x-auto sm:top-1/2 sm:bottom-auto sm:left-1/2 sm:w-[460px] sm:-translate-x-1/2 sm:-translate-y-1/2 sm:rounded-panel sm:data-[state=open]:animate-[pop-in_240ms_var(--ease-out-soft)]">
+        <Dialog.Content className="fixed inset-x-0 bottom-0 z-50 flex max-h-[92dvh] flex-col overflow-hidden rounded-t-panel border border-line bg-surface shadow-[0_-12px_40px_-12px_rgba(18,20,18,0.3)] data-[state=open]:animate-[sheet-up_320ms_var(--ease-out-soft)] sm:inset-x-auto sm:top-1/2 sm:bottom-auto sm:left-1/2 sm:max-h-[88dvh] sm:w-[min(760px,calc(100vw-48px))] sm:-translate-x-1/2 sm:-translate-y-1/2 sm:rounded-panel sm:data-[state=open]:animate-[pop-in_240ms_var(--ease-out-soft)]">
           <div className="relative h-24 shrink-0 bg-[linear-gradient(120deg,var(--color-accent-soft),var(--color-surface-sunken))]">
             <span aria-hidden="true" className="absolute top-2 left-1/2 h-1 w-10 -translate-x-1/2 rounded-full bg-ink/15 sm:hidden" />
             <Dialog.Close
@@ -78,11 +78,14 @@ export function MemberSheet({ login, locale, labels, children, triggerClassName 
             </Dialog.Close>
           </div>
 
-          <div className="relative -mt-12 flex flex-col gap-4 overflow-y-auto px-5 pb-[calc(1.25rem+env(safe-area-inset-bottom))] sm:pb-5">
-            <div className="flex items-end gap-3">
+          {/* One column on a phone; on a wide screen the person on the left and their portfolio on
+              the right, so everything shows at once without scrolling the sheet. */}
+          <div className={`relative -mt-12 grid gap-4 overflow-y-auto px-5 pb-[calc(1.25rem+env(safe-area-inset-bottom))] sm:grid-cols-2 sm:gap-x-6 sm:pb-6 ${areas}`}>
+            <div className="flex items-end gap-3 [grid-area:id]">
               <Avatar login={login} size={88} className="border-4 border-surface" />
               <div className="flex min-w-0 flex-col pb-1">
                 <Dialog.Title className="truncate font-display text-[24px] leading-tight font-bold tracking-[-0.025em]">{data?.login ?? login}</Dialog.Title>
+                {data?.headline ? <p className="line-clamp-2 text-sm leading-snug font-medium text-ink-body">{data.headline}</p> : null}
                 <Dialog.Description className="truncate text-[13px] text-ink-muted">
                   {data ? (data.countryCode ? `${flagOf(data.countryCode)} ${countryName(data.countryCode, locale)}` : labels.noCountry) : labels.loading}
                 </Dialog.Description>
@@ -90,16 +93,16 @@ export function MemberSheet({ login, locale, labels, children, triggerClassName 
             </div>
 
             {isPending ? (
-              <div aria-hidden="true" className="flex flex-col gap-3">
+              <div aria-hidden="true" className="flex flex-col gap-3 [grid-area:spec] sm:col-span-2">
                 <div className="h-8 w-2/3 animate-pulse rounded-full bg-surface-sunken" />
                 <div className="h-16 animate-pulse rounded-control bg-surface-sunken" />
                 <div className="h-40 animate-pulse rounded-card bg-surface-sunken" />
               </div>
             ) : isError || !data ? (
-              <p role="alert" className="rounded-control bg-surface-sunken p-3 text-sm text-ink-body">{labels.failed}</p>
+              <p role="alert" className="rounded-control bg-surface-sunken p-3 text-sm text-ink-body [grid-area:spec] sm:col-span-2">{labels.failed}</p>
             ) : (
               <>
-                <section aria-label={labels.specialtiesTitle} className="flex flex-wrap gap-1.5">
+                <section aria-label={labels.specialtiesTitle} className="flex flex-wrap content-start gap-1.5 [grid-area:spec]">
                   {data.specialties.length === 0 ? (
                     <span className="text-[13px] text-ink-muted">{labels.noSpecialty}</span>
                   ) : (
@@ -117,7 +120,7 @@ export function MemberSheet({ login, locale, labels, children, triggerClassName 
                   )}
                 </section>
 
-                <dl className="grid grid-cols-3 divide-x divide-line-soft rounded-control border border-line-soft bg-surface-raised text-center">
+                <dl className="grid grid-cols-3 divide-x divide-line-soft self-start rounded-control border border-line-soft bg-surface-raised text-center [grid-area:stats]">
                   <div className="flex flex-col gap-0.5 px-2 py-2.5">
                     <dt className="order-2 text-[11px] text-ink-muted">{plural(labels.likesReceived, data.likesReceived, locale).replace(/^\S+\s/, "")}</dt>
                     <dd className="order-1 flex items-center justify-center gap-1 font-mono text-base font-semibold tabular-nums">
@@ -142,7 +145,7 @@ export function MemberSheet({ login, locale, labels, children, triggerClassName 
                   </div>
                 </dl>
 
-                <section aria-label={labels.portfolioTitle} className="overflow-hidden rounded-card border border-line">
+                <section aria-label={labels.portfolioTitle} className="self-start overflow-hidden rounded-card border border-line [grid-area:port] sm:mt-14">
                   <div className="relative aspect-[2/1] overflow-hidden bg-surface-sunken">
                     {data.showcase.previewImageUrl ? (
                       <Image src={data.showcase.previewImageUrl} alt="" fill sizes="460px" className="object-cover object-top" />
@@ -177,7 +180,7 @@ export function MemberSheet({ login, locale, labels, children, triggerClassName 
                   href={data.githubUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="press flex h-11 items-center justify-center gap-2 rounded-control border border-line text-sm font-semibold text-ink transition-colors duration-150 hover:border-ink"
+                  className="press flex h-11 items-center justify-center gap-2 self-start rounded-control border border-line text-sm font-semibold text-ink transition-colors duration-150 [grid-area:gh] hover:border-ink"
                 >
                   <IconGithub className="size-4" />
                   {labels.githubProfile}
@@ -190,5 +193,10 @@ export function MemberSheet({ login, locale, labels, children, triggerClassName 
     </Dialog.Root>
   );
 }
+
+// Named areas keep the phone's reading order (person, specialties, numbers, portfolio, GitHub)
+// while the wide layout moves the portfolio to its own column.
+const areas =
+  "[grid-template-areas:'id'_'spec'_'stats'_'port'_'gh'] sm:[grid-template-areas:'id_port'_'spec_port'_'stats_port'_'gh_port']";
 
 const iconAction = "press flex size-11 items-center justify-center rounded-control border border-line text-ink transition-colors duration-150 hover:border-ink";

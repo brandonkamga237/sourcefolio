@@ -4,7 +4,8 @@ import { localizedPath } from "@/i18n/paths";
 import type { Locale } from "@/i18n/routing";
 import { countryOptions } from "@/lib/countries";
 import { getMe } from "@/services/me";
-import { getMyAnswers, SPECIALTIES, type Specialty } from "@/services/profile";
+import { getMyAnswers } from "@/services/profile";
+import { SPECIALTIES, SPECIALTY_GROUPS, type Specialty, type SpecialtyGroup } from "@/services/profile-types";
 import { ProfileQuestions } from "./ProfileQuestions";
 
 interface ProfileScreenProps {
@@ -37,11 +38,21 @@ export async function ProfileScreen({ locale }: ProfileScreenProps) {
       doneHref={localizedPath(locale, "/me")}
       labels={{
         progress: t.raw("profile.progress") as string,
+        headlineTitle: t("profile.headlineTitle"),
+        headlineHint: t("profile.headlineHint"),
+        headlinePlaceholder: t("profile.headlinePlaceholder"),
+        headlineCounter: t.raw("profile.headlineCounter") as string,
+        headlineLabel: t("profile.headlineLabel"),
         countryTitle: t("profile.countryTitle"),
         countryPlaceholder: t("profile.countryPlaceholder"),
         specialtyTitle: t("profile.specialtyTitle"),
         specialtyHint: t("profile.specialtyHint"),
         specialties,
+        groups: Object.fromEntries((Object.keys(SPECIALTY_GROUPS) as SpecialtyGroup[]).map((group) => [group, t(`specialtyGroup.${group}`)])) as Record<SpecialtyGroup, string>,
+        searchPlaceholder: t("profile.searchPlaceholder"),
+        noMatch: t("profile.noMatch"),
+        selectionEmpty: t("profile.selectionEmpty"),
+        removeChoice: t.raw("profile.removeChoice") as string,
         emailTitle: t("profile.emailTitle"),
         emailHint: t("profile.emailHint"),
         next: t("profile.next"),

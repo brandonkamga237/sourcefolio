@@ -6,9 +6,14 @@ export function answerCountry(country: string): Promise<ClientResult<Profile>> {
   return clientPut<Profile>("/api/me/profile/country", { country });
 }
 
-/** One to three slugs, most important first; replaces the earlier answer. */
+/** One to four slugs, most important first; replaces the earlier answer. */
 export function answerSpecialties(specialties: string[]): Promise<ClientResult<Profile>> {
   return clientPut<Profile>("/api/me/profile/specialties", { specialties });
+}
+
+/** The member's own line; null or blank removes it. */
+export function answerHeadline(headline: string | null): Promise<ClientResult<Profile>> {
+  return clientPut<Profile>("/api/me/profile/headline", { headline });
 }
 
 /** null or blank removes the address. */

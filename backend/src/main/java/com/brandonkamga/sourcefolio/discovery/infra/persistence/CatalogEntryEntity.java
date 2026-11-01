@@ -61,6 +61,9 @@ class CatalogEntryEntity {
     @JdbcTypeCode(SqlTypes.ARRAY)
     private String[] specialties = new String[0];
 
+    @Column(length = 80)
+    private String headline;
+
     protected CatalogEntryEntity() {
     }
 
@@ -78,4 +81,5 @@ class CatalogEntryEntity {
     Integer getRepositoryStars() { return repositoryStars; }
     String getCountryCode() { return countryCode; }
     String[] getSpecialties() { return specialties; }
+    String getHeadline() { return headline; }
 }

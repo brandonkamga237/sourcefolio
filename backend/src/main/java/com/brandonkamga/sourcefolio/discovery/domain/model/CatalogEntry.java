@@ -12,7 +12,15 @@ import java.util.UUID;
  */
 public record CatalogEntry(UUID showcaseId, String slug, String siteUrl, String repository, String repositoryUrl,
                            UUID ownerId, String ownerLogin, Instant publishedAt, String previewImageUrl, String previewVideoUrl,
-                           Integer repositoryStars, int likes, String countryCode, List<String> specialties) {
+                           Integer repositoryStars, int likes, String countryCode, List<String> specialties, String headline) {
+
+    /** An entry whose author has written no headline. */
+    public CatalogEntry(UUID showcaseId, String slug, String siteUrl, String repository, String repositoryUrl,
+                        UUID ownerId, String ownerLogin, Instant publishedAt, String previewImageUrl, String previewVideoUrl,
+                        Integer repositoryStars, int likes, String countryCode, List<String> specialties) {
+        this(showcaseId, slug, siteUrl, repository, repositoryUrl, ownerId, ownerLogin, publishedAt, previewImageUrl, previewVideoUrl,
+                repositoryStars, likes, countryCode, specialties, null);
+    }
 
     /** An entry whose author's profile is not copied yet. */
     public CatalogEntry(UUID showcaseId, String slug, String siteUrl, String repository, String repositoryUrl,

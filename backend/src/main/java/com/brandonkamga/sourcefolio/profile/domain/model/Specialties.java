@@ -4,12 +4,12 @@ import java.util.HashSet;
 import java.util.List;
 
 /**
- * The specialties a member names, most important first: none until answered, then one to
- * three, each at most once.
+ * The interests a member names, most important first: none until answered, then one to
+ * four, each at most once.
  */
 public record Specialties(List<Specialty> ranked) {
 
-    public static final int MAX = 3;
+    public static final int MAX = 4;
 
     public Specialties {
         ranked = List.copyOf(ranked);
