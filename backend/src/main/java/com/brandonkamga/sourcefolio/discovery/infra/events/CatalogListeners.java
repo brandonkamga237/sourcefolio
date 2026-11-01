@@ -3,6 +3,7 @@ package com.brandonkamga.sourcefolio.discovery.infra.events;
 import com.brandonkamga.sourcefolio.account.application.MemberSignedIn;
 import com.brandonkamga.sourcefolio.discovery.application.CatalogProjection;
 import com.brandonkamga.sourcefolio.discovery.domain.model.CatalogEntry;
+import com.brandonkamga.sourcefolio.engagement.application.ShowcaseFeedbackChanged;
 import com.brandonkamga.sourcefolio.engagement.application.ShowcaseLikesChanged;
 import com.brandonkamga.sourcefolio.profile.application.ProfileChanged;
 import com.brandonkamga.sourcefolio.showcase.application.ShowcasePreviewChanged;
@@ -46,6 +47,15 @@ class CatalogListeners {
             catalog.updatePreview(event.showcaseId(), event.imageUrl(), event.videoUrl());
         } catch (RuntimeException failure) {
             log.error("Preview of showcase {} not copied to the catalogue", event.showcaseId(), failure);
+        }
+    }
+
+    @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT, fallbackExecution = true)
+    void on(ShowcaseFeedbackChanged event) {
+        try {
+            catalog.updateFeedbackCount(event.showcaseId(), event.count());
+        } catch (RuntimeException failure) {
+            log.error("Feedback count of showcase {} not copied to the catalogue", event.showcaseId(), failure);
         }
     }
 

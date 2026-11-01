@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { Suspense } from "react";
-import { IconChevronLeft, IconChevronRight, IconClose, IconCode, IconCopy, IconExternal, IconGithub, IconHeart, IconStar } from "@/components/icons";
+import { IconChevronLeft, IconChevronRight, IconClose, IconCode, IconCopy, IconExternal, IconGithub, IconFeedback, IconHeart, IconStar } from "@/components/icons";
 import { CopyAction } from "@/components/actions/CopyAction";
 import { ShareAction } from "@/components/actions/ShareAction";
 import { MemberSheet, type MemberSheetLabels } from "@/components/members/MemberSheet";
@@ -29,7 +29,7 @@ export interface ShowcasePanelLabels {
   /** Contains {current} and {total}. */
   position: string;
   likes: LikeButtonLabels;
-  stats: { likes: string; stars: string; published: string };
+  stats: { likes: string; stars: string; feedback: string; published: string };
   share: string;
   /** Contains {login}. */
   shareTitle: string;
@@ -136,6 +136,11 @@ export function ShowcasePanel({ card, position, direction, onPrev, onNext, href,
             <IconHeart aria-hidden="true" className={`size-3.5 ${card.likes > 0 ? "fill-like text-like" : ""}`} />
             <span className="font-semibold text-ink tabular-nums">{compactNumber(card.likes, locale)}</span> {labels.stats.likes}
           </span>
+          {/* A way in to the conversation: the count leads to the feedback on the page. */}
+          <Link href={`${href}#feedback`} className="-my-2 flex min-h-11 items-center gap-1 hover:text-ink">
+            <IconFeedback aria-hidden="true" className="size-3.5 text-accent-ink" />
+            <span className="font-semibold text-ink tabular-nums">{compactNumber(card.feedbackCount, locale)}</span> {labels.stats.feedback}
+          </Link>
           {card.repositoryStars != null ? (
             <span className="flex items-center gap-1">
               <IconStar aria-hidden="true" className="size-3.5 fill-star text-star" />

@@ -25,6 +25,8 @@ public interface CatalogStore {
     /** Keeps the copy of a showcase's like count, announced by the engagement module. */
     void setLikes(UUID showcaseId, int count);
 
+    void setFeedbackCount(UUID showcaseId, int count);
+
     /** Keeps the copy of what GitHub says about the repository: stars, description, languages, last push; nulls when unknown. */
     void setRepository(UUID showcaseId, Integer stars, String description, List<String> languages, Instant pushedAt);
 

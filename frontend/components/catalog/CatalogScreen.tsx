@@ -66,10 +66,11 @@ async function Feed({ locale, sort, searchParams }: CatalogScreenProps) {
   // Read per request: the catalogue changes as members publish, and the build has no API.
   await connection();
   const filters = readFilters(await searchParams);
-  const [t, tl, ts] = await Promise.all([
+  const [t, tl, ts, tf] = await Promise.all([
     getTranslations({ locale, namespace: "catalog" }),
     getTranslations({ locale, namespace: "likes" }),
     getTranslations({ locale, namespace: "stars" }),
+    getTranslations({ locale, namespace: "feedback" }),
   ]);
   const memberLabels = await memberSheetLabels(locale);
   let firstPage: CatalogPage;
@@ -130,6 +131,7 @@ async function Feed({ locale, sort, searchParams }: CatalogScreenProps) {
           copied: t("panel.copied"),
           likes: { one: tl.raw("countOne") as string, other: tl.raw("countOther") as string },
           stars: { one: ts.raw("one") as string, other: ts.raw("other") as string },
+          feedback: { one: tf.raw("countOne") as string, other: tf.raw("countOther") as string },
         },
         panel: {
           close: t("panel.close"),
@@ -141,7 +143,7 @@ async function Feed({ locale, sort, searchParams }: CatalogScreenProps) {
           openPage: t("panel.openPage"),
           sourceRepo: t("panel.sourceRepo"),
           publishedOn: t.raw("panel.publishedOn") as string,
-          stats: { likes: t("panel.statLikes"), stars: t("panel.statStars"), published: t("panel.statPublished") },
+          stats: { likes: t("panel.statLikes"), stars: t("panel.statStars"), feedback: t("panel.statFeedback"), published: t("panel.statPublished") },
           share: t("panel.share"),
           shareTitle: t.raw("panel.shareTitle") as string,
           clone: t("panel.clone"),

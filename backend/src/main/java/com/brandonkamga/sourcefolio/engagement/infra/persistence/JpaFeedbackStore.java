@@ -55,6 +55,13 @@ class JpaFeedbackStore implements FeedbackStore {
         feedback.renameAuthor(authorId, login);
     }
 
+    @Override
+    public List<UUID> removeAllBy(UUID authorId) {
+        List<UUID> showcases = feedback.showcasesFeedbackBy(authorId);
+        feedback.deleteAllBy(authorId);
+        return showcases;
+    }
+
     private static Feedback toDomain(FeedbackEntity row) {
         return new Feedback(row.getId(), row.getShowcaseId(), row.getAuthorId(), row.getAuthorLogin(),
                 row.getAngle() == null ? null : FeedbackAngle.valueOf(row.getAngle()), new FeedbackBody(row.getBody()),

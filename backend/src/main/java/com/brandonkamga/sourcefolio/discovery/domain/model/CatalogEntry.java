@@ -8,13 +8,25 @@ import java.util.UUID;
 /**
  * One published showcase as the catalogue shows it. A copy, fed by events from showcase and
  * engagement, and the author's public profile (country, ranked specialties, headline, declared
- * role) from profile; the like count is shown on the card, never used to order Discover.
+ * role) from profile; the like and feedback counts are shown on the card, never used to order
+ * Discover.
  */
 public record CatalogEntry(UUID showcaseId, String slug, String siteUrl, String repository, String repositoryUrl,
                            UUID ownerId, String ownerLogin, Instant publishedAt, String previewImageUrl, String previewVideoUrl,
                            Integer repositoryStars, int likes, String countryCode, List<String> specialties, String headline,
                            String repositoryDescription, List<String> repositoryLanguages, Instant repositoryPushedAt,
-                           String authorRole) {
+                           String authorRole, int feedbackCount) {
+
+    /** An entry without feedback yet. */
+    public CatalogEntry(UUID showcaseId, String slug, String siteUrl, String repository, String repositoryUrl,
+                        UUID ownerId, String ownerLogin, Instant publishedAt, String previewImageUrl, String previewVideoUrl,
+                        Integer repositoryStars, int likes, String countryCode, List<String> specialties, String headline,
+                        String repositoryDescription, List<String> repositoryLanguages, Instant repositoryPushedAt,
+                        String authorRole) {
+        this(showcaseId, slug, siteUrl, repository, repositoryUrl, ownerId, ownerLogin, publishedAt, previewImageUrl, previewVideoUrl,
+                repositoryStars, likes, countryCode, specialties, headline, repositoryDescription, repositoryLanguages, repositoryPushedAt,
+                authorRole, 0);
+    }
 
     /** An entry whose author has declared no role. */
     public CatalogEntry(UUID showcaseId, String slug, String siteUrl, String repository, String repositoryUrl,

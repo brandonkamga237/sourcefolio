@@ -23,8 +23,8 @@ class EngagementServices {
     }
 
     @Bean
-    Feedbacks feedbacks(PublicShowcases showcases, FeedbackStore feedback, SignInService members, Clock clock,
-                        TransactionalServices transactional) {
-        return transactional.wrap(Feedbacks.class, new FeedbacksImpl(showcases, feedback, members, clock));
+    Feedbacks feedbacks(PublicShowcases showcases, FeedbackStore feedback, SignInService members, EngagementEvents events,
+                        Clock clock, TransactionalServices transactional) {
+        return transactional.wrap(Feedbacks.class, new FeedbacksImpl(showcases, feedback, members, events, clock));
     }
 }

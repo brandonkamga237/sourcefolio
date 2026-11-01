@@ -67,6 +67,9 @@ class CatalogEntryEntity {
     @Column(name = "author_role", length = 20)
     private String authorRole;
 
+    @Column(name = "feedback_count", nullable = false)
+    private int feedbackCount;
+
     @Column(name = "repository_description", length = 350)
     private String repositoryDescription;
 
@@ -97,6 +100,7 @@ class CatalogEntryEntity {
     String[] getSpecialties() { return specialties; }
     String getHeadline() { return headline; }
     String getAuthorRole() { return authorRole; }
+    int getFeedbackCount() { return feedbackCount; }
     String getRepositoryDescription() { return repositoryDescription; }
     String[] getRepositoryLanguages() { return repositoryLanguages; }
     Instant getRepositoryPushedAt() { return repositoryPushedAt; }

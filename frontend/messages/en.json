@@ -177,7 +177,8 @@
       "githubProfile": "GitHub",
       "projectTitle": "The project",
       "projectLanguages": "Repository languages",
-      "projectUpdated": "Code updated {when}"
+      "projectUpdated": "Code updated {when}",
+      "statFeedback": "feedback"
     },
     "feedTitle": "Portfolios",
     "recentTitle": "Latest published",
@@ -449,7 +450,9 @@
     "writtenIn": {
       "fr": "Written in French",
       "en": "Written in English"
-    }
+    },
+    "countOne": "{count} piece of feedback",
+    "countOther": "{count} pieces of feedback"
   },
   "role": {
     "frontend": "Frontend",

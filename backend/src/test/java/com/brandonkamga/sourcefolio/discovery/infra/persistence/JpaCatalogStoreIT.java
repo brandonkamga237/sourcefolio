@@ -164,6 +164,18 @@ class JpaCatalogStoreIT extends PostgresIT {
     }
 
     @Test
+    @DisplayName("a showcase's feedback count is stored on its card and read back")
+    void feedbackCount() {
+        CatalogEntry entry = entry("feedback-count", NOW);
+        catalog.upsert(entry);
+
+        catalog.setFeedbackCount(entry.showcaseId(), 5);
+
+        assertThat(catalog.recent(null, 10, CatalogFilter.none())).filteredOn(card -> card.slug().equals("feedback-count"))
+                .singleElement().extracting(CatalogEntry::feedbackCount).isEqualTo(5);
+    }
+
+    @Test
     @DisplayName("the author's country and ranked specialties are copied onto every card of theirs, and replaced on change")
     void authorProfile() {
         CatalogEntry entry = entry("profiled", NOW);

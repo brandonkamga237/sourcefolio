@@ -62,6 +62,14 @@ class InMemoryCatalogStore implements CatalogStore {
     }
 
     @Override
+    public void setFeedbackCount(UUID showcaseId, int count) {
+        rows.computeIfPresent(showcaseId, (id, entry) -> new CatalogEntry(entry.showcaseId(), entry.slug(), entry.siteUrl(),
+                entry.repository(), entry.repositoryUrl(), entry.ownerId(), entry.ownerLogin(), entry.publishedAt(), entry.previewImageUrl(),
+                entry.previewVideoUrl(), entry.repositoryStars(), entry.likes(), entry.countryCode(), entry.specialties(), entry.headline(),
+                entry.repositoryDescription(), entry.repositoryLanguages(), entry.repositoryPushedAt(), entry.authorRole(), count));
+    }
+
+    @Override
     public List<CatalogEntry> byOwnerLogin(String login) {
         return rows.values().stream().filter(entry -> entry.ownerLogin().equalsIgnoreCase(login))
                 .sorted(java.util.Comparator.comparing(CatalogEntry::publishedAt).reversed()).toList();

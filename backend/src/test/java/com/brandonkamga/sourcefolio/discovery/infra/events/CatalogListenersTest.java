@@ -3,6 +3,7 @@ package com.brandonkamga.sourcefolio.discovery.infra.events;
 import com.brandonkamga.sourcefolio.account.application.MemberSignedIn;
 import com.brandonkamga.sourcefolio.discovery.application.CatalogProjection;
 import com.brandonkamga.sourcefolio.discovery.domain.model.CatalogEntry;
+import com.brandonkamga.sourcefolio.engagement.application.ShowcaseFeedbackChanged;
 import com.brandonkamga.sourcefolio.engagement.application.ShowcaseLikesChanged;
 import com.brandonkamga.sourcefolio.profile.application.ProfileChanged;
 import com.brandonkamga.sourcefolio.showcase.application.ShowcasePreviewChanged;
@@ -78,6 +79,14 @@ class CatalogListenersTest {
     }
 
     @Test
+    @DisplayName("a new feedback count reaches the catalogue")
+    void feedbackReachesCatalogue() {
+        new CatalogListeners(recording()).on(new ShowcaseFeedbackChanged(SHOWCASE, 4));
+
+        assertThat(calls).containsExactly(SHOWCASE + " feedback 4");
+    }
+
+    @Test
     @DisplayName("a catalogue failure never reaches the member who published")
     void failureIsContained() {
         CatalogListeners listeners = new CatalogListeners(new CatalogProjection() {
@@ -93,6 +102,11 @@ class CatalogListenersTest {
 
             @Override
             public void updateLikes(UUID showcaseId, int count) {
+                throw new IllegalStateException("database down");
+            }
+
+            @Override
+            public void updateFeedbackCount(UUID showcaseId, int count) {
                 throw new IllegalStateException("database down");
             }
 
@@ -115,6 +129,7 @@ class CatalogListenersTest {
         assertThatCode(() -> listeners.on(PUBLISHED)).doesNotThrowAnyException();
         assertThatCode(() -> listeners.on(new MemberSignedIn(MEMBER, "x"))).doesNotThrowAnyException();
         assertThatCode(() -> listeners.on(new ShowcaseLikesChanged(SHOWCASE, 3))).doesNotThrowAnyException();
+        assertThatCode(() -> listeners.on(new ShowcaseFeedbackChanged(SHOWCASE, 3))).doesNotThrowAnyException();
     }
 
     private CatalogProjection recording() {
@@ -132,6 +147,11 @@ class CatalogListenersTest {
             @Override
             public void updateLikes(UUID showcaseId, int count) {
                 calls.add(showcaseId + " likes " + count);
+            }
+
+            @Override
+            public void updateFeedbackCount(UUID showcaseId, int count) {
+                calls.add(showcaseId + " feedback " + count);
             }
 
             @Override
