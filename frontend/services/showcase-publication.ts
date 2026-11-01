@@ -12,3 +12,8 @@ export function publishMyShowcase(repository: string): Promise<ClientResult<MySh
 export function withdrawMyShowcase(): Promise<ClientResult<null>> {
   return clientDelete<null>("/api/me/showcase");
 }
+
+/** Searches the member's repositories again in the background; 409 when one just ran. */
+export function rescanMyRepositories(): Promise<ClientResult<null>> {
+  return clientPost<null>("/api/me/showcase-candidates/rescan");
+}

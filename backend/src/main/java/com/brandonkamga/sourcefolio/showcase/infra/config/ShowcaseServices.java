@@ -40,8 +40,8 @@ class ShowcaseServices {
     // inside a transaction. The store makes its own write atomic.
     @Bean
     ShowcaseDetection showcaseDetection(RepositoryHost repositories, CandidateStore candidates,
-                                        DetectionScheduler scheduler, Clock clock) {
-        return new ShowcaseDetectionImpl(repositories, candidates, scheduler, clock);
+                                        DetectionScheduler scheduler, MemberDirectory members, Clock clock) {
+        return new ShowcaseDetectionImpl(repositories, candidates, scheduler, members, clock);
     }
 
     // Not wrapped either: publish() fetches the member's site before saving, and the store

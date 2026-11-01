@@ -49,7 +49,7 @@ export async function MeScreen({ locale }: MeScreenProps) {
             </h1>
             <p className="text-[15px] leading-normal text-ink-body">{t("pages.portfolio.visitorLead")}</p>
           </div>
-          <GitHubSignIn label={t("auth.signInWithGithub")} permission={t("auth.permission")} />
+          <GitHubSignIn label={t("auth.signInWithGithub")} permission={t("auth.permission")} returnTo={localizedPath(locale, "/me")} />
           <ol className="grid gap-2 sm:grid-cols-3">
             {steps.map((step, index) => (
               <li key={index} className="flex items-start gap-2.5 rounded-control bg-surface-sunken p-3">
@@ -71,6 +71,7 @@ export async function MeScreen({ locale }: MeScreenProps) {
   const countryName = answers?.country ? countryOptions(locale).find((option) => option.code === answers.country)?.name : null;
   const profileRows = [
     { label: t("profile.headlineLabel"), value: answers?.headline ?? null },
+    { label: t("profile.roleLabel"), value: answers?.role ? t(`role.${answers.role}`) : null },
     { label: t("profile.countryLabel"), value: countryName ?? null },
     {
       label: t("profile.specialtyLabel"),

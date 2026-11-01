@@ -18,5 +18,5 @@ public interface CatalogProjection {
 
     void updateRepository(UUID showcaseId, Integer stars, String description, List<String> languages, Instant pushedAt);
 
-    void updateAuthorProfile(UUID ownerId, String countryCode, List<String> specialties, String headline);
+    void updateAuthorProfile(UUID ownerId, String countryCode, List<String> specialties, String headline, String role);
 }

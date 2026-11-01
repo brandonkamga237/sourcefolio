@@ -67,7 +67,11 @@ catalogue.
 - **Aperçu** : une image (JPEG, PNG ou WebP, 5 Mo maximum) et une vidéo facultative (MP4,
   15 s et 8 Mo maximum), stockées dans le bucket S3 de la plateforme.
 - **Filtres** : rangée de puces défilante sous la recherche ; « Filtres » ouvre une feuille en
-  bas d'écran avec le compteur en direct (« Voir 124 portfolios »).
+  bas d'écran avec le compteur en direct (« Voir 124 portfolios »). Trois filtres : pays,
+  **stack** (les langages principaux du dépôt, lus sur GitHub : ce que le code prouve) et
+  **rôle** (le rôle principal que l'auteur déclare, affiché comme sa déclaration). Les domaines
+  d'intérêt restent sur le profil mais ne filtrent plus : déclaratifs, ils disaient peu du
+  portfolio (un portfolio DevOps rangé en « Full-stack »). Décision du 01/11/2026.
 - **Fiche** : capture en grand, puis barre d'actions fixée en bas : Voir le site (principal),
   Code, apprécier, commenter, partager.
 - **Commentaires** : feuille en bas d'écran, champ de saisie au-dessus du clavier.
@@ -113,7 +117,12 @@ GitHub, sans formulaire.
 4. **Oui, publier** → vérification automatique (quelques secondes), puis demande des
    informations manquantes : pays et spécialité (préremplis si possible), e-mail facultatif.
 5. Publié. Écran de succès avec **Partager** (lien et image d'aperçu prêts pour WhatsApp).
-6. Aucun candidat trouvé → saisie manuelle de l'URL du site et du dépôt, même vérification.
+6. Aucun candidat trouvé, ou pas le bon → Moi liste tous ses autres dépôts publics. Pour celui
+   qu'il choisit, le membre indique l'adresse de son site dans le champ « Website » du dépôt sur
+   GitHub, puis **Rechercher à nouveau** : le dépôt devient candidat, même vérification. Seul le
+   propriétaire peut modifier ce champ, c'est la preuve que le site est à lui ; une URL saisie
+   librement ne l'est pas. Une nouvelle recherche au plus toutes les 30 secondes, et une à chaque
+   changement de portfolio. Décision du 01/11/2026, qui remplace la saisie libre.
 
 ### Complétion du profil, une question à la fois
 
@@ -123,6 +132,9 @@ GitHub, sans formulaire.
   confirmer d'un toucher.
 - Titre : une ligne écrite par le membre (2 à 80 caractères), affichée sous son nom sur les
   cartes, la fiche et son profil public. Jamais traduite. Décision du 01/11/2026.
+- Rôle principal : un seul parmi douze (Frontend, Backend, Full-stack, Mobile, DevOps / SRE,
+  Data / IA, Sécurité, Design UI/UX, QA / test, Jeu vidéo, Embarqué / IoT, En formation),
+  facultatif, affiché « Se déclare … » et filtrable dans Découvrir. Décision du 01/11/2026.
 - Domaines d'intérêt : jusqu'à quatre, touchés par ordre de priorité (le premier est celui
   qu'on voit d'abord) parmi cinquante, rangés en sept groupes (développement, data et IA,
   infra et sécurité, design et produit, qualité et open source, secteurs, rôles), avec une

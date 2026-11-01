@@ -2,10 +2,12 @@ package com.brandonkamga.sourcefolio.profile.application;
 
 import com.brandonkamga.sourcefolio.profile.domain.model.CountryCode;
 import com.brandonkamga.sourcefolio.profile.domain.model.DeveloperProfile;
+import com.brandonkamga.sourcefolio.profile.domain.model.Role;
 import com.brandonkamga.sourcefolio.profile.domain.model.Specialties;
 import com.brandonkamga.sourcefolio.profile.domain.model.Specialty;
 import com.brandonkamga.sourcefolio.profile.domain.port.ProfileStore;
 import com.brandonkamga.sourcefolio.shared.exception.AppException;
+import com.brandonkamga.sourcefolio.shared.exception.ErrorCode;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import java.time.Clock;
@@ -106,8 +108,31 @@ class ProfileCompletionImplTest {
         }
 
         assertThat(announced).containsExactly(
-                new ProfileChanged(MEMBER, "CM", List.of(), null),
-                new ProfileChanged(MEMBER, "CM", List.of("backend", "devops"), null));
+                new ProfileChanged(MEMBER, "CM", List.of(), null, null),
+                new ProfileChanged(MEMBER, "CM", List.of("backend", "devops"), null, null));
+    }
+
+    @Test
+    @DisplayName("the member declares one role, announced with the profile; a blank one removes it")
+    void role() {
+        profiles.answerRole(MEMBER, " devops ");
+        assertThat(rows.get(MEMBER).role()).isEqualTo(Role.DEVOPS);
+        assertThat(announced.getLast().role()).isEqualTo("devops");
+
+        profiles.answerRole(MEMBER, "");
+        assertThat(rows.get(MEMBER).role()).isNull();
+        assertThat(announced.getLast().role()).isNull();
+    }
+
+    @Test
+    @DisplayName("a role outside the list is refused and changes nothing")
+    void roleRefused() {
+        profiles.answerRole(MEMBER, "mobile");
+
+        assertThatThrownBy(() -> profiles.answerRole(MEMBER, "wizard"))
+                .isInstanceOf(AppException.class)
+                .extracting(thrown -> ((AppException) thrown).code()).isEqualTo(ErrorCode.BAD_REQUEST);
+        assertThat(rows.get(MEMBER).role()).isEqualTo(Role.MOBILE);
     }
 
     @Test

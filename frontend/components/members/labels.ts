@@ -1,6 +1,6 @@
 import { getTranslations } from "next-intl/server";
 import type { Locale } from "@/i18n/routing";
-import { SPECIALTIES } from "@/services/profile-types";
+import { ROLES, SPECIALTIES } from "@/services/profile-types";
 import type { MemberSheetLabels } from "./MemberSheet";
 
 /** The member sheet's strings, translated on the server and handed to the client as props. */
@@ -23,5 +23,7 @@ export async function memberSheetLabels(locale: Locale): Promise<MemberSheetLabe
     viewCode: t("viewCode"),
     githubProfile: t("githubProfile"),
     specialtyNames: Object.fromEntries(SPECIALTIES.map((slug) => [slug, ts(`specialty.${slug}`)])),
+    roleClaim: t.raw("roleClaim") as string,
+    roleNames: Object.fromEntries(ROLES.map((slug) => [slug, ts(`role.${slug}`)])),
   };
 }

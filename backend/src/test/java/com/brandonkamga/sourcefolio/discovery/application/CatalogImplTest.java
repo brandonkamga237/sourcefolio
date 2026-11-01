@@ -140,13 +140,29 @@ class CatalogImplTest {
         profiled(add("ada", NOW.minus(Duration.ofDays(1))), "CM", List.of("backend", "cloud"), "Backend Java à Douala");
         profiled(add("bola", NOW.minus(Duration.ofDays(2))), "NG", List.of("frontend"), "React developer");
         profiled(add("chidi", NOW.minus(Duration.ofDays(3))), "CM", List.of("frontend", "backend"), null);
+        written(slug("bola"), "TypeScript", "CSS");
+        written(slug("chidi"), "Java", "TypeScript");
 
-        CatalogPage cameroon = catalog().listRecent(null, 10, new CatalogFilter(null, "CM", null));
+        CatalogPage cameroon = catalog().listRecent(null, 10, new CatalogFilter(null, "CM", null, null));
         assertThat(slugs(cameroon)).containsExactly("ada", "chidi");
         assertThat(cameroon.total()).isEqualTo(2);
-        assertThat(slugs(catalog().listRecent(null, 10, new CatalogFilter(null, null, "frontend")))).containsExactly("bola", "chidi");
-        assertThat(slugs(catalog().listRecent(null, 10, new CatalogFilter("java", null, null)))).containsExactly("ada");
-        assertThat(slugs(catalog().listRecent(null, 10, new CatalogFilter("java", "NG", null)))).isEmpty();
+        assertThat(slugs(catalog().listRecent(null, 10, new CatalogFilter(null, null, "TypeScript", null)))).containsExactly("bola", "chidi");
+        assertThat(slugs(catalog().listRecent(null, 10, new CatalogFilter(null, null, "frontend", null)))).isEmpty();
+        assertThat(slugs(catalog().listRecent(null, 10, new CatalogFilter("java", null, null, null)))).containsExactly("ada");
+        assertThat(slugs(catalog().listRecent(null, 10, new CatalogFilter("java", "NG", null, null)))).isEmpty();
+    }
+
+    @Test
+    @DisplayName("the role filter keeps the authors who declare it, and the facets count the roles declared")
+    void filteredByRole() {
+        CatalogEntry ada = add("ada", NOW.minus(Duration.ofDays(1)));
+        CatalogEntry bola = add("bola", NOW.minus(Duration.ofDays(2)));
+        add("chidi", NOW.minus(Duration.ofDays(3)));
+        store.setAuthorProfile(ada.ownerId(), "CM", List.of("fullstack"), null, "devops");
+        store.setAuthorProfile(bola.ownerId(), "NG", List.of("devops"), null, "frontend");
+
+        assertThat(slugs(catalog().listRecent(null, 10, new CatalogFilter(null, null, null, "devops")))).containsExactly("ada");
+        assertThat(catalog().findFacets().roles()).containsExactly(new CatalogFacets.Facet("devops", 1), new CatalogFacets.Facet("frontend", 1));
     }
 
     @Test
@@ -160,7 +176,7 @@ class CatalogImplTest {
         List<String> seen = new ArrayList<>();
         String cursor = null;
         do {
-            CatalogPage page = catalog().listDiscover(cursor, 4, new CatalogFilter(null, "SN", null));
+            CatalogPage page = catalog().listDiscover(cursor, 4, new CatalogFilter(null, "SN", null, null));
             assertThat(page.total()).isEqualTo(9);
             seen.addAll(slugs(page));
             cursor = page.nextCursor();
@@ -170,22 +186,33 @@ class CatalogImplTest {
     }
 
     @Test
-    @DisplayName("the filters offer the countries and interests present, most frequent first")
+    @DisplayName("the filters offer the countries and source languages present, most frequent first")
     void facets() {
         profiled(add("ada", NOW), "CM", List.of("backend", "cloud"), null);
         profiled(add("bola", NOW), "NG", List.of("frontend", "backend"), null);
         profiled(add("chidi", NOW), "CM", List.of("frontend"), null);
         add("dayo", NOW);
+        written(slug("ada"), "Java", "HCL");
+        written(slug("bola"), "TypeScript", "Java");
+        written(slug("chidi"), "TypeScript");
 
         CatalogFacets facets = catalog().findFacets();
 
         assertThat(facets.countries()).containsExactly(new CatalogFacets.Facet("CM", 2), new CatalogFacets.Facet("NG", 1));
-        assertThat(facets.specialties()).containsExactly(new CatalogFacets.Facet("backend", 2), new CatalogFacets.Facet("frontend", 2),
-                new CatalogFacets.Facet("cloud", 1));
+        assertThat(facets.languages()).containsExactly(new CatalogFacets.Facet("Java", 2), new CatalogFacets.Facet("TypeScript", 2),
+                new CatalogFacets.Facet("HCL", 1));
+    }
+
+    private void written(CatalogEntry entry, String... languages) {
+        store.setRepository(entry.showcaseId(), 0, null, List.of(languages), NOW);
+    }
+
+    private CatalogEntry slug(String slug) {
+        return store.recent(null, 100, CatalogFilter.none()).stream().filter(entry -> entry.slug().equals(slug)).findFirst().orElseThrow();
     }
 
     private void profiled(CatalogEntry entry, String country, List<String> interests, String headline) {
-        store.setAuthorProfile(entry.ownerId(), country, interests, headline);
+        store.setAuthorProfile(entry.ownerId(), country, interests, headline, null);
     }
 
     private CatalogEntry add(String slug, Instant publishedAt) {

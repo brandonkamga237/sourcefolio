@@ -15,7 +15,8 @@ interface CatalogEntryJpaRepository extends JpaRepository<CatalogEntryEntity, UU
     // means "any"; the casts tell PostgreSQL the type of a parameter bound as null.
     String FILTERS = """
              AND (CAST(:country AS VARCHAR) IS NULL OR country_code = CAST(:country AS CHAR(2)))
-             AND (CAST(:specialty AS VARCHAR) IS NULL OR CAST(:specialty AS VARCHAR) = ANY(specialties))
+             AND (CAST(:language AS VARCHAR) IS NULL OR CAST(:language AS VARCHAR) = ANY(repository_languages))
+             AND (CAST(:role AS VARCHAR) IS NULL OR author_role = CAST(:role AS VARCHAR))
              AND (CAST(:pattern AS VARCHAR) IS NULL
                   OR lower(owner_login) LIKE CAST(:pattern AS VARCHAR)
                   OR lower(site_url) LIKE CAST(:pattern AS VARCHAR)
@@ -58,10 +59,11 @@ interface CatalogEntryJpaRepository extends JpaRepository<CatalogEntryEntity, UU
 
     @Modifying
     @Query("""
-            update CatalogEntryEntity e set e.countryCode = :countryCode, e.specialties = :specialties, e.headline = :headline
+            update CatalogEntryEntity e set e.countryCode = :countryCode, e.specialties = :specialties, e.headline = :headline,
+                e.authorRole = :role
             where e.ownerUserId = :ownerId""")
     void setAuthorProfile(@Param("ownerId") UUID ownerId, @Param("countryCode") String countryCode, @Param("specialties") String[] specialties,
-                          @Param("headline") String headline);
+                          @Param("headline") String headline, @Param("role") String role);
 
     @Query("""
             select e from CatalogEntryEntity e where e.likeCount > 0
@@ -87,7 +89,7 @@ interface CatalogEntryJpaRepository extends JpaRepository<CatalogEntryEntity, UU
     List<String> shuffledIdsAndKeys(@Param("day") String day, @Param("young") boolean young,
                                     @Param("youngSince") Instant youngSince, @Param("afterKey") String afterKey,
                                     @Param("limit") int limit, @Param("country") String country,
-                                    @Param("specialty") String specialty, @Param("pattern") String pattern);
+                                    @Param("language") String language, @Param("role") String role, @Param("pattern") String pattern);
 
     // Keyset on (published_at, showcase_id): never a deep OFFSET. Ids only; the rows follow.
     @Query(value = """
@@ -100,7 +102,7 @@ interface CatalogEntryJpaRepository extends JpaRepository<CatalogEntryEntity, UU
             LIMIT :limit
             """, nativeQuery = true)
     List<UUID> recentIds(@Param("afterAt") Instant afterAt, @Param("afterId") UUID afterId, @Param("limit") int limit,
-                         @Param("country") String country, @Param("specialty") String specialty, @Param("pattern") String pattern);
+                         @Param("country") String country, @Param("language") String language, @Param("role") String role, @Param("pattern") String pattern);
 
     @Query(value = """
             SELECT country_code AS value, count(*) AS count FROM catalog_entries
@@ -109,10 +111,16 @@ interface CatalogEntryJpaRepository extends JpaRepository<CatalogEntryEntity, UU
     List<FacetRow> countryFacets();
 
     @Query(value = """
-            SELECT interest AS value, count(*) AS count FROM catalog_entries, unnest(specialties) AS interest
-            GROUP BY interest ORDER BY count DESC, value
+            SELECT language AS value, count(*) AS count FROM catalog_entries, unnest(repository_languages) AS language
+            GROUP BY language ORDER BY count DESC, value
             """, nativeQuery = true)
-    List<FacetRow> specialtyFacets();
+    List<FacetRow> languageFacets();
+
+    @Query(value = """
+            SELECT author_role AS value, count(*) AS count FROM catalog_entries
+            WHERE author_role IS NOT NULL GROUP BY author_role ORDER BY count DESC, value
+            """, nativeQuery = true)
+    List<FacetRow> roleFacets();
 
     interface FacetRow {
         String getValue();
@@ -121,6 +129,6 @@ interface CatalogEntryJpaRepository extends JpaRepository<CatalogEntryEntity, UU
     }
 
     @Query(value = "SELECT count(*) FROM catalog_entries WHERE TRUE" + FILTERS, nativeQuery = true)
-    long countMatching(@Param("country") String country, @Param("specialty") String specialty, @Param("pattern") String pattern);
+    long countMatching(@Param("country") String country, @Param("language") String language, @Param("role") String role, @Param("pattern") String pattern);
 
 }

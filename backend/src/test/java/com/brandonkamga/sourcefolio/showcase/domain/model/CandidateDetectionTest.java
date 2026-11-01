@@ -95,6 +95,20 @@ class CandidateDetectionTest {
                 .containsExactly("new-shop", "old-shop", "never-pushed");
     }
 
+    @Test
+    @DisplayName("the repositories that are not a candidate are kept apart, most recently pushed first")
+    void withoutSite() {
+        List<PublicRepository> repositories = List.of(
+                repo("dotfiles", null, false, OLD),
+                repo("Portfolio-Next", null, false, RECENT),
+                repo("site", "https://nekwalla.dev", false, RECENT),
+                repo("never-pushed", null, false, null));
+
+        assertThat(CandidateDetection.withoutSite(repositories, CandidateDetection.detect("nekwalla", repositories)))
+                .extracting(RepositoryCoordinates::name)
+                .containsExactly("Portfolio-Next", "dotfiles", "never-pushed");
+    }
+
     private static PublicRepository repo(String name, String homepage, boolean pages, Instant pushedAt) {
         return new PublicRepository(new RepositoryCoordinates("nekwalla", name), homepage, pages, pushedAt);
     }

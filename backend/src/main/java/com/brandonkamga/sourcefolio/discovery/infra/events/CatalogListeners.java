@@ -70,7 +70,7 @@ class CatalogListeners {
     @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT, fallbackExecution = true)
     void on(ProfileChanged event) {
         try {
-            catalog.updateAuthorProfile(event.memberId(), event.countryCode(), event.specialties(), event.headline());
+            catalog.updateAuthorProfile(event.memberId(), event.countryCode(), event.specialties(), event.headline(), event.role());
         } catch (RuntimeException failure) {
             log.error("Profile of member {} not copied to the catalogue", event.memberId(), failure);
         }

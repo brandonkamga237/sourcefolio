@@ -78,7 +78,7 @@
     "foundTitle": "On a trouvé ces sites dans tes dépôts publics",
     "othersTitle": "Autres sites trouvés",
     "noneTitle": "Aucun site trouvé dans tes dépôts publics",
-    "noneHint": "Ajoute l’adresse de ton portfolio dans le champ « Website » de son dépôt GitHub, puis reconnecte-toi : on cherchera à nouveau.",
+    "noneHint": "Ton portfolio n’a pas été reconnu ? Choisis son dépôt juste en dessous.",
     "visitSite": "Voir le site",
     "viewCode": "Voir le code",
     "reason": {
@@ -90,7 +90,23 @@
     "publish": "Oui, c’est mon portfolio : publier",
     "publishThis": "C’est celui-ci : publier",
     "publishing": "On vérifie ton site…",
-    "publishFailed": "La publication n’a pas abouti. Réessaie dans un instant."
+    "publishFailed": "La publication n’a pas abouti. Réessaie dans un instant.",
+    "lastSearch": "Dernière recherche {ago}",
+    "rescan": "Rechercher à nouveau",
+    "rescanning": "Recherche en cours…",
+    "rescanFailed": "La recherche n’a pas pu être lancée. Réessaie dans un instant.",
+    "missingTitle": "Ton portfolio n’est pas dans la liste ?",
+    "missingLead": "Choisis son dépôt. Pour savoir que le site est bien à toi, on lit l’adresse indiquée sur GitHub : seul le propriétaire du dépôt peut la changer.",
+    "searchRepositories": "Chercher un dépôt",
+    "noRepositoryMatch": "Aucun dépôt ne correspond.",
+    "noRepositories": "La dernière recherche n’a trouvé aucun autre dépôt public. Relance-la si tu viens d’en créer un.",
+    "showAll": "Afficher les {count} dépôts",
+    "pick": "C’est celui-ci",
+    "stepsTitle": "Pour publier {repository} :",
+    "step1": "Ouvre le dépôt sur GitHub, puis touche la roue dentée à côté de « About ».",
+    "step2": "Colle l’adresse de ton site dans « Website », puis « Save changes ».",
+    "step3": "Reviens ici et touche « Rechercher à nouveau » : ton portfolio apparaîtra en haut, prêt à publier.",
+    "openOnGithub": "Ouvrir le dépôt sur GitHub"
   },
   "myShowcase": {
     "status": {
@@ -175,12 +191,14 @@
       "placeholder": "Chercher un nom, un site, un titre…",
       "country": "Pays",
       "anyCountry": "Tous les pays",
-      "interest": "Domaine",
-      "anyInterest": "Tous les domaines",
+      "language": "Stack",
+      "anyLanguage": "Toutes les stacks",
       "clear": "Effacer les filtres",
       "filters": "Filtres",
       "noMatchTitle": "Aucun portfolio ne correspond",
-      "noMatchLead": "Essaie d’autres mots, ou retire un filtre."
+      "noMatchLead": "Essaie d’autres mots, ou retire un filtre.",
+      "role": "Rôle",
+      "anyRole": "Tous les rôles"
     }
   },
   "profile": {
@@ -214,7 +232,10 @@
     "searchPlaceholder": "Chercher un domaine",
     "noMatch": "Aucun domaine ne correspond.",
     "selectionEmpty": "Ta sélection apparaîtra ici, dans l’ordre.",
-    "removeChoice": "Retirer {name}"
+    "removeChoice": "Retirer {name}",
+    "roleTitle": "Ton rôle principal",
+    "roleHint": "Ce que tu fais au quotidien, un seul. Il s’affiche comme ta déclaration, à côté des langages que ton code montre.",
+    "roleLabel": "Rôle"
   },
   "specialty": {
     "frontend": "Frontend",
@@ -384,7 +405,8 @@
     "openPage": "Voir la fiche",
     "visitSite": "Voir le site",
     "viewCode": "Voir le code",
-    "githubProfile": "Profil GitHub"
+    "githubProfile": "Profil GitHub",
+    "roleClaim": "Se déclare {role}"
   },
   "specialtyGroup": {
     "dev": "Développement",
@@ -431,5 +453,19 @@
       "fr": "Écrit en français",
       "en": "Écrit en anglais"
     }
+  },
+  "role": {
+    "frontend": "Frontend",
+    "backend": "Backend",
+    "fullstack": "Full-stack",
+    "mobile": "Mobile",
+    "devops": "DevOps / SRE",
+    "data-ai": "Data / IA",
+    "security": "Sécurité",
+    "design": "Design UI/UX",
+    "qa": "QA / test",
+    "game": "Jeu vidéo",
+    "embedded": "Embarqué / IoT",
+    "learning": "En formation"
   }
 }

@@ -69,8 +69,8 @@ class JpaCatalogStore implements CatalogStore {
 
     @Override
     @Transactional(propagation = Propagation.REQUIRES_NEW)
-    public void setAuthorProfile(UUID ownerId, String countryCode, List<String> specialties, String headline) {
-        entries.setAuthorProfile(ownerId, countryCode, specialties.toArray(String[]::new), headline);
+    public void setAuthorProfile(UUID ownerId, String countryCode, List<String> specialties, String headline, String role) {
+        entries.setAuthorProfile(ownerId, countryCode, specialties.toArray(String[]::new), headline, role);
     }
 
     @Override
@@ -84,7 +84,7 @@ class JpaCatalogStore implements CatalogStore {
     @Transactional(readOnly = true)
     public List<Shuffled> shuffled(LocalDate day, boolean young, Instant youngSince, String afterKey, int limit, CatalogFilter filter) {
         List<String[]> idsAndKeys = entries.shuffledIdsAndKeys(day.toString(), young, youngSince, afterKey, limit,
-                        filter.countryCode(), filter.specialty(), pattern(filter)).stream()
+                        filter.countryCode(), filter.language(), filter.role(), pattern(filter)).stream()
                 .map(row -> row.split(":", 2))
                 .toList();
         Map<UUID, CatalogEntryEntity> rows = rowsById(idsAndKeys.stream().map(row -> UUID.fromString(row[0])).toList());
@@ -94,19 +94,20 @@ class JpaCatalogStore implements CatalogStore {
                 .toList();
     }
 
-    // Two grouped queries, whatever the size of the catalogue: PostgreSQL counts.
+    // Three grouped queries, whatever the size of the catalogue: PostgreSQL counts.
     @Override
     @Transactional(readOnly = true)
     public CatalogFacets facets() {
         return new CatalogFacets(
                 entries.countryFacets().stream().map(row -> new CatalogFacets.Facet(row.getValue().strip(), row.getCount())).toList(),
-                entries.specialtyFacets().stream().map(row -> new CatalogFacets.Facet(row.getValue(), row.getCount())).toList());
+                entries.languageFacets().stream().map(row -> new CatalogFacets.Facet(row.getValue(), row.getCount())).toList(),
+                entries.roleFacets().stream().map(row -> new CatalogFacets.Facet(row.getValue(), row.getCount())).toList());
     }
 
     @Override
     @Transactional(readOnly = true)
     public long count(CatalogFilter filter) {
-        return filter.isEmpty() ? entries.count() : entries.countMatching(filter.countryCode(), filter.specialty(), pattern(filter));
+        return filter.isEmpty() ? entries.count() : entries.countMatching(filter.countryCode(), filter.language(), filter.role(), pattern(filter));
     }
 
     // Two queries as well: the ordered ids, then their rows.
@@ -114,7 +115,7 @@ class JpaCatalogStore implements CatalogStore {
     @Transactional(readOnly = true)
     public List<CatalogEntry> recent(RecentCursor after, int limit, CatalogFilter filter) {
         List<UUID> ids = entries.recentIds(after == null ? null : after.publishedAt(), after == null ? null : after.showcaseId(), limit,
-                filter.countryCode(), filter.specialty(), pattern(filter));
+                filter.countryCode(), filter.language(), filter.role(), pattern(filter));
         Map<UUID, CatalogEntryEntity> rows = rowsById(ids);
         return ids.stream().filter(rows::containsKey).map(id -> toDomain(rows.get(id))).toList();
     }
@@ -136,6 +137,6 @@ class JpaCatalogStore implements CatalogStore {
                 row.getRepositoryUrl(), row.getOwnerUserId(), row.getOwnerLogin(), row.getPublishedAt(),
                 row.getPreviewImageUrl(), row.getPreviewVideoUrl(), row.getRepositoryStars(), row.getLikeCount(),
                 row.getCountryCode(), List.of(row.getSpecialties()), row.getHeadline(), row.getRepositoryDescription(),
-                List.of(row.getRepositoryLanguages()), row.getRepositoryPushedAt());
+                List.of(row.getRepositoryLanguages()), row.getRepositoryPushedAt(), row.getAuthorRole());
     }
 }

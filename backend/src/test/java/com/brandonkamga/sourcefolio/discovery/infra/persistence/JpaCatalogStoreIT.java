@@ -169,17 +169,22 @@ class JpaCatalogStoreIT extends PostgresIT {
         CatalogEntry entry = entry("profiled", NOW);
         catalog.upsert(entry);
 
-        catalog.setAuthorProfile(entry.ownerId(), "CM", List.of("backend", "devops"), "Backend à Douala");
+        catalog.setAuthorProfile(entry.ownerId(), "CM", List.of("backend", "devops"), "Backend à Douala", "devops");
         assertThat(catalog.recent(null, 10, CatalogFilter.none())).singleElement().satisfies(card -> {
             assertThat(card.countryCode()).isEqualTo("CM");
             assertThat(card.specialties()).containsExactly("backend", "devops");
             assertThat(card.headline()).isEqualTo("Backend à Douala");
+            assertThat(card.authorRole()).isEqualTo("devops");
         });
+        assertThat(catalog.count(new CatalogFilter(null, null, null, "devops"))).isEqualTo(1);
+        assertThat(catalog.count(new CatalogFilter(null, null, null, "frontend"))).isZero();
+        assertThat(catalog.facets().roles()).contains(new CatalogFacets.Facet("devops", 1));
 
-        catalog.setAuthorProfile(entry.ownerId(), "SN", List.of("mobile"), null);
+        catalog.setAuthorProfile(entry.ownerId(), "SN", List.of("mobile"), null, null);
         assertThat(catalog.recent(null, 10, CatalogFilter.none())).singleElement().satisfies(card -> {
             assertThat(card.countryCode()).isEqualTo("SN");
             assertThat(card.specialties()).containsExactly("mobile");
+            assertThat(card.authorRole()).isNull();
         });
     }
 
@@ -196,37 +201,42 @@ class JpaCatalogStoreIT extends PostgresIT {
     }
 
     @Test
-    @DisplayName("filters by country, interest and words reach SQL; % and _ typed by a visitor are taken literally")
+    @DisplayName("filters by country, source language and words reach SQL; % and _ typed by a visitor are taken literally")
     void filters() {
         CatalogEntry ada = entry("ada-filter", NOW.minus(Duration.ofDays(1)));
         CatalogEntry bola = entry("bola-filter", NOW.minus(Duration.ofDays(2)));
         List.of(ada, bola).forEach(catalog::upsert);
-        catalog.setAuthorProfile(ada.ownerId(), "CM", List.of("backend", "cloud"), "Backend Java 100% à Douala");
-        catalog.setAuthorProfile(bola.ownerId(), "NG", List.of("frontend"), "React developer");
+        catalog.setAuthorProfile(ada.ownerId(), "CM", List.of("backend", "cloud"), "Backend Java 100% à Douala", null);
+        catalog.setAuthorProfile(bola.ownerId(), "NG", List.of("frontend"), "React developer", null);
+        catalog.setRepository(ada.showcaseId(), 3, null, List.of("Java", "HCL"), NOW);
+        catalog.setRepository(bola.showcaseId(), 1, null, List.of("TypeScript", "CSS"), NOW);
 
-        assertThat(catalog.recent(null, 10, new CatalogFilter(null, "CM", null))).extracting(CatalogEntry::slug).containsExactly("ada-filter");
-        assertThat(catalog.recent(null, 10, new CatalogFilter(null, null, "frontend"))).extracting(CatalogEntry::slug).containsExactly("bola-filter");
-        assertThat(catalog.recent(null, 10, new CatalogFilter("java 100%", null, null))).extracting(CatalogEntry::slug).containsExactly("ada-filter");
-        assertThat(catalog.recent(null, 10, new CatalogFilter("100_", null, null))).isEmpty();
-        assertThat(catalog.recent(null, 10, new CatalogFilter("login-bola", null, null))).extracting(CatalogEntry::slug).containsExactly("bola-filter");
-        assertThat(catalog.count(new CatalogFilter(null, "NG", "frontend"))).isEqualTo(1);
-        assertThat(catalog.shuffled(DAY, false, NOW.plus(Duration.ofDays(1)), "", 10, new CatalogFilter(null, "CM", "cloud")))
+        assertThat(catalog.recent(null, 10, new CatalogFilter(null, "CM", null, null))).extracting(CatalogEntry::slug).containsExactly("ada-filter");
+        assertThat(catalog.recent(null, 10, new CatalogFilter(null, null, "TypeScript", null))).extracting(CatalogEntry::slug).containsExactly("bola-filter");
+        assertThat(catalog.recent(null, 10, new CatalogFilter("java 100%", null, null, null))).extracting(CatalogEntry::slug).containsExactly("ada-filter");
+        assertThat(catalog.recent(null, 10, new CatalogFilter("100_", null, null, null))).isEmpty();
+        assertThat(catalog.recent(null, 10, new CatalogFilter("login-bola", null, null, null))).extracting(CatalogEntry::slug).containsExactly("bola-filter");
+        assertThat(catalog.count(new CatalogFilter(null, "NG", "TypeScript", null))).isEqualTo(1);
+        assertThat(catalog.count(new CatalogFilter(null, null, "frontend", null))).isZero();
+        assertThat(catalog.shuffled(DAY, false, NOW.plus(Duration.ofDays(1)), "", 10, new CatalogFilter(null, "CM", "HCL", null)))
                 .extracting(item -> item.entry().slug()).containsExactly("ada-filter");
     }
 
     @Test
-    @DisplayName("facets count countries and interests in SQL, most frequent first")
+    @DisplayName("facets count countries and source languages in SQL, most frequent first")
     void facets() {
         CatalogEntry ada = entry("ada-facets", NOW);
         CatalogEntry bola = entry("bola-facets", NOW);
         List.of(ada, bola).forEach(catalog::upsert);
-        catalog.setAuthorProfile(ada.ownerId(), "CM", List.of("backend", "cloud"), null);
-        catalog.setAuthorProfile(bola.ownerId(), "CM", List.of("backend"), null);
+        catalog.setAuthorProfile(ada.ownerId(), "CM", List.of("backend", "cloud"), null, null);
+        catalog.setAuthorProfile(bola.ownerId(), "CM", List.of("backend"), null, null);
+        catalog.setRepository(ada.showcaseId(), 0, null, List.of("TypeScript", "Astro"), NOW);
+        catalog.setRepository(bola.showcaseId(), 0, null, List.of("TypeScript"), NOW);
 
         CatalogFacets facets = catalog.facets();
 
         assertThat(facets.countries()).contains(new CatalogFacets.Facet("CM", 2));
-        assertThat(facets.specialties()).startsWith(new CatalogFacets.Facet("backend", 2)).contains(new CatalogFacets.Facet("cloud", 1));
+        assertThat(facets.languages()).startsWith(new CatalogFacets.Facet("TypeScript", 2)).contains(new CatalogFacets.Facet("Astro", 1));
     }
 
     @Test
