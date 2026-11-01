@@ -5,7 +5,7 @@ import type { Locale } from "@/i18n/routing";
 import { countryOptions } from "@/lib/countries";
 import { getMe } from "@/services/me";
 import { getMyAnswers } from "@/services/profile";
-import { SPECIALTIES, SPECIALTY_GROUPS, type Specialty, type SpecialtyGroup } from "@/services/profile-types";
+import { ROLES, SPECIALTIES, SPECIALTY_GROUPS, type Role, type Specialty, type SpecialtyGroup } from "@/services/profile-types";
 import { ProfileQuestions } from "./ProfileQuestions";
 
 interface ProfileScreenProps {
@@ -43,6 +43,10 @@ export async function ProfileScreen({ locale }: ProfileScreenProps) {
         headlinePlaceholder: t("profile.headlinePlaceholder"),
         headlineCounter: t.raw("profile.headlineCounter") as string,
         headlineLabel: t("profile.headlineLabel"),
+        roleTitle: t("profile.roleTitle"),
+        roleHint: t("profile.roleHint"),
+        roleLabel: t("profile.roleLabel"),
+        roles: Object.fromEntries(ROLES.map((slug) => [slug, t(`role.${slug}`)])) as Record<Role, string>,
         countryTitle: t("profile.countryTitle"),
         countryPlaceholder: t("profile.countryPlaceholder"),
         specialtyTitle: t("profile.specialtyTitle"),
