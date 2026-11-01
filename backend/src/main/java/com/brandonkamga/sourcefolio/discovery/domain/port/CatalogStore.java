@@ -28,8 +28,8 @@ public interface CatalogStore {
     /** Keeps the copy of what GitHub says about the repository: stars, description, languages, last push; nulls when unknown. */
     void setRepository(UUID showcaseId, Integer stars, String description, List<String> languages, Instant pushedAt);
 
-    /** Keeps the copy of an author's public profile on every card of theirs; null country or headline when unanswered. */
-    void setAuthorProfile(UUID ownerId, String countryCode, List<String> specialties, String headline);
+    /** Keeps the copy of an author's public profile on every card of theirs; null country, headline or role when unanswered. */
+    void setAuthorProfile(UUID ownerId, String countryCode, List<String> specialties, String headline, String role);
 
     /** The most liked showcases first, ties broken by the most recent; liked ones only. */
     List<RankedEntry> ranking(int limit);

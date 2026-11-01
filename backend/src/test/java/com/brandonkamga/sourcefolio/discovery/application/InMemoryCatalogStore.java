@@ -68,11 +68,12 @@ class InMemoryCatalogStore implements CatalogStore {
     }
 
     @Override
-    public void setAuthorProfile(UUID ownerId, String countryCode, List<String> specialties, String headline) {
+    public void setAuthorProfile(UUID ownerId, String countryCode, List<String> specialties, String headline, String role) {
         rows.replaceAll((id, entry) -> entry.ownerId().equals(ownerId)
                 ? new CatalogEntry(entry.showcaseId(), entry.slug(), entry.siteUrl(), entry.repository(), entry.repositoryUrl(), entry.ownerId(),
                         entry.ownerLogin(), entry.publishedAt(), entry.previewImageUrl(), entry.previewVideoUrl(), entry.repositoryStars(),
-                        entry.likes(), countryCode, specialties, headline)
+                        entry.likes(), countryCode, specialties, headline, entry.repositoryDescription(), entry.repositoryLanguages(),
+                        entry.repositoryPushedAt(), role)
                 : entry);
     }
 
@@ -82,7 +83,8 @@ class InMemoryCatalogStore implements CatalogStore {
         if (entry != null) {
             rows.put(showcaseId, new CatalogEntry(entry.showcaseId(), entry.slug(), entry.siteUrl(), entry.repository(), entry.repositoryUrl(),
                     entry.ownerId(), entry.ownerLogin(), entry.publishedAt(), entry.previewImageUrl(), entry.previewVideoUrl(), stars,
-                    entry.likes(), entry.countryCode(), entry.specialties(), entry.headline(), description, languages, pushedAt));
+                    entry.likes(), entry.countryCode(), entry.specialties(), entry.headline(), description, languages, pushedAt,
+                    entry.authorRole()));
         }
     }
 
@@ -124,7 +126,8 @@ class InMemoryCatalogStore implements CatalogStore {
                 .map(entry -> new CatalogFacets.Facet(entry.getKey(), entry.getValue()))
                 .toList();
         return new CatalogFacets(count.apply(rows.values().stream().map(CatalogEntry::countryCode).filter(java.util.Objects::nonNull)),
-                count.apply(rows.values().stream().flatMap(entry -> entry.repositoryLanguages().stream())));
+                count.apply(rows.values().stream().flatMap(entry -> entry.repositoryLanguages().stream())),
+                count.apply(rows.values().stream().map(CatalogEntry::authorRole).filter(java.util.Objects::nonNull)));
     }
 
     // The same rules as the SQL filters: any part left null matches everything.
@@ -132,6 +135,7 @@ class InMemoryCatalogStore implements CatalogStore {
         String haystack = (entry.ownerLogin() + " " + entry.siteUrl() + " " + (entry.headline() == null ? "" : entry.headline())).toLowerCase();
         return (filter.countryCode() == null || filter.countryCode().equals(entry.countryCode()))
                 && (filter.language() == null || entry.repositoryLanguages().contains(filter.language()))
+                && (filter.role() == null || filter.role().equals(entry.authorRole()))
                 && (filter.text() == null || haystack.contains(filter.text()));
     }
 

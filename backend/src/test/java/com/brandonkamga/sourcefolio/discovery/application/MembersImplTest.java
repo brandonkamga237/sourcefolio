@@ -21,13 +21,14 @@ class MembersImplTest {
     void found() {
         store.upsert(entry("old-site", Instant.parse("2026-09-01T09:00:00Z"), 4));
         store.upsert(entry("new-site", Instant.parse("2026-10-30T09:00:00Z"), 3));
-        store.setAuthorProfile(AUTHOR, "CM", List.of("backend", "devops"), "Backend à Douala");
+        store.setAuthorProfile(AUTHOR, "CM", List.of("backend", "devops"), "Backend à Douala", "devops");
 
         MemberCard card = members.findByLogin("NEKWALLA").orElseThrow();
 
         assertThat(card.login()).isEqualTo("Nekwalla");
         assertThat(card.countryCode()).isEqualTo("CM");
         assertThat(card.specialties()).containsExactly("backend", "devops");
+        assertThat(card.role()).isEqualTo("devops");
         assertThat(card.headline()).isEqualTo("Backend à Douala");
         assertThat(card.showcase().slug()).isEqualTo("new-site");
         assertThat(card.onSourceFolioSince()).isEqualTo(Instant.parse("2026-09-01T09:00:00Z"));

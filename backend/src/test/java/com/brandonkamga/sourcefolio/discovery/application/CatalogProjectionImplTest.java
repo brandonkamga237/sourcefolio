@@ -49,7 +49,7 @@ class CatalogProjectionImplTest {
         projection.add(entry(AUTHOR, "nekwalla"));
         projection.add(entry(NEWCOMER, "ayo-dev"));
 
-        projection.updateAuthorProfile(NEWCOMER, "NG", List.of("mobile"), null);
+        projection.updateAuthorProfile(NEWCOMER, "NG", List.of("mobile"), null, "mobile");
 
         assertThat(store.rows.values()).extracting(CatalogEntry::slug, CatalogEntry::countryCode)
                 .containsExactlyInAnyOrder(org.assertj.core.groups.Tuple.tuple("nekwalla", "CM"), org.assertj.core.groups.Tuple.tuple("ayo-dev", "NG"));

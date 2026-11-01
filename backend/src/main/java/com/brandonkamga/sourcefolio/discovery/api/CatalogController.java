@@ -27,8 +27,9 @@ class CatalogController {
                             @RequestParam(defaultValue = "20") int size,
                             @RequestParam(required = false) String q,
                             @RequestParam(required = false) String country,
-                            @RequestParam(required = false) String language) {
-        CatalogFilter filter = CatalogFilter.parse(q, country, language).orElseThrow(() -> new BadRequestException("catalog.filter-invalid"));
+                            @RequestParam(required = false) String language,
+                            @RequestParam(required = false) String role) {
+        CatalogFilter filter = CatalogFilter.parse(q, country, language, role).orElseThrow(() -> new BadRequestException("catalog.filter-invalid"));
         return CatalogResponse.of(switch (sort) {
             case "discover" -> catalog.listDiscover(cursor, size, filter);
             case "recent" -> catalog.listRecent(cursor, size, filter);

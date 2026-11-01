@@ -39,7 +39,7 @@ class MemberControllerTest {
     @DisplayName("a visitor sees a published member: profile, first day, likes received, portfolio card, and no ids")
     void member() throws Exception {
         when(members.findByLogin("nekwalla")).thenReturn(Optional.of(
-                new MemberCard("Nekwalla", "CM", List.of("backend", "devops"), "Backend à Douala", Instant.parse("2026-09-01T09:00:00Z"), 7, SHOWCASE)));
+                new MemberCard("Nekwalla", "CM", List.of("backend", "devops"), "Backend à Douala", "devops", Instant.parse("2026-09-01T09:00:00Z"), 7, SHOWCASE)));
 
         mvc.perform(get("/api/members/nekwalla"))
                 .andExpect(status().isOk())
@@ -48,6 +48,7 @@ class MemberControllerTest {
                 .andExpect(jsonPath("$.countryCode").value("CM"))
                 .andExpect(jsonPath("$.specialties[1]").value("devops"))
                 .andExpect(jsonPath("$.headline").value("Backend à Douala"))
+                .andExpect(jsonPath("$.role").value("devops"))
                 .andExpect(jsonPath("$.onSourceFolioSince").value("2026-09-01T09:00:00Z"))
                 .andExpect(jsonPath("$.likesReceived").value(7))
                 .andExpect(jsonPath("$.showcase.slug").value("nekwalla"))

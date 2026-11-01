@@ -143,13 +143,26 @@ class CatalogImplTest {
         written(slug("bola"), "TypeScript", "CSS");
         written(slug("chidi"), "Java", "TypeScript");
 
-        CatalogPage cameroon = catalog().listRecent(null, 10, new CatalogFilter(null, "CM", null));
+        CatalogPage cameroon = catalog().listRecent(null, 10, new CatalogFilter(null, "CM", null, null));
         assertThat(slugs(cameroon)).containsExactly("ada", "chidi");
         assertThat(cameroon.total()).isEqualTo(2);
-        assertThat(slugs(catalog().listRecent(null, 10, new CatalogFilter(null, null, "TypeScript")))).containsExactly("bola", "chidi");
-        assertThat(slugs(catalog().listRecent(null, 10, new CatalogFilter(null, null, "frontend")))).isEmpty();
-        assertThat(slugs(catalog().listRecent(null, 10, new CatalogFilter("java", null, null)))).containsExactly("ada");
-        assertThat(slugs(catalog().listRecent(null, 10, new CatalogFilter("java", "NG", null)))).isEmpty();
+        assertThat(slugs(catalog().listRecent(null, 10, new CatalogFilter(null, null, "TypeScript", null)))).containsExactly("bola", "chidi");
+        assertThat(slugs(catalog().listRecent(null, 10, new CatalogFilter(null, null, "frontend", null)))).isEmpty();
+        assertThat(slugs(catalog().listRecent(null, 10, new CatalogFilter("java", null, null, null)))).containsExactly("ada");
+        assertThat(slugs(catalog().listRecent(null, 10, new CatalogFilter("java", "NG", null, null)))).isEmpty();
+    }
+
+    @Test
+    @DisplayName("the role filter keeps the authors who declare it, and the facets count the roles declared")
+    void filteredByRole() {
+        CatalogEntry ada = add("ada", NOW.minus(Duration.ofDays(1)));
+        CatalogEntry bola = add("bola", NOW.minus(Duration.ofDays(2)));
+        add("chidi", NOW.minus(Duration.ofDays(3)));
+        store.setAuthorProfile(ada.ownerId(), "CM", List.of("fullstack"), null, "devops");
+        store.setAuthorProfile(bola.ownerId(), "NG", List.of("devops"), null, "frontend");
+
+        assertThat(slugs(catalog().listRecent(null, 10, new CatalogFilter(null, null, null, "devops")))).containsExactly("ada");
+        assertThat(catalog().findFacets().roles()).containsExactly(new CatalogFacets.Facet("devops", 1), new CatalogFacets.Facet("frontend", 1));
     }
 
     @Test
@@ -163,7 +176,7 @@ class CatalogImplTest {
         List<String> seen = new ArrayList<>();
         String cursor = null;
         do {
-            CatalogPage page = catalog().listDiscover(cursor, 4, new CatalogFilter(null, "SN", null));
+            CatalogPage page = catalog().listDiscover(cursor, 4, new CatalogFilter(null, "SN", null, null));
             assertThat(page.total()).isEqualTo(9);
             seen.addAll(slugs(page));
             cursor = page.nextCursor();
@@ -199,7 +212,7 @@ class CatalogImplTest {
     }
 
     private void profiled(CatalogEntry entry, String country, List<String> interests, String headline) {
-        store.setAuthorProfile(entry.ownerId(), country, interests, headline);
+        store.setAuthorProfile(entry.ownerId(), country, interests, headline, null);
     }
 
     private CatalogEntry add(String slug, Instant publishedAt) {
