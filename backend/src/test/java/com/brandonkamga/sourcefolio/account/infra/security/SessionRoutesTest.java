@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.cookie;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(controllers = SessionRoutesTest.NoController.class)
@@ -33,6 +34,16 @@ class SessionRoutesTest {
     @DisplayName("signing out answers 204 with no redirect, so the frontend just refreshes")
     void logoutAnswersNoContent() throws Exception {
         mvc.perform(post("/api/auth/logout").with(csrf())).andExpect(status().isNoContent());
+    }
+
+    @Test
+    @WithMockUser
+    @DisplayName("signing out remembers, in an HttpOnly cookie, to offer GitHub's account picker at the next sign-in")
+    void logoutAsksForTheAccountPicker() throws Exception {
+        mvc.perform(post("/api/auth/logout").with(csrf()))
+                .andExpect(cookie().value(AccountPicker.COOKIE, "1"))
+                .andExpect(cookie().httpOnly(AccountPicker.COOKIE, true))
+                .andExpect(cookie().path(AccountPicker.COOKIE, "/"));
     }
 
     @Test

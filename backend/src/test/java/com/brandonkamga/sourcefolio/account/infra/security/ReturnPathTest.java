@@ -1,6 +1,7 @@
 package com.brandonkamga.sourcefolio.account.infra.security;
 
 import org.junit.jupiter.api.DisplayName;
+import jakarta.servlet.http.Cookie;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.NullSource;
@@ -45,6 +46,21 @@ class ReturnPathTest {
 
         assertThat(first.getRedirectedUrl()).isEqualTo("/fr/p/nekwalla?like=1");
         assertThat(second.getRedirectedUrl()).isEqualTo("/");
+    }
+
+    @Test
+    @DisplayName("signing in clears the wish for GitHub's account picker: the next sign-in is one step again")
+    void signingInForgetsTheAccountPicker() throws Exception {
+        MockHttpServletRequest back = new MockHttpServletRequest("GET", "/login/oauth2/code/github");
+        back.setCookies(new Cookie(AccountPicker.COOKIE, "1"));
+        MockHttpServletResponse response = new MockHttpServletResponse();
+
+        new ReturnPath.Redirect().onAuthenticationSuccess(back, response, null);
+
+        assertThat(response.getCookie(AccountPicker.COOKIE)).satisfies(cookie -> {
+            assertThat(cookie.getValue()).isEmpty();
+            assertThat(cookie.getMaxAge()).isZero();
+        });
     }
 
     @Test

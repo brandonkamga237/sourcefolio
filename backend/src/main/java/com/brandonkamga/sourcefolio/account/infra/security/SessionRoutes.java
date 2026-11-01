@@ -6,7 +6,10 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.web.authentication.logout.HttpStatusReturningLogoutSuccessHandler;
 import org.springframework.stereotype.Component;
 
-/** Signing out ends the server session; the frontend calls it and refreshes, no redirect. */
+/**
+ * Signing out ends the server session; the frontend calls it and refreshes, no redirect. The
+ * next sign-in then offers GitHub's account picker.
+ */
 @Component
 class SessionRoutes implements SecurityCustomizer {
 
@@ -14,6 +17,7 @@ class SessionRoutes implements SecurityCustomizer {
     public void customize(HttpSecurity http) throws Exception {
         http.logout(logout -> logout
                 .logoutUrl("/api/auth/logout")
+                .addLogoutHandler((request, response, authentication) -> AccountPicker.ask(response))
                 .logoutSuccessHandler(new HttpStatusReturningLogoutSuccessHandler(HttpStatus.NO_CONTENT)));
     }
 }
