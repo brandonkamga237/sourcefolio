@@ -3,6 +3,7 @@ package com.brandonkamga.sourcefolio.discovery.infra.persistence;
 import com.brandonkamga.sourcefolio.account.domain.model.User;
 import com.brandonkamga.sourcefolio.account.domain.port.UserStore;
 import com.brandonkamga.sourcefolio.discovery.domain.model.CatalogEntry;
+import com.brandonkamga.sourcefolio.discovery.domain.model.CatalogFilter;
 import com.brandonkamga.sourcefolio.discovery.domain.model.RankedEntry;
 import com.brandonkamga.sourcefolio.discovery.domain.model.RecentCursor;
 import com.brandonkamga.sourcefolio.discovery.domain.model.Shuffled;
@@ -63,8 +64,8 @@ class JpaCatalogStoreIT extends PostgresIT {
         catalog.upsert(entry);
         catalog.upsert(entry);
 
-        assertThat(catalog.recent(null, 10)).containsExactly(entry);
-        assertThat(catalog.count()).isEqualTo(1);
+        assertThat(catalog.recent(null, 10, CatalogFilter.none())).containsExactly(entry);
+        assertThat(catalog.count(CatalogFilter.none())).isEqualTo(1);
     }
 
     @Test
@@ -75,7 +76,7 @@ class JpaCatalogStoreIT extends PostgresIT {
 
         catalog.renameOwner(entry.ownerId(), "new-login");
 
-        assertThat(catalog.recent(null, 10)).singleElement().extracting(CatalogEntry::ownerLogin).isEqualTo("new-login");
+        assertThat(catalog.recent(null, 10, CatalogFilter.none())).singleElement().extracting(CatalogEntry::ownerLogin).isEqualTo("new-login");
     }
 
     @Test
@@ -85,15 +86,15 @@ class JpaCatalogStoreIT extends PostgresIT {
         for (int index = 0; index < 6; index++) catalog.upsert(entry("old" + index, NOW.minus(Duration.ofDays(30))));
         for (int index = 0; index < 3; index++) catalog.upsert(entry("new" + index, NOW.minus(Duration.ofDays(1))));
 
-        List<Shuffled> old = catalog.shuffled(DAY, false, youngSince, "", 10);
-        List<Shuffled> young = catalog.shuffled(DAY, true, youngSince, "", 10);
-        List<Shuffled> rest = catalog.shuffled(DAY, false, youngSince, old.get(2).key(), 10);
+        List<Shuffled> old = catalog.shuffled(DAY, false, youngSince, "", 10, CatalogFilter.none());
+        List<Shuffled> young = catalog.shuffled(DAY, true, youngSince, "", 10, CatalogFilter.none());
+        List<Shuffled> rest = catalog.shuffled(DAY, false, youngSince, old.get(2).key(), 10, CatalogFilter.none());
 
         assertThat(old).hasSize(6).allSatisfy(item -> assertThat(item.entry().slug()).startsWith("old"));
         assertThat(young).hasSize(3).allSatisfy(item -> assertThat(item.entry().slug()).startsWith("new"));
         assertThat(old).extracting(Shuffled::key).isSorted().allMatch(key -> key.matches("[0-9a-f]{32}"));
         assertThat(rest).containsExactlyElementsOf(old.subList(3, 6));
-        assertThat(catalog.shuffled(DAY.plusDays(1), false, youngSince, "", 10)).extracting(item -> item.entry().slug())
+        assertThat(catalog.shuffled(DAY.plusDays(1), false, youngSince, "", 10, CatalogFilter.none())).extracting(item -> item.entry().slug())
                 .containsExactlyInAnyOrderElementsOf(old.stream().map(item -> item.entry().slug()).toList());
     }
 
@@ -105,9 +106,9 @@ class JpaCatalogStoreIT extends PostgresIT {
         CatalogEntry c = entry("c", NOW);
         List.of(a, b, c).forEach(catalog::upsert);
 
-        List<CatalogEntry> first = catalog.recent(null, 2);
+        List<CatalogEntry> first = catalog.recent(null, 2, CatalogFilter.none());
         CatalogEntry last = first.getLast();
-        List<CatalogEntry> second = catalog.recent(new RecentCursor(last.publishedAt(), last.showcaseId()), 2);
+        List<CatalogEntry> second = catalog.recent(new RecentCursor(last.publishedAt(), last.showcaseId()), 2, CatalogFilter.none());
 
         assertThat(first).hasSize(2).allMatch(entry -> entry.publishedAt().equals(NOW));
         assertThat(second).containsExactly(a);
@@ -122,7 +123,7 @@ class JpaCatalogStoreIT extends PostgresIT {
         catalog.setPreview(entry.showcaseId(), "https://media.test/i.webp", "https://media.test/v.mp4");
         catalog.upsert(entry);
 
-        assertThat(catalog.recent(null, 10)).singleElement().satisfies(card -> {
+        assertThat(catalog.recent(null, 10, CatalogFilter.none())).singleElement().satisfies(card -> {
             assertThat(card.previewImageUrl()).isEqualTo("https://media.test/i.webp");
             assertThat(card.previewVideoUrl()).isEqualTo("https://media.test/v.mp4");
         });
@@ -136,10 +137,10 @@ class JpaCatalogStoreIT extends PostgresIT {
 
         catalog.setRepositoryStars(entry.showcaseId(), 42);
         catalog.upsert(entry);
-        assertThat(catalog.recent(null, 10)).singleElement().extracting(CatalogEntry::repositoryStars).isEqualTo(42);
+        assertThat(catalog.recent(null, 10, CatalogFilter.none())).singleElement().extracting(CatalogEntry::repositoryStars).isEqualTo(42);
 
         catalog.setRepositoryStars(entry.showcaseId(), null);
-        assertThat(catalog.recent(null, 10)).singleElement().extracting(CatalogEntry::repositoryStars).isNull();
+        assertThat(catalog.recent(null, 10, CatalogFilter.none())).singleElement().extracting(CatalogEntry::repositoryStars).isNull();
     }
 
     @Test
@@ -150,7 +151,7 @@ class JpaCatalogStoreIT extends PostgresIT {
 
         catalog.setLikes(entry.showcaseId(), 3);
 
-        assertThat(catalog.recent(null, 10)).singleElement().extracting(CatalogEntry::likes).isEqualTo(3);
+        assertThat(catalog.recent(null, 10, CatalogFilter.none())).singleElement().extracting(CatalogEntry::likes).isEqualTo(3);
     }
 
     @Test
@@ -160,14 +161,14 @@ class JpaCatalogStoreIT extends PostgresIT {
         catalog.upsert(entry);
 
         catalog.setAuthorProfile(entry.ownerId(), "CM", List.of("backend", "devops"), "Backend à Douala");
-        assertThat(catalog.recent(null, 10)).singleElement().satisfies(card -> {
+        assertThat(catalog.recent(null, 10, CatalogFilter.none())).singleElement().satisfies(card -> {
             assertThat(card.countryCode()).isEqualTo("CM");
             assertThat(card.specialties()).containsExactly("backend", "devops");
             assertThat(card.headline()).isEqualTo("Backend à Douala");
         });
 
         catalog.setAuthorProfile(entry.ownerId(), "SN", List.of("mobile"), null);
-        assertThat(catalog.recent(null, 10)).singleElement().satisfies(card -> {
+        assertThat(catalog.recent(null, 10, CatalogFilter.none())).singleElement().satisfies(card -> {
             assertThat(card.countryCode()).isEqualTo("SN");
             assertThat(card.specialties()).containsExactly("mobile");
         });

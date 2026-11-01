@@ -1,6 +1,7 @@
 package com.brandonkamga.sourcefolio.discovery.infra.persistence;
 
 import com.brandonkamga.sourcefolio.discovery.domain.model.CatalogEntry;
+import com.brandonkamga.sourcefolio.discovery.domain.model.CatalogFilter;
 import com.brandonkamga.sourcefolio.discovery.domain.model.RankedEntry;
 import com.brandonkamga.sourcefolio.discovery.domain.model.RecentCursor;
 import com.brandonkamga.sourcefolio.discovery.domain.model.Shuffled;
@@ -80,12 +81,12 @@ class JpaCatalogStore implements CatalogStore {
     // Two queries whatever the page size: the ordered ids and keys, then their rows.
     @Override
     @Transactional(readOnly = true)
-    public List<Shuffled> shuffled(LocalDate day, boolean young, Instant youngSince, String afterKey, int limit) {
-        List<String[]> idsAndKeys = entries.shuffledIdsAndKeys(day.toString(), young, youngSince, afterKey, limit).stream()
+    public List<Shuffled> shuffled(LocalDate day, boolean young, Instant youngSince, String afterKey, int limit, CatalogFilter filter) {
+        List<String[]> idsAndKeys = entries.shuffledIdsAndKeys(day.toString(), young, youngSince, afterKey, limit,
+                        filter.countryCode(), filter.specialty(), pattern(filter)).stream()
                 .map(row -> row.split(":", 2))
                 .toList();
-        Map<UUID, CatalogEntryEntity> rows = entries.findAllById(idsAndKeys.stream().map(row -> UUID.fromString(row[0])).toList())
-                .stream().collect(Collectors.toMap(CatalogEntryEntity::getShowcaseId, Function.identity()));
+        Map<UUID, CatalogEntryEntity> rows = rowsById(idsAndKeys.stream().map(row -> UUID.fromString(row[0])).toList());
         return idsAndKeys.stream()
                 .filter(row -> rows.containsKey(UUID.fromString(row[0])))
                 .map(row -> new Shuffled(toDomain(rows.get(UUID.fromString(row[0]))), row[1]))
@@ -94,17 +95,30 @@ class JpaCatalogStore implements CatalogStore {
 
     @Override
     @Transactional(readOnly = true)
-    public long count() {
-        return entries.count();
+    public long count(CatalogFilter filter) {
+        return filter.isEmpty() ? entries.count() : entries.countMatching(filter.countryCode(), filter.specialty(), pattern(filter));
     }
 
+    // Two queries as well: the ordered ids, then their rows.
     @Override
     @Transactional(readOnly = true)
-    public List<CatalogEntry> recent(RecentCursor after, int limit) {
-        List<CatalogEntryEntity> rows = after == null
-                ? entries.findAllByOrderByPublishedAtDescShowcaseIdDesc(Limit.of(limit))
-                : entries.recentAfter(after.publishedAt(), after.showcaseId(), Limit.of(limit));
-        return rows.stream().map(JpaCatalogStore::toDomain).toList();
+    public List<CatalogEntry> recent(RecentCursor after, int limit, CatalogFilter filter) {
+        List<UUID> ids = entries.recentIds(after == null ? null : after.publishedAt(), after == null ? null : after.showcaseId(), limit,
+                filter.countryCode(), filter.specialty(), pattern(filter));
+        Map<UUID, CatalogEntryEntity> rows = rowsById(ids);
+        return ids.stream().filter(rows::containsKey).map(id -> toDomain(rows.get(id))).toList();
+    }
+
+    private Map<UUID, CatalogEntryEntity> rowsById(List<UUID> ids) {
+        return entries.findAllById(ids).stream().collect(Collectors.toMap(CatalogEntryEntity::getShowcaseId, Function.identity()));
+    }
+
+    // "%words%" for LIKE, with the visitor's own % and _ taken literally.
+    private static String pattern(CatalogFilter filter) {
+        if (filter.text() == null) {
+            return null;
+        }
+        return "%" + filter.text().replace("\\", "\\\\").replace("%", "\\%").replace("_", "\\_") + "%";
     }
 
     private static CatalogEntry toDomain(CatalogEntryEntity row) {

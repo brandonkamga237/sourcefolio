@@ -1,6 +1,7 @@
 package com.brandonkamga.sourcefolio.discovery.application;
 
 import com.brandonkamga.sourcefolio.discovery.domain.model.CatalogEntry;
+import com.brandonkamga.sourcefolio.discovery.domain.model.CatalogFilter;
 import com.brandonkamga.sourcefolio.discovery.domain.model.CatalogPage;
 import com.brandonkamga.sourcefolio.discovery.domain.model.DiscoverCursor;
 import com.brandonkamga.sourcefolio.discovery.domain.model.DiscoverFeed;
@@ -25,7 +26,7 @@ public class CatalogImpl implements Catalog {
     }
 
     @Override
-    public CatalogPage listDiscover(String rawCursor, int size) {
+    public CatalogPage listDiscover(String rawCursor, int size, CatalogFilter filter) {
         int limit = clamp(size);
         DiscoverCursor cursor = DiscoverCursor.decode(rawCursor)
                 .orElseGet(() -> DiscoverCursor.start(LocalDate.ofInstant(clock.instant(), ZoneOffset.UTC)));
@@ -33,27 +34,27 @@ public class CatalogImpl implements Catalog {
         // other while someone scrolls, or it would be shown twice or skipped.
         Instant youngSince = cursor.day().atStartOfDay(ZoneOffset.UTC).toInstant().minus(DiscoverFeed.YOUNG);
         // One more than needed from each list, to know whether a next page exists.
-        List<Shuffled> young = store.shuffled(cursor.day(), true, youngSince, cursor.youngAfter(), limit + 1);
-        List<Shuffled> old = store.shuffled(cursor.day(), false, youngSince, cursor.oldAfter(), limit + 1);
+        List<Shuffled> young = store.shuffled(cursor.day(), true, youngSince, cursor.youngAfter(), limit + 1, filter);
+        List<Shuffled> old = store.shuffled(cursor.day(), false, youngSince, cursor.oldAfter(), limit + 1, filter);
         DiscoverFeed.Page page = DiscoverFeed.interleave(young, old, cursor.index(), limit);
 
         boolean more = page.youngUsed() < young.size() || page.oldUsed() < old.size();
         String next = more ? new DiscoverCursor(cursor.day(), cursor.index() + page.items().size(),
                 lastKey(young, page.youngUsed(), cursor.youngAfter()),
                 lastKey(old, page.oldUsed(), cursor.oldAfter())).encode() : null;
-        return new CatalogPage(page.items().stream().map(Shuffled::entry).toList(), next, store.count());
+        return new CatalogPage(page.items().stream().map(Shuffled::entry).toList(), next, store.count(filter));
     }
 
     @Override
-    public CatalogPage listRecent(String rawCursor, int size) {
+    public CatalogPage listRecent(String rawCursor, int size, CatalogFilter filter) {
         int limit = clamp(size);
-        List<CatalogEntry> rows = store.recent(RecentCursor.decode(rawCursor).orElse(null), limit + 1);
+        List<CatalogEntry> rows = store.recent(RecentCursor.decode(rawCursor).orElse(null), limit + 1, filter);
         if (rows.size() <= limit) {
-            return new CatalogPage(rows, null, store.count());
+            return new CatalogPage(rows, null, store.count(filter));
         }
         List<CatalogEntry> page = rows.subList(0, limit);
         CatalogEntry last = page.getLast();
-        return new CatalogPage(page, new RecentCursor(last.publishedAt(), last.showcaseId()).encode(), store.count());
+        return new CatalogPage(page, new RecentCursor(last.publishedAt(), last.showcaseId()).encode(), store.count(filter));
     }
 
     @Override

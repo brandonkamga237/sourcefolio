@@ -3,6 +3,7 @@ package com.brandonkamga.sourcefolio.discovery.api;
 import com.brandonkamga.sourcefolio.discovery.api.dto.CatalogResponse;
 import com.brandonkamga.sourcefolio.discovery.api.dto.RankingResponse;
 import com.brandonkamga.sourcefolio.discovery.application.Catalog;
+import com.brandonkamga.sourcefolio.discovery.domain.model.CatalogFilter;
 import com.brandonkamga.sourcefolio.shared.exception.BadRequestException;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,10 +23,14 @@ class CatalogController {
     @Operation(operationId = "getCatalog")
     CatalogResponse catalog(@RequestParam(defaultValue = "discover") String sort,
                             @RequestParam(required = false) String cursor,
-                            @RequestParam(defaultValue = "20") int size) {
+                            @RequestParam(defaultValue = "20") int size,
+                            @RequestParam(required = false) String q,
+                            @RequestParam(required = false) String country,
+                            @RequestParam(required = false) String specialty) {
+        CatalogFilter filter = CatalogFilter.parse(q, country, specialty).orElseThrow(() -> new BadRequestException("catalog.filter-invalid"));
         return CatalogResponse.of(switch (sort) {
-            case "discover" -> catalog.listDiscover(cursor, size);
-            case "recent" -> catalog.listRecent(cursor, size);
+            case "discover" -> catalog.listDiscover(cursor, size, filter);
+            case "recent" -> catalog.listRecent(cursor, size, filter);
             default -> throw new BadRequestException("catalog.sort-invalid");
         });
     }

@@ -1,6 +1,7 @@
 package com.brandonkamga.sourcefolio.discovery.application;
 
 import com.brandonkamga.sourcefolio.discovery.domain.model.CatalogEntry;
+import com.brandonkamga.sourcefolio.discovery.domain.model.CatalogFilter;
 import com.brandonkamga.sourcefolio.discovery.domain.model.RankedEntry;
 import com.brandonkamga.sourcefolio.discovery.domain.model.RecentCursor;
 import com.brandonkamga.sourcefolio.discovery.domain.model.Shuffled;
@@ -37,8 +38,9 @@ class InMemoryCatalogStore implements CatalogStore {
     }
 
     @Override
-    public List<Shuffled> shuffled(LocalDate day, boolean young, Instant youngSince, String afterKey, int limit) {
+    public List<Shuffled> shuffled(LocalDate day, boolean young, Instant youngSince, String afterKey, int limit, CatalogFilter filter) {
         return rows.values().stream()
+                .filter(entry -> matches(entry, filter))
                 .filter(entry -> !entry.publishedAt().isBefore(youngSince) == young)
                 .map(entry -> new Shuffled(entry, md5(entry.showcaseId() + day.toString())))
                 .filter(shuffled -> shuffled.key().compareTo(afterKey) > 0)
@@ -94,20 +96,29 @@ class InMemoryCatalogStore implements CatalogStore {
     }
 
     @Override
-    public long count() {
-        return rows.size();
+    public long count(CatalogFilter filter) {
+        return rows.values().stream().filter(entry -> matches(entry, filter)).count();
     }
 
     @Override
-    public List<CatalogEntry> recent(RecentCursor after, int limit) {
+    public List<CatalogEntry> recent(RecentCursor after, int limit, CatalogFilter filter) {
         Comparator<CatalogEntry> newestFirst = Comparator.comparing(CatalogEntry::publishedAt)
                 .thenComparing(CatalogEntry::showcaseId).reversed();
         return rows.values().stream()
+                .filter(entry -> matches(entry, filter))
                 .filter(entry -> after == null || entry.publishedAt().isBefore(after.publishedAt())
                         || entry.publishedAt().equals(after.publishedAt()) && entry.showcaseId().compareTo(after.showcaseId()) < 0)
                 .sorted(newestFirst)
                 .limit(limit)
                 .toList();
+    }
+
+    // The same rules as the SQL filters: any part left null matches everything.
+    private static boolean matches(CatalogEntry entry, CatalogFilter filter) {
+        String haystack = (entry.ownerLogin() + " " + entry.siteUrl() + " " + (entry.headline() == null ? "" : entry.headline())).toLowerCase();
+        return (filter.countryCode() == null || filter.countryCode().equals(entry.countryCode()))
+                && (filter.specialty() == null || entry.specialties().contains(filter.specialty()))
+                && (filter.text() == null || haystack.contains(filter.text()));
     }
 
     private static String md5(String value) {
