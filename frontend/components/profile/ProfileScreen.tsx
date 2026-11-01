@@ -20,7 +20,7 @@ export async function ProfileScreen({ locale }: ProfileScreenProps) {
     return (
       <div className="flex flex-col gap-4">
         <p className="text-[15px] leading-normal text-ink-body">{t("profile.signInHint")}</p>
-        <GitHubSignIn label={t("auth.signInWithGithub")} permission={t("auth.permission")} />
+        <GitHubSignIn label={t("auth.signInWithGithub")} permission={t("auth.permission")} returnTo={localizedPath(locale, "/me/profile")} />
       </div>
     );
   }
