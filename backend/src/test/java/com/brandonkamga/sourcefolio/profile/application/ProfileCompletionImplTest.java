@@ -109,4 +109,25 @@ class ProfileCompletionImplTest {
                 new ProfileChanged(MEMBER, "CM", List.of()),
                 new ProfileChanged(MEMBER, "CM", List.of("backend", "devops")));
     }
+
+    @Test
+    @DisplayName("the member writes their own headline, tidied onto one line; a blank one removes it")
+    void headline() {
+        profiles.answerHeadline(MEMBER, "  Front-end React\n à Douala ");
+        assertThat(rows.get(MEMBER).headline().value()).isEqualTo("Front-end React à Douala");
+
+        profiles.answerHeadline(MEMBER, "   ");
+        assertThat(rows.get(MEMBER).headline()).isNull();
+    }
+
+    @Test
+    @DisplayName("a headline over eighty characters is refused and changes nothing")
+    void headlineRefused() {
+        profiles.answerHeadline(MEMBER, "Backend Java");
+
+        assertThatThrownBy(() -> profiles.answerHeadline(MEMBER, "x".repeat(81)))
+                .isInstanceOf(AppException.class)
+                .extracting(thrown -> ((AppException) thrown).messageKey()).isEqualTo("profile.headline-invalid");
+        assertThat(rows.get(MEMBER).headline().value()).isEqualTo("Backend Java");
+    }
 }
