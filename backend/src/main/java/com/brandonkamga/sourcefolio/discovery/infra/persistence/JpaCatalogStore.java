@@ -60,6 +60,12 @@ class JpaCatalogStore implements CatalogStore {
     }
 
     @Override
+    @Transactional(readOnly = true)
+    public List<CatalogEntry> byOwnerLogin(String login) {
+        return entries.byOwnerLogin(login).stream().map(JpaCatalogStore::toDomain).toList();
+    }
+
+    @Override
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void setAuthorProfile(UUID ownerId, String countryCode, List<String> specialties) {
         entries.setAuthorProfile(ownerId, countryCode, specialties.toArray(String[]::new));

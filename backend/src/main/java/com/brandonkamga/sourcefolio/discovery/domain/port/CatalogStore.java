@@ -38,6 +38,9 @@ public interface CatalogStore {
      */
     List<Shuffled> shuffled(LocalDate day, boolean young, Instant youngSince, String afterKey, int limit);
 
+    /** The cards of the member with this GitHub login, any case, newest first. */
+    List<CatalogEntry> byOwnerLogin(String login);
+
     /** How many showcases the catalogue lists. */
     long count();
 

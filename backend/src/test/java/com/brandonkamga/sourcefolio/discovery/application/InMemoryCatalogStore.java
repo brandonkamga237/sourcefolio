@@ -59,6 +59,12 @@ class InMemoryCatalogStore implements CatalogStore {
     }
 
     @Override
+    public List<CatalogEntry> byOwnerLogin(String login) {
+        return rows.values().stream().filter(entry -> entry.ownerLogin().equalsIgnoreCase(login))
+                .sorted(java.util.Comparator.comparing(CatalogEntry::publishedAt).reversed()).toList();
+    }
+
+    @Override
     public void setAuthorProfile(UUID ownerId, String countryCode, List<String> specialties) {
         rows.replaceAll((id, entry) -> entry.ownerId().equals(ownerId)
                 ? new CatalogEntry(entry.showcaseId(), entry.slug(), entry.siteUrl(), entry.repository(), entry.repositoryUrl(), entry.ownerId(),
