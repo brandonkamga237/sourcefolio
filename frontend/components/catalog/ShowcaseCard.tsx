@@ -58,7 +58,7 @@ export function ShowcaseCard({ card, href, index, selected, onOpen, locale, labe
           login={card.ownerLogin}
           locale={locale}
           labels={labels.member}
-          triggerClassName="flex min-w-0 flex-1 items-center gap-2.5 py-2.5 pr-1 pl-3 text-left transition-colors duration-150 hover:bg-surface-raised sm:py-3 sm:pl-3.5"
+          triggerClassName="flex min-w-0 flex-1 items-center gap-3 py-3 pr-1 pl-3 text-left transition-colors duration-150 hover:bg-surface-raised sm:py-3.5 sm:pl-4"
         >
           <Avatar login={card.ownerLogin} size={30} className="ring-2 ring-surface transition-[box-shadow] duration-200 group-hover:ring-accent-soft" />
           <span className="flex min-w-0 flex-1 flex-col gap-0.5">
