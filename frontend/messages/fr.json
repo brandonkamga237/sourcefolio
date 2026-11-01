@@ -295,5 +295,22 @@
     "one": "{count} étoile sur GitHub",
     "other": "{count} étoiles sur GitHub",
     "badge": "GitHub"
+  },
+  "member": {
+    "open": "Voir le profil de {login}",
+    "close": "Fermer",
+    "loading": "Chargement…",
+    "failed": "Ce profil n’a pas pu être chargé. Réessaie.",
+    "since": "Depuis {date}",
+    "likesOne": "{count} appréciation reçue",
+    "likesOther": "{count} appréciations reçues",
+    "specialtiesTitle": "Spécialités",
+    "noSpecialty": "Spécialités pas encore renseignées",
+    "noCountry": "Pays non renseigné",
+    "portfolioTitle": "Son portfolio",
+    "openPage": "Voir la fiche",
+    "visitSite": "Voir le site",
+    "viewCode": "Voir le code",
+    "githubProfile": "Profil GitHub"
   }
 }

@@ -295,5 +295,22 @@
     "one": "{count} star on GitHub",
     "other": "{count} stars on GitHub",
     "badge": "GitHub"
+  },
+  "member": {
+    "open": "See {login}’s profile",
+    "close": "Close",
+    "loading": "Loading…",
+    "failed": "This profile could not be loaded. Try again.",
+    "since": "Since {date}",
+    "likesOne": "{count} like received",
+    "likesOther": "{count} likes received",
+    "specialtiesTitle": "Specialties",
+    "noSpecialty": "Specialties not given yet",
+    "noCountry": "Country not given",
+    "portfolioTitle": "Their portfolio",
+    "openPage": "Open the page",
+    "visitSite": "Visit the site",
+    "viewCode": "View the code",
+    "githubProfile": "GitHub profile"
   }
 }

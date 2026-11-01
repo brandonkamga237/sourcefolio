@@ -166,6 +166,13 @@
     }
   }
 
+  @keyframes pop-in {
+    from {
+      opacity: 0;
+      scale: 0.96;
+    }
+  }
+
   @keyframes pop {
     40% {
       transform: scale(1.22);
