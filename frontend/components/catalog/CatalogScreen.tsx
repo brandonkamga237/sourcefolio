@@ -37,8 +37,10 @@ async function SortNav({ locale, sort }: { locale: Locale; sort: CatalogSort }) 
   );
 }
 
-// The search bar offers only the countries and interests some portfolio carries.
+// The search bar offers only the countries and interests some portfolio carries. Read per
+// request (then cached a few minutes): the build has no API, and the facets grow with the catalogue.
 async function Search({ locale }: { locale: Locale }) {
+  await connection();
   const [t, facets] = await Promise.all([getTranslations({ locale }), getCatalogFacets()]);
   return (
     <CatalogSearch
