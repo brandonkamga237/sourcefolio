@@ -70,10 +70,13 @@ export async function MeScreen({ locale }: MeScreenProps) {
   const countryName = answers?.country ? countryOptions(locale).find((option) => option.code === answers.country)?.name : null;
   const profileRows = [
     { label: t("profile.countryLabel"), value: countryName ?? null },
-    { label: t("profile.specialtyLabel"), value: answers?.specialty ? t(`specialty.${answers.specialty}`) : null },
+    {
+      label: t("profile.specialtyLabel"),
+      value: answers && answers.specialties.length > 0 ? answers.specialties.map((slug) => t(`specialty.${slug}`)).join(" · ") : null,
+    },
     { label: t("profile.emailLabel"), value: answers?.email ?? null },
   ];
-  const profileIncomplete = answers !== null && (!answers.country || !answers.specialty);
+  const profileIncomplete = answers !== null && (!answers.country || answers.specialties.length === 0);
   const allDone = showcase !== null && showcase.previewImageUrl !== null && !profileIncomplete;
   const journeyDismissed = jar.get(JOURNEY_COOKIE)?.value === "dismissed";
   const dialog = (key: "manage.changeDialog" | "manage.withdrawDialog" | "account.deleteDialog", extra?: { typeToConfirm: string }) => ({

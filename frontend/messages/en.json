@@ -174,7 +174,7 @@
     "progress": "Question {current} of {total}",
     "countryTitle": "Which country do you live in?",
     "countryPlaceholder": "Choose your country",
-    "specialtyTitle": "What is your specialty?",
+    "specialtyTitle": "Your specialties",
     "emailTitle": "Your email, to hear about it if your site goes down",
     "emailHint": "Optional. It is never shown or shared.",
     "next": "Continue",
@@ -183,13 +183,14 @@
     "failed": "Your answer could not be saved. Try again.",
     "summaryTitle": "My profile",
     "countryLabel": "Country",
-    "specialtyLabel": "Specialty",
+    "specialtyLabel": "Specialties",
     "emailLabel": "Alert email",
     "notGiven": "Not given",
     "edit": "Edit",
     "done": "Back to Me",
     "reminder": "Add your country and specialty: two questions, ten seconds.",
-    "reminderLink": "Complete my profile"
+    "reminderLink": "Complete my profile",
+    "specialtyHint": "Tap them in order of importance, up to three: the first is the one people see first."
   },
   "specialty": {
     "frontend": "Frontend",

@@ -1,6 +1,7 @@
 package com.brandonkamga.sourcefolio.profile.application;
 
 import com.brandonkamga.sourcefolio.profile.domain.model.DeveloperProfile;
+import java.util.List;
 import java.util.UUID;
 
 /** The one-question-at-a-time profile: each answer is saved on its own. */
@@ -11,5 +12,6 @@ public interface ProfileCompletion {
 
     DeveloperProfile answerCountry(UUID memberId, String countryCode);
 
-    DeveloperProfile answerSpecialty(UUID memberId, String specialtySlug);
+    /** One to three specialty slugs, most important first; replaces the earlier answer. */
+    DeveloperProfile answerSpecialties(UUID memberId, List<String> specialtySlugs);
 }

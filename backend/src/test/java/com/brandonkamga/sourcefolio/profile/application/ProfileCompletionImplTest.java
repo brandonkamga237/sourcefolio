@@ -2,6 +2,7 @@ package com.brandonkamga.sourcefolio.profile.application;
 
 import com.brandonkamga.sourcefolio.profile.domain.model.CountryCode;
 import com.brandonkamga.sourcefolio.profile.domain.model.DeveloperProfile;
+import com.brandonkamga.sourcefolio.profile.domain.model.Specialties;
 import com.brandonkamga.sourcefolio.profile.domain.model.Specialty;
 import com.brandonkamga.sourcefolio.profile.domain.port.ProfileStore;
 import com.brandonkamga.sourcefolio.shared.exception.AppException;
@@ -11,6 +12,7 @@ import java.time.Clock;
 import java.time.Instant;
 import java.time.ZoneOffset;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
@@ -48,9 +50,9 @@ class ProfileCompletionImplTest {
     @DisplayName("each answer is saved on its own and keeps the earlier ones")
     void answersAccumulate() {
         profiles.answerCountry(MEMBER, "cm");
-        profiles.answerSpecialty(MEMBER, "fullstack");
+        profiles.answerSpecialties(MEMBER, List.of("fullstack"));
 
-        assertThat(rows.get(MEMBER)).isEqualTo(new DeveloperProfile(MEMBER, new CountryCode("CM"), Specialty.FULLSTACK, NOW));
+        assertThat(rows.get(MEMBER)).isEqualTo(new DeveloperProfile(MEMBER, new CountryCode("CM"), new Specialties(List.of(Specialty.FULLSTACK)), NOW));
     }
 
     @Test
@@ -61,10 +63,32 @@ class ProfileCompletionImplTest {
         assertThatThrownBy(() -> profiles.answerCountry(MEMBER, "Cameroun"))
                 .isInstanceOf(AppException.class)
                 .extracting(thrown -> ((AppException) thrown).messageKey()).isEqualTo("profile.country-invalid");
-        assertThatThrownBy(() -> profiles.answerSpecialty(MEMBER, "wizard"))
+        assertThatThrownBy(() -> profiles.answerSpecialties(MEMBER, List.of("wizard")))
                 .isInstanceOf(AppException.class)
                 .extracting(thrown -> ((AppException) thrown).messageKey()).isEqualTo("profile.specialty-invalid");
         assertThat(rows.get(MEMBER).country()).isEqualTo(new CountryCode("CM"));
-        assertThat(rows.get(MEMBER).specialty()).isNull();
+        assertThat(rows.get(MEMBER).specialties().isEmpty()).isTrue();
+    }
+
+    @Test
+    @DisplayName("ranked specialties keep the member's order and replace the earlier answer")
+    void rankedSpecialties() {
+        profiles.answerSpecialties(MEMBER, List.of("mobile"));
+        profiles.answerSpecialties(MEMBER, List.of("backend", "devops", "frontend"));
+
+        assertThat(rows.get(MEMBER).specialties().slugs()).containsExactly("backend", "devops", "frontend");
+    }
+
+    @Test
+    @DisplayName("none, more than three, or the same specialty twice is refused and changes nothing")
+    void rankedSpecialtiesRefused() {
+        profiles.answerSpecialties(MEMBER, List.of("mobile"));
+
+        for (List<String> answer : List.of(List.<String>of(), List.of("backend", "devops", "frontend", "mobile"), List.of("backend", "backend"))) {
+            assertThatThrownBy(() -> profiles.answerSpecialties(MEMBER, answer))
+                    .isInstanceOf(AppException.class)
+                    .extracting(thrown -> ((AppException) thrown).messageKey()).isEqualTo("profile.specialties-invalid");
+        }
+        assertThat(rows.get(MEMBER).specialties().slugs()).containsExactly("mobile");
     }
 }

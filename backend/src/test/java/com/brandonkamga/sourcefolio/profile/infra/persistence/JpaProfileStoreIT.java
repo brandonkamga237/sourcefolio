@@ -4,6 +4,7 @@ import com.brandonkamga.sourcefolio.account.domain.model.User;
 import com.brandonkamga.sourcefolio.account.domain.port.UserStore;
 import com.brandonkamga.sourcefolio.profile.domain.model.CountryCode;
 import com.brandonkamga.sourcefolio.profile.domain.model.DeveloperProfile;
+import com.brandonkamga.sourcefolio.profile.domain.model.Specialties;
 import com.brandonkamga.sourcefolio.profile.domain.model.Specialty;
 import com.brandonkamga.sourcefolio.profile.domain.port.ProfileStore;
 import com.brandonkamga.sourcefolio.shared.domain.Language;
@@ -14,6 +15,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import java.time.Instant;
+import java.util.List;
 import java.util.UUID;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -38,12 +40,14 @@ class JpaProfileStoreIT extends PostgresIT {
 
         profiles.save(DeveloperProfile.blank(member).withCountry(new CountryCode("CM"), NOW));
         entityManager.flush();
-        DeveloperProfile updated = profiles.save(profiles.find(member).orElseThrow().withSpecialty(Specialty.DATA_AI, NOW.plusSeconds(5)));
+        Specialties ranked = new Specialties(List.of(Specialty.DATA_AI, Specialty.BACKEND, Specialty.DEVOPS));
+        DeveloperProfile updated = profiles.save(profiles.find(member).orElseThrow().withSpecialties(ranked, NOW.plusSeconds(5)));
         entityManager.flush();
         entityManager.clear();
 
         assertThat(profiles.find(member)).contains(updated);
-        assertThat(updated).isEqualTo(new DeveloperProfile(member, new CountryCode("CM"), Specialty.DATA_AI, NOW.plusSeconds(5)));
+        assertThat(updated).isEqualTo(new DeveloperProfile(member, new CountryCode("CM"), ranked, NOW.plusSeconds(5)));
+        assertThat(profiles.find(member).orElseThrow().specialties().slugs()).containsExactly("data-ai", "backend", "devops");
     }
 
     @Test

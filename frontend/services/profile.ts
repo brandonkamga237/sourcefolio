@@ -1,36 +1,9 @@
 import { serverGet } from "@/lib/api/server";
 
-// TODO(api-types): replace with components["schemas"]["ProfileResponse"] and ["EmailResponse"].
-export type Specialty =
-  | "frontend"
-  | "backend"
-  | "fullstack"
-  | "mobile"
-  | "devops"
-  | "data-ai"
-  | "game"
-  | "embedded"
-  | "security"
-  | "other";
+import type { Profile } from "./profile-types";
 
-export const SPECIALTIES: readonly Specialty[] = [
-  "frontend",
-  "backend",
-  "fullstack",
-  "mobile",
-  "devops",
-  "data-ai",
-  "game",
-  "embedded",
-  "security",
-  "other",
-];
-
-export interface Profile {
-  /** ISO 3166-1 alpha-2, null until answered. */
-  country: string | null;
-  specialty: Specialty | null;
-}
+export type { Profile, Specialty } from "./profile-types";
+export { MAX_SPECIALTIES, SPECIALTIES } from "./profile-types";
 
 export interface MyAnswers extends Profile {
   /** The alert address, null when the member gave none. */

@@ -6,8 +6,9 @@ export function answerCountry(country: string): Promise<ClientResult<Profile>> {
   return clientPut<Profile>("/api/me/profile/country", { country });
 }
 
-export function answerSpecialty(specialty: string): Promise<ClientResult<Profile>> {
-  return clientPut<Profile>("/api/me/profile/specialty", { specialty });
+/** One to three slugs, most important first; replaces the earlier answer. */
+export function answerSpecialties(specialties: string[]): Promise<ClientResult<Profile>> {
+  return clientPut<Profile>("/api/me/profile/specialties", { specialties });
 }
 
 /** null or blank removes the address. */

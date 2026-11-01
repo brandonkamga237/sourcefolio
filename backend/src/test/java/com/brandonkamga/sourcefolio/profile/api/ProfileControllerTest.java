@@ -3,6 +3,7 @@ package com.brandonkamga.sourcefolio.profile.api;
 import com.brandonkamga.sourcefolio.profile.application.ProfileCompletion;
 import com.brandonkamga.sourcefolio.profile.domain.model.CountryCode;
 import com.brandonkamga.sourcefolio.profile.domain.model.DeveloperProfile;
+import com.brandonkamga.sourcefolio.profile.domain.model.Specialties;
 import com.brandonkamga.sourcefolio.profile.domain.model.Specialty;
 import com.brandonkamga.sourcefolio.shared.exception.BadRequestException;
 import com.brandonkamga.sourcefolio.shared.security.SecurityTestConfig;
@@ -51,20 +52,22 @@ class ProfileControllerTest {
         mvc.perform(get("/api/me/profile").with(member()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.country").value(nullValue()))
-                .andExpect(jsonPath("$.specialty").value(nullValue()));
+                .andExpect(jsonPath("$.specialties").isEmpty());
     }
 
     @Test
-    @DisplayName("an answer is saved and the whole profile comes back, as a code and a slug")
+    @DisplayName("ranked specialties are saved and the whole profile comes back, as a code and slugs in order")
     void answer() throws Exception {
-        when(profiles.answerSpecialty(MEMBER, "data-ai"))
-                .thenReturn(new DeveloperProfile(MEMBER, new CountryCode("CM"), Specialty.DATA_AI, Instant.parse("2026-10-30T09:00:00Z")));
+        when(profiles.answerSpecialties(MEMBER, List.of("data-ai", "backend")))
+                .thenReturn(new DeveloperProfile(MEMBER, new CountryCode("CM"), new Specialties(List.of(Specialty.DATA_AI, Specialty.BACKEND)),
+                        Instant.parse("2026-10-30T09:00:00Z")));
 
-        mvc.perform(put("/api/me/profile/specialty").with(member()).with(csrf())
-                        .contentType(MediaType.APPLICATION_JSON).content("{\"specialty\":\"data-ai\"}"))
+        mvc.perform(put("/api/me/profile/specialties").with(member()).with(csrf())
+                        .contentType(MediaType.APPLICATION_JSON).content("{\"specialties\":[\"data-ai\",\"backend\"]}"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.country").value("CM"))
-                .andExpect(jsonPath("$.specialty").value("data-ai"));
+                .andExpect(jsonPath("$.specialties[0]").value("data-ai"))
+                .andExpect(jsonPath("$.specialties[1]").value("backend"));
     }
 
     @Test
@@ -76,6 +79,27 @@ class ProfileControllerTest {
                         .contentType(MediaType.APPLICATION_JSON).content("{\"country\":\"Cameroun\"}"))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.message").value("Choisis un pays dans la liste."));
+    }
+
+    @Test
+    @DisplayName("a fourth specialty is a 400 in the member's language")
+    void tooManySpecialties() throws Exception {
+        when(profiles.answerSpecialties(MEMBER, List.of("backend", "devops", "frontend", "mobile")))
+                .thenThrow(new BadRequestException("profile.specialties-invalid"));
+
+        mvc.perform(put("/api/me/profile/specialties").with(member()).with(csrf()).header("Accept-Language", "fr")
+                        .contentType(MediaType.APPLICATION_JSON).content("{\"specialties\":[\"backend\",\"devops\",\"frontend\",\"mobile\"]}"))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message").value("Choisis une à trois spécialités différentes."));
+    }
+
+    @Test
+    @DisplayName("a missing list is refused before reaching the use case")
+    void missingSpecialties() throws Exception {
+        mvc.perform(put("/api/me/profile/specialties").with(member()).with(csrf())
+                        .contentType(MediaType.APPLICATION_JSON).content("{}"))
+                .andExpect(status().isBadRequest());
+        verifyNoInteractions(profiles);
     }
 
     @Test
