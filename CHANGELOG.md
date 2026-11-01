@@ -1,5 +1,53 @@
 # Changelog
 
+## [0.18.0](https://github.com/brandonkamga237/sourcefolio/compare/v0.17.0...v0.18.0) (2026-11-01)
+
+
+### Features
+
+* **discovery:** copy the declared role onto cards, filter on it and count it ([23455b2](https://github.com/brandonkamga237/sourcefolio/commit/23455b25752c253e24156ce75cd14013b2a3a5ec))
+* **discovery:** explain an invalid language filter in French and English ([57373fb](https://github.com/brandonkamga237/sourcefolio/commit/57373fbc4ea79b8493a2b54fe53a119aae97c4cd))
+* **discovery:** filter Discover by the languages of the code ([c4df4b9](https://github.com/brandonkamga237/sourcefolio/commit/c4df4b920f4923109997f7698d9bb9d7ae1f84a9))
+* **discovery:** filter Discover by the languages of the code ([#80](https://github.com/brandonkamga237/sourcefolio/issues/80)) ([c4df4b9](https://github.com/brandonkamga237/sourcefolio/commit/c4df4b920f4923109997f7698d9bb9d7ae1f84a9))
+* **discovery:** filter the catalogue by source language instead of declared interest ([fcc52d1](https://github.com/brandonkamga237/sourcefolio/commit/fcc52d11e10fbbc8e78a658621531dd49b4f8e93))
+* **discovery:** index the catalogue by source language instead of interest ([b5901be](https://github.com/brandonkamga237/sourcefolio/commit/b5901beb522ccafedba6ce4fc7eeda15b0ed2944))
+* **discovery:** mention roles when explaining an invalid filter ([8f01c4f](https://github.com/brandonkamga237/sourcefolio/commit/8f01c4f0046b97275c85f5f38d5962d124f41c80))
+* **frontend:** ask for the member's main role after their headline ([f68c682](https://github.com/brandonkamga237/sourcefolio/commit/f68c6820ae4201fd330ece7f94c9f0db5de8cbf7))
+* **frontend:** filter Discover by the languages of the code, not declared interests ([0c3b622](https://github.com/brandonkamga237/sourcefolio/commit/0c3b622578fc37c64b3c2fcbfba83481dbb0fb84))
+* **frontend:** filter Discover by the role authors declare, next to the stack ([4f777cb](https://github.com/brandonkamga237/sourcefolio/commit/4f777cb93fa46a426ce7ac3871fb14ac64f3418f))
+* **frontend:** name the declared role under the author before any interest ([ed567ab](https://github.com/brandonkamga237/sourcefolio/commit/ed567abca1b4b8164c41d45f1545d5e1c89075fb))
+* **frontend:** offer every repository and a new search under the detected portfolios ([f69f422](https://github.com/brandonkamga237/sourcefolio/commit/f69f422036153aa812b0bead0854660d1838c1e5))
+* **frontend:** pick a repository with no site and learn how to make it publishable ([843f2c8](https://github.com/brandonkamga237/sourcefolio/commit/843f2c8ffbf5f7b4b795573243c03429aac63751))
+* **frontend:** read and answer the role a member declares ([db48801](https://github.com/brandonkamga237/sourcefolio/commit/db488017eb6afc00ce534676f537a06c61836180))
+* **frontend:** read repositories without a site and ask for a new search ([1fff38e](https://github.com/brandonkamga237/sourcefolio/commit/1fff38e27cb3f54de0dfd29c429e5f4c44628e14))
+* **frontend:** search the member's repositories again and wait for the new list ([932f0ac](https://github.com/brandonkamga237/sourcefolio/commit/932f0acd8bcbb10f542e99f46d71f51ebecf50b0))
+* **frontend:** search the repositories again when changing portfolio ([7eddbf2](https://github.com/brandonkamga237/sourcefolio/commit/7eddbf2e3723e6b11d3b45d1c8cb518aace718a0))
+* **frontend:** show the declared role among the profile answers in Me ([b8a9cdc](https://github.com/brandonkamga237/sourcefolio/commit/b8a9cdc7a6482047723f9aa18b09c3b6ad5e19b8))
+* **frontend:** show the declared role as the member's claim in their profile and the panel ([722feee](https://github.com/brandonkamga237/sourcefolio/commit/722feeec9d87e4b1d9942d92dcc1655fd4231cd7))
+* **frontend:** word the declared role in French and English ([29a8c6a](https://github.com/brandonkamga237/sourcefolio/commit/29a8c6aef5635dfb1eaedc6e0042cf046309dada))
+* **frontend:** word the repository picker and the new search in French and English ([013744e](https://github.com/brandonkamga237/sourcefolio/commit/013744e8b8864b8acfda1a7bf80fedad448afffd))
+* **profile:** add the role a member declares and its catalogue copy ([20f7bf2](https://github.com/brandonkamga237/sourcefolio/commit/20f7bf228c9a975d545d43ff42e6042429ec4648))
+* **profile:** answer a declared role and announce it with the public profile ([1563db1](https://github.com/brandonkamga237/sourcefolio/commit/1563db170a7f2c9bf41d43e9a224c17a4913d93f))
+* **profile:** declare a main role and filter Discover by it ([288e9bc](https://github.com/brandonkamga237/sourcefolio/commit/288e9bc69b2e0790bb30b26a931531e0220c5bdb))
+* **profile:** declare a main role and filter Discover by it ([#81](https://github.com/brandonkamga237/sourcefolio/issues/81)) ([288e9bc](https://github.com/brandonkamga237/sourcefolio/commit/288e9bc69b2e0790bb30b26a931531e0220c5bdb))
+* **profile:** keep the role a member declares with their profile ([db8f8ba](https://github.com/brandonkamga237/sourcefolio/commit/db8f8ba1825ede790964ae5e541e5497069ef226))
+* **profile:** name the twelve roles a member can declare ([ca3401b](https://github.com/brandonkamga237/sourcefolio/commit/ca3401b7600aaacf732dea655d73f4324fd69689))
+* **showcase:** keep the repositories a scan found no site for ([4b921d8](https://github.com/brandonkamga237/sourcefolio/commit/4b921d8d2fc28b4891902e6cf21aab0e858e314f))
+* **showcase:** list repositories without a site and accept a new search over HTTP ([858cc54](https://github.com/brandonkamga237/sourcefolio/commit/858cc54dba27b303b2cca3fdaa6faca4b199182f))
+* **showcase:** pick any repository as portfolio and search again ([87b6eba](https://github.com/brandonkamga237/sourcefolio/commit/87b6eba797a6a748b722d11fe04a9dd0aea3a875))
+* **showcase:** pick any repository as portfolio and search again ([#79](https://github.com/brandonkamga237/sourcefolio/issues/79)) ([87b6eba](https://github.com/brandonkamga237/sourcefolio/commit/87b6eba797a6a748b722d11fe04a9dd0aea3a875))
+* **showcase:** search a member's repositories again on request, at most every 30 seconds ([ca79e5e](https://github.com/brandonkamga237/sourcefolio/commit/ca79e5ec048be8f2238ba501f8ad3e83dabcbd38))
+* **showcase:** set aside the repositories detection finds no site for ([6266a5c](https://github.com/brandonkamga237/sourcefolio/commit/6266a5cc57ea2fb0dec341a91bd0968b3a4541ad))
+* **showcase:** store and read back the repositories a scan found no site for ([4d2f03b](https://github.com/brandonkamga237/sourcefolio/commit/4d2f03b2361aa6ca3fe6ff8f78069babbfe48d3d))
+
+
+### Bug Fixes
+
+* **frontend:** come back to Me after signing in with GitHub, to pick the portfolio at once ([36557b4](https://github.com/brandonkamga237/sourcefolio/commit/36557b4447e05194916fc5556552bdb3af2dcc03))
+* **frontend:** give the search and the three filters a row of their own on wide screens ([512df7b](https://github.com/brandonkamga237/sourcefolio/commit/512df7b8c01d7e22b945aac2f29ab9a1b8a446e2))
+* **frontend:** say now instead of this minute for anything under a minute old ([6964e7e](https://github.com/brandonkamga237/sourcefolio/commit/6964e7e51a652ac959988331c2e031a5908068e3))
+* **frontend:** suggest a new search when no other repository was found ([bad86b5](https://github.com/brandonkamga237/sourcefolio/commit/bad86b507183d6871a003522e1db99c59318e3b8))
+
 ## [0.17.0](https://github.com/brandonkamga237/sourcefolio/compare/v0.16.0...v0.17.0) (2026-11-01)
 
 
