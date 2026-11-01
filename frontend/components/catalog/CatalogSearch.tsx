@@ -10,12 +10,11 @@ export interface CatalogSearchLabels {
   search: string;
   country: string;
   anyCountry: string;
-  interest: string;
-  anyInterest: string;
+  language: string;
+  anyLanguage: string;
   clear: string;
-  /** The phone's button that unfolds the country and interest pickers. */
+  /** The phone's button that unfolds the country and language pickers. */
   filters: string;
-  specialtyNames: Record<string, string>;
 }
 
 interface CatalogSearchProps {
@@ -27,7 +26,7 @@ interface CatalogSearchProps {
 const control =
   "h-11 min-w-0 rounded-control border border-line bg-surface px-3 text-[15px] text-ink transition-colors duration-150 hover:border-ink-muted focus:border-ink";
 
-// Words, a country, an interest: written into the address (replaced, not pushed, so Back still
+// Words, a country, a language of the code: written into the address (replaced, not pushed, so Back still
 // leaves the page), which the server reads to render the matching first page. Typing waits a
 // beat before searching, so each letter does not cost a request.
 export function CatalogSearch({ locale, facets, labels }: CatalogSearchProps) {
@@ -37,8 +36,8 @@ export function CatalogSearch({ locale, facets, labels }: CatalogSearchProps) {
   const current = readFilters(searchParams);
   const [text, setText] = useState(current.q ?? "");
   // On a phone the pickers fold away so the sticky bar stays slim; open when one is in use.
-  const [open, setOpen] = useState(Boolean(current.country || current.specialty));
-  const active = (current.country ? 1 : 0) + (current.specialty ? 1 : 0);
+  const [open, setOpen] = useState(Boolean(current.country || current.language));
+  const active = (current.country ? 1 : 0) + (current.language ? 1 : 0);
   const timer = useRef<number | undefined>(undefined);
 
   function apply(next: CatalogFilters) {
@@ -96,16 +95,17 @@ export function CatalogSearch({ locale, facets, labels }: CatalogSearchProps) {
             </option>
           ))}
         </select>
+        {/* Language names are GitHub's, the same in every language: never translated. */}
         <select
-          aria-label={labels.interest}
-          value={current.specialty ?? ""}
-          onChange={(event) => apply({ ...current, specialty: event.target.value || undefined })}
+          aria-label={labels.language}
+          value={current.language ?? ""}
+          onChange={(event) => apply({ ...current, language: event.target.value || undefined })}
           className={`${control} sm:w-48`}
         >
-          <option value="">{labels.anyInterest}</option>
-          {facets.specialties.map((facet) => (
+          <option value="">{labels.anyLanguage}</option>
+          {facets.languages.map((facet) => (
             <option key={facet.value} value={facet.value}>
-              {`${labels.specialtyNames[facet.value] ?? facet.value} (${facet.count})`}
+              {`${facet.value} (${facet.count})`}
             </option>
           ))}
         </select>

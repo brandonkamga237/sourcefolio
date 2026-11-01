@@ -41,12 +41,12 @@ class CatalogControllerTest {
             "My portfolio in Astro", List.of("Astro", "TypeScript"), Instant.parse("2026-10-29T18:00:00Z"));
 
     @Test
-    @DisplayName("search words, country and interest reach the use case, tidied")
+    @DisplayName("search words, country and language reach the use case, tidied")
     void filters() throws Exception {
-        CatalogFilter filter = new CatalogFilter("react", "CM", "frontend");
+        CatalogFilter filter = new CatalogFilter("react", "CM", "TypeScript");
         when(catalog.listRecent(null, 20, filter)).thenReturn(new CatalogPage(List.of(ENTRY), null, 1));
 
-        mvc.perform(get("/api/catalog").param("sort", "recent").param("q", " React ").param("country", "cm").param("specialty", "frontend"))
+        mvc.perform(get("/api/catalog").param("sort", "recent").param("q", " React ").param("country", "cm").param("language", "TypeScript"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.total").value(1));
     }
@@ -61,16 +61,16 @@ class CatalogControllerTest {
     }
 
     @Test
-    @DisplayName("a visitor gets the countries and interests to filter by, with their counts")
+    @DisplayName("a visitor gets the countries and languages to filter by, with their counts")
     void facets() throws Exception {
         when(catalog.findFacets()).thenReturn(new CatalogFacets(List.of(new CatalogFacets.Facet("CM", 3)),
-                List.of(new CatalogFacets.Facet("backend", 2))));
+                List.of(new CatalogFacets.Facet("TypeScript", 2))));
 
         mvc.perform(get("/api/catalog/facets"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.countries[0].value").value("CM"))
                 .andExpect(jsonPath("$.countries[0].count").value(3))
-                .andExpect(jsonPath("$.specialties[0].value").value("backend"));
+                .andExpect(jsonPath("$.languages[0].value").value("TypeScript"));
     }
 
     @Test

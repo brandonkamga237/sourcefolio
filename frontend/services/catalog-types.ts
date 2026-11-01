@@ -42,10 +42,11 @@ export const CATALOG_PAGE_SIZE = 20;
 export interface CatalogFilters {
   q?: string;
   country?: string;
-  specialty?: string;
+  /** A language of the source repository, as GitHub names it: what the code is written in, not what the author declares. */
+  language?: string;
 }
 
-const FILTER_KEYS = ["q", "country", "specialty"] as const;
+const FILTER_KEYS = ["q", "country", "language"] as const;
 
 /** The filters read from an address's query, blank parts dropped. */
 export function readFilters(query: Record<string, string | string[] | undefined> | URLSearchParams): CatalogFilters {
@@ -69,5 +70,5 @@ export function hasFilters(filters: CatalogFilters): boolean {
 // TODO(api-types): replace with components["schemas"]["FacetsResponse"].
 export interface CatalogFacets {
   countries: { value: string; count: number }[];
-  specialties: { value: string; count: number }[];
+  languages: { value: string; count: number }[];
 }
