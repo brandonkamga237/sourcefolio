@@ -55,7 +55,7 @@ export function CatalogSearch({ locale, facets, labels }: CatalogSearchProps) {
   }
 
   return (
-    <div role="search" className="flex w-full flex-col gap-2 sm:flex-row sm:items-center">
+    <div role="search" className="flex w-full flex-col gap-2 sm:flex-row sm:items-center xl:order-1 xl:w-auto xl:min-w-0 xl:flex-1">
       <div className="flex gap-2 sm:contents">
         <label className="relative flex min-w-0 flex-1 items-center">
           <span className="sr-only">{labels.search}</span>

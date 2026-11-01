@@ -17,7 +17,7 @@ interface SortTabsProps {
 
 function Tabs({ label, tabs, query }: SortTabsProps & { query: string }) {
   return (
-    <nav aria-label={label} className="flex gap-2">
+    <nav aria-label={label} className="flex shrink-0 gap-2 xl:order-2">
       {tabs.map((tab) => (
         <Link
           key={tab.key}

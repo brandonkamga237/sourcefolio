@@ -126,7 +126,7 @@ export function CatalogFeed({ locale, sort, filters, firstPage, labels }: Catalo
       </div>
 
       {open ? (
-        <aside className="sticky top-[84px] hidden w-[360px] shrink-0 lg:block xl:w-[400px]">
+        <aside className="sticky top-[148px] hidden w-[360px] shrink-0 lg:block xl:top-[84px] xl:w-[400px]">
           <ShowcasePanel
               card={open}
               position={{ index: openIndex, total: cards.length, more: cursor !== null }}

@@ -171,14 +171,14 @@ export async function CatalogScreen({ locale, sort, searchParams }: CatalogScree
       {sort === "discover" ? <DiscoverIntro locale={locale} /> : null}
       {/* Stays at the top while the cards scroll: the order, the search and the filters are
           always one tap away, under the phone's top bar or at the top of the desktop window. */}
-      <div className="sticky top-14 z-20 -mx-4 flex flex-wrap items-center justify-between gap-x-3 gap-y-2 bg-canvas/85 px-4 py-2 backdrop-blur-md lg:top-0 lg:-mx-8 lg:px-8 lg:py-3">
+      <div className="sticky top-14 z-20 -mx-4 flex flex-wrap items-center justify-between gap-x-3 gap-y-2 bg-canvas/85 px-4 py-2 backdrop-blur-md lg:top-0 lg:-mx-8 lg:px-8 lg:py-3 xl:flex-nowrap">
         {sort === "discover" ? (
           <h2 className="font-display text-[20px] leading-none font-bold tracking-[-0.03em] sm:text-[24px]">{t("catalog.feedTitle")}</h2>
         ) : (
           <h1 className="font-display text-[22px] leading-none font-bold tracking-[-0.035em] sm:text-[26px] lg:text-[30px]">{t("catalog.recentTitle")}</h1>
         )}
         <SortNav locale={locale} sort={sort} />
-        <Suspense fallback={<div aria-hidden="true" className="h-11 w-full animate-pulse rounded-control bg-surface-sunken" />}>
+        <Suspense fallback={<div aria-hidden="true" className="h-11 w-full animate-pulse rounded-control bg-surface-sunken xl:order-1 xl:w-auto xl:flex-1" />}>
           <Search locale={locale} />
         </Suspense>
       </div>
