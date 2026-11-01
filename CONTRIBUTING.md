@@ -65,9 +65,10 @@ languages.
 
 ## Pull requests
 
-- Into `develop`: **squash merge**. The PR title becomes the commit, so it follows the
-  commit format above (`feat(engagement): add an angle to feedback`). CI checks the title, the
-  description and every commit of the PR.
+- Into `develop`: **merge commit**. Every commit of the branch lands on `develop` as it is, so
+  commit small and often: each one follows the commit format above and is checked by CI. The
+  merge commit takes the PR title (`feat(engagement): add an angle to feedback (#42)`), so the
+  title follows the format too.
 - From `develop` into `main`: **merge commit**, never squash. A squash would create a commit
   on `main` that `develop` does not have, and the two branches would drift apart at every
   release.
@@ -77,7 +78,7 @@ languages.
 
 - Into `develop`: anyone, including a coding agent, through `scripts/git/merge-to-develop.sh <pr>`.
   It refuses any other base branch, a draft, a title outside the commit format, a forbidden
-  mention, or checks that are not green; then it squash-merges and deletes the branch.
+  mention, or checks that are not green; then it merges with a merge commit and deletes the branch.
 - Into `main`: **only the maintainer**, by hand. A coding agent never merges into `main`: the
   shared agent settings deny `gh pr merge` and direct pushes to `main` and `develop`, so the
   script above is its only way to merge.
