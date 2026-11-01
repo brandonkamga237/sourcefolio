@@ -1,5 +1,22 @@
 # Changelog
 
+## [0.15.0](https://github.com/brandonkamga237/sourcefolio/compare/v0.14.0...v0.15.0) (2026-11-01)
+
+
+### Features
+
+* **frontend:** design polish — lighter panel, consistent cards, clearer numbers ([730bc6c](https://github.com/brandonkamga237/sourcefolio/commit/730bc6c2bc58f038d6b19f571107f5abe098e89e))
+* **frontend:** design polish — lighter panel, consistent cards, clearer numbers ([#69](https://github.com/brandonkamga237/sourcefolio/issues/69)) ([730bc6c](https://github.com/brandonkamga237/sourcefolio/commit/730bc6c2bc58f038d6b19f571107f5abe098e89e))
+* **frontend:** move card numbers off the preview, quiet and named on hover ([6190a7b](https://github.com/brandonkamga237/sourcefolio/commit/6190a7bdbc871100a9f2aae730ba3d219ab3ac98))
+* **frontend:** one main action and a light, labelled toolbar in the detail panel ([5b53633](https://github.com/brandonkamga237/sourcefolio/commit/5b536335c178c70d20370c61950d7306fb0f7067))
+* **frontend:** one quiet stand-in preview for every card without an image ([7a6b88c](https://github.com/brandonkamga237/sourcefolio/commit/7a6b88c78c4f2185ee1a88ccd2e2139233864014))
+* **frontend:** open the detail panel only when a card is chosen ([1fd4835](https://github.com/brandonkamga237/sourcefolio/commit/1fd4835aafc77e8c842d90bdc908316dadf70eab))
+
+
+### Bug Fixes
+
+* **frontend:** give card footers room on phones ([3f656f0](https://github.com/brandonkamga237/sourcefolio/commit/3f656f0c4b39e1833b53d5f604796fb766e9dd62))
+
 ## [0.14.0](https://github.com/brandonkamga237/sourcefolio/compare/v0.13.0...v0.14.0) (2026-11-01)
 
 
