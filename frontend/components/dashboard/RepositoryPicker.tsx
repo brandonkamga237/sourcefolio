@@ -45,12 +45,12 @@ export function RepositoryPicker({ repositories, scannedAt, labels, open }: Repo
   const shown = all || needle ? matching : matching.slice(0, SHOWN);
 
   return (
-    <details open={open} className="group/picker rounded-card border border-line bg-surface [&_summary::-webkit-details-marker]:hidden">
-      <summary className="flex min-h-12 cursor-pointer list-none items-center justify-between gap-3 px-4 py-3 text-sm font-semibold select-none">
+    <details open={open} className="group/picker border-t border-line-soft [&_summary::-webkit-details-marker]:hidden">
+      <summary className="flex min-h-12 cursor-pointer list-none items-center justify-between gap-3 py-3 text-sm font-semibold select-none">
         {labels.title}
         <span aria-hidden="true" className="size-2 shrink-0 rotate-45 border-r-2 border-b-2 border-ink-muted transition-transform duration-200 group-open/picker:-rotate-135" />
       </summary>
-      <div className="flex flex-col gap-3 border-t border-line-soft p-4">
+      <div className="flex flex-col gap-3 pb-1">
         <p className="text-[13px] leading-normal text-ink-body">{labels.lead}</p>
 
         {repositories.length === 0 ? (
