@@ -28,6 +28,7 @@ class MembersImplTest {
         assertThat(card.login()).isEqualTo("Nekwalla");
         assertThat(card.countryCode()).isEqualTo("CM");
         assertThat(card.specialties()).containsExactly("backend", "devops");
+        assertThat(card.headline()).isEqualTo("Backend à Douala");
         assertThat(card.showcase().slug()).isEqualTo("new-site");
         assertThat(card.onSourceFolioSince()).isEqualTo(Instant.parse("2026-09-01T09:00:00Z"));
         assertThat(card.likesReceived()).isEqualTo(7);

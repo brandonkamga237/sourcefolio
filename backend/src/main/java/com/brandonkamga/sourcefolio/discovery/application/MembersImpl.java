@@ -23,7 +23,7 @@ public class MembersImpl implements Members {
             return Optional.empty();
         }
         CatalogEntry newest = cards.getFirst();
-        return Optional.of(new MemberCard(newest.ownerLogin(), newest.countryCode(), newest.specialties(),
+        return Optional.of(new MemberCard(newest.ownerLogin(), newest.countryCode(), newest.specialties(), newest.headline(),
                 cards.stream().map(CatalogEntry::publishedAt).min(Comparator.naturalOrder()).orElseThrow(),
                 cards.stream().mapToInt(CatalogEntry::likes).sum(), newest));
     }
