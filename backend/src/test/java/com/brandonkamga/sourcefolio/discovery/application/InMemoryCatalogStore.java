@@ -59,6 +59,15 @@ class InMemoryCatalogStore implements CatalogStore {
     }
 
     @Override
+    public void setAuthorProfile(UUID ownerId, String countryCode, List<String> specialties) {
+        rows.replaceAll((id, entry) -> entry.ownerId().equals(ownerId)
+                ? new CatalogEntry(entry.showcaseId(), entry.slug(), entry.siteUrl(), entry.repository(), entry.repositoryUrl(), entry.ownerId(),
+                        entry.ownerLogin(), entry.publishedAt(), entry.previewImageUrl(), entry.previewVideoUrl(), entry.repositoryStars(),
+                        entry.likes(), countryCode, specialties)
+                : entry);
+    }
+
+    @Override
     public void setRepositoryStars(UUID showcaseId, Integer stars) {
         CatalogEntry entry = rows.get(showcaseId);
         if (entry != null) {

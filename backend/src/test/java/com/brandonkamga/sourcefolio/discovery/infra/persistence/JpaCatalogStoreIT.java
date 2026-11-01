@@ -154,6 +154,25 @@ class JpaCatalogStoreIT extends PostgresIT {
     }
 
     @Test
+    @DisplayName("the author's country and ranked specialties are copied onto every card of theirs, and replaced on change")
+    void authorProfile() {
+        CatalogEntry entry = entry("profiled", NOW);
+        catalog.upsert(entry);
+
+        catalog.setAuthorProfile(entry.ownerId(), "CM", List.of("backend", "devops"));
+        assertThat(catalog.recent(null, 10)).singleElement().satisfies(card -> {
+            assertThat(card.countryCode()).isEqualTo("CM");
+            assertThat(card.specialties()).containsExactly("backend", "devops");
+        });
+
+        catalog.setAuthorProfile(entry.ownerId(), "SN", List.of("mobile"));
+        assertThat(catalog.recent(null, 10)).singleElement().satisfies(card -> {
+            assertThat(card.countryCode()).isEqualTo("SN");
+            assertThat(card.specialties()).containsExactly("mobile");
+        });
+    }
+
+    @Test
     @DisplayName("the Ranking reads the like counts, most liked first, and leaves out unliked showcases")
     void ranking() {
         CatalogEntry popular = entry("popular", NOW.minus(Duration.ofDays(3)));

@@ -60,6 +60,12 @@ class JpaCatalogStore implements CatalogStore {
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    public void setAuthorProfile(UUID ownerId, String countryCode, List<String> specialties) {
+        entries.setAuthorProfile(ownerId, countryCode, specialties.toArray(String[]::new));
+    }
+
+    @Override
     @Transactional(readOnly = true)
     public List<RankedEntry> ranking(int limit) {
         return entries.mostLiked(Limit.of(limit)).stream().map(row -> new RankedEntry(toDomain(row), row.getLikeCount())).toList();
@@ -98,6 +104,7 @@ class JpaCatalogStore implements CatalogStore {
     private static CatalogEntry toDomain(CatalogEntryEntity row) {
         return new CatalogEntry(row.getShowcaseId(), row.getSlug(), row.getSiteUrl(), row.getRepository(),
                 row.getRepositoryUrl(), row.getOwnerUserId(), row.getOwnerLogin(), row.getPublishedAt(),
-                row.getPreviewImageUrl(), row.getPreviewVideoUrl(), row.getRepositoryStars(), row.getLikeCount());
+                row.getPreviewImageUrl(), row.getPreviewVideoUrl(), row.getRepositoryStars(), row.getLikeCount(),
+                row.getCountryCode(), List.of(row.getSpecialties()));
     }
 }
