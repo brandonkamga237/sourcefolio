@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
-# Squash-merges a pull request into develop, and only into develop.
+# Merges a pull request into develop with a merge commit, and only into develop: every commit
+# of the branch is kept, so develop and main show the work step by step.
 # Merging into main stays a human decision: this script refuses any other base branch.
 #
 # Usage: scripts/git/merge-to-develop.sh <pr-number> [--dry-run]
@@ -44,9 +45,9 @@ case "$checks_status" in
 esac
 
 if [[ "$dry_run" == "--dry-run" ]]; then
-  echo "✓ PR #$pr ($head → develop) would be squash-merged as: $title (#$pr)"
+  echo "✓ PR #$pr ($head → develop) would be merged (merge commit) as: $title (#$pr)"
   exit 0
 fi
 
-gh pr merge "$pr" --squash --delete-branch --subject "$title (#$pr)"
-echo "✓ PR #$pr squash-merged into develop: $title (#$pr)"
+gh pr merge "$pr" --merge --delete-branch --subject "$title (#$pr)"
+echo "✓ PR #$pr merged into develop (merge commit): $title (#$pr)"

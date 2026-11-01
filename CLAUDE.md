@@ -68,8 +68,9 @@ these names, because CI, the skills and the agents call them.
   characters; types `feat fix perf refactor docs test build ci chore style revert`), checked by
   `scripts/git/check-commit-msg.sh`
 - Never mention Claude, AI or a generation tool in a commit, PR title or PR body
-- PRs target `develop` and are squash-merged with `scripts/git/merge-to-develop.sh <pr>` once
-  CI is green. Only the maintainer merges `develop` into `main` (merge commit); the release PR
+- Commit far more often than usual: many small commits, each passing its area's checks
+- PRs target `develop` and are merged with a merge commit (every commit kept) by
+  `scripts/git/merge-to-develop.sh <pr>` once CI is green. Only the maintainer merges `develop` into `main` (merge commit); the release PR
   then merges itself once its checks pass, which tags and deploys
 - Releases are cut by release-please from the commit types (`fix` patch, `feat` minor, `!`
   major). Never edit `CHANGELOG.md`, `version.txt` or `.release-please-manifest.json`
