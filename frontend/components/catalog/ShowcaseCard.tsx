@@ -35,7 +35,11 @@ export interface ShowcaseCardLabels {
 // A real link to the showcase page (phones open it; crawlers follow it). On a wide screen the
 // feed intercepts the click and shows the side panel instead, as the mockup does.
 export function ShowcaseCard({ card, href, index, selected, onOpen, locale, labels }: ShowcaseCardProps) {
-  const subtitle = card.headline ?? (card.specialties.length > 0 ? labels.member.specialtyNames[card.specialties[0]] : card.repository);
+  // The author's own words first, then the role they declare, then their first interest.
+  const subtitle =
+    card.headline ??
+    (card.authorRole ? (labels.member.roleNames[card.authorRole] ?? card.authorRole) : null) ??
+    (card.specialties.length > 0 ? labels.member.specialtyNames[card.specialties[0]] : card.repository);
   return (
     <article
       style={{ "--index": index % 24 } as CSSProperties}

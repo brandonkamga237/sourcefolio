@@ -122,7 +122,7 @@ export function ShowcasePanel({ card, position, direction, onPrev, onNext, href,
                 card.headline,
                 card.authorRole ? labels.member.roleNames[card.authorRole] ?? card.authorRole : null,
                 card.countryCode ? `${flagOf(card.countryCode)} ${countryName(card.countryCode, locale)}` : null,
-                ...(card.headline ? [] : card.specialties.map((slug) => labels.member.specialtyNames[slug] ?? slug)),
+                ...(card.headline || card.authorRole ? [] : card.specialties.map((slug) => labels.member.specialtyNames[slug] ?? slug)),
               ]
                 .filter(Boolean)
                 .join(" · ") || card.repository}
