@@ -2,6 +2,7 @@ package com.brandonkamga.sourcefolio.engagement.domain.port;
 
 import com.brandonkamga.sourcefolio.engagement.domain.model.Feedback;
 import com.brandonkamga.sourcefolio.engagement.domain.model.FeedbackCursor;
+import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -20,6 +21,12 @@ public interface FeedbackStore {
     /** How many visible pieces of feedback a showcase has. */
     int count(UUID showcaseId);
 
+    /** How much of a showcase's feedback was written after this instant; all of it when null. */
+    int countSince(UUID showcaseId, Instant after);
+
     /** Follows a GitHub rename on every piece of feedback the member wrote. */
     void renameAuthor(UUID authorId, String login);
+
+    /** Removes everything a member wrote; answers the showcases that lost feedback, each once. */
+    List<UUID> removeAllBy(UUID authorId);
 }

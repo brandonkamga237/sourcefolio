@@ -5,7 +5,6 @@ import com.brandonkamga.sourcefolio.account.domain.model.UserId;
 import com.brandonkamga.sourcefolio.engagement.domain.model.Feedback;
 import com.brandonkamga.sourcefolio.engagement.domain.model.FeedbackAngle;
 import com.brandonkamga.sourcefolio.engagement.domain.model.FeedbackBody;
-import com.brandonkamga.sourcefolio.engagement.domain.model.FeedbackCursor;
 import com.brandonkamga.sourcefolio.engagement.domain.port.FeedbackStore;
 import com.brandonkamga.sourcefolio.shared.domain.Language;
 import com.brandonkamga.sourcefolio.shared.exception.BadRequestException;
@@ -14,7 +13,6 @@ import com.brandonkamga.sourcefolio.shared.exception.NotFoundException;
 import com.brandonkamga.sourcefolio.showcase.application.PublicShowcase;
 import com.brandonkamga.sourcefolio.showcase.application.PublicShowcases;
 import java.time.Clock;
-import java.util.List;
 import java.util.UUID;
 
 public class FeedbacksImpl implements Feedbacks {
@@ -22,28 +20,21 @@ public class FeedbacksImpl implements Feedbacks {
     private final PublicShowcases showcases;
     private final FeedbackStore feedback;
     private final SignInService members;
+    private final EngagementEvents events;
     private final Clock clock;
 
-    public FeedbacksImpl(PublicShowcases showcases, FeedbackStore feedback, SignInService members, Clock clock) {
+    public FeedbacksImpl(PublicShowcases showcases, FeedbackStore feedback, SignInService members, EngagementEvents events,
+                         Clock clock) {
         this.showcases = showcases;
         this.feedback = feedback;
         this.members = members;
+        this.events = events;
         this.clock = clock;
     }
 
-    // One more than asked, to know whether a next page exists without counting.
     @Override
     public FeedbackPage list(String slug, String cursor, int size) {
-        UUID showcaseId = require(slug).showcase().id().value();
-        int limit = Math.clamp(size, 1, MAX_PAGE_SIZE);
-        List<Feedback> rows = feedback.page(showcaseId, FeedbackCursor.decode(cursor).orElse(null), limit + 1);
-        int total = feedback.count(showcaseId);
-        if (rows.size() <= limit) {
-            return new FeedbackPage(rows, null, total);
-        }
-        List<Feedback> page = rows.subList(0, limit);
-        Feedback last = page.getLast();
-        return new FeedbackPage(page, new FeedbackCursor(last.createdAt(), last.id()).encode(), total);
+        return FeedbackPages.read(feedback, require(slug).showcase().id().value(), cursor, size);
     }
 
     @Override
@@ -65,6 +56,7 @@ public class FeedbacksImpl implements Feedbacks {
         String login = members.requireMember(new UserId(memberId)).login();
         Feedback written = Feedback.write(found.showcase().id().value(), memberId, login, parsedAngle, parsedBody, language, clock.instant());
         feedback.add(written);
+        announceCount(written.showcaseId());
         return written;
     }
 
@@ -75,11 +67,21 @@ public class FeedbacksImpl implements Feedbacks {
             throw new ForbiddenException("feedback.not-yours");
         }
         feedback.delete(feedbackId);
+        announceCount(found.showcaseId());
     }
 
     @Override
     public void followRename(UUID memberId, String login) {
         feedback.renameAuthor(memberId, login);
+    }
+
+    @Override
+    public void withdrawAllBy(UUID memberId) {
+        feedback.removeAllBy(memberId).forEach(this::announceCount);
+    }
+
+    private void announceCount(UUID showcaseId) {
+        events.feedbackChanged(new ShowcaseFeedbackChanged(showcaseId, feedback.count(showcaseId)));
     }
 
     private PublicShowcase require(String slug) {

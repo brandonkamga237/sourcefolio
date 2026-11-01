@@ -54,6 +54,14 @@ final class ReturnPath {
             super("/");
         }
 
+        // Signed in with the account they picked: the next sign-in goes straight through again.
+        @Override
+        public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication)
+                throws IOException, ServletException {
+            AccountPicker.forget(response);
+            super.onAuthenticationSuccess(request, response, authentication);
+        }
+
         @Override
         protected String determineTargetUrl(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
             HttpSession session = request.getSession(false);

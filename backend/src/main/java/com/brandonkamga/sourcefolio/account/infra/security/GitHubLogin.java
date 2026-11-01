@@ -31,12 +31,13 @@ class GitHubLogin {
     }
 
     @Bean
-    SecurityCustomizer gitHubLoginRoutes(SignInService signIn) {
+    SecurityCustomizer gitHubLoginRoutes(SignInService signIn, ClientRegistrationRepository registrations) {
         GitHubMemberService members = new GitHubMemberService(signIn);
         return http -> http
                 .authorizeHttpRequests(routes -> routes.requestMatchers("/oauth2/**", "/login/oauth2/**").permitAll())
                 .addFilterBefore(new ReturnPath.Remember(), OAuth2AuthorizationRequestRedirectFilter.class)
                 .oauth2Login(login -> login
+                        .authorizationEndpoint(endpoint -> endpoint.authorizationRequestResolver(AccountPicker.resolver(registrations)))
                         .userInfoEndpoint(userInfo -> userInfo.userService(members))
                         .successHandler(new ReturnPath.Redirect())
                         .failureUrl("/?signin=failed"));

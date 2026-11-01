@@ -57,6 +57,12 @@ class JpaCatalogStore implements CatalogStore {
 
     @Override
     @Transactional(propagation = Propagation.REQUIRES_NEW)
+    public void setFeedbackCount(UUID showcaseId, int count) {
+        entries.setFeedbackCount(showcaseId, count);
+    }
+
+    @Override
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void setRepository(UUID showcaseId, Integer stars, String description, List<String> languages, Instant pushedAt) {
         entries.setRepository(showcaseId, stars, description, languages.toArray(String[]::new), pushedAt);
     }
@@ -137,6 +143,6 @@ class JpaCatalogStore implements CatalogStore {
                 row.getRepositoryUrl(), row.getOwnerUserId(), row.getOwnerLogin(), row.getPublishedAt(),
                 row.getPreviewImageUrl(), row.getPreviewVideoUrl(), row.getRepositoryStars(), row.getLikeCount(),
                 row.getCountryCode(), List.of(row.getSpecialties()), row.getHeadline(), row.getRepositoryDescription(),
-                List.of(row.getRepositoryLanguages()), row.getRepositoryPushedAt(), row.getAuthorRole());
+                List.of(row.getRepositoryLanguages()), row.getRepositoryPushedAt(), row.getAuthorRole(), row.getFeedbackCount());
     }
 }

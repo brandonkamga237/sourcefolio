@@ -2,6 +2,7 @@ package com.brandonkamga.sourcefolio.account.infra.security;
 
 import com.brandonkamga.sourcefolio.account.application.SignInService;
 import com.brandonkamga.sourcefolio.shared.security.SecurityTestConfig;
+import jakarta.servlet.http.Cookie;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,6 +46,18 @@ class GitHubLoginTest {
                         containsString("client_id=test-client"),
                         containsString("scope=read:user"),
                         not(containsString("repo")),
-                        not(containsString("read:org")))));
+                        not(containsString("read:org")),
+                        not(containsString("prompt=")))));
+    }
+
+    @Test
+    @DisplayName("after signing out, the next sign-in asks GitHub for its account picker, so another account can be used")
+    void asksForTheAccountPickerAfterSigningOut() throws Exception {
+        mvc.perform(get("/oauth2/authorization/github").cookie(new Cookie(AccountPicker.COOKIE, "1")))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(header().string("Location", allOf(
+                        startsWith("https://github.com/login/oauth/authorize"),
+                        containsString("prompt=select_account"),
+                        containsString("scope=read:user"))));
     }
 }

@@ -14,6 +14,8 @@ public interface CatalogProjection {
 
     void updateLikes(UUID showcaseId, int count);
 
+    void updateFeedbackCount(UUID showcaseId, int count);
+
     void updatePreview(UUID showcaseId, String imageUrl, String videoUrl);
 
     void updateRepository(UUID showcaseId, Integer stars, String description, List<String> languages, Instant pushedAt);

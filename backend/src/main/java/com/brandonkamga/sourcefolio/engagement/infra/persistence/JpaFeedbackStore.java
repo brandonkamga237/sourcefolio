@@ -6,6 +6,7 @@ import com.brandonkamga.sourcefolio.engagement.domain.model.FeedbackBody;
 import com.brandonkamga.sourcefolio.engagement.domain.model.FeedbackCursor;
 import com.brandonkamga.sourcefolio.engagement.domain.port.FeedbackStore;
 import com.brandonkamga.sourcefolio.shared.domain.Language;
+import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -51,8 +52,20 @@ class JpaFeedbackStore implements FeedbackStore {
     }
 
     @Override
+    public int countSince(UUID showcaseId, Instant after) {
+        return after == null ? feedback.countVisible(showcaseId) : feedback.countVisibleAfter(showcaseId, after);
+    }
+
+    @Override
     public void renameAuthor(UUID authorId, String login) {
         feedback.renameAuthor(authorId, login);
+    }
+
+    @Override
+    public List<UUID> removeAllBy(UUID authorId) {
+        List<UUID> showcases = feedback.showcasesFeedbackBy(authorId);
+        feedback.deleteAllBy(authorId);
+        return showcases;
     }
 
     private static Feedback toDomain(FeedbackEntity row) {

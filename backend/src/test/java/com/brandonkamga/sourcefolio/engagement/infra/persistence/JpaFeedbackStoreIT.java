@@ -6,6 +6,7 @@ import com.brandonkamga.sourcefolio.engagement.domain.model.Feedback;
 import com.brandonkamga.sourcefolio.engagement.domain.model.FeedbackAngle;
 import com.brandonkamga.sourcefolio.engagement.domain.model.FeedbackBody;
 import com.brandonkamga.sourcefolio.engagement.domain.model.FeedbackCursor;
+import com.brandonkamga.sourcefolio.engagement.domain.port.FeedbackReadStore;
 import com.brandonkamga.sourcefolio.engagement.domain.port.FeedbackStore;
 import com.brandonkamga.sourcefolio.shared.domain.Language;
 import com.brandonkamga.sourcefolio.showcase.domain.model.CandidateReason;
@@ -41,6 +42,9 @@ class JpaFeedbackStoreIT extends PostgresIT {
     private UserStore users;
 
     @Autowired
+    private FeedbackReadStore reads;
+
+    @Autowired
     private EntityManager entityManager;
 
     @Test
@@ -67,6 +71,46 @@ class JpaFeedbackStoreIT extends PostgresIT {
         entityManager.clear();
         assertThat(feedback.page(showcase, null, 10)).extracting(Feedback::authorLogin).containsOnly("renamed-dev");
         assertThat(feedback.count(showcase)).isEqualTo(2);
+    }
+
+    @Test
+    @DisplayName("removing a member's feedback answers each showcase it was on once, and leaves the others' feedback")
+    void removeAllBy() {
+        UUID mine = showcase(member());
+        UUID theirs = showcase(member());
+        UUID leaving = member();
+        UUID staying = member();
+        List.of(write(mine, leaving, null, "Le menu déborde sur mon téléphone.", NOW),
+                write(mine, leaving, null, "Et le footer aussi, en paysage.", NOW.plusSeconds(1)),
+                write(theirs, leaving, null, "Très clair, j’ai compris en 10 secondes.", NOW),
+                write(mine, staying, null, "Le README mériterait une section setup.", NOW)).forEach(feedback::add);
+        entityManager.flush();
+
+        assertThat(feedback.removeAllBy(leaving)).containsExactlyInAnyOrder(mine, theirs);
+        entityManager.flush();
+        entityManager.clear();
+        assertThat(feedback.count(mine)).isEqualTo(1);
+        assertThat(feedback.count(theirs)).isZero();
+    }
+
+    @Test
+    @DisplayName("feedback written after an instant is counted in SQL, and an author's last read is stored and replaced")
+    void unreadAndReads() {
+        UUID owner = member();
+        UUID showcase = showcase(owner);
+        UUID author = member();
+        List.of(write(showcase, author, null, "Le menu déborde sur mon téléphone.", NOW),
+                write(showcase, author, null, "Et le footer aussi, en paysage.", NOW.plusSeconds(60))).forEach(feedback::add);
+        reads.markSeen(owner, NOW.plusSeconds(1));
+        entityManager.flush();
+        reads.markSeen(owner, NOW.plusSeconds(30));
+        entityManager.flush();
+        entityManager.clear();
+
+        assertThat(feedback.countSince(showcase, null)).isEqualTo(2);
+        assertThat(feedback.countSince(showcase, NOW.plusSeconds(30))).isEqualTo(1);
+        assertThat(reads.seenAt(owner)).contains(NOW.plusSeconds(30));
+        assertThat(reads.seenAt(author)).isEmpty();
     }
 
     private static Feedback write(UUID showcase, UUID author, FeedbackAngle angle, String body, Instant at) {

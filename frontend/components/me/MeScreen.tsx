@@ -19,6 +19,8 @@ import { JourneyCard } from "./JourneyCard";
 import { ForgetJourneyDismissal } from "./JourneyDismissal";
 import { CommitGraph } from "@/components/illustrations/CommitGraph";
 import { MeOverview } from "./MeOverview";
+import { ReceivedFeedback } from "@/components/feedback/ReceivedFeedback";
+import { feedbackLabels } from "@/components/feedback/labels";
 import { MePreferences } from "./MePreferences";
 
 interface MeScreenProps {
@@ -66,7 +68,7 @@ export async function MeScreen({ locale }: MeScreenProps) {
     );
   }
 
-  const [mine, answers, jar] = await Promise.all([getMyShowcase(), getMyAnswers(), cookies()]);
+  const [mine, answers, jar, feedback] = await Promise.all([getMyShowcase(), getMyAnswers(), cookies(), feedbackLabels(locale)]);
   const showcase = mine?.showcase ?? null;
   const countryName = answers?.country ? countryOptions(locale).find((option) => option.code === answers.country)?.name : null;
   const profileRows = [
@@ -93,26 +95,31 @@ export async function MeScreen({ locale }: MeScreenProps) {
   // Scrolled to from the journey card: clear of the sticky top bar on a phone.
   const anchored = "scroll-mt-20";
 
+  // The portfolio first, at the top of the first column: it is what members come here to do
+  // (publish it, change it, share it). Who they are, what is left to do, their profile and
+  // account settings follow, in the second column on a wide screen.
   return (
     <div className={columns}>
       <div className="flex min-w-0 flex-col gap-6">
-        <MeOverview
-          locale={locale}
-          login={member.login}
-          countryCode={answers?.country ?? null}
-          specialties={answers?.specialties ?? []}
-          headline={answers?.headline ?? null}
-          showcase={showcase}
-        />
-
-        {allDone && journeyDismissed ? null : <JourneyCard locale={locale} showcase={showcase} profileComplete={!profileIncomplete} />}
-        {!allDone && journeyDismissed ? <ForgetJourneyDismissal /> : null}
-
         <section id="me-portfolio" aria-labelledby="me-portfolio-title" className={`flex flex-col gap-3 ${anchored}`}>
           <h2 id="me-portfolio-title" className={sectionTitle}>{t("me.portfolioTitle")}</h2>
           {showcase ? (
             <>
-              <PublishedShowcase locale={locale} showcase={showcase} />
+              <PublishedShowcase
+                locale={locale}
+                showcase={showcase}
+                manage={
+                  <ManageShowcase
+                    labels={{
+                      change: t("manage.change"),
+                      withdraw: t("manage.withdraw"),
+                      failed: t("manage.failed"),
+                      changeDialog: dialog("manage.changeDialog"),
+                      withdrawDialog: dialog("manage.withdrawDialog"),
+                    }}
+                  />
+                }
+              />
               <div id="me-preview" className={anchored}>
                 <PreviewEditor
                   hasImage={showcase.previewImageUrl !== null}
@@ -133,28 +140,38 @@ export async function MeScreen({ locale }: MeScreenProps) {
                   }}
                 />
               </div>
-              <ManageShowcase
-                labels={{
-                  title: t("manage.title"),
-                  lead: t("manage.lead"),
-                  change: t("manage.change"),
-                  withdraw: t("manage.withdraw"),
-                  failed: t("manage.failed"),
-                  changeDialog: dialog("manage.changeDialog"),
-                  withdrawDialog: dialog("manage.withdrawDialog"),
-                }}
-              />
             </>
           ) : (
             <>
-              <p className="text-sm leading-normal text-ink-body">{t("pages.portfolio.memberEmpty")}</p>
               <CandidatesPanel locale={locale} />
             </>
           )}
         </section>
+        {showcase ? (
+          <ReceivedFeedback
+            locale={locale}
+            item={feedback}
+            labels={{
+              title: t("me.received.title"),
+              empty: t("me.received.empty"),
+              fresh: t("me.received.fresh"),
+              unread: { one: t.raw("me.received.unreadOne") as string, other: t.raw("me.received.unreadOther") as string },
+            }}
+          />
+        ) : null}
       </div>
 
-      <div className="flex flex-col gap-6">
+      <div className="flex min-w-0 flex-col gap-6">
+        <MeOverview
+          locale={locale}
+          login={member.login}
+          countryCode={answers?.country ?? null}
+          specialties={answers?.specialties ?? []}
+          headline={answers?.headline ?? null}
+          showcase={showcase}
+        />
+        {showcase === null || (allDone && journeyDismissed) ? null : <JourneyCard locale={locale} showcase={showcase} profileComplete={!profileIncomplete} />}
+        {!allDone && journeyDismissed ? <ForgetJourneyDismissal /> : null}
         <section aria-labelledby="me-profile" className="flex flex-col gap-3">
           <div className="flex items-center justify-between gap-3">
             <h2 id="me-profile" className={sectionTitle}>{t("profile.summaryTitle")}</h2>

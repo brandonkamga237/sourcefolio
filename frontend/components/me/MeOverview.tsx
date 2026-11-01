@@ -100,7 +100,7 @@ export async function MeOverview({ locale, login, countryCode, specialties, head
         </div>
 
         {showcase ? (
-          <dl className="grid grid-cols-2 gap-2 sm:grid-cols-4">
+          <dl className="grid grid-cols-2 gap-2 sm:grid-cols-4 lg:grid-cols-2">
             {stats.map((stat) => (
               <div key={stat.key} className="flex flex-col gap-0.5 rounded-control bg-surface-raised px-3 py-2.5 ring-1 ring-line-soft">
                 <dt className="order-2 text-xs leading-tight text-ink-muted">{stat.label}</dt>

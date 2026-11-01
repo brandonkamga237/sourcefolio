@@ -13,7 +13,9 @@
     "me": "Me",
     "publish": "Publish your portfolio",
     "ranking": "Ranking",
-    "publishShort": "Publish"
+    "publishShort": "Publish",
+    "unreadOne": "{count} new piece of feedback",
+    "unreadOther": "{count} new pieces of feedback"
   },
   "language": {
     "label": "Language",
@@ -34,8 +36,7 @@
       "stepsLabel": "How it works",
       "step1": "You sign in with GitHub.",
       "step2": "We find your portfolio among your public repositories.",
-      "step3": "You confirm, it is published. In under a minute.",
-      "memberEmpty": "No portfolio published yet."
+      "step3": "You confirm, it is published. In under a minute."
     },
     "me": {
       "title": "Me",
@@ -75,10 +76,6 @@
   },
   "detection": {
     "searching": "Looking for your portfolio in your public repositories…",
-    "foundTitle": "We found these sites in your public repositories",
-    "othersTitle": "Other sites found",
-    "noneTitle": "No site found in your public repositories",
-    "noneHint": "Your portfolio was not recognised? Pick its repository just below.",
     "visitSite": "Visit the site",
     "viewCode": "View the code",
     "reason": {
@@ -106,7 +103,11 @@
     "step1": "Open the repository on GitHub, then tap the gear next to “About”.",
     "step2": "Paste your site’s address into “Website”, then “Save changes”.",
     "step3": "Come back here and tap “Search again”: your portfolio will show at the top, ready to publish.",
-    "openOnGithub": "Open the repository on GitHub"
+    "openOnGithub": "Open the repository on GitHub",
+    "pickTitle": "Pick your portfolio’s repository",
+    "pickLeadFound": "We spotted these sites in your public repositories. Publish the right one: it shows in Discover at once.",
+    "pickLeadNone": "No site spotted automatically. Pick your repository from the list, we guide you.",
+    "otherRepositories": "Your repositories"
   },
   "myShowcase": {
     "status": {
@@ -178,7 +179,8 @@
       "githubProfile": "GitHub",
       "projectTitle": "The project",
       "projectLanguages": "Repository languages",
-      "projectUpdated": "Code updated {when}"
+      "projectUpdated": "Code updated {when}",
+      "statFeedback": "feedback"
     },
     "feedTitle": "Portfolios",
     "recentTitle": "Latest published",
@@ -301,6 +303,13 @@
       "days": "days online",
       "publicProfile": "My public profile",
       "noCountry": "Country not given"
+    },
+    "received": {
+      "title": "Feedback received",
+      "empty": "No feedback yet. Share your link: visitors can tell you what works and what could work better.",
+      "fresh": "New",
+      "unreadOne": "{count} new",
+      "unreadOther": "{count} new"
     }
   },
   "ranking": {
@@ -361,8 +370,6 @@
     "cancel": "Cancel"
   },
   "manage": {
-    "title": "Change or withdraw my portfolio",
-    "lead": "To publish another repository, withdraw this one first: you then pick the new one among your repositories. Its likes go with it.",
     "change": "Change portfolio",
     "withdraw": "Withdraw my portfolio",
     "failed": "Your portfolio could not be withdrawn. Try again.",
@@ -452,7 +459,9 @@
     "writtenIn": {
       "fr": "Written in French",
       "en": "Written in English"
-    }
+    },
+    "countOne": "{count} piece of feedback",
+    "countOther": "{count} pieces of feedback"
   },
   "role": {
     "frontend": "Frontend",

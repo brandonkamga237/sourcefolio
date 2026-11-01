@@ -93,6 +93,7 @@ class CatalogControllerTest {
                 .andExpect(jsonPath("$.items[0].repositoryDescription").value("My portfolio in Astro"))
                 .andExpect(jsonPath("$.items[0].repositoryLanguages[0]").value("Astro"))
                 .andExpect(jsonPath("$.items[0].repositoryPushedAt").value("2026-10-29T18:00:00Z"))
+                .andExpect(jsonPath("$.items[0].feedbackCount").value(0))
                 .andExpect(jsonPath("$.items[0].showcaseId").doesNotExist())
                 .andExpect(jsonPath("$.items[0].ownerId").doesNotExist())
                 .andExpect(jsonPath("$.nextCursor").value("next"))

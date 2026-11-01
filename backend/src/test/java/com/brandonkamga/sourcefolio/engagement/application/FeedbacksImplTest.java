@@ -42,47 +42,8 @@ class FeedbacksImplTest {
             CandidateReason.USER_PAGES), NOW).stored();
     private static final String BODY = "The hero loads fast, but the contact link is hard to find on a phone.";
 
-    private final List<Feedback> rows = new ArrayList<>();
-    private final FeedbackStore store = new FeedbackStore() {
-        private static final Comparator<Feedback> NEWEST_FIRST =
-                Comparator.comparing(Feedback::createdAt).thenComparing(Feedback::id).reversed();
-
-        @Override
-        public void add(Feedback feedback) {
-            rows.add(feedback);
-        }
-
-        @Override
-        public List<Feedback> page(UUID showcaseId, FeedbackCursor after, int limit) {
-            return rows.stream()
-                    .filter(row -> row.showcaseId().equals(showcaseId))
-                    .filter(row -> after == null || row.createdAt().isBefore(after.createdAt())
-                            || row.createdAt().equals(after.createdAt()) && row.id().compareTo(after.id()) < 0)
-                    .sorted(NEWEST_FIRST).limit(limit).toList();
-        }
-
-        @Override
-        public Optional<Feedback> find(UUID id) {
-            return rows.stream().filter(row -> row.id().equals(id)).findFirst();
-        }
-
-        @Override
-        public void delete(UUID id) {
-            rows.removeIf(row -> row.id().equals(id));
-        }
-
-        @Override
-        public int count(UUID showcaseId) {
-            return (int) rows.stream().filter(row -> row.showcaseId().equals(showcaseId)).count();
-        }
-
-        @Override
-        public void renameAuthor(UUID authorId, String login) {
-            rows.replaceAll(row -> row.authorId().equals(authorId)
-                    ? new Feedback(row.id(), row.showcaseId(), authorId, login, row.angle(), row.body(), row.language(), row.createdAt())
-                    : row);
-        }
-    };
+    private final InMemoryFeedbackStore store = new InMemoryFeedbackStore();
+    private final List<Feedback> rows = store.rows;
     private final SignInService members = new SignInService() {
         @Override
         public Member signIn(ExternalIdentity identity) {
@@ -94,12 +55,23 @@ class FeedbacksImplTest {
             return new Member(id, id.value().equals(READER) ? "ada" : "bola", Language.FR);
         }
     };
+    private final List<ShowcaseFeedbackChanged> announced = new ArrayList<>();
     private Clock clock = Clock.fixed(NOW, ZoneOffset.UTC);
 
     private Feedbacks feedbacks() {
         return new FeedbacksImpl(
                 slug -> slug.equals("nekwalla") ? Optional.of(new PublicShowcase(SHOWCASE, "nekwalla")) : Optional.empty(),
-                store, members, clock);
+                store, members, new EngagementEvents() {
+                    @Override
+                    public void likesChanged(ShowcaseLikesChanged event) {
+                        throw new AssertionError("feedback announces no likes");
+                    }
+
+                    @Override
+                    public void feedbackChanged(ShowcaseFeedbackChanged event) {
+                        announced.add(event);
+                    }
+                }, clock);
     }
 
     @Test
@@ -184,6 +156,37 @@ class FeedbacksImplTest {
 
         assertThat(rows).isEmpty();
         assertCode(() -> feedbacks().delete(READER, posted.id()), ErrorCode.NOT_FOUND);
+    }
+
+    @Test
+    @DisplayName("every post and removal announces the showcase's new feedback count; a refusal announces nothing")
+    void announcesCounts() {
+        Feedback first = feedbacks().post(READER, "nekwalla", null, BODY, Language.EN);
+        feedbacks().post(READER, "nekwalla", null, BODY, Language.EN);
+        try {
+            feedbacks().post(OWNER, "nekwalla", null, BODY, Language.EN);
+        } catch (AppException refused) {
+            // expected
+        }
+        feedbacks().delete(READER, first.id());
+
+        assertThat(announced).extracting(ShowcaseFeedbackChanged::count).containsExactly(1, 2, 1);
+        assertThat(announced).extracting(ShowcaseFeedbackChanged::showcaseId).containsOnly(SHOWCASE.id().value());
+    }
+
+    @Test
+    @DisplayName("a member who leaves takes their feedback away, and the new count is announced once per showcase")
+    void withdrawAll() {
+        UUID other = UUID.fromString("9a0e3f11-6b7c-4d2e-8f90-1a2b3c4d5e6f");
+        feedbacks().post(READER, "nekwalla", null, BODY, Language.EN);
+        feedbacks().post(READER, "nekwalla", null, BODY, Language.EN);
+        feedbacks().post(other, "nekwalla", null, BODY, Language.EN);
+        announced.clear();
+
+        feedbacks().withdrawAllBy(READER);
+
+        assertThat(rows).extracting(Feedback::authorId).containsExactly(other);
+        assertThat(announced).containsExactly(new ShowcaseFeedbackChanged(SHOWCASE.id().value(), 1));
     }
 
     @Test

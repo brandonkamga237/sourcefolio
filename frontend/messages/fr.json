@@ -13,7 +13,9 @@
     "me": "Moi",
     "publish": "Publier ton portfolio",
     "ranking": "Classement",
-    "publishShort": "Publier"
+    "publishShort": "Publier",
+    "unreadOne": "{count} nouveau retour",
+    "unreadOther": "{count} nouveaux retours"
   },
   "language": {
     "label": "Langue",
@@ -34,8 +36,7 @@
       "stepsLabel": "Comment ça marche",
       "step1": "Tu te connectes avec GitHub.",
       "step2": "On trouve ton portfolio parmi tes dépôts publics.",
-      "step3": "Tu confirmes, il est publié. En moins d’une minute.",
-      "memberEmpty": "Aucun portfolio publié pour l’instant."
+      "step3": "Tu confirmes, il est publié. En moins d’une minute."
     },
     "me": {
       "title": "Moi",
@@ -75,10 +76,6 @@
   },
   "detection": {
     "searching": "On cherche ton portfolio dans tes dépôts publics…",
-    "foundTitle": "On a trouvé ces sites dans tes dépôts publics",
-    "othersTitle": "Autres sites trouvés",
-    "noneTitle": "Aucun site trouvé dans tes dépôts publics",
-    "noneHint": "Ton portfolio n’a pas été reconnu ? Choisis son dépôt juste en dessous.",
     "visitSite": "Voir le site",
     "viewCode": "Voir le code",
     "reason": {
@@ -106,7 +103,11 @@
     "step1": "Ouvre le dépôt sur GitHub, puis touche la roue dentée à côté de « About ».",
     "step2": "Colle l’adresse de ton site dans « Website », puis « Save changes ».",
     "step3": "Reviens ici et touche « Rechercher à nouveau » : ton portfolio apparaîtra en haut, prêt à publier.",
-    "openOnGithub": "Ouvrir le dépôt sur GitHub"
+    "openOnGithub": "Ouvrir le dépôt sur GitHub",
+    "pickTitle": "Choisis le dépôt de ton portfolio",
+    "pickLeadFound": "On a repéré ces sites dans tes dépôts publics. Publie le bon : il apparaît aussitôt dans Découvrir.",
+    "pickLeadNone": "Aucun site repéré automatiquement. Choisis ton dépôt dans la liste, on te guide.",
+    "otherRepositories": "Tes dépôts"
   },
   "myShowcase": {
     "status": {
@@ -178,7 +179,8 @@
       "githubProfile": "GitHub",
       "projectTitle": "Le projet",
       "projectLanguages": "Technologies du dépôt",
-      "projectUpdated": "Code mis à jour {when}"
+      "projectUpdated": "Code mis à jour {when}",
+      "statFeedback": "retours"
     },
     "feedTitle": "Les portfolios",
     "recentTitle": "Les derniers publiés",
@@ -301,6 +303,13 @@
       "days": "jours en ligne",
       "publicProfile": "Mon profil public",
       "noCountry": "Pays non renseigné"
+    },
+    "received": {
+      "title": "Retours reçus",
+      "empty": "Pas encore de retour. Partage ton lien : les visiteurs pourront te dire ce qui marche et ce qui pourrait mieux marcher.",
+      "fresh": "Nouveau",
+      "unreadOne": "{count} nouveau",
+      "unreadOther": "{count} nouveaux"
     }
   },
   "ranking": {
@@ -361,8 +370,6 @@
     "cancel": "Annuler"
   },
   "manage": {
-    "title": "Changer ou retirer mon portfolio",
-    "lead": "Pour publier un autre dépôt, retire d’abord celui-ci : tu choisis ensuite le nouveau parmi tes dépôts. Ses likes partent avec lui.",
     "change": "Changer de portfolio",
     "withdraw": "Retirer mon portfolio",
     "failed": "Ton portfolio n’a pas pu être retiré. Réessaie.",
@@ -452,7 +459,9 @@
     "writtenIn": {
       "fr": "Écrit en français",
       "en": "Écrit en anglais"
-    }
+    },
+    "countOne": "{count} retour",
+    "countOther": "{count} retours"
   },
   "role": {
     "frontend": "Frontend",

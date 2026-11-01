@@ -37,6 +37,11 @@ public class CatalogProjectionImpl implements CatalogProjection {
     }
 
     @Override
+    public void updateFeedbackCount(UUID showcaseId, int count) {
+        store.setFeedbackCount(showcaseId, count);
+    }
+
+    @Override
     public void updatePreview(UUID showcaseId, String imageUrl, String videoUrl) {
         store.setPreview(showcaseId, imageUrl, videoUrl);
     }

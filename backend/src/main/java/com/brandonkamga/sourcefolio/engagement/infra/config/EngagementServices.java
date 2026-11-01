@@ -2,14 +2,18 @@ package com.brandonkamga.sourcefolio.engagement.infra.config;
 
 import com.brandonkamga.sourcefolio.account.application.SignInService;
 import com.brandonkamga.sourcefolio.engagement.application.EngagementEvents;
+import com.brandonkamga.sourcefolio.engagement.application.FeedbackInbox;
+import com.brandonkamga.sourcefolio.engagement.application.FeedbackInboxImpl;
 import com.brandonkamga.sourcefolio.engagement.application.Feedbacks;
 import com.brandonkamga.sourcefolio.engagement.application.FeedbacksImpl;
 import com.brandonkamga.sourcefolio.engagement.application.Likes;
 import com.brandonkamga.sourcefolio.engagement.application.LikesImpl;
+import com.brandonkamga.sourcefolio.engagement.domain.port.FeedbackReadStore;
 import com.brandonkamga.sourcefolio.engagement.domain.port.FeedbackStore;
 import com.brandonkamga.sourcefolio.engagement.domain.port.LikeStore;
 import com.brandonkamga.sourcefolio.shared.config.TransactionalServices;
 import com.brandonkamga.sourcefolio.showcase.application.PublicShowcases;
+import com.brandonkamga.sourcefolio.showcase.application.ShowcasePublication;
 import java.time.Clock;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -23,8 +27,14 @@ class EngagementServices {
     }
 
     @Bean
-    Feedbacks feedbacks(PublicShowcases showcases, FeedbackStore feedback, SignInService members, Clock clock,
-                        TransactionalServices transactional) {
-        return transactional.wrap(Feedbacks.class, new FeedbacksImpl(showcases, feedback, members, clock));
+    Feedbacks feedbacks(PublicShowcases showcases, FeedbackStore feedback, SignInService members, EngagementEvents events,
+                        Clock clock, TransactionalServices transactional) {
+        return transactional.wrap(Feedbacks.class, new FeedbacksImpl(showcases, feedback, members, events, clock));
+    }
+
+    @Bean
+    FeedbackInbox feedbackInbox(ShowcasePublication showcases, FeedbackStore feedback, FeedbackReadStore reads, Clock clock,
+                                TransactionalServices transactional) {
+        return transactional.wrap(FeedbackInbox.class, new FeedbackInboxImpl(showcases, feedback, reads, clock));
     }
 }

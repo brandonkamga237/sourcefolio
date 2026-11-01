@@ -48,9 +48,9 @@ function rescanLabels(t: Translate): RescanLabels {
   return { rescan: t("rescan"), rescanning: t("rescanning"), failed: t("rescanFailed") };
 }
 
-function pickerLabels(t: Translate): RepositoryPickerLabels {
+function pickerLabels(t: Translate, found: boolean): RepositoryPickerLabels {
   return {
-    title: t("missingTitle"),
+    title: found ? t("missingTitle") : t("otherRepositories"),
     lead: t("missingLead"),
     search: t("searchRepositories"),
     noMatch: t("noRepositoryMatch"),
@@ -64,13 +64,13 @@ function pickerLabels(t: Translate): RepositoryPickerLabels {
   };
 }
 
-// When the list was made and how to make it again: the member is never stuck with an old
-// search after filling a "Website" field on GitHub.
+// When the list was made and how to make it again, at the top of the card: the member is
+// never stuck with an old search after filling a "Website" field on GitHub.
 function SearchStatus({ t, detection, locale }: { t: Translate; detection: ShowcaseCandidates; locale: Locale }) {
   return (
-    <div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-2">
-      <p className="text-[13px] text-ink-muted">{t("lastSearch", { ago: sinceLabel(detection.scannedAt ?? "", locale) })}</p>
+    <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
       <RescanButton scannedAt={detection.scannedAt} labels={rescanLabels(t)} />
+      <p className="text-xs text-ink-muted">{t("lastSearch", { ago: sinceLabel(detection.scannedAt ?? "", locale) })}</p>
     </div>
   );
 }
@@ -92,54 +92,48 @@ export async function CandidatesPanel({ locale }: CandidatesPanelProps) {
     );
   }
 
-  if (detection.candidates.length === 0) {
-    return (
-      <section aria-labelledby="detection-none" className="flex flex-col gap-4">
-        <div className="flex flex-col gap-2 rounded-card border border-line bg-surface p-4">
-          <h2 id="detection-none" className="text-[15px] font-semibold">{t("noneTitle")}</h2>
-          <p className="text-sm leading-normal text-ink-body">{t("noneHint")}</p>
-        </div>
-        <RepositoryPicker repositories={detection.withoutSite} scannedAt={detection.scannedAt} labels={pickerLabels(t)} open />
-        <SearchStatus t={t} detection={detection} locale={locale} />
-      </section>
-    );
-  }
-
+  // One card, one question: which repository is the portfolio. The detected sites come first,
+  // publishable in one tap; every other repository follows, with the way to make it publishable.
+  const found = detection.candidates.length > 0;
   const [best, ...others] = detection.candidates;
   return (
-    <section aria-labelledby="detection-found" className="flex flex-col gap-4">
-      <h2 id="detection-found" className="text-[15px] font-semibold">{t("foundTitle")}</h2>
-
-      <article className="flex flex-col gap-3 rounded-card border border-line bg-surface p-4">
+    <section aria-labelledby="detection-title" className="flex flex-col gap-4 rounded-panel border border-line bg-surface p-4 sm:p-5">
+      <div className="flex flex-col gap-3">
         <div className="flex flex-col gap-1">
-          <p className="font-display text-2xl font-bold tracking-[-0.025em] break-all">{siteLabel(best.siteUrl)}</p>
-          <p className="text-[13px] text-ink-muted">{reasonLabel(t, best)}</p>
-          <p className="font-mono text-xs text-ink-soft">{best.repository}</p>
+          <h3 id="detection-title" className="font-display text-[22px] leading-tight font-bold tracking-[-0.025em]">{t("pickTitle")}</h3>
+          <p className="text-sm leading-normal text-ink-body">{found ? t("pickLeadFound") : t("pickLeadNone")}</p>
         </div>
-        <CandidateActions t={t} candidate={best} primary />
-      </article>
+        <SearchStatus t={t} detection={detection} locale={locale} />
+      </div>
 
-      {others.length > 0 ? (
-        <div className="flex flex-col gap-2">
-          <h3 className="text-[13px] font-semibold text-ink-muted">{t("othersTitle")}</h3>
-          <ul className="flex flex-col gap-2">
-            {others.map((candidate) => (
-              <li key={candidate.siteUrl} className="flex flex-col gap-2 rounded-card border border-line bg-surface p-3.5">
-                <div className="flex flex-col gap-0.5">
-                  <p className="text-[15px] font-semibold break-all">{siteLabel(candidate.siteUrl)}</p>
-                  <p className="text-[13px] text-ink-muted">
-                    {reasonLabel(t, candidate)} · <span className="font-mono text-xs">{candidate.repository}</span>
-                  </p>
-                </div>
-                <CandidateActions t={t} candidate={candidate} />
-              </li>
-            ))}
-          </ul>
-        </div>
+      {best ? (
+        <article className="flex flex-col gap-3 rounded-card border border-accent-line bg-accent-soft/40 p-4">
+          <div className="flex flex-col gap-1">
+            <p className="font-display text-2xl font-bold tracking-[-0.025em] break-all">{siteLabel(best.siteUrl)}</p>
+            <p className="text-[13px] text-ink-muted">{reasonLabel(t, best)}</p>
+            <p className="font-mono text-xs text-ink-soft">{best.repository}</p>
+          </div>
+          <CandidateActions t={t} candidate={best} primary />
+        </article>
       ) : null}
 
-      <RepositoryPicker repositories={detection.withoutSite} scannedAt={detection.scannedAt} labels={pickerLabels(t)} />
-      <SearchStatus t={t} detection={detection} locale={locale} />
+      {others.length > 0 ? (
+        <ul className="flex flex-col gap-2">
+          {others.map((candidate) => (
+            <li key={candidate.siteUrl} className="flex flex-col gap-2 rounded-card border border-line p-3.5">
+              <div className="flex flex-col gap-0.5">
+                <p className="text-[15px] font-semibold break-all">{siteLabel(candidate.siteUrl)}</p>
+                <p className="text-[13px] text-ink-muted">
+                  {reasonLabel(t, candidate)} · <span className="font-mono text-xs">{candidate.repository}</span>
+                </p>
+              </div>
+              <CandidateActions t={t} candidate={candidate} />
+            </li>
+          ))}
+        </ul>
+      ) : null}
+
+      <RepositoryPicker repositories={detection.withoutSite} scannedAt={detection.scannedAt} labels={pickerLabels(t, found)} open={!found} />
     </section>
   );
 }
