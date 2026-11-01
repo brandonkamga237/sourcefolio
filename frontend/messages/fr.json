@@ -394,5 +394,41 @@
     "craft": "Qualité et open source",
     "sectors": "Secteurs",
     "roles": "Rôles et engagements"
+  },
+  "feedback": {
+    "title": "Retours",
+    "lead": "Dis ce qui marche et ce qui pourrait marcher mieux. Un retour précis aide plus qu’un « Bravo ».",
+    "angleLabel": "Angle (facultatif)",
+    "angles": {
+      "DESIGN": "Design",
+      "CLARITY": "Clarté",
+      "PERFORMANCE": "Performance",
+      "MOBILE": "Mobile",
+      "CODE": "Code"
+    },
+    "bodyLabel": "Ton retour",
+    "placeholder": "Ex. : la page charge vite, mais le lien de contact est difficile à trouver sur téléphone.",
+    "counter": "{count} / {max}",
+    "missingOne": "Encore {count} caractère",
+    "missingOther": "Encore {count} caractères",
+    "submit": "Envoyer mon retour",
+    "sending": "Envoi…",
+    "signInHint": "Il te faudra te connecter avec GitHub ; ton texte est gardé.",
+    "posted": "Merci, ton retour est publié.",
+    "failed": "Ton retour n’a pas pu être envoyé. Réessaie.",
+    "own": "C’est ton portfolio : les retours des visiteurs apparaissent ici.",
+    "empty": "Pas encore de retour. Sois le premier à en laisser un.",
+    "emptyOwn": "Pas encore de retour. Partage ton lien pour en recevoir.",
+    "loadFailed": "Les retours ne répondent pas pour le moment. Réessaie dans un instant.",
+    "more": "Voir plus de retours",
+    "you": "toi",
+    "remove": "Retirer",
+    "confirmRemove": "Retirer pour de bon",
+    "cancel": "Annuler",
+    "removeFailed": "Ce retour n’a pas pu être retiré. Réessaie.",
+    "writtenIn": {
+      "fr": "Écrit en français",
+      "en": "Écrit en anglais"
+    }
   }
 }
