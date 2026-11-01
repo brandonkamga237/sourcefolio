@@ -27,7 +27,9 @@ CLAUDE.md), `chore/` (tooling), `hotfix/` (production emergency, branches off `m
 Short name, in English, kebab-case.
 
 PR target: `develop` — except `hotfix/`, which targets `main`. Into `develop` the PR is
-**squash-merged**: its title becomes the commit, so it follows the message format below.
+merged with a **merge commit**: every commit of the branch is kept, so commit small and often
+(the maintainer wants many commits), and the merge commit takes the PR title, which follows the
+message format below.
 `develop` into `main` is a **merge commit**, never a squash (a squash commit on `main`
 does not exist on `develop`, and the branches drift apart).
 
@@ -97,7 +99,7 @@ file list: the diff already provides one.
 ## Merging
 
 - Into `develop`: `scripts/git/merge-to-develop.sh <pr>` once the checks are green. It refuses
-  any base other than `develop`, then squash-merges and deletes the branch.
+  any base other than `develop`, then merges with a merge commit and deletes the branch.
 - Into `main`: never. The user merges `develop` into `main` by hand (merge commit); the release
   PR release-please opens then merges itself once its checks pass, and the version deploys.
   Direct `gh pr merge` and pushes to `main` / `develop` are denied in `.claude/settings.json`.
