@@ -1,5 +1,42 @@
 # Changelog
 
+## [0.16.0](https://github.com/brandonkamga237/sourcefolio/compare/v0.15.0...v0.16.0) (2026-11-01)
+
+
+### Features
+
+* **discovery:** copy the repository's description, languages and last push onto its card ([754dbce](https://github.com/brandonkamga237/sourcefolio/commit/754dbcefd327acdaeeddb6bb9d9a1a75d97c95d6))
+* **discovery:** return the repository's description, languages and last push to the frontend ([cf69013](https://github.com/brandonkamga237/sourcefolio/commit/cf690130c5f53df9425822e39c93cfe60b7ad18d))
+* **frontend:** add a project facts block for the panel and the page ([5ae7f2e](https://github.com/brandonkamga237/sourcefolio/commit/5ae7f2e32aff8f4b7830d0e83804b25eaa36fd6b))
+* **frontend:** add distinct colours for likes and GitHub stars ([77d943b](https://github.com/brandonkamga237/sourcefolio/commit/77d943ba4b017f02ebc8886678535d171e1a477f))
+* **frontend:** colour the like button in the like colour when liked or hovered ([4e256d8](https://github.com/brandonkamga237/sourcefolio/commit/4e256d8931a7053a3328974a038fe7317670b9c3))
+* **frontend:** draw every GitHub star in GitHub's amber ([a56ae97](https://github.com/brandonkamga237/sourcefolio/commit/a56ae970451b64d4ad6e22c54346dc51eb1a6914))
+* **frontend:** draw every like heart in the like colour ([cb2a71f](https://github.com/brandonkamga237/sourcefolio/commit/cb2a71f1e9c4f9ad1e7dd9439e4b01a5012828e5))
+* **frontend:** draw the GitHub star of share images in GitHub's amber ([db2df78](https://github.com/brandonkamga237/sourcefolio/commit/db2df788f05aeefbff21f898bc90eaa390f34524))
+* **frontend:** keep GitHub stars off the narrow phone cards ([08189a7](https://github.com/brandonkamga237/sourcefolio/commit/08189a72d2cc9134a8bdb18a1ba9855068b58b08))
+* **frontend:** show the card's share button on hover where a mouse can hover ([cad1e12](https://github.com/brandonkamga237/sourcefolio/commit/cad1e126f31ab4f63c85a0fa9629c0ed16e1e8db))
+* **frontend:** show the project facts on the showcase page ([53f70f8](https://github.com/brandonkamga237/sourcefolio/commit/53f70f83cd5491e0280a26a2ca2e326620050f40))
+* **frontend:** show what the project is and what it is built with in the panel ([6acd47e](https://github.com/brandonkamga237/sourcefolio/commit/6acd47ed395e05b453a9db5a19713195ec564dfd))
+* **frontend:** tell likes and GitHub stars apart at a glance ([6258823](https://github.com/brandonkamga237/sourcefolio/commit/6258823e868b5c1ad2a1e8b3bd4a43d0e8f1637a))
+* **frontend:** tell likes and GitHub stars apart at a glance ([#72](https://github.com/brandonkamga237/sourcefolio/issues/72)) ([6258823](https://github.com/brandonkamga237/sourcefolio/commit/6258823e868b5c1ad2a1e8b3bd4a43d0e8f1637a))
+* **frontend:** type the repository's description, languages and last push ([8d06e06](https://github.com/brandonkamga237/sourcefolio/commit/8d06e067498a304c9b25b7da2f8d8b379d7cdaa4))
+* **showcase:** keep the repository's description, languages and last push in the schema ([1de73bc](https://github.com/brandonkamga237/sourcefolio/commit/1de73bce5aae4d05059cdaa563c77935ab71ec25))
+* **showcase:** read a repository's description, languages and last push from GitHub ([5f89105](https://github.com/brandonkamga237/sourcefolio/commit/5f89105f0bd433fb8e20be17feb58c4b7cb99555))
+* **showcase:** read every repository again right after the facts columns arrive ([843fff2](https://github.com/brandonkamga237/sourcefolio/commit/843fff27f000627bb1fb1d7b4cfbde958cb0ab29))
+* **showcase:** show what a project is, what it is built with and how fresh its code is ([fe67182](https://github.com/brandonkamga237/sourcefolio/commit/fe671824bd9f677cd3bea1836e61ff4b8f656741))
+* **showcase:** show what a project is, what it is built with and how fresh its code is ([#73](https://github.com/brandonkamga237/sourcefolio/issues/73)) ([fe67182](https://github.com/brandonkamga237/sourcefolio/commit/fe671824bd9f677cd3bea1836e61ff4b8f656741))
+* **showcase:** store the repository snapshot read from GitHub ([a358d4f](https://github.com/brandonkamga237/sourcefolio/commit/a358d4f9e91e54184d39da14bc29e24e248da6bc))
+
+
+### Bug Fixes
+
+* **frontend:** spell relative times in full so months never read as minutes ([406721d](https://github.com/brandonkamga237/sourcefolio/commit/406721dc7484c2c8fec5a180adb89dc88e56a9f5))
+
+
+### Performance
+
+* **showcase:** read 25 repositories an hour now that each takes two GitHub calls ([f1d77b6](https://github.com/brandonkamga237/sourcefolio/commit/f1d77b687949379a6c7f8cf7586dde36cee7be1e))
+
 ## [0.15.0](https://github.com/brandonkamga237/sourcefolio/compare/v0.14.0...v0.15.0) (2026-11-01)
 
 
