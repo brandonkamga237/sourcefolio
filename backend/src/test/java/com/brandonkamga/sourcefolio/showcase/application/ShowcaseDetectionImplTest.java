@@ -70,6 +70,16 @@ class ShowcaseDetectionImplTest {
     }
 
     @Test
+    @DisplayName("a detection also keeps the repositories it found no site for, so the member can still pick one")
+    void detectKeepsTheRest() {
+        github.put("nekwalla", List.of(repo("portfolio-next", null), repo("api", "https://api.example.org")));
+
+        detection.detect(MEMBER, "nekwalla");
+
+        assertThat(store.rows.get(MEMBER).withoutSite()).extracting(RepositoryCoordinates::name).containsExactly("portfolio-next");
+    }
+
+    @Test
     @DisplayName("a member with no candidate gets an empty scan, so the screen can say nothing was found")
     void nothingFoundIsStillAScan() {
         detection.detect(MEMBER, "nekwalla");
