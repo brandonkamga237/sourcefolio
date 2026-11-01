@@ -1,5 +1,38 @@
 # Changelog
 
+## [0.17.0](https://github.com/brandonkamga237/sourcefolio/compare/v0.16.0...v0.17.0) (2026-11-01)
+
+
+### Features
+
+* **engagement:** add the feedback table ([7d4677c](https://github.com/brandonkamga237/sourcefolio/commit/7d4677c720bbc010318032b407cd2bd33e4f379c))
+* **engagement:** assemble the feedback use case inside a transaction ([1ef89e2](https://github.com/brandonkamga237/sourcefolio/commit/1ef89e249acd71267b4c7641a4a129bd04e89861))
+* **engagement:** carry a GitHub rename onto the feedback a member left ([85d521c](https://github.com/brandonkamga237/sourcefolio/commit/85d521c6fcc0a89a5962f9bf59003f1ebcffc8a0))
+* **engagement:** describe feedback requests and responses for the web ([812822a](https://github.com/brandonkamga237/sourcefolio/commit/812822a7c272f8834ad55440a56740057c6db3aa))
+* **engagement:** explain feedback refusals in French and English ([6c6d489](https://github.com/brandonkamga237/sourcefolio/commit/6c6d4896f403c0dd72aaa900d63d3c510d44eba8))
+* **engagement:** expose feedback to read, post and remove over HTTP ([112f37d](https://github.com/brandonkamga237/sourcefolio/commit/112f37dfa745dc6738ffe360ab110d6a43a5f1e8))
+* **engagement:** guided feedback on every portfolio ([fa353ce](https://github.com/brandonkamga237/sourcefolio/commit/fa353ce5b8f7673afc17cb05eeddc4c7714962ae))
+* **engagement:** guided feedback on every portfolio ([#76](https://github.com/brandonkamga237/sourcefolio/issues/76)) ([fa353ce](https://github.com/brandonkamga237/sourcefolio/commit/fa353ce5b8f7673afc17cb05eeddc4c7714962ae))
+* **engagement:** let anyone read feedback while writing needs a session ([023a675](https://github.com/brandonkamga237/sourcefolio/commit/023a675e7b947a2c6ce3273e24020096375e20c5))
+* **engagement:** model feedback, its angle, its body and its page cursor ([54a981d](https://github.com/brandonkamga237/sourcefolio/commit/54a981db25e85a827b780070e7884d9301a6a4b9))
+* **engagement:** post, page through and remove feedback on a published showcase ([8ba952c](https://github.com/brandonkamga237/sourcefolio/commit/8ba952cd4753a2144ff33fb3aac3cd844ae28205))
+* **engagement:** read feedback pages with two plain keyset queries, covered in SQL ([173cb6c](https://github.com/brandonkamga237/sourcefolio/commit/173cb6c760e2f8211354685342a81d1dbbe67cec))
+* **engagement:** store feedback and read it page by page ([7995a41](https://github.com/brandonkamga237/sourcefolio/commit/7995a4118a055cc21eed17657a2a7676c0cf679d))
+* **frontend:** draw a speech bubble icon for feedback ([cb831fe](https://github.com/brandonkamga237/sourcefolio/commit/cb831fe107c356110149d71270b980ae81196e8f))
+* **frontend:** list a showcase's feedback page by page under its form ([9496309](https://github.com/brandonkamga237/sourcefolio/commit/9496309634129f293b6964d16c1d4e11a5b710ad))
+* **frontend:** put feedback under each portfolio's page ([7bc7094](https://github.com/brandonkamga237/sourcefolio/commit/7bc70947e2ca039e440bd1661a57c822a6a7e07e))
+* **frontend:** read, post and remove feedback through the API ([781ba65](https://github.com/brandonkamga237/sourcefolio/commit/781ba6582d66db496ca0fc3f68ae40684e4dbdf9))
+* **frontend:** show one piece of feedback, removable by its author ([2f356a5](https://github.com/brandonkamga237/sourcefolio/commit/2f356a5a207a3659029281e8ab4d972f70086341))
+* **frontend:** tell from the browser whether the reader is signed in ([ed2e16f](https://github.com/brandonkamga237/sourcefolio/commit/ed2e16f2a9b14b30759440e30a1dba14aea26e12))
+* **frontend:** translate the feedback section's strings on the server ([986225c](https://github.com/brandonkamga237/sourcefolio/commit/986225cd80a965e31306abc754457a377083696b))
+* **frontend:** word the feedback section in French and English ([7dbc715](https://github.com/brandonkamga237/sourcefolio/commit/7dbc7150caa0ff5ec037ce497eb620b035447510))
+* **frontend:** write feedback with an optional angle, kept across GitHub sign-in ([b3388df](https://github.com/brandonkamga237/sourcefolio/commit/b3388df0a24c34b247b364d5c6a8fb664a71d0f4))
+
+
+### Bug Fixes
+
+* **frontend:** say just now for feedback under a minute old ([13bf63e](https://github.com/brandonkamga237/sourcefolio/commit/13bf63e1b1136b8d0ba1586bfb4b80a640d3688c))
+
 ## [0.16.0](https://github.com/brandonkamga237/sourcefolio/compare/v0.15.0...v0.16.0) (2026-11-01)
 
 
