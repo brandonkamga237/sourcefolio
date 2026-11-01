@@ -99,7 +99,7 @@
     "missingLead": "Choisis son dépôt. Pour savoir que le site est bien à toi, on lit l’adresse indiquée sur GitHub : seul le propriétaire du dépôt peut la changer.",
     "searchRepositories": "Chercher un dépôt",
     "noRepositoryMatch": "Aucun dépôt ne correspond.",
-    "noRepositories": "Aucun autre dépôt public sur ton compte GitHub.",
+    "noRepositories": "La dernière recherche n’a trouvé aucun autre dépôt public. Relance-la si tu viens d’en créer un.",
     "showAll": "Afficher les {count} dépôts",
     "pick": "C’est celui-ci",
     "stepsTitle": "Pour publier {repository} :",

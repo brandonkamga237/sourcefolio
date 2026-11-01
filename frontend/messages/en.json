@@ -99,7 +99,7 @@
     "missingLead": "Pick its repository. To know the site is yours, we read the address set on GitHub: only the repository’s owner can change it.",
     "searchRepositories": "Search a repository",
     "noRepositoryMatch": "No repository matches.",
-    "noRepositories": "No other public repository on your GitHub account.",
+    "noRepositories": "The last search found no other public repository. Run it again if you just created one.",
     "showAll": "Show all {count} repositories",
     "pick": "This one",
     "stepsTitle": "To publish {repository}:",
