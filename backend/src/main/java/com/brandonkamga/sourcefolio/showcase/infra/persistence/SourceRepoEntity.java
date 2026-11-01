@@ -4,6 +4,8 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 import java.time.Instant;
 import java.util.UUID;
 
@@ -32,6 +34,17 @@ class SourceRepoEntity {
     @Column(name = "stars_checked_at")
     private Instant starsCheckedAt;
 
+    @Column(length = 350)
+    private String description;
+
+    // VARCHAR(40)[] in the schema, largest share first.
+    @Column(name = "languages", nullable = false, columnDefinition = "varchar(40)[]")
+    @JdbcTypeCode(SqlTypes.ARRAY)
+    private String[] languages = new String[0];
+
+    @Column(name = "pushed_at")
+    private Instant pushedAt;
+
     protected SourceRepoEntity() {
     }
 
@@ -55,4 +68,7 @@ class SourceRepoEntity {
     boolean isPublic() { return isPublic; }
     Integer getStars() { return stars; }
     Instant getStarsCheckedAt() { return starsCheckedAt; }
+    String getDescription() { return description; }
+    String[] getLanguages() { return languages; }
+    Instant getPushedAt() { return pushedAt; }
 }

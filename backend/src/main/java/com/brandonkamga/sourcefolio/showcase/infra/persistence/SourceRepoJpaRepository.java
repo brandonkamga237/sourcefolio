@@ -28,6 +28,10 @@ interface SourceRepoJpaRepository extends JpaRepository<SourceRepoEntity, UUID> 
     List<UUID> dueForStars(@Param("readBefore") Instant readBefore, @Param("limit") int limit);
 
     @Modifying
-    @Query("update SourceRepoEntity r set r.stars = :stars, r.starsCheckedAt = :checkedAt where r.showcaseId = :showcaseId")
-    int saveStars(@Param("showcaseId") UUID showcaseId, @Param("stars") Integer stars, @Param("checkedAt") Instant checkedAt);
+    @Query("""
+            update SourceRepoEntity r set r.stars = :stars, r.description = :description, r.languages = :languages,
+                r.pushedAt = :pushedAt, r.starsCheckedAt = :checkedAt
+            where r.showcaseId = :showcaseId""")
+    int saveSnapshot(@Param("showcaseId") UUID showcaseId, @Param("stars") Integer stars, @Param("description") String description,
+                     @Param("languages") String[] languages, @Param("pushedAt") Instant pushedAt, @Param("checkedAt") Instant checkedAt);
 }

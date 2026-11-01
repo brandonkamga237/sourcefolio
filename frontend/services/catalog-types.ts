@@ -22,6 +22,10 @@ export interface CatalogCard {
   specialties: string[];
   /** The author's own line, null until written. */
   headline: string | null;
+  /** What GitHub says about the repository, read daily: its description, main languages, last push. */
+  repositoryDescription: string | null;
+  repositoryLanguages: string[];
+  repositoryPushedAt: string | null;
 }
 
 export interface CatalogPage {
