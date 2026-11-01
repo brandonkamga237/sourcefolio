@@ -10,6 +10,8 @@ import { ProjectFacts } from "@/components/catalog/ProjectFacts";
 import { StarCount } from "@/components/stars/StarCount";
 import { sinceLabel } from "@/lib/relative-time";
 import { CommitGraph } from "@/components/illustrations/CommitGraph";
+import { feedbackLabels } from "@/components/feedback/labels";
+import { FeedbackSection } from "@/components/feedback/FeedbackSection";
 import { memberSheetLabels } from "@/components/members/labels";
 import { MemberSheet } from "@/components/members/MemberSheet";
 import { Avatar } from "@/components/members/Avatar";
@@ -68,13 +70,14 @@ export default async function ShowcasePage({ params }: PageProps<"/[locale]/p/[s
   const { locale: raw, slug } = await params;
   const locale = toLocale(raw);
   setRequestLocale(locale);
-  const [t, tl, ts, tp, showcase, memberLabels] = await Promise.all([
+  const [t, tl, ts, tp, showcase, memberLabels, feedback] = await Promise.all([
     getTranslations({ locale, namespace: "showcasePage" }),
     getTranslations({ locale, namespace: "likes" }),
     getTranslations({ locale, namespace: "stars" }),
     getTranslations({ locale, namespace: "catalog.panel" }),
     getPublicShowcase(slug),
     memberSheetLabels(locale),
+    feedbackLabels(locale),
   ]);
   if (!showcase) notFound();
 
@@ -164,6 +167,10 @@ export default async function ShowcasePage({ params }: PageProps<"/[locale]/p/[s
           </Suspense>
         </div>
       </div>
+
+      <Suspense fallback={null}>
+        <FeedbackSection slug={showcase.slug} locale={locale} labels={feedback} />
+      </Suspense>
 
       <aside className="relative isolate mt-4 flex flex-col gap-2 overflow-hidden rounded-card border border-line bg-surface p-4">
         <CommitGraph className="pointer-events-none absolute -right-10 -bottom-8 -z-10 w-[200px] opacity-50" />

@@ -1,8 +1,12 @@
 package com.brandonkamga.sourcefolio.engagement.infra.config;
 
+import com.brandonkamga.sourcefolio.account.application.SignInService;
 import com.brandonkamga.sourcefolio.engagement.application.EngagementEvents;
+import com.brandonkamga.sourcefolio.engagement.application.Feedbacks;
+import com.brandonkamga.sourcefolio.engagement.application.FeedbacksImpl;
 import com.brandonkamga.sourcefolio.engagement.application.Likes;
 import com.brandonkamga.sourcefolio.engagement.application.LikesImpl;
+import com.brandonkamga.sourcefolio.engagement.domain.port.FeedbackStore;
 import com.brandonkamga.sourcefolio.engagement.domain.port.LikeStore;
 import com.brandonkamga.sourcefolio.shared.config.TransactionalServices;
 import com.brandonkamga.sourcefolio.showcase.application.PublicShowcases;
@@ -16,5 +20,11 @@ class EngagementServices {
     @Bean
     Likes likes(PublicShowcases showcases, LikeStore likes, EngagementEvents events, Clock clock, TransactionalServices transactional) {
         return transactional.wrap(Likes.class, new LikesImpl(showcases, likes, events, clock));
+    }
+
+    @Bean
+    Feedbacks feedbacks(PublicShowcases showcases, FeedbackStore feedback, SignInService members, Clock clock,
+                        TransactionalServices transactional) {
+        return transactional.wrap(Feedbacks.class, new FeedbacksImpl(showcases, feedback, members, clock));
     }
 }
