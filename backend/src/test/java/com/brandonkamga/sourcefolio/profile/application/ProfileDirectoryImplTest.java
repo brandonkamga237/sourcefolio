@@ -3,6 +3,7 @@ package com.brandonkamga.sourcefolio.profile.application;
 import com.brandonkamga.sourcefolio.profile.domain.model.CountryCode;
 import com.brandonkamga.sourcefolio.profile.domain.model.DeveloperProfile;
 import com.brandonkamga.sourcefolio.profile.domain.model.Headline;
+import com.brandonkamga.sourcefolio.profile.domain.model.Role;
 import com.brandonkamga.sourcefolio.profile.domain.model.Specialties;
 import com.brandonkamga.sourcefolio.profile.domain.model.Specialty;
 import com.brandonkamga.sourcefolio.profile.domain.port.ProfileStore;
@@ -22,7 +23,7 @@ class ProfileDirectoryImplTest {
     @DisplayName("the public part of a profile is its country and its ranked specialties; nothing before the first answer")
     void publicProfile() {
         DeveloperProfile stored = new DeveloperProfile(MEMBER, new CountryCode("SN"), new Specialties(List.of(Specialty.MOBILE, Specialty.FRONTEND)),
-                new Headline("Mobile Flutter à Dakar"), Instant.parse("2026-10-30T09:00:00Z"));
+                new Headline("Mobile Flutter à Dakar"), Role.MOBILE, Instant.parse("2026-10-30T09:00:00Z"));
         ProfileDirectory directory = new ProfileDirectoryImpl(new ProfileStore() {
             @Override
             public Optional<DeveloperProfile> find(UUID memberId) {
