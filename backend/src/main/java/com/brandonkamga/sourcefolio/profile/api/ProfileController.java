@@ -1,6 +1,7 @@
 package com.brandonkamga.sourcefolio.profile.api;
 
 import com.brandonkamga.sourcefolio.profile.api.dto.CountryAnswer;
+import com.brandonkamga.sourcefolio.profile.api.dto.HeadlineAnswer;
 import com.brandonkamga.sourcefolio.profile.api.dto.ProfileResponse;
 import com.brandonkamga.sourcefolio.profile.api.dto.SpecialtiesAnswer;
 import com.brandonkamga.sourcefolio.profile.application.ProfileCompletion;
@@ -39,6 +40,12 @@ class ProfileController {
     @Operation(operationId = "answerMySpecialties")
     ProfileResponse specialties(Authentication authentication, @Valid @RequestBody SpecialtiesAnswer answer) {
         return ProfileResponse.of(profiles.answerSpecialties(memberId(authentication), answer.specialties()));
+    }
+
+    @PutMapping("/api/me/profile/headline")
+    @Operation(operationId = "answerMyHeadline")
+    ProfileResponse headline(Authentication authentication, @RequestBody HeadlineAnswer answer) {
+        return ProfileResponse.of(profiles.answerHeadline(memberId(authentication), answer.headline()));
     }
 
     private static UUID memberId(Authentication authentication) {
