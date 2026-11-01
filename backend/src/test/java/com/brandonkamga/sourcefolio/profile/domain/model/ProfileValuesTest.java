@@ -53,4 +53,18 @@ class ProfileValuesTest {
         assertThatThrownBy(() -> new Specialties(List.of(Specialty.BACKEND, Specialty.BACKEND)))
                 .isInstanceOf(IllegalArgumentException.class);
     }
+
+    @Test
+    @DisplayName("a headline is the member's own line, folded onto one line and trimmed")
+    void headline() {
+        assertThat(Headline.parse("  Front-end React\n à   Douala ").value()).isEqualTo("Front-end React à Douala");
+    }
+
+    @Test
+    @DisplayName("a headline shorter than two or longer than eighty characters is refused")
+    void headlineRefused() {
+        assertThatThrownBy(() -> Headline.parse(" x ")).isInstanceOf(IllegalArgumentException.class);
+        assertThatThrownBy(() -> Headline.parse("a".repeat(81))).isInstanceOf(IllegalArgumentException.class);
+        assertThat(Headline.parse("a".repeat(80)).value()).hasSize(80);
+    }
 }
