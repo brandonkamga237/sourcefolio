@@ -102,10 +102,11 @@ export function ShowcasePanel({ card, position, direction, onPrev, onNext, href,
         imageUrl={card.previewImageUrl}
         videoUrl={card.previewVideoUrl}
         size="large"
+        aspectClass="aspect-[2/1]"
         sizes="400px"
       />
 
-      <div className="flex flex-col gap-4 p-5">
+      <div className="flex flex-col gap-3 p-4">
         <div className="flex items-center gap-3">
           <span aria-hidden="true" className="flex size-11 shrink-0 items-center justify-center rounded-full bg-accent-soft text-sm font-semibold text-accent-ink uppercase">
             {card.ownerLogin.slice(0, 2)}
@@ -114,7 +115,9 @@ export function ShowcasePanel({ card, position, direction, onPrev, onNext, href,
             <h2 id="panel-name" className="truncate font-display text-[22px] leading-tight font-bold tracking-[-0.025em]">
               {card.ownerLogin}
             </h2>
-            <span className="font-mono text-[13px] text-ink-muted">@{card.ownerLogin}</span>
+            <span className="truncate font-mono text-xs text-ink-muted" title={`${labels.sourceRepo} : ${card.repository}`}>
+              {card.repository}
+            </span>
           </div>
         </div>
 
@@ -189,11 +192,6 @@ export function ShowcasePanel({ card, position, direction, onPrev, onNext, href,
             <IconGithub aria-hidden="true" className="size-4" />
             <span>{labels.githubProfile}</span>
           </a>
-        </div>
-
-        <div className="flex flex-col gap-1 border-t border-line-soft pt-4">
-          <span className="text-xs text-ink-muted">{labels.sourceRepo}</span>
-          <span className="font-mono text-[13px] break-all">{card.repository}</span>
         </div>
 
         <Link
