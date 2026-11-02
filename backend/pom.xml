@@ -30,7 +30,7 @@
 		<java.version>21</java.version>
 		<springdoc.version>3.2.0</springdoc.version>
 		<jobrunr.version>9.0.3</jobrunr.version>
-		<awssdk.version>2.46.7</awssdk.version>
+		<awssdk.version>2.57.7</awssdk.version>
 		<archunit.version>1.5.1</archunit.version>
 	</properties>
 	<dependencyManagement>
