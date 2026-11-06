@@ -2,9 +2,12 @@ package com.brandonkamga.sourcefolio.profile.infra.persistence;
 
 import com.brandonkamga.sourcefolio.account.domain.model.User;
 import com.brandonkamga.sourcefolio.account.domain.port.UserStore;
+import com.brandonkamga.sourcefolio.profile.domain.model.Bio;
+import com.brandonkamga.sourcefolio.profile.domain.model.City;
 import com.brandonkamga.sourcefolio.profile.domain.model.CountryCode;
 import com.brandonkamga.sourcefolio.profile.domain.model.DeveloperProfile;
 import com.brandonkamga.sourcefolio.profile.domain.model.Headline;
+import com.brandonkamga.sourcefolio.profile.domain.model.LinkedInHandle;
 import com.brandonkamga.sourcefolio.profile.domain.model.Specialties;
 import com.brandonkamga.sourcefolio.profile.domain.model.Specialty;
 import com.brandonkamga.sourcefolio.profile.domain.port.ProfileStore;
@@ -54,6 +57,15 @@ class JpaProfileStoreIT extends PostgresIT {
         entityManager.flush();
         entityManager.clear();
         assertThat(profiles.find(member)).contains(titled);
+
+        DeveloperProfile presented = profiles.save(titled.withCity(new City("Yaoundé"), NOW.plusSeconds(10))
+                .withBio(new Bio("Backend PHP et TypeScript"), NOW.plusSeconds(10))
+                .withLinkedIn(new LinkedInHandle("nkeng-tabi"), NOW.plusSeconds(10))
+                .publish(NOW.plusSeconds(11)));
+        entityManager.flush();
+        entityManager.clear();
+        assertThat(profiles.find(member)).contains(presented);
+        assertThat(presented.publishedAt()).isEqualTo(NOW.plusSeconds(11));
     }
 
     @Test
