@@ -1,3 +1,5 @@
+> **Remplacée le 6 nov. 2026 par [`spec-v2.md`](spec-v2.md).** Le catalogue de portfolios décrit ici est retiré du produit ; ce document reste pour l'historique.
+
 # Spec V1 révisée — Plateforme de portfolios open source
 
 29 oct. 2026 · @cracks
