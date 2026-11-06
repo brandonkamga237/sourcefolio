@@ -155,4 +155,44 @@ class ProfileCompletionImplTest {
                 .extracting(thrown -> ((AppException) thrown).messageKey()).isEqualTo("profile.headline-invalid");
         assertThat(rows.get(MEMBER).headline().value()).isEqualTo("Backend Java");
     }
+
+    @Test
+    @DisplayName("city, bio and LinkedIn are saved cleaned, and blank removes them")
+    void presentation() {
+        profiles.answerCity(MEMBER, " Yaoundé ");
+        profiles.answerBio(MEMBER, "Backend PHP\net TypeScript");
+        profiles.answerLinkedIn(MEMBER, "https://www.linkedin.com/in/nkeng-tabi/");
+
+        DeveloperProfile saved = rows.get(MEMBER);
+        assertThat(saved.city().value()).isEqualTo("Yaoundé");
+        assertThat(saved.bio().value()).isEqualTo("Backend PHP et TypeScript");
+        assertThat(saved.linkedIn().value()).isEqualTo("nkeng-tabi");
+
+        profiles.answerLinkedIn(MEMBER, " ");
+        assertThat(rows.get(MEMBER).linkedIn()).isNull();
+    }
+
+    @Test
+    @DisplayName("an unreadable LinkedIn link or a too long bio is a 400 with its own message")
+    void invalidPresentation() {
+        assertThatThrownBy(() -> profiles.answerLinkedIn(MEMBER, "https://example.org/me"))
+                .isInstanceOfSatisfying(AppException.class, error -> assertThat(error.messageKey()).isEqualTo("profile.linkedin-invalid"));
+        assertThatThrownBy(() -> profiles.answerBio(MEMBER, "x".repeat(161)))
+                .isInstanceOfSatisfying(AppException.class, error -> assertThat(error.messageKey()).isEqualTo("profile.bio-invalid"));
+        assertThat(rows).isEmpty();
+    }
+
+    @Test
+    @DisplayName("publishing takes a country; it is the member's consent and can be taken back at once")
+    void publication() {
+        assertThatThrownBy(() -> profiles.publish(MEMBER))
+                .isInstanceOfSatisfying(AppException.class, error -> assertThat(error.messageKey()).isEqualTo("profile.country-required"));
+
+        profiles.answerCountry(MEMBER, "CM");
+        assertThat(profiles.publish(MEMBER).publishedAt()).isEqualTo(NOW);
+        assertThat(rows.get(MEMBER).published()).isTrue();
+
+        assertThat(profiles.unpublish(MEMBER).published()).isFalse();
+        assertThat(rows.get(MEMBER).published()).isFalse();
+    }
 }

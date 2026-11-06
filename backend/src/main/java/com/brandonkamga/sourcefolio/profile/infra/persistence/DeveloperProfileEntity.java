@@ -33,6 +33,18 @@ class DeveloperProfileEntity {
     @Column(length = 20)
     private String role;
 
+    @Column(length = 60)
+    private String city;
+
+    @Column(length = 160)
+    private String bio;
+
+    @Column(length = 100)
+    private String linkedin;
+
+    @Column(name = "published_at")
+    private Instant publishedAt;
+
     @Column(name = "updated_at", nullable = false)
     private Instant updatedAt;
 
@@ -51,7 +63,18 @@ class DeveloperProfileEntity {
         this.updatedAt = updatedAt;
     }
 
+    void present(String city, String bio, String linkedin, Instant publishedAt) {
+        this.city = city;
+        this.bio = bio;
+        this.linkedin = linkedin;
+        this.publishedAt = publishedAt;
+    }
+
     UUID getMemberId() { return memberId; }
+    String getCity() { return city; }
+    String getBio() { return bio; }
+    String getLinkedin() { return linkedin; }
+    Instant getPublishedAt() { return publishedAt; }
     String getCountryCode() { return countryCode; }
     String[] getSpecialties() { return specialties; }
     String getHeadline() { return headline; }

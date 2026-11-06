@@ -4,10 +4,13 @@ import com.brandonkamga.sourcefolio.contribution.application.ContributionAnalysi
 import com.brandonkamga.sourcefolio.contribution.application.ContributionAnalysisImpl;
 import com.brandonkamga.sourcefolio.contribution.application.ContributionReports;
 import com.brandonkamga.sourcefolio.contribution.application.ContributionReportsImpl;
+import com.brandonkamga.sourcefolio.contribution.application.PublicProfiles;
+import com.brandonkamga.sourcefolio.contribution.application.PublicProfilesImpl;
 import com.brandonkamga.sourcefolio.contribution.domain.port.ActivitySource;
 import com.brandonkamga.sourcefolio.contribution.domain.port.AnalysisScheduler;
 import com.brandonkamga.sourcefolio.contribution.domain.port.ContributionStore;
 import com.brandonkamga.sourcefolio.contribution.infra.github.GitHubActivitySource;
+import com.brandonkamga.sourcefolio.profile.application.ProfileDirectory;
 import com.brandonkamga.sourcefolio.shared.config.TransactionalServices;
 import java.net.http.HttpClient;
 import java.time.Clock;
@@ -32,6 +35,11 @@ class ContributionServices {
     @Bean
     ContributionReports contributionReports(ContributionStore records, TransactionalServices transactional) {
         return transactional.wrap(ContributionReports.class, new ContributionReportsImpl(records));
+    }
+
+    @Bean
+    PublicProfiles publicProfiles(ContributionStore records, ProfileDirectory profiles, TransactionalServices transactional) {
+        return transactional.wrap(PublicProfiles.class, new PublicProfilesImpl(records, profiles));
     }
 
     // GraphQL refuses anonymous calls: without the platform token (development), readings fail and

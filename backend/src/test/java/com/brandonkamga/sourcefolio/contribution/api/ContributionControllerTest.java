@@ -3,11 +3,15 @@ package com.brandonkamga.sourcefolio.contribution.api;
 import com.brandonkamga.sourcefolio.contribution.application.ContributionAnalysis;
 import com.brandonkamga.sourcefolio.contribution.application.ContributionReports;
 import com.brandonkamga.sourcefolio.contribution.application.MyAnalysis;
+import com.brandonkamga.sourcefolio.contribution.application.ProfileCard;
+import com.brandonkamga.sourcefolio.contribution.application.PublicProfiles;
+import com.brandonkamga.sourcefolio.profile.application.PublicProfile;
 import com.brandonkamga.sourcefolio.contribution.domain.model.AnalysisStatus;
 import com.brandonkamga.sourcefolio.contribution.domain.model.CalendarDay;
 import com.brandonkamga.sourcefolio.contribution.domain.model.ContributionSnapshot;
 import com.brandonkamga.sourcefolio.contribution.domain.model.ExternalProject;
 import com.brandonkamga.sourcefolio.contribution.domain.model.GitHubActivity;
+import com.brandonkamga.sourcefolio.contribution.infra.security.ProfileRoutesTestConfig;
 import com.brandonkamga.sourcefolio.shared.security.SecurityTestConfig;
 import java.time.Instant;
 import java.time.LocalDate;
@@ -38,7 +42,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(ContributionController.class)
-@Import(SecurityTestConfig.class)
+@Import({SecurityTestConfig.class, ProfileRoutesTestConfig.class})
 class ContributionControllerTest {
 
     private static final UUID MEMBER = UUID.fromString("0b8f2c1e-4d6a-4f6e-9a77-3c2d1e0f9a11");
@@ -52,6 +56,38 @@ class ContributionControllerTest {
 
     @MockitoBean
     private ContributionAnalysis analysis;
+
+    @MockitoBean
+    private PublicProfiles profiles;
+
+    @Test
+    @DisplayName("anyone reads a published profile: the member's words and every figure with its proof")
+    void publicProfile() throws Exception {
+        ContributionSnapshot snapshot = ContributionSnapshot.of(new GitHubActivity(Instant.parse("2017-03-14T08:00:00Z"), "Nkeng Tabi",
+                null, null, 94, 2_140, 0, List.of(), List.of(), 14, List.of()), NOW);
+        when(profiles.findByLogin("nkeng-dev")).thenReturn(Optional.of(new ProfileCard("nkeng-dev", snapshot,
+                new PublicProfile("CM", List.of(), null, null, "Yaoundé", "Backend PHP", "https://www.linkedin.com/in/nkeng-tabi", true))));
+
+        mvc.perform(get("/api/profiles/nkeng-dev"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.name").value("Nkeng Tabi"))
+                .andExpect(jsonPath("$.country").value("CM"))
+                .andExpect(jsonPath("$.city").value("Yaoundé"))
+                .andExpect(jsonPath("$.linkedInUrl").value("https://www.linkedin.com/in/nkeng-tabi"))
+                .andExpect(jsonPath("$.indicators.mergedPullRequestsElsewhere").value(14))
+                .andExpect(jsonPath("$.indicators.proofs.mergedElsewhere")
+                        .value("https://github.com/pulls?q=is%3Apr+is%3Amerged+author%3Ankeng-dev+-user%3Ankeng-dev"));
+    }
+
+    @Test
+    @DisplayName("an unknown or private profile is the same 404, in the visitor's language")
+    void hiddenProfile() throws Exception {
+        when(profiles.findByLogin("ghost")).thenReturn(Optional.empty());
+
+        mvc.perform(get("/api/profiles/ghost").header("Accept-Language", "fr"))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.message").value("Cette fiche n’existe pas ou n’est pas publique."));
+    }
 
     @Test
     @DisplayName("before any request the status is NONE, without indicators")

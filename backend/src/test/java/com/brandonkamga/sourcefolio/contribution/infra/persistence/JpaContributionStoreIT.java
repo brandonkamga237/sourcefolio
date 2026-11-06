@@ -85,6 +85,19 @@ class JpaContributionStoreIT extends PostgresIT {
         assertThat(records.findDue(NOW.minus(Duration.ofDays(7)), 1)).containsExactly(older);
     }
 
+    @Test
+    @DisplayName("a record is found by login without case; after a rename the latest asked for wins")
+    void byLogin() {
+        UUID renamed = member();
+        UUID current = member();
+        records.save(ContributionRecord.requested(renamed, "Nkeng-Dev", NOW.minus(Duration.ofDays(30))));
+        records.save(ContributionRecord.requested(current, "nkeng-dev", NOW));
+        flush();
+
+        assertThat(records.findByLogin("NKENG-DEV")).map(ContributionRecord::memberId).hasValue(current);
+        assertThat(records.findByLogin("nobody")).isEmpty();
+    }
+
     private void flush() {
         entityManager.flush();
         entityManager.clear();

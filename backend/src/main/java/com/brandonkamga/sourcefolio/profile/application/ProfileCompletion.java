@@ -20,4 +20,19 @@ public interface ProfileCompletion {
 
     /** The one role the member says they work in, as a slug; blank or null removes it. */
     DeveloperProfile answerRole(UUID memberId, String roleSlug);
+
+    /** The city shown on the profile and used by the map; blank or null removes it. */
+    DeveloperProfile answerCity(UUID memberId, String city);
+
+    /** A few words about the member, up to 160 characters; blank or null removes it. */
+    DeveloperProfile answerBio(UUID memberId, String bio);
+
+    /** A LinkedIn handle or profile URL, kept as the handle; blank or null removes it. */
+    DeveloperProfile answerLinkedIn(UUID memberId, String linkedIn);
+
+    /** Makes the profile public; it takes a country. Publishing twice changes nothing. */
+    DeveloperProfile publish(UUID memberId);
+
+    /** Makes the profile private again, at once. */
+    DeveloperProfile unpublish(UUID memberId);
 }

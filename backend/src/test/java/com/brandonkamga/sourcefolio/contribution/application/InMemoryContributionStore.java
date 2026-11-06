@@ -27,6 +27,12 @@ class InMemoryContributionStore implements ContributionStore {
     }
 
     @Override
+    public Optional<ContributionRecord> findByLogin(String login) {
+        return rows.values().stream().filter(record -> record.login().equalsIgnoreCase(login))
+                .max(Comparator.comparing(ContributionRecord::requestedAt));
+    }
+
+    @Override
     public List<UUID> findDue(Instant before, int limit) {
         return rows.values().stream()
                 .filter(record -> last(record).isBefore(before))

@@ -4,6 +4,7 @@ import com.brandonkamga.sourcefolio.profile.application.ProfileCompletion;
 import com.brandonkamga.sourcefolio.profile.domain.model.CountryCode;
 import com.brandonkamga.sourcefolio.profile.domain.model.DeveloperProfile;
 import com.brandonkamga.sourcefolio.profile.domain.model.Headline;
+import com.brandonkamga.sourcefolio.profile.domain.model.LinkedInHandle;
 import com.brandonkamga.sourcefolio.profile.domain.model.Role;
 import com.brandonkamga.sourcefolio.profile.domain.model.Specialties;
 import com.brandonkamga.sourcefolio.profile.domain.model.Specialty;
@@ -29,6 +30,7 @@ import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.oauth2Login;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -165,6 +167,44 @@ class ProfileControllerTest {
         mvc.perform(get("/api/me/profile")).andExpect(status().isUnauthorized());
         mvc.perform(put("/api/me/profile/country").with(csrf())
                 .contentType(MediaType.APPLICATION_JSON).content("{\"country\":\"CM\"}")).andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    @DisplayName("publishing answers the profile with its publication date; unpublishing takes it back")
+    void publication() throws Exception {
+        DeveloperProfile country = DeveloperProfile.blank(MEMBER).withCountry(new CountryCode("CM"), Instant.parse("2026-11-06T10:00:00Z"));
+        when(profiles.publish(MEMBER)).thenReturn(country.publish(Instant.parse("2026-11-06T10:00:00Z")));
+        when(profiles.unpublish(MEMBER)).thenReturn(country);
+
+        mvc.perform(put("/api/me/profile/publication").with(member()).with(csrf()))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.publishedAt").value("2026-11-06T10:00:00Z"));
+        mvc.perform(delete("/api/me/profile/publication").with(member()).with(csrf()))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.publishedAt").value(nullValue()));
+    }
+
+    @Test
+    @DisplayName("the LinkedIn answer comes back as a handle and a link built from it")
+    void linkedIn() throws Exception {
+        when(profiles.answerLinkedIn(MEMBER, "linkedin.com/in/nkeng-tabi"))
+                .thenReturn(DeveloperProfile.blank(MEMBER).withLinkedIn(new LinkedInHandle("nkeng-tabi"), Instant.parse("2026-11-06T10:00:00Z")));
+
+        mvc.perform(put("/api/me/profile/linkedin").with(member()).with(csrf())
+                        .contentType(MediaType.APPLICATION_JSON).content("{\"linkedIn\":\"linkedin.com/in/nkeng-tabi\"}"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.linkedIn").value("nkeng-tabi"))
+                .andExpect(jsonPath("$.linkedInUrl").value("https://www.linkedin.com/in/nkeng-tabi"));
+    }
+
+    @Test
+    @DisplayName("publishing without a country is a 400 in the member's language")
+    void publishWithoutCountry() throws Exception {
+        when(profiles.publish(MEMBER)).thenThrow(new BadRequestException("profile.country-required"));
+
+        mvc.perform(put("/api/me/profile/publication").with(member()).with(csrf()).header("Accept-Language", "fr"))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message").value("Choisis ton pays avant de publier : les classements sont par pays."));
     }
 
     private static RequestPostProcessor member() {

@@ -27,7 +27,7 @@ public record AnalysisResponse(String status, boolean refreshing, String login, 
                              int mergedPullRequestsElsewhere, List<Project> externalProjects, List<Repository> topRepositories,
                              Proofs proofs) {
 
-        static Indicators of(String login, ContributionSnapshot snapshot) {
+        public static Indicators of(String login, ContributionSnapshot snapshot) {
             return new Indicators(snapshot.analyzedAt(), snapshot.name(), snapshot.bio(), snapshot.location(),
                     snapshot.accountCreatedAt(), snapshot.publicContributions(), snapshot.activeMonths(),
                     snapshot.months().stream().map(month -> new Month(month.month().toString(), month.contributions())).toList(),
