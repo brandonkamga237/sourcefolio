@@ -27,6 +27,7 @@
   /* The main call to action, GitHub's green button. */
   --color-cta: #1f883d;
   --color-cta-hover: #1a7f37;
+  --color-cta-ink: #ffffff;
 
   --color-success: #1a7f37;
   --color-success-ink: #116329;
