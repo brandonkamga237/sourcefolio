@@ -117,13 +117,14 @@ public class ProfileCompletionImpl implements ProfileCompletion {
         }
     }
 
-    // Cards and member popups show the profile, Discover filters on the country and the role:
-    // the catalogue keeps a copy.
+    // Cards and member popups show the profile, Discover filters on the country and the role, the
+    // rankings list published profiles by country: the read models keep a copy.
     private DeveloperProfile saveAndAnnounce(DeveloperProfile profile) {
         DeveloperProfile saved = profiles.save(profile);
         events.profileChanged(new ProfileChanged(saved.memberId(), saved.country() == null ? null : saved.country().value(),
                 saved.specialties().slugs(), saved.headline() == null ? null : saved.headline().value(),
-                saved.role() == null ? null : saved.role().slug()));
+                saved.role() == null ? null : saved.role().slug(), saved.city() == null ? null : saved.city().value(),
+                saved.published()));
         return saved;
     }
 }
