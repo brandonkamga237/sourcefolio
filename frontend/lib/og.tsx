@@ -20,17 +20,18 @@ export const ogSize = { width: 1200, height: 630 };
 
 // The light theme's tokens: a share image has no dark mode.
 export const og = {
-  canvas: "#f5f5f1",
+  canvas: "#ffffff",
   surface: "#ffffff",
-  ink: "#121412",
-  body: "#2e312c",
-  muted: "#5b5f58",
-  line: "#e2e2dc",
-  accent: "#2b45e0",
-  accentSoft: "#e9ecfd",
-  accentLine: "#c9d0fa",
-  success: "#1d7a4b",
+  ink: "#1f2328",
+  body: "#1f2328",
+  muted: "#59636e",
+  line: "#d1d9e0",
+  accent: "#0969da",
+  accentSoft: "#ddf4ff",
+  accentLine: "#b6e3ff",
+  success: "#1a7f37",
   star: "#bf8700",
+  levels: ["#eff2f5", "#aceebb", "#4ac26b", "#2da44e", "#116329"],
 };
 
 // The dot grid and accent glow of the site's backdrop.
@@ -43,11 +44,12 @@ export const ogBackground = {
 export function OgLogo() {
   return (
     <div style={{ display: "flex", alignItems: "center", gap: 18 }}>
-      <div style={{ width: 60, height: 60, borderRadius: 16, background: og.ink, display: "flex", alignItems: "center", justifyContent: "center" }}>
-        <svg width={34} height={34} viewBox="0 0 24 24" fill="none" stroke="#ffffff" strokeWidth={2.4} strokeLinecap="round" strokeLinejoin="round">
-          <path d="M8 8l-4 4 4 4M16 8l4 4-4 4" />
-        </svg>
-      </div>
+      <svg width={52} height={52} viewBox="0 0 24 24" fill={og.levels[3]}>
+        <rect x="2" y="2" width="9" height="9" rx="2" fillOpacity={0.4} />
+        <rect x="13" y="2" width="9" height="9" rx="2" fillOpacity={0.7} />
+        <rect x="2" y="13" width="9" height="9" rx="2" />
+        <rect x="13" y="13" width="9" height="9" rx="2" />
+      </svg>
       <div style={{ fontFamily: "Bricolage", fontSize: 40, letterSpacing: -1.5, color: og.ink }}>sourcefolio</div>
     </div>
   );

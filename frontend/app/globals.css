@@ -1,103 +1,126 @@
 @import "tailwindcss";
 
-/* Tokens from the V1 mockups (design-system skill). Components only use these names, so the
-   dark theme is the second block below and nothing else. */
+/* GitHub Primer palette (docs/spec-v2.md, "green square" concept). Components only use these
+   names, so the dark theme is the second block below and nothing else. The level-0..4 greens
+   are the shades of GitHub's contribution calendar: the square is the unit of the interface. */
 @theme {
-  --color-canvas: #f5f5f1;
+  --color-canvas: #ffffff;
   --color-surface: #ffffff;
-  --color-surface-raised: #fbfbf8;
-  --color-surface-sunken: #f0f0eb;
+  --color-surface-raised: #f6f8fa;
+  --color-surface-sunken: #eff2f5;
 
-  --color-ink: #121412;
-  --color-ink-body: #2e312c;
-  --color-ink-soft: #3c3f3a;
-  --color-ink-muted: #5b5f58;
+  --color-ink: #1f2328;
+  --color-ink-body: #1f2328;
+  --color-ink-soft: #3d444d;
+  --color-ink-muted: #59636e;
   --color-ink-inverse: #ffffff;
 
-  --color-line: #e2e2dc;
-  --color-line-soft: #ecece6;
+  --color-line: #d1d9e0;
+  --color-line-soft: #e6eaef;
 
-  --color-accent: #2b45e0;
-  --color-accent-hover: #1c2fa8;
-  --color-accent-ink: #1f33b3;
-  --color-accent-soft: #e9ecfd;
-  --color-accent-line: #c9d0fa;
+  --color-accent: #0969da;
+  --color-accent-hover: #0550ae;
+  --color-accent-ink: #0969da;
+  --color-accent-soft: #ddf4ff;
+  --color-accent-line: #b6e3ff;
 
-  --color-success: #1d7a4b;
-  --color-success-ink: #155c39;
+  /* The main call to action, GitHub's green button. */
+  --color-cta: #1f883d;
+  --color-cta-hover: #1a7f37;
 
-  --color-danger: #b42318;
-  --color-danger-soft: #fdecea;
+  --color-success: #1a7f37;
+  --color-success-ink: #116329;
 
-  /* Two signals that must never be confused: a SourceFolio like (the community's heart) and a
-     GitHub star (the repository's popularity, in GitHub's own amber). */
-  --color-like: #e5484d;
+  --color-danger: #d1242f;
+  --color-danger-soft: #ffebe9;
+
+  --color-like: #cf222e;
   --color-star: #bf8700;
 
-  --radius-tag: 7px;
-  --radius-segment: 9px;
-  --radius-control: 12px;
-  --radius-card: 18px;
-  --radius-panel: 22px;
+  --color-level-0: #eff2f5;
+  --color-level-1: #aceebb;
+  --color-level-2: #4ac26b;
+  --color-level-3: #2da44e;
+  --color-level-4: #116329;
 
-  --font-display: var(--font-bricolage), ui-sans-serif, sans-serif;
-  --font-sans: var(--font-geist), ui-sans-serif, system-ui, sans-serif;
-  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+  --radius-tag: 4px;
+  --radius-segment: 6px;
+  --radius-control: 6px;
+  --radius-card: 8px;
+  --radius-panel: 12px;
+
+  --font-display: var(--font-mona), -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
 }
 
-/* Dark theme: not drawn in the mockups yet, these values await validation. It follows the
-   system unless the member picked a theme in "Moi" (data-theme on <html>). */
+/* Dark theme: Primer dark. It follows the system unless the member picked a theme
+   (data-theme on <html>). */
 @layer base {
   @media (prefers-color-scheme: dark) {
     :root:not([data-theme="light"]) {
-      --color-canvas: #0e100e;
-      --color-surface: #171917;
-      --color-surface-raised: #131513;
-      --color-surface-sunken: #1f221f;
-      --color-ink: #f2f2ec;
-      --color-ink-body: #d9dbd4;
-      --color-ink-soft: #c4c7bf;
-      --color-ink-muted: #9a9e95;
-      --color-ink-inverse: #121412;
-      --color-line: #2a2d29;
-      --color-line-soft: #222522;
-      --color-accent: #6e83ff;
-      --color-accent-hover: #8c9dff;
-      --color-accent-ink: #b8c3ff;
-      --color-accent-soft: #1c2246;
-      --color-accent-line: #2e3a7a;
-      --color-success: #3fb27a;
-      --color-success-ink: #7fd4a6;
-      --color-danger: #f0705f;
-      --color-danger-soft: #3a1714;
-      --color-like: #ff6369;
+      --color-canvas: #0d1117;
+      --color-surface: #0d1117;
+      --color-surface-raised: #151b23;
+      --color-surface-sunken: #1c232c;
+      --color-ink: #f0f6fc;
+      --color-ink-body: #f0f6fc;
+      --color-ink-soft: #d1d7e0;
+      --color-ink-muted: #9198a1;
+      --color-ink-inverse: #0d1117;
+      --color-line: #3d444d;
+      --color-line-soft: #262c36;
+      --color-accent: #4493f8;
+      --color-accent-hover: #6cb6ff;
+      --color-accent-ink: #4493f8;
+      --color-accent-soft: #121d2f;
+      --color-accent-line: #1f3a5f;
+      --color-cta: #238636;
+      --color-cta-hover: #29903b;
+      --color-success: #3fb950;
+      --color-success-ink: #56d364;
+      --color-danger: #f85149;
+      --color-danger-soft: #2d1215;
+      --color-like: #ff7b72;
       --color-star: #e3b341;
+      --color-level-0: #1c2128;
+      --color-level-1: #033a16;
+      --color-level-2: #196c2e;
+      --color-level-3: #2ea043;
+      --color-level-4: #56d364;
     }
   }
 
   :root[data-theme="dark"] {
-    --color-canvas: #0e100e;
-    --color-surface: #171917;
-    --color-surface-raised: #131513;
-    --color-surface-sunken: #1f221f;
-    --color-ink: #f2f2ec;
-    --color-ink-body: #d9dbd4;
-    --color-ink-soft: #c4c7bf;
-    --color-ink-muted: #9a9e95;
-    --color-ink-inverse: #121412;
-    --color-line: #2a2d29;
-    --color-line-soft: #222522;
-    --color-accent: #6e83ff;
-    --color-accent-hover: #8c9dff;
-    --color-accent-ink: #b8c3ff;
-    --color-accent-soft: #1c2246;
-    --color-accent-line: #2e3a7a;
-    --color-success: #3fb27a;
-    --color-success-ink: #7fd4a6;
-    --color-danger: #f0705f;
-    --color-danger-soft: #3a1714;
-    --color-like: #ff6369;
+    --color-canvas: #0d1117;
+    --color-surface: #0d1117;
+    --color-surface-raised: #151b23;
+    --color-surface-sunken: #1c232c;
+    --color-ink: #f0f6fc;
+    --color-ink-body: #f0f6fc;
+    --color-ink-soft: #d1d7e0;
+    --color-ink-muted: #9198a1;
+    --color-ink-inverse: #0d1117;
+    --color-line: #3d444d;
+    --color-line-soft: #262c36;
+    --color-accent: #4493f8;
+    --color-accent-hover: #6cb6ff;
+    --color-accent-ink: #4493f8;
+    --color-accent-soft: #121d2f;
+    --color-accent-line: #1f3a5f;
+    --color-cta: #238636;
+    --color-cta-hover: #29903b;
+    --color-success: #3fb950;
+    --color-success-ink: #56d364;
+    --color-danger: #f85149;
+    --color-danger-soft: #2d1215;
+    --color-like: #ff7b72;
     --color-star: #e3b341;
+    --color-level-0: #1c2128;
+    --color-level-1: #033a16;
+    --color-level-2: #196c2e;
+    --color-level-3: #2ea043;
+    --color-level-4: #56d364;
   }
 
   html {
@@ -198,16 +221,10 @@
   }
 }
 
-/* The page background: a faint dot grid with a glow of the accent at the top, drawn by CSS
-   alone, so large screens never look empty and phones download nothing for it. */
+/* The page background: the plain canvas of GitHub. The green squares carry the identity, so
+   the background stays quiet. */
 @utility backdrop {
   background-color: var(--color-canvas);
-  background-image:
-    radial-gradient(60rem 22rem at 70% -6rem, color-mix(in oklab, var(--color-accent) 13%, transparent), transparent 70%),
-    radial-gradient(40rem 26rem at -8rem 85%, color-mix(in oklab, var(--color-success) 7%, transparent), transparent 70%),
-    radial-gradient(circle at 1px 1px, color-mix(in oklab, var(--color-ink) 9%, transparent) 1px, transparent 0);
-  background-size: 100% 100%, 100% 100%, 22px 22px;
-  background-repeat: no-repeat, no-repeat, repeat;
 }
 
 /* Slow drift for decorative shapes; a second shape takes another delay so they never move as one. */

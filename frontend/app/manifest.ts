@@ -8,8 +8,8 @@ export default function manifest(): MetadataRoute.Manifest {
     description: "Portfolios you can read the code of. Des portfolios dont tu peux lire le code.",
     start_url: "/",
     display: "standalone",
-    background_color: "#f5f5f1",
-    theme_color: "#f5f5f1",
+    background_color: "#ffffff",
+    theme_color: "#ffffff",
     icons: [
       { src: "/icon/192", sizes: "192x192", type: "image/png" },
       { src: "/icon/512", sizes: "512x512", type: "image/png" },

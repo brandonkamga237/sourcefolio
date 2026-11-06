@@ -42,6 +42,10 @@
       "title": "Me",
       "account": "Account",
       "accountHint": "Sign in to publish your portfolio, get feedback and follow its visits."
+    },
+    "profile": {
+      "metaTitle": "{name} · open source profile",
+      "metaDescription": "What {name} has built in open source: regularity, contributions, languages and projects, every figure checkable on GitHub."
     }
   },
   "auth": {
@@ -476,5 +480,36 @@
     "game": "Game development",
     "embedded": "Embedded / IoT",
     "learning": "Learning"
+  },
+  "profileCard": {
+    "seniority": "Seniority",
+    "seniorityValue": "Since {year}",
+    "seniorityHint": "GitHub account created in {month}",
+    "regularity": "Regularity",
+    "regularityValue": "{active} / 12 months",
+    "regularityHint": "Months with at least one contribution",
+    "volume": "Contributions",
+    "volumeHint": "Public, over the last 12 months",
+    "stars": "Stars received",
+    "starsHint": "{followers, plural, =0 {No followers} one {# follower} other {# followers}}",
+    "elsewhere": "External PRs",
+    "elsewhereHint": "{projects, plural, =0 {No project yet} one {Merged in # project} other {Merged in # projects}}",
+    "calendarTitle": "{count, plural, =0 {No public contributions in the last 12 months} one {# contribution in the last 12 months} other {# contributions in the last 12 months}}",
+    "calendarEmpty": "An empty calendar is not a failure: it is a starting point.",
+    "viewOnGitHub": "View on GitHub",
+    "less": "Less",
+    "more": "More",
+    "languages": "Languages",
+    "languagesNote": "From public repositories, forks excluded.",
+    "otherLanguages": "Other",
+    "noLanguages": "No public code yet.",
+    "elsewhereTitle": "Contributions to other people's projects",
+    "mergedCount": "{count, plural, one {# merged PR} other {# merged PRs}}",
+    "noElsewhere": "No pull request merged elsewhere yet. A documentation fix is enough to start.",
+    "topRepositories": "Most starred repositories",
+    "analyzedOn": "Public GitHub data, analysed on {date}.",
+    "publicOnly": "This profile measures public open source contribution, not a person's total worth.",
+    "github": "github.com/{login}",
+    "proof": "Proof on GitHub"
   }
 }

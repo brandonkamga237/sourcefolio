@@ -5,7 +5,6 @@ import { BottomTabs } from "./BottomTabs";
 import { LanguageSwitch } from "./LanguageSwitch";
 import { Suspense } from "react";
 import { Terminal } from "@/components/illustrations/Terminal";
-import { TechBackdrop } from "@/components/illustrations/TechBackdrop";
 import { Logo } from "./Logo";
 import { ProjectStars } from "./ProjectStars";
 import { PublishLink } from "./PublishLink";
@@ -77,8 +76,6 @@ export async function AppShell({ children }: AppShellProps) {
           />
         </div>
       </header>
-
-      <TechBackdrop />
 
       <main id="content" className="min-h-dvh min-w-0 flex-1 pb-[calc(3.5rem+env(safe-area-inset-bottom))] lg:pb-0">
         {children}
