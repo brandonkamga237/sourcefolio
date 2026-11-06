@@ -17,7 +17,7 @@ export function LanguageSwitch({ current, label, names }: LanguageSwitchProps) {
   const pathname = withoutLocale(usePathname());
 
   return (
-    <div role="group" aria-label={label} className="grid grid-cols-2 gap-1 rounded-control bg-surface-sunken p-1">
+    <div role="group" aria-label={label} className="flex w-max overflow-hidden rounded-control border border-line">
       {routing.locales.map((locale) => {
         const active = locale === current;
         return (
@@ -26,10 +26,8 @@ export function LanguageSwitch({ current, label, names }: LanguageSwitchProps) {
             href={localizedPath(locale, pathname)}
             hrefLang={locale}
             aria-current={active ? "true" : undefined}
-            className={`flex h-9 items-center justify-center rounded-segment font-mono text-[13px] ${
-              active
-                ? "bg-surface font-medium text-ink shadow-[0_1px_2px_rgba(18,20,18,0.12)]"
-                : "text-ink-muted hover:text-ink"
+            className={`flex h-10 min-w-11 items-center justify-center px-3 text-[13px] font-semibold ${
+              active ? "bg-surface text-ink" : "bg-surface-raised text-ink-muted hover:text-ink"
             }`}
           >
             {names[locale]}

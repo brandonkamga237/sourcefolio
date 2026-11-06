@@ -11,11 +11,13 @@
     "label": "Main navigation",
     "discover": "Discover",
     "me": "Me",
-    "publish": "Publish your portfolio",
+    "publish": "Publish my profile",
     "ranking": "Ranking",
-    "publishShort": "Publish",
+    "publishShort": "My profile",
     "unreadOne": "{count} new piece of feedback",
-    "unreadOther": "{count} new pieces of feedback"
+    "unreadOther": "{count} new pieces of feedback",
+    "rankings": "Rankings",
+    "myProfile": "My profile"
   },
   "language": {
     "label": "Language",
@@ -558,5 +560,48 @@
     "copied": "Link copied",
     "preview": "Preview of your profile",
     "shownNotRanked": "City, bio and LinkedIn are shown but never enter a ranking."
+  },
+  "rankings": {
+    "title": "Rankings",
+    "lead": "Pick a criterion, filter by country and language. Each ranking says exactly what it measures, nothing more.",
+    "sortBy": "Sort by",
+    "sort": {
+      "regularity": "Regularity",
+      "contributions": "Contributions",
+      "stars": "Stars",
+      "external": "External PRs",
+      "seniority": "Seniority"
+    },
+    "measures": {
+      "regularity": "Active months out of the last 12, then public contributions.",
+      "contributions": "Public contributions over the last 12 months.",
+      "stars": "Stars received on owned public repositories.",
+      "external": "Pull requests merged in other people's projects.",
+      "seniority": "GitHub account creation date, oldest first."
+    },
+    "country": "Country",
+    "allCountries": "All countries",
+    "language": "Language",
+    "allLanguages": "All languages",
+    "apply": "Apply",
+    "count": "{count, plural, =0 {No profiles} one {# profile} other {# profiles}}",
+    "columns": {
+      "position": "#",
+      "profile": "Profile",
+      "regularity": "Regularity",
+      "contributions": "Contributions",
+      "stars": "Stars received",
+      "external": "External PRs",
+      "since": "Active since",
+      "languages": "Languages"
+    },
+    "monthsActive": "{active}/12",
+    "more": "Show more",
+    "backToTop": "Back to the top",
+    "empty": "No published profile matches yet.",
+    "emptyLead": "Rankings fill up as tech profiles publish theirs.",
+    "publishMine": "Publish my profile",
+    "unavailable": "The ranking is unavailable right now. Try again in a moment.",
+    "honest": "A ranking measures public open source contribution, not a person's worth."
   }
 }

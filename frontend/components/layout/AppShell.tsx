@@ -1,36 +1,28 @@
 import type { ReactNode } from "react";
+import { Suspense } from "react";
 import { getLocale, getTranslations } from "next-intl/server";
 import { toLocale } from "@/i18n/routing";
 import { BottomTabs } from "./BottomTabs";
+import { HeaderNav } from "./HeaderNav";
 import { LanguageSwitch } from "./LanguageSwitch";
-import { Suspense } from "react";
-import { Terminal } from "@/components/illustrations/Terminal";
 import { Logo } from "./Logo";
 import { ProjectStars } from "./ProjectStars";
 import { PublishLink } from "./PublishLink";
-import { SidebarNav } from "./SidebarNav";
 
 interface AppShellProps {
   children: ReactNode;
 }
 
-// Desktop (lg): sidebar on the left. Phone: slim top bar and the tabs at the bottom, in the
-// thumb zone. Same three sections in both. Labels are translated here, on the server, and
-// handed to the client components as plain strings: the browser never loads the message
-// catalogue or the ICU parser just to show four words.
+// A top bar at every width, as GitHub has: the sections in it on a wide screen, in the bottom
+// tabs (thumb zone) on a phone. Labels are translated here, on the server, and handed to the
+// client components as plain strings: the browser never loads the message catalogue.
 export async function AppShell({ children }: AppShellProps) {
   const t = await getTranslations();
   const locale = toLocale(await getLocale());
-  const labels = {
-    label: t("nav.label"),
-    discover: t("nav.discover"),
-    ranking: t("nav.ranking"),
-    me: t("nav.me"),
-    unread: { one: t.raw("nav.unreadOne") as string, other: t.raw("nav.unreadOther") as string },
-  };
+  const labels = { label: t("nav.label"), rankings: t("nav.rankings"), myProfile: t("nav.myProfile") };
 
   return (
-    <div className="lg:flex lg:min-h-dvh">
+    <div className="flex min-h-dvh flex-col">
       <a
         href="#content"
         className="sr-only z-50 rounded-control bg-ink px-4 py-3 text-ink-inverse focus:not-sr-only focus:fixed focus:top-3 focus:left-3"
@@ -38,46 +30,29 @@ export async function AppShell({ children }: AppShellProps) {
         {t("a11y.skipToContent")}
       </a>
 
-      <aside className="sticky top-0 hidden h-dvh w-[220px] shrink-0 flex-col gap-7 border-r border-line bg-surface-raised px-4 py-6 lg:flex">
-        <div className="px-2">
+      <header className="sticky top-0 z-30 h-14 border-b border-line bg-surface-raised/95 backdrop-blur-md lg:h-16">
+        <div className="mx-auto flex h-full w-full max-w-6xl items-center gap-6 px-4 lg:px-8">
           <Logo />
-        </div>
-        {/* Three groups, top to bottom: where to go, the one thing to do, then settings and links. */}
-        <div className="flex flex-col gap-4">
-          <SidebarNav locale={locale} labels={labels} />
-          <PublishLink
-            locale={locale}
-            label={t("nav.publish")}
-            className="press flex h-11 items-center justify-center rounded-control bg-ink text-sm font-semibold text-ink-inverse"
-          />
-        </div>
-        <div className="mt-auto px-1">
-          <Terminal />
-        </div>
-        <div className="flex flex-col gap-2.5 border-t border-line pt-4">
-          <LanguageSwitch current={locale} label={t("language.label")} names={{ fr: t("language.fr"), en: t("language.en") }} />
-          <Suspense fallback={null}>
-            <ProjectStars locale={locale} />
-          </Suspense>
-        </div>
-      </aside>
-
-      {/* The way in stays one tap away on a phone too, whichever tab is open. */}
-      <header className="sticky top-0 z-30 flex h-14 items-center justify-between gap-3 border-b border-line bg-surface/90 px-4 backdrop-blur-md lg:hidden">
-        <Logo />
-        <div className="flex items-center gap-2">
-          <Suspense fallback={null}>
-            <ProjectStars locale={locale} compact />
-          </Suspense>
-          <PublishLink
-          locale={locale}
-          label={t("nav.publishShort")}
-          className="press flex h-11 items-center rounded-full bg-ink px-4 text-[13px] font-semibold text-ink-inverse"
-          />
+          <HeaderNav locale={locale} labels={labels} />
+          <div className="ml-auto flex items-center gap-2">
+            <div className="hidden lg:block">
+              <LanguageSwitch current={locale} label={t("language.label")} names={{ fr: t("language.fr"), en: t("language.en") }} />
+            </div>
+            <div className="hidden sm:block">
+              <Suspense fallback={null}>
+                <ProjectStars locale={locale} compact />
+              </Suspense>
+            </div>
+            <PublishLink
+              locale={locale}
+              label={t("nav.publish")}
+              className="press flex h-10 items-center rounded-control bg-cta px-4 text-[14px] font-semibold text-cta-ink hover:bg-cta-hover"
+            />
+          </div>
         </div>
       </header>
 
-      <main id="content" className="min-h-dvh min-w-0 flex-1 pb-[calc(3.5rem+env(safe-area-inset-bottom))] lg:pb-0">
+      <main id="content" className="min-w-0 flex-1 pb-[calc(3.5rem+env(safe-area-inset-bottom))] lg:pb-0">
         {children}
       </main>
 
