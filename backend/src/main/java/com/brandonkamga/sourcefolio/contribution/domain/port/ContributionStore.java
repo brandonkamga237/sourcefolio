@@ -12,6 +12,9 @@ public interface ContributionStore {
 
     ContributionRecord save(ContributionRecord record);
 
+    /** The record carrying this login, compared without case; the latest asked for wins a stale tie. */
+    Optional<ContributionRecord> findByLogin(String login);
+
     /** Members whose latest reading and latest request are both older than the instant, oldest first. */
     List<UUID> findDue(Instant before, int limit);
 }

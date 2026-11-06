@@ -54,6 +54,12 @@ class JpaContributionStore implements ContributionStore {
 
     @Override
     @Transactional(readOnly = true)
+    public Optional<ContributionRecord> findByLogin(String login) {
+        return records.findByLogin(login).stream().findFirst().map(this::toDomain);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
     public List<UUID> findDue(Instant before, int limit) {
         return records.findDue(before, limit);
     }

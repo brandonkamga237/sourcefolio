@@ -9,6 +9,10 @@ import org.springframework.data.repository.query.Param;
 
 interface ContributionRecordJpaRepository extends JpaRepository<ContributionRecordEntity, UUID> {
 
+    // Two rows share a login only after a rename GitHub let someone else take: rare and few.
+    @Query("SELECT r FROM ContributionRecordEntity r WHERE lower(r.login) = lower(:login) ORDER BY r.requestedAt DESC")
+    List<ContributionRecordEntity> findByLogin(@Param("login") String login);
+
     @Query(value = """
             SELECT member_id FROM contribution_records
             WHERE GREATEST(analyzed_at, requested_at) < :before
