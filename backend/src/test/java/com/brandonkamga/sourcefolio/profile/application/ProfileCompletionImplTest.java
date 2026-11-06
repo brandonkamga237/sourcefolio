@@ -191,6 +191,8 @@ class ProfileCompletionImplTest {
         profiles.answerCountry(MEMBER, "CM");
         assertThat(profiles.publish(MEMBER).publishedAt()).isEqualTo(NOW);
         assertThat(rows.get(MEMBER).published()).isTrue();
+        assertThat(announced.getLast().published()).isTrue();
+        assertThat(announced.getLast().countryCode()).isEqualTo("CM");
 
         assertThat(profiles.unpublish(MEMBER).published()).isFalse();
         assertThat(rows.get(MEMBER).published()).isFalse();
