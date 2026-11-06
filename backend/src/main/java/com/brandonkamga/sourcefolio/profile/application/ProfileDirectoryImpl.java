@@ -16,6 +16,8 @@ public class ProfileDirectoryImpl implements ProfileDirectory {
     public Optional<PublicProfile> findPublicProfile(UUID memberId) {
         return profiles.find(memberId).map(profile ->
                 new PublicProfile(profile.country() == null ? null : profile.country().value(), profile.specialties().slugs(),
-                        profile.headline() == null ? null : profile.headline().value(), profile.role() == null ? null : profile.role().slug()));
+                        profile.headline() == null ? null : profile.headline().value(), profile.role() == null ? null : profile.role().slug(),
+                        profile.city() == null ? null : profile.city().value(), profile.bio() == null ? null : profile.bio().value(),
+                        profile.linkedIn() == null ? null : profile.linkedIn().url(), profile.published()));
     }
 }
