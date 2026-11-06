@@ -12,7 +12,7 @@ export async function TopRepositories({ repositories }: TopRepositoriesProps) {
   return (
     <section aria-labelledby="repositories-title" className="flex flex-col gap-3">
       <h2 id="repositories-title" className="text-[15px] font-semibold">{t("topRepositories")}</h2>
-      <ul className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
+      <ul className="grid gap-3 @xl:grid-cols-2 @3xl:grid-cols-3">
         {repositories.map((repository) => (
           <li key={repository.url}>
             <a

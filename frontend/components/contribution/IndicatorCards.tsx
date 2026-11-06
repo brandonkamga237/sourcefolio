@@ -50,7 +50,7 @@ export async function IndicatorCards({ indicators }: IndicatorCardsProps) {
   ];
 
   return (
-    <ul className="grid grid-cols-2 gap-3 sm:grid-cols-3 2xl:grid-cols-5">
+    <ul className="grid grid-cols-2 gap-3 @xl:grid-cols-3 @5xl:grid-cols-5">
       {cards.map((card) => (
         <li key={card.label}>
           <a
