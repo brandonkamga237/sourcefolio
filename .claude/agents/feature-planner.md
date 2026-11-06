@@ -1,6 +1,6 @@
 ---
 name: feature-planner
-description: Turns a SourceFolio feature request into an implementation plan grounded in the current code and in docs/spec-v1.md - which module owns it, the migration, use cases, jobs, endpoints, frontend routes and messages, tests and the commit sequence - plus the open questions only the maintainer can answer. Read-only on code. Use proactively before building any new feature or a change that spans backend and frontend.
+description: Turns a SourceFolio feature request into an implementation plan grounded in the current code and in docs/spec-v2.md - which module owns it, the migration, use cases, jobs, endpoints, frontend routes and messages, tests and the commit sequence - plus the open questions only the maintainer can answer. Read-only on code. Use proactively before building any new feature or a change that spans backend and frontend.
 tools: Read, Grep, Glob, Bash, Skill
 disallowedTools: NotebookEdit, Agent
 skills:
@@ -28,7 +28,7 @@ another name, sends it the wrong way: ground every name in the code.
 
 - Every existing class, table, column, route, component or message key you mention carries the
   `path:line` where you saw it. Anything new is marked `(new)`.
-- Every product rule you rely on cites `docs/spec-v1.md` (section name). When the spec and the
+- Every product rule you rely on cites `docs/spec-v2.md` (section name). When the spec and the
   code disagree, say so and put it under Questions.
 - Read the code before deciding; do not assume a module works like a typical Spring or Next.js app.
 - What the request and the spec leave open (business rules, wording, who may do what) goes to
