@@ -42,6 +42,10 @@
       "title": "Moi",
       "account": "Compte",
       "accountHint": "Connecte-toi pour publier ton portfolio, recevoir des retours et suivre ses visites."
+    },
+    "profile": {
+      "metaTitle": "{name} · fiche open source",
+      "metaDescription": "Ce que {name} a construit en open source : régularité, contributions, langages et projets, chaque chiffre vérifiable sur GitHub."
     }
   },
   "auth": {
@@ -476,5 +480,36 @@
     "game": "Jeu vidéo",
     "embedded": "Embarqué / IoT",
     "learning": "En formation"
+  },
+  "profileCard": {
+    "seniority": "Ancienneté",
+    "seniorityValue": "Depuis {year}",
+    "seniorityHint": "Compte GitHub créé en {month}",
+    "regularity": "Régularité",
+    "regularityValue": "{active} / 12 mois",
+    "regularityHint": "Mois avec au moins une contribution",
+    "volume": "Contributions",
+    "volumeHint": "Publiques, sur les 12 derniers mois",
+    "stars": "Étoiles reçues",
+    "starsHint": "{followers, plural, =0 {Aucun follower} one {# follower} other {# followers}}",
+    "elsewhere": "PR externes",
+    "elsewhereHint": "{projects, plural, =0 {Pas encore de projet} one {Acceptées dans # projet} other {Acceptées dans # projets}}",
+    "calendarTitle": "{count, plural, =0 {Aucune contribution publique sur les 12 derniers mois} one {# contribution sur les 12 derniers mois} other {# contributions sur les 12 derniers mois}}",
+    "calendarEmpty": "Un calendrier vide n'est pas un échec : c'est un point de départ.",
+    "viewOnGitHub": "Voir sur GitHub",
+    "less": "Moins",
+    "more": "Plus",
+    "languages": "Langages",
+    "languagesNote": "Calculé sur les dépôts publics, forks exclus.",
+    "otherLanguages": "Autres",
+    "noLanguages": "Pas encore de code public.",
+    "elsewhereTitle": "Contributions aux projets des autres",
+    "mergedCount": "{count, plural, one {# PR acceptée} other {# PR acceptées}}",
+    "noElsewhere": "Pas encore de pull request acceptée ailleurs. Une correction de documentation suffit pour commencer.",
+    "topRepositories": "Dépôts les plus suivis",
+    "analyzedOn": "Données GitHub publiques, analysées le {date}.",
+    "publicOnly": "Cette fiche mesure la contribution open source publique, pas la valeur totale d'une personne.",
+    "github": "github.com/{login}",
+    "proof": "Preuve sur GitHub"
   }
 }
