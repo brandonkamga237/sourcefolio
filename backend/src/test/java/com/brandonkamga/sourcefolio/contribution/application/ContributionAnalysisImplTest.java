@@ -29,7 +29,8 @@ class ContributionAnalysisImplTest {
     private final FakeGitHub github = new FakeGitHub();
     private final List<UUID> scheduled = new ArrayList<>();
     private final MutableClock clock = new MutableClock(NOW);
-    private final ContributionAnalysisImpl analysis = new ContributionAnalysisImpl(records, github, scheduled::add, clock);
+    private final List<ContributionAnalyzed> announced = new ArrayList<>();
+    private final ContributionAnalysisImpl analysis = new ContributionAnalysisImpl(records, github, scheduled::add, announced::add, clock);
     private final ContributionReportsImpl reports = new ContributionReportsImpl(records);
 
     private static GitHubActivity activity(int followers) {
@@ -65,6 +66,11 @@ class ContributionAnalysisImplTest {
             assertThat(mine.snapshot().followers()).isEqualTo(94);
             assertThat(mine.snapshot().analyzedAt()).isEqualTo(NOW.plusSeconds(4));
         });
+        assertThat(announced).singleElement().satisfies(event -> {
+            assertThat(event.login()).isEqualTo("nkeng-dev");
+            assertThat(event.followers()).isEqualTo(94);
+            assertThat(event.months()).hasSize(12);
+        });
     }
 
     @Test
@@ -79,6 +85,7 @@ class ContributionAnalysisImplTest {
 
         assertThat(scheduled).hasSize(1);
         assertThat(records.find(MEMBER)).map(ContributionRecord::login).hasValue("nkeng");
+        assertThat(announced).extracting(ContributionAnalyzed::login).containsExactly("nkeng-dev", "nkeng");
     }
 
     @Test
@@ -89,6 +96,7 @@ class ContributionAnalysisImplTest {
         analysis.analyze(MEMBER);
 
         assertThat(reports.findMine(MEMBER)).map(MyAnalysis::status).hasValue(AnalysisStatus.FAILED);
+        assertThat(announced).isEmpty();
     }
 
     @Test

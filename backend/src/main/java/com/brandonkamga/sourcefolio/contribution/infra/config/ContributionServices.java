@@ -2,6 +2,7 @@ package com.brandonkamga.sourcefolio.contribution.infra.config;
 
 import com.brandonkamga.sourcefolio.contribution.application.ContributionAnalysis;
 import com.brandonkamga.sourcefolio.contribution.application.ContributionAnalysisImpl;
+import com.brandonkamga.sourcefolio.contribution.application.ContributionEvents;
 import com.brandonkamga.sourcefolio.contribution.application.ContributionReports;
 import com.brandonkamga.sourcefolio.contribution.application.ContributionReportsImpl;
 import com.brandonkamga.sourcefolio.contribution.application.PublicProfiles;
@@ -28,8 +29,9 @@ class ContributionServices {
 
     // Not wrapped: analyze calls GitHub, and the store opens a transaction around each write.
     @Bean
-    ContributionAnalysis contributionAnalysis(ContributionStore records, ActivitySource github, AnalysisScheduler scheduler, Clock clock) {
-        return new ContributionAnalysisImpl(records, github, scheduler, clock);
+    ContributionAnalysis contributionAnalysis(ContributionStore records, ActivitySource github, AnalysisScheduler scheduler,
+                                              ContributionEvents events, Clock clock) {
+        return new ContributionAnalysisImpl(records, github, scheduler, events, clock);
     }
 
     @Bean
