@@ -67,7 +67,7 @@ Tous calculés sur les données publiques GitHub, fenêtre glissante de 12 mois 
 | --- | --- | --- | --- |
 | Ancienneté | Date de création du compte | `user.createdAt` | `github.com/{login}` |
 | Volume | Contributions publiques sur 12 mois (commits, PR, issues, revues) ; les contributions privées comptées par GitHub sont exclues | `contributionsCollection.contributionCalendar.totalContributions` moins `restrictedContributionsCount` | `github.com/{login}` (calendrier) |
-| Régularité | Nombre de mois actifs (≥ 1 contribution publique) sur les 12 derniers | Jours du calendrier, regroupés par mois | `github.com/{login}` |
+| Régularité | Nombre de mois actifs sur les 12 derniers, mois en cours compris | Jours du calendrier, regroupés par mois (GitHub y compte, jour par jour, les contributions privées d'un membre qui a choisi de les afficher ; on lit le calendrier tel qu'il le dessine) | `github.com/{login}` |
 | Étoiles et followers | Somme des étoiles des dépôts publics possédés (forks exclus) ; nombre de followers | `repositories(ownerAffiliations: OWNER, isFork: false).stargazerCount`, `followers.totalCount` | `github.com/{login}?tab=repositories&sort=stargazers` |
 | Langages | Répartition en octets sur les dépôts publics possédés, forks exclus ; 4 premiers + « Autres » | `repositories.languages(edges.size)` | `github.com/{login}?tab=repositories` |
 | Contributions acceptées ailleurs | PR fusionnées dans des dépôts dont le membre n'est pas propriétaire, regroupées par dépôt | Recherche `is:pr is:merged author:{login} -user:{login}` | `github.com/pulls?q=is:pr+is:merged+author:{login}+-user:{login}` |
