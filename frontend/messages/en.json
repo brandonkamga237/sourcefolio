@@ -12,7 +12,8 @@
     "me": "Me",
     "publish": "Publish my profile",
     "rankings": "Rankings",
-    "myProfile": "My profile"
+    "myProfile": "My profile",
+    "map": "Map"
   },
   "language": {
     "label": "Language",
@@ -312,5 +313,18 @@
     "publishMine": "Publish my profile",
     "unavailable": "The ranking is unavailable right now. Try again in a moment.",
     "honest": "A ranking measures public open source contribution, not a person's worth."
+  },
+  "map": {
+    "title": "The map",
+    "lead": "Each square shows how many profiles are published in an African city. Tap a city to see the rankings of its country.",
+    "picture": "Mosaic of Africa: {count, plural, =0 {no published profile yet} one {# published profile} other {# published profiles}}.",
+    "legendFew": "Few",
+    "legendMany": "Many",
+    "count": "{count, plural, =0 {No published profile yet} one {# published profile} other {# published profiles}}",
+    "emptyLead": "The map fills up with each published profile. Yours can light your city's first square.",
+    "publishMine": "Publish my profile",
+    "unplaced": "{count, plural, one {# profile has no city placed on the map.} other {# profiles have no city placed on the map.}}",
+    "tapHint": "Each member gives their own city. It places a profile on the map and never enters a ranking.",
+    "unavailable": "The map cannot be loaded right now. Try again in a moment."
   }
 }

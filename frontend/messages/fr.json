@@ -12,7 +12,8 @@
     "me": "Moi",
     "publish": "Publier ma fiche",
     "rankings": "Classements",
-    "myProfile": "Ma fiche"
+    "myProfile": "Ma fiche",
+    "map": "Carte"
   },
   "language": {
     "label": "Langue",
@@ -312,5 +313,18 @@
     "publishMine": "Publier ma fiche",
     "unavailable": "Le classement est indisponible pour le moment. Réessaie dans un instant.",
     "honest": "Un classement mesure la contribution open source publique, pas la valeur d'une personne."
+  },
+  "map": {
+    "title": "La carte",
+    "lead": "Chaque carré montre la densité de fiches publiées dans une ville africaine. Touche une ville pour voir les classements de son pays.",
+    "picture": "Mosaïque de l’Afrique : {count, plural, =0 {aucune fiche publiée pour l’instant} one {# fiche publiée} other {# fiches publiées}}.",
+    "legendFew": "Peu",
+    "legendMany": "Beaucoup",
+    "count": "{count, plural, =0 {Aucune fiche publiée pour l’instant} one {# fiche publiée} other {# fiches publiées}}",
+    "emptyLead": "La carte se remplit à chaque fiche publiée. La tienne peut allumer le premier carré de ta ville.",
+    "publishMine": "Publier ma fiche",
+    "unplaced": "{count, plural, one {# fiche n’a pas de ville placée sur la carte.} other {# fiches n’ont pas de ville placée sur la carte.}}",
+    "tapHint": "La ville est indiquée par chaque membre. Elle situe une fiche sur la carte, elle n’entre dans aucun classement.",
+    "unavailable": "La carte ne peut pas être chargée pour l’instant. Réessaie dans un moment."
   }
 }
