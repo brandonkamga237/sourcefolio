@@ -155,7 +155,13 @@
     "cancel": "Annuler"
   },
   "og": {
-    "lead": "Tes contributions publiques, en une fiche que les recruteurs peuvent lire et vérifier."
+    "lead": "Tes contributions publiques, en une fiche que les recruteurs peuvent lire et vérifier.",
+    "profile": {
+      "months": "{active}/12 mois actifs",
+      "contributions": "{count, plural, one {{formatted} contribution} other {{formatted} contributions}}",
+      "stars": "{count, plural, one {{formatted} étoile} other {{formatted} étoiles}}",
+      "source": "Données GitHub publiques"
+    }
   },
   "stars": {
     "repository": "{count, plural, =0 {Aucune étoile} one {# étoile} other {# étoiles}} sur GitHub",
@@ -355,7 +361,7 @@
       "lead": "Six indicateurs lus sur tes données GitHub publiques. Chaque chiffre renvoie à la page GitHub qui le montre. Rien n’est public tant que tu n’as pas choisi de publier.",
       "example": "Exemple",
       "exampleLogin": "ton-pseudo",
-      "months": "{active} mois actifs sur 12",
+      "months": "{active}/12 mois actifs",
       "contributions": "{count, plural, one {{formatted} contribution publique} other {{formatted} contributions publiques}}"
     },
     "path": {
@@ -436,7 +442,7 @@
       "occasional": "Occasionnel (moins de 6 mois)",
       "shown": "Profils affichés : {count} sur {total}",
       "noMatch": "Aucun profil ne correspond à ces filtres.",
-      "months": "{active} mois actifs sur 12",
+      "months": "{active}/12 mois actifs",
       "empty": "Le champ se remplit à chaque fiche publiée. Aucune n’est encore en ligne.",
       "unavailable": "Le champ de talents ne peut pas être chargé pour l’instant. Réessayez dans un moment.",
       "honest": "Ces fiches mesurent la contribution open source publique, pas la valeur totale d’une personne. Le travail sur du code privé n’y apparaît pas.",
