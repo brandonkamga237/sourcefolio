@@ -30,12 +30,6 @@ spring:
     jdbc:
       initialize-schema: never
 
-  # A preview video is 8 MB at most; a little room for the multipart envelope.
-  servlet:
-    multipart:
-      max-file-size: 8MB
-      max-request-size: 9MB
-
   messages:
     basename: messages
     fallback-to-system-locale: false
