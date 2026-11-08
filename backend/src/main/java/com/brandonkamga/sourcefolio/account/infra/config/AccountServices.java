@@ -30,7 +30,7 @@ class AccountServices {
     }
 
     @Bean
-    AccountDeletion accountDeletion(UserStore users, AccountEvents events, TransactionalServices transactional) {
-        return transactional.wrap(AccountDeletion.class, new AccountDeletionImpl(users, events));
+    AccountDeletion accountDeletion(UserStore users, TransactionalServices transactional) {
+        return transactional.wrap(AccountDeletion.class, new AccountDeletionImpl(users));
     }
 }
