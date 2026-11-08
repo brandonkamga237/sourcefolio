@@ -6,6 +6,7 @@ import { Suspense } from "react";
 import { LandingSwitch } from "@/components/landing/LandingSwitch";
 import { TalentField } from "@/components/landing/TalentField";
 import { WaitlistForm } from "@/components/landing/WaitlistForm";
+import { WaitlistLeaveForm } from "@/components/landing/WaitlistLeaveForm";
 import { localizedPath } from "@/i18n/paths";
 import { toLocale, type Locale } from "@/i18n/routing";
 import { getRankings } from "@/services/rankings";
@@ -79,6 +80,16 @@ export default async function RecruitersPage({ params }: PageProps<"/[locale]/re
               sending: t("waitlist.sending"),
               done: t("waitlist.done"),
               failed: t("waitlist.failed"),
+            }}
+          />
+          <WaitlistLeaveForm
+            labels={{
+              summary: t("waitlist.leave.summary"),
+              email: t("waitlist.email"),
+              submit: t("waitlist.leave.submit"),
+              sending: t("waitlist.sending"),
+              done: t("waitlist.leave.done"),
+              failed: t("waitlist.leave.failed"),
             }}
           />
         </div>

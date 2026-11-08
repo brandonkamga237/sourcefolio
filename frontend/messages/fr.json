@@ -309,11 +309,17 @@
       "lead": "L’accès n’est pas encore ouvert. Laissez votre e-mail professionnel, on vous écrit dès qu’il l’est.",
       "email": "E-mail professionnel",
       "placeholder": "vous@entreprise.com",
-      "consent": "J’accepte que SourceFolio conserve cet e-mail pour me contacter au sujet de l’accès recruteur.",
+      "consent": "J’accepte que SourceFolio conserve cet e-mail pour me contacter au sujet de l’accès recruteur. Je peux le retirer à tout moment, ci-dessous.",
       "submit": "Rejoindre la liste d’attente",
       "sending": "Envoi…",
       "done": "C’est noté. On vous écrit dès que l’accès est ouvert.",
-      "failed": "L’inscription n’a pas abouti. Réessayez dans un moment."
+      "failed": "L’inscription n’a pas abouti. Réessayez dans un moment.",
+      "leave": {
+        "summary": "Retirer mon e-mail de la liste",
+        "submit": "Retirer",
+        "done": "C’est fait : cette adresse n’est plus sur la liste.",
+        "failed": "Le retrait n’a pas abouti. Réessayez dans un moment."
+      }
     },
     "field": {
       "title": "Le champ de talents",

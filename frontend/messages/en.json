@@ -309,11 +309,17 @@
       "lead": "Access is not open yet. Leave your work email and we will write as soon as it is.",
       "email": "Work email",
       "placeholder": "you@company.com",
-      "consent": "I agree that SourceFolio keeps this email to contact me about recruiter access.",
+      "consent": "I agree that SourceFolio keeps this email to contact me about recruiter access. I can remove it at any time, below.",
       "submit": "Join the waitlist",
       "sending": "Sending…",
       "done": "Noted. We will write as soon as access opens.",
-      "failed": "The sign-up did not go through. Try again in a moment."
+      "failed": "The sign-up did not go through. Try again in a moment.",
+      "leave": {
+        "summary": "Remove my email from the list",
+        "submit": "Remove",
+        "done": "Done: this address is no longer on the list.",
+        "failed": "The removal did not go through. Try again in a moment."
+      }
     },
     "field": {
       "title": "The talent field",
