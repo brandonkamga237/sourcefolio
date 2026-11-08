@@ -15,8 +15,7 @@ description: Start the SourceFolio development environment (PostgreSQL, RustFS f
    ```
    docker compose ps
    ```
-   PostgreSQL on 5432, RustFS (S3) on 9000 with its console on 9001 (`rustfsadmin` /
-   `rustfsadmin`), Mailpit SMTP on 1025 and its inbox on http://localhost:8025.
+   PostgreSQL on 5432, Mailpit SMTP on 1025 and its inbox on http://localhost:8025.
 
 2. **Backend** (from `backend/`):
    ```
@@ -63,13 +62,13 @@ In the backend image Chromium and its libraries are already installed.
 **`port is already allocated` (5432 / 9000 / 9001 / 1025 / 8025)**
 Another project holds the port. Find it:
 ```
-docker ps --filter "publish=5432" --filter "publish=9000"
+docker ps --filter "publish=5432"
 ```
 Then start on different ports (the variables exist for this):
 ```
-DB_PORT=5433 S3_PORT=9002 S3_CONSOLE_PORT=9003 docker compose up -d
+DB_PORT=5433 docker compose up -d
 ```
-Pass the same `DB_PORT` / `S3_PORT` to the backend if it runs outside a container.
+Pass the same `DB_PORT` to the backend if it runs outside a container.
 
 **`Schema-validation: missing column [...]` at startup**
 An entity changed without its Flyway migration (Hibernate runs with `ddl-auto: validate`). Add
