@@ -94,21 +94,14 @@ ou du continent, pour ne pas transformer chaque fiche en rang.
 
 ## Design
 
-- Esthétique GitHub, palette **Primer** : clair, sombre ou système. Tokens repris des
-  maquettes (`--bg #ffffff / #0d1117`, accent `#0969da / #4493f8`, bouton `#1f883d / #238636`,
-  niveaux de vert `l0…l4` du calendrier).
-- Titres en Mona Sans, texte en police système, libellés en monospace capitales.
+- Niveau visuel de github.com : pages d’accueil sur fond nuit, application en clair, sombre ou
+  système. Tokens dans `frontend/app/globals.css`.
+- Geist pour toute l’interface, typographie très grande. Animations GSAP chargées après le
+  premier affichage.
 - Concept **« le carré vert »** : le carré de contribution est l'unité de toute l'interface :
   logo (2×2 carrés), carte de l'Afrique en mosaïque, chemin du débutant, champ de talents.
 - Bilingue FR/EN, mobile d'abord (≈ 90 % des premières visites viennent d'un téléphone),
   cibles tactiles 44 px, contraste AA.
-
-À aligner en construisant (incohérences relevées dans les maquettes) :
-
-- Deux logos coexistent (carrés 2×2 sur la landing, globe ailleurs) : on garde les carrés.
-- La landing recruteur dessine des ronds de couleur : on passe aux carrés.
-- La fiche, les classements et le formulaire n'utilisent pas encore le carré vert comme unité.
-- Les libellés « développeur(s) » deviennent « profil(s) tech » là où le contexte est général.
 
 ## Modèle et modules (backend)
 

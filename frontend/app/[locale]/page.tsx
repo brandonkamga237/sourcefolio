@@ -8,7 +8,7 @@ import { IconArrowRight, IconCalendar, IconCheck, IconClose, IconCode, IconCommi
 import { GitHubHandleForm } from "@/components/landing/GitHubHandleForm";
 import { ProfilePreviews } from "@/components/landing/ProfilePreviews";
 import { ProfileSpecimen } from "@/components/landing/ProfileSpecimen";
-import { AfricaField } from "@/components/map/AfricaField";
+import { AfricaFieldLazy as AfricaField } from "@/components/map/AfricaFieldLazy";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { localizedPath } from "@/i18n/paths";
 import { toLocale, type Locale } from "@/i18n/routing";
@@ -83,9 +83,9 @@ export default async function LandingPage({ params }: PageProps<"/[locale]">) {
       <JsonLd data={{ "@context": "https://schema.org", "@type": "WebSite", name: "SourceFolio", url: `${process.env.SITE_URL ?? "http://localhost:3000"}/${locale}`, description: meta("description"), inLanguage: locale }} />
 
       <section className="hero-lights relative">
-        <div className="wrap grid items-center gap-10 pt-12 pb-16 lg:min-h-[calc(100dvh-4.5rem)] lg:grid-cols-[minmax(0,1fr)_minmax(0,1.15fr)] lg:gap-12 lg:py-12">
-          <div className="flex min-w-0 flex-col items-start gap-7">
-            <h1 className="text-[56px] leading-[0.98] font-semibold tracking-[-0.045em] sm:text-[80px] xl:text-[104px]">
+        <div className="wrap flex flex-col gap-6 pt-6 pb-14 lg:grid lg:min-h-[calc(100dvh-4.5rem)] lg:items-center lg:grid-cols-[minmax(0,1fr)_minmax(0,1.15fr)] lg:gap-12 lg:py-12">
+          <div className="contents lg:flex lg:min-w-0 lg:flex-col lg:items-start lg:gap-7">
+            <h1 className="order-1 text-[52px] lg:order-none leading-[0.98] font-semibold tracking-[-0.045em] sm:text-[80px] xl:text-[104px]">
               {words.map((word, index) => (
                 <span key={index} style={{ animationDelay: `${index * 90}ms` } as CSSProperties} className={`animate-rise inline-block ${index === words.length - 1 ? "text-gradient" : ""}`}>
                   {word}
@@ -93,8 +93,8 @@ export default async function LandingPage({ params }: PageProps<"/[locale]">) {
                 </span>
               ))}
             </h1>
-            <p className="animate-rise max-w-xl text-[19px] leading-relaxed text-ink-soft [animation-delay:320ms] lg:text-[22px]">{t("hero.lead")}</p>
-            <div className="animate-rise w-full max-w-xl [animation-delay:420ms]">
+            <p className="animate-rise order-4 max-w-xl text-[19px] leading-relaxed text-ink-soft [animation-delay:320ms] lg:order-none lg:text-[22px]">{t("hero.lead")}</p>
+            <div className="animate-rise order-3 w-full max-w-xl [animation-delay:420ms] lg:order-none">
               <GitHubHandleForm
                 locale={locale}
                 labels={{
@@ -109,7 +109,7 @@ export default async function LandingPage({ params }: PageProps<"/[locale]">) {
                 }}
               />
             </div>
-            <div className="animate-rise flex flex-wrap gap-x-6 [animation-delay:520ms]">
+            <div className="animate-rise order-5 flex flex-wrap gap-x-6 [animation-delay:520ms] lg:order-none">
               <Link href={localizedPath(locale, "/map")} className="link flex min-h-11 items-center gap-2 text-[16px]">
                 {t("map.explore")}
                 <IconArrowRight aria-hidden="true" className="size-4" />
@@ -120,7 +120,7 @@ export default async function LandingPage({ params }: PageProps<"/[locale]">) {
               </Link>
             </div>
           </div>
-          <div className="min-w-0 lg:-mr-12">
+          <div className="order-2 mx-auto w-[76%] min-w-0 max-w-sm lg:order-none lg:mx-0 lg:-mr-12 lg:w-auto lg:max-w-none">
             <Suspense fallback={<div className="aspect-[72/74] w-full" />}>
               <HeroMap locale={locale} />
             </Suspense>

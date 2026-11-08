@@ -5,6 +5,10 @@ description: The SourceFolio visual language taken from the V1 mockups — colou
 
 # Design system
 
+> The values below describe the V1 mockups and are out of date. The current tokens and the shared
+> utilities (`wrap`, `btn`, `field`, `glow-card`, `hero-lights`, `dark-band`) are in
+> `frontend/app/globals.css`, which wins over this file. The icon rules below still apply.
+
 The reference is the mockup "Écrans V1 – Desktop · Découvrir" (desktop, 1440 px). The mobile
 screens follow the same tokens with the bottom tab bar instead of the sidebar. When a value is
 not here, take it from the mockup, never invent a near neighbour.

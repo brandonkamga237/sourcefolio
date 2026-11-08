@@ -18,7 +18,7 @@ export function BottomTabs({ locale, labels }: BottomTabsProps) {
   return (
     <nav
       aria-label={labels.label}
-      className={`fixed inset-x-0 bottom-0 z-40 border-t border-line bg-canvas/90 pb-[env(safe-area-inset-bottom)] backdrop-blur-md lg:hidden ${NIGHT_PAGES.includes(pathname) ? "dark-band" : ""}`}
+      className={`fixed inset-x-0 bottom-0 z-40 border-t border-line bg-canvas pb-[env(safe-area-inset-bottom)] backdrop-blur-md lg:hidden ${NIGHT_PAGES.includes(pathname) ? "dark-band" : ""}`}
     >
       <ul className="grid grid-cols-3">
         {tabSections.map((section) => {

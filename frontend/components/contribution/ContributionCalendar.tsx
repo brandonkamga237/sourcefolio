@@ -1,5 +1,6 @@
 import { getFormatter, getTranslations } from "next-intl/server";
 import { weeksOf } from "@/lib/calendar";
+import { CalendarArt } from "./CalendarArt";
 import type { ContributionDay } from "@/services/contribution-types";
 
 interface ContributionCalendarProps {
@@ -38,25 +39,13 @@ export async function ContributionCalendar({ calendar, total, proofUrl }: Contri
       </div>
       {/* direction rtl on the scroller opens it on its right end, the latest weeks */}
       <div data-wipe="" className="overflow-x-auto [direction:rtl]">
-        <div className="inline-flex flex-col gap-1 [direction:ltr]" aria-hidden="true">
-          <div className="grid gap-[3px] text-[13px] text-ink-muted" style={{ gridTemplateColumns: `repeat(${weeks.length}, 13px)` }}>
+        <div className="flex min-w-[720px] flex-col gap-1.5 [direction:ltr]" aria-hidden="true">
+          <div className="grid text-[14px] text-ink-muted" style={{ gridTemplateColumns: `repeat(${weeks.length}, minmax(0, 1fr))` }}>
             {months.map((label, index) => (
-              <span key={index} className="h-4 overflow-visible whitespace-nowrap">{label}</span>
+              <span key={index} className="h-5 overflow-visible whitespace-nowrap">{label}</span>
             ))}
           </div>
-          <div className="grid grid-flow-col grid-rows-7 gap-[3px]" style={{ gridTemplateColumns: `repeat(${weeks.length}, 13px)` }}>
-            {weeks.flatMap((week, column) =>
-              Array.from({ length: 7 }, (_, row) => {
-                const day = week[row];
-                return (
-                  <span
-                    key={`${column}-${row}`}
-                    className={`size-[13px] rounded-[3px] ${day ? LEVEL[day.level] : ""}`}
-                  />
-                );
-              }),
-            )}
-          </div>
+          <CalendarArt calendar={calendar} />
         </div>
       </div>
       <div className="flex flex-wrap items-center justify-between gap-2 text-[14px] text-ink-muted">

@@ -3,7 +3,7 @@ import Link from "next/link";
 import { connection } from "next/server";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { Suspense } from "react";
-import { AfricaField } from "@/components/map/AfricaField";
+import { AfricaFieldLazy as AfricaField } from "@/components/map/AfricaFieldLazy";
 import { ExploreHeader } from "@/components/rankings/ExploreHeader";
 import { localizedPath } from "@/i18n/paths";
 import { toLocale, type Locale } from "@/i18n/routing";

@@ -46,7 +46,7 @@ export function ScrollEffects() {
           });
         }
         for (const element of once("data-wipe")) {
-          gsap.fromTo(element, { clipPath: "inset(0 100% 0 0)" }, { clipPath: "inset(0 0% 0 0)", ease: "none", scrollTrigger: { trigger: element, start: "top 85%", end: "top 35%", scrub: 0.6 } });
+          gsap.fromTo(element, { clipPath: "inset(0 100% 0 0)" }, { clipPath: "inset(0 0% 0 0)", duration: 1.6, ease: "power2.inOut", scrollTrigger: { trigger: element, start: "top 88%", once: true } });
         }
         for (const path of once("data-draw") as unknown as SVGPathElement[]) {
           const length = path.getTotalLength();

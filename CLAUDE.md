@@ -58,9 +58,13 @@ these names, because CI, the skills and the agents call them.
   A beginner must feel welcome: an empty calendar is a starting point, not a zero to display
 - On-screen copy says "tech profile" / "profil tech" where the context is general, so that a
   sysadmin or a DevOps recognises themselves, not only "developer"
-- Visual language: GitHub Primer palette (light, dark, system) and the "green square" concept:
-  the contribution square is the unit of the interface (logo, Africa map mosaic, beginner path,
-  talent field)
+- Visual language: the level of github.com. Landing pages on a night ground (always dark), the
+  app in light, dark or system; Geist; large type. The "green square" concept stays: the
+  contribution square is the unit of the interface (logo, Africa map mosaic, beginner path,
+  talent field). Tokens live in `frontend/app/globals.css`
+- Motion: GSAP, loaded after the first paint (`components/motion/ScrollEffects.tsx`, driven by
+  `data-reveal`, `data-stagger`, `data-count`, `data-wipe`, `data-draw`). Content stays visible
+  if it never loads, and `prefers-reduced-motion` stops it
 - One main action per screen; the rest is progressive disclosure
 - Comments explain why, never what. No file headers, no generated javadoc, no commented-out code
 - Icons and the logo come from our own pack (`frontend/icons/*.svg` → SVGR): never Lucide,
