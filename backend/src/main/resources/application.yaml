@@ -61,19 +61,8 @@ app:
     client-id: ${GITHUB_CLIENT_ID:}
     client-secret: ${GITHUB_CLIENT_SECRET:}
     api-url: https://api.github.com
-    # The platform's token for public data (portfolio detection). Optional in development.
+    # The platform's token for public data (the GitHub analysis). Optional in development.
     api-token: ${GITHUB_API_TOKEN:}
-  # The bucket for previews: RustFS from docker compose in development, RustFS on the VPS in
-  # production. public-url is where browsers read the objects (Traefik serves /media there).
-  storage:
-    endpoint: ${S3_ENDPOINT:http://localhost:9000}
-    region: ${S3_REGION:us-east-1}
-    bucket: ${S3_BUCKET:sourcefolio-media}
-    access-key: ${S3_ACCESS_KEY:rustfsadmin}
-    secret-key: ${S3_SECRET_KEY:rustfsadmin}
-    public-url: ${S3_PUBLIC_URL:http://localhost:9000/sourcefolio-media}
-    # Creates the bucket and its public-read policy at startup when they are missing.
-    ensure-bucket: true
 
 # Jobs live in PostgreSQL (JobRunr creates its own jobrunr_* tables). Use cases are called
 # directly in tests, so the server that runs them is switched on per profile.
