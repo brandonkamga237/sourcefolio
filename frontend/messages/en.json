@@ -24,11 +24,6 @@
     "skipToContent": "Skip to content"
   },
   "pages": {
-    "me": {
-      "title": "Me",
-      "account": "Account",
-      "accountHint": "Sign in to publish your portfolio, get feedback and follow its visits."
-    },
     "profile": {
       "metaTitle": "{name} · open source profile",
       "metaDescription": "What {name} has built in open source: regularity, contributions, languages and projects, every figure checkable on GitHub."
@@ -47,7 +42,7 @@
   "notFound": {
     "title": "Page not found",
     "body": "This address leads to no profile. It may have changed or been removed.",
-    "back": "Back to the rankings"
+    "back": "Back to home"
   },
   "account": {
     "signedInAs": "Signed in as {login}",
@@ -326,5 +321,86 @@
     "unplaced": "{count, plural, one {# profile has no city placed on the map.} other {# profiles have no city placed on the map.}}",
     "tapHint": "Each member gives their own city. It places a profile on the map and never enters a ranking.",
     "unavailable": "The map cannot be loaded right now. Try again in a moment."
+  },
+  "landing": {
+    "switch": {
+      "label": "Who it is for",
+      "tech": "I am a tech profile",
+      "recruit": "I am hiring"
+    },
+    "hero": {
+      "title": "From open source to opportunity.",
+      "lead": "Your public contributions become a profile recruiters can read and verify. Developer, sysadmin, DevOps, data, mobile, QA, security: every tech profile belongs here."
+    },
+    "form": {
+      "field": "Your GitHub username",
+      "placeholder": "your-username",
+      "submit": "See my profile",
+      "checking": "Searching…",
+      "invalid": "This is not a valid GitHub username.",
+      "missing": "No profile under this name yet.",
+      "signIn": "Create it with GitHub",
+      "failed": "We cannot check right now. Try again in a moment."
+    },
+    "map": {
+      "picture": "Mosaic of Africa: each square shows a city's published profiles.",
+      "explore": "Explore the map"
+    },
+    "problem": {
+      "title": "A CV tells. Your code shows.",
+      "body": "Many tech profiles build in public without anyone noticing, and recruiters have no time to read repositories. The profile turns that work into plain facts anyone can check."
+    },
+    "profile": {
+      "title": "A profile where every figure has its proof.",
+      "lead": "Six indicators read from your public GitHub data. Every figure links to the GitHub page that shows it. Nothing is public until you choose to publish.",
+      "example": "Example",
+      "exampleLogin": "your-username",
+      "months": "{active} active months out of 12",
+      "contributions": "{count, plural, one {{formatted} public contribution} other {{formatted} public contributions}}"
+    },
+    "path": {
+      "title": "An empty calendar is a starting point.",
+      "lead": "Your profile exists from your first contribution. No points, no streaks to keep.",
+      "find": {
+        "title": "Find a project",
+        "body": "A tool you already use, documentation to improve."
+      },
+      "first": {
+        "title": "Offer a first contribution",
+        "body": "A clear issue, a small pull request."
+      },
+      "accepted": {
+        "title": "Get it accepted",
+        "body": "Each contribution accepted elsewhere shows on your profile."
+      },
+      "publish": {
+        "title": "Publish your profile",
+        "body": "You decide when it goes public, and you can take it down at any time."
+      }
+    },
+    "recruit": {
+      "title": "Hiring?",
+      "body": "Discover talent by what they have actually built, and join the waitlist for recruiter access.",
+      "link": "Go to the recruiter page"
+    },
+    "method": {
+      "title": "The method",
+      "readsTitle": "What we read",
+      "reads": {
+        "contributions": "Your public contributions over the last 12 months",
+        "seniority": "The creation date of your GitHub account",
+        "stars": "The stars of your public repositories and your followers",
+        "languages": "The languages of your public repositories",
+        "external": "Your pull requests accepted in other people's projects"
+      },
+      "notReadsTitle": "What we do not read",
+      "notReads": {
+        "private": "Your private repositories",
+        "linkedin": "LinkedIn: we only show the link you give",
+        "strangers": "People who have not signed up",
+        "score": "No overall score: each ranking sorts on one criterion"
+      },
+      "honest": "The profile measures public open source contribution, not a person's worth. An excellent engineer working on private code may look quiet here."
+    }
   }
 }
