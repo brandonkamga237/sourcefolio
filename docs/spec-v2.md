@@ -28,13 +28,15 @@ sysadmin ou un DevOps doit se reconnaître dans la promesse.
 
 | Question | Décision | Raison |
 | --- | --- | --- |
-| Que devient le catalogue de portfolios ? | Retiré du produit. Écrans, routes, jobs de vérification arrêtés. Le code reste dans l'historique git ; les tables restent en base, sans migration destructive, jusqu'à décision. | « L'analyse des portfolios » est hors V2. Un seul produit à maintenir. |
+| Que devient le catalogue de portfolios ? | Retiré du produit, données comprises : écrans, routes et jobs arrêtés, tables supprimées (`V27`), stockage S3 retiré du déploiement. Le code reste dans l'historique git. | « L'analyse des portfolios » est hors V2. Un seul produit à maintenir. |
 | Source des données | GitHub uniquement, données publiques. | Vérifiable par n'importe qui. |
 | Accès à l'API GitHub | Un jeton serveur dédié (GitHub App ou jeton fin en lecture publique), en secret sur le serveur. Le scope OAuth de connexion reste `read:user`. | GraphQL exige un jeton ; le rafraîchissement hebdomadaire doit tourner même quand le membre n'est pas connecté. |
 | Publication | Rien n'est public sans l'accord explicite du membre. L'analyse donne d'abord un aperçu privé. | Règle non négociable. |
 | Pays | Obligatoire pour publier (il détermine les classements). Ville facultative. | Les classements filtrent par pays. |
 | Score combiné | Aucun en V2. Chaque classement trie sur un seul indicateur et dit ce qu'il mesure. | Pas assez de vraies données pour pondérer honnêtement. |
 | Ordre de livraison | Spec, puis analyse GitHub et fiche, puis classements, puis landings et carte. | La landing doit montrer de vraies fiches. |
+| Toucher une ville sur la carte | Ouvre les classements de son pays. | La ville est saisie à la main et n'entre dans aucun classement. |
+| E-mails gratuits sur la liste d'attente | Acceptés ; seule la forme de l'adresse est vérifiée. | Beaucoup de petites structures n'ont pas de domaine propre. |
 
 ## Règles non négociables
 
@@ -83,7 +85,7 @@ heure) et chaque semaine par un job, dans les limites de débit de l'API.
 | Landing | Sélecteur « Je suis un profil tech / Je recrute », carte de l'Afrique en mosaïque, champ `github.com/ton-pseudo` → « Voir ma fiche », sections Le problème, La fiche, Le chemin, Recruteurs, La méthode (ce qu'on lit / ce qu'on ne lit pas) |
 | Landing recruteur | Promesse « Ne lisez plus de CV », champ de talents filtrable (langage, ville, rythme), inscription liste d'attente |
 | Classements | Tri par critère (Régularité, Contributions, Étoiles, PR externes, Ancienneté), filtres pays et langage, tableau sur desktop, cartes sur mobile |
-| Carte | Mosaïque de l'Afrique : chaque carré, la densité de profils publiés ; toucher une ville filtre les classements |
+| Carte | Mosaïque de l'Afrique : chaque carré, la densité de profils publiés ; toucher une ville ouvre les classements de son pays |
 | Fiche | Identité, bio, ville, liens ; les six indicateurs en cartes, calendrier de contributions, langages, contributions ailleurs, dépôts les plus suivis ; chaque chiffre cliquable vers GitHub |
 | Analyse et complétion | Étapes Connexion → Analyse → Compléter → Publier, aperçu de la fiche à côté du formulaire |
 
@@ -117,7 +119,7 @@ ou du continent, pour ne pas transformer chaque fiche en rang.
 | `contribution` (nouveau) | Passerelle GraphQL GitHub, analyse, instantanés des six indicateurs, job hebdomadaire |
 | `discovery` | Réécrit : modèle de lecture des fiches publiées pour classements, filtres et carte |
 | `waitlist` (nouveau) | Inscriptions recruteurs : e-mail pro, consentement, date |
-| `showcase`, `checkup`, `engagement`, `storage` | Retirés du produit ; jobs désinscrits ; tables conservées |
+| `showcase`, `checkup`, `engagement`, `storage` | Retirés, avec leurs tables et le stockage S3 |
 
 ## Hors V2
 
@@ -150,9 +152,6 @@ ou du continent, pour ne pas transformer chaque fiche en rang.
 
 - Le nom (SourceFolio est provisoire).
 - Les vraies preuves de la landing avant lancement : de vraies fiches, de vrais retours.
-- Suppression définitive des tables portfolio (et des fichiers S3 associés).
-  En attendant, `showcase` et `storage` ne servent plus qu'à une chose : effacer les aperçus
-  d'un membre quand il supprime son compte, car les clés étrangères n'atteignent pas le bucket.
 
 ## Critères d'acceptation
 

@@ -23,4 +23,11 @@ class JpaWaitlistStore implements WaitlistStore {
                 .setParameter("consentedAt", consentedAt)
                 .executeUpdate();
     }
+
+    @Override
+    public void remove(EmailAddress email) {
+        entityManager.createNativeQuery("DELETE FROM waitlist_signups WHERE lower(email) = lower(:email)")
+                .setParameter("email", email.value())
+                .executeUpdate();
+    }
 }

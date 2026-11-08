@@ -4,8 +4,8 @@ A platform that turns the public GitHub contributions of tech profiles (develope
 sysadmins, DevOps, data, mobile, QA, security) into a profile recruiters can read and trust.
 Promise: "De l'open source à l'opportunité" / "From open source to opportunity". The audience is
 African; the map shows it rather than the copy repeating it. The name is provisional. Product
-spec: `docs/spec-v2.md` (it replaces `docs/spec-v1.md`, the former portfolio catalogue, which is
-being removed from the product).
+spec: `docs/spec-v2.md` (it replaces `docs/spec-v1.md`, the former portfolio catalogue, removed
+from the product with its data).
 
 Monorepo: `backend/` (Spring Boot 4, Java 21, PostgreSQL, JPA, Flyway, JobRunr) and
 `frontend/` (Next.js App Router, React, TypeScript, Tailwind, Radix, TanStack Query, next-intl,
@@ -14,8 +14,8 @@ Serwist PWA).
 ## Layout
 
 - `backend/src/main/java/com/brandonkamga/sourcefolio/<module>/`: one package per business
-  capability (`account`, `profile`, `showcase`, `checkup`, `discovery`, `taxonomy`,
-  `engagement`, `notification`, `moderation`, `storage`). `shared/` holds cross-cutting code only
+  capability (`account`, `profile`, `contribution`, `discovery`, `waitlist`). `shared/` holds
+  cross-cutting code only
 - `backend/src/main/resources/db/migration/`: Flyway migrations `V{n}__description.sql`
 - `frontend/` (no `src/`, `@/` points at its root): `app/[locale]/` (routes), `components/` (`ui/` Radix primitives, `icons/`
   generated from `icons/*.svg`), `services/` (every API call), `hooks/`, `lib/`, `i18n/`;
@@ -27,7 +27,7 @@ Serwist PWA).
 
 | Where | Command | What |
 | --- | --- | --- |
-| root | `docker compose up -d` | PostgreSQL, RustFS (S3) and Mailpit for development, no `.env` needed |
+| root | `docker compose up -d` | PostgreSQL and Mailpit for development, no `.env` needed |
 | `backend/` | `./mvnw spring-boot:run` | API on :8080, profile `dev` |
 | `backend/` | `./mvnw test` | unit tests and `@WebMvcTest` slices, no Docker |
 | `backend/` | `./mvnw verify` | also the `*IT` suite on PostgreSQL via Testcontainers (Docker) |
@@ -89,7 +89,7 @@ these names, because CI, the skills and the agents call them.
 
 ## Never
 
-- `git push --force`, committing `.env`, hardcoding S3 keys, the GitHub OAuth secret or any token
+- `git push --force`, committing `.env`, hardcoding the GitHub OAuth secret or any token
 - Editing a Flyway migration that is already merged: add the next `V{n}` instead
 - Asking GitHub for more than the public profile (`read:user`): no `repo`, no `read:org`
 - Calling the GitHub API with anything but the dedicated server token (secret, never in the
@@ -114,10 +114,8 @@ these names, because CI, the skills and the agents call them.
 - **Ranking** (Classement): published profiles sorted by one indicator, filtered by country and
   language
 - **Map** (Carte): the mosaic of Africa where each square shows the density of published
-  profiles, by city
+  profiles, by city; tapping a city opens the rankings of its country
 - **Waitlist**: recruiters leave a work e-mail; no recruiter account in V2
-- **Showcase, Check, Lifecycle, Feedback, Discover**: the former portfolio catalogue
-  (`docs/spec-v1.md`), being removed from the product; its tables stay until a decision
 
 ## Where to look
 

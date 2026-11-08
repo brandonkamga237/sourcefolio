@@ -2,6 +2,7 @@ package com.brandonkamga.sourcefolio.waitlist.application;
 
 import com.brandonkamga.sourcefolio.shared.domain.EmailAddress;
 import com.brandonkamga.sourcefolio.shared.exception.BadRequestException;
+import com.brandonkamga.sourcefolio.waitlist.domain.port.WaitlistStore;
 import java.time.Clock;
 import java.time.Instant;
 import java.time.ZoneOffset;
@@ -19,9 +20,18 @@ class WaitlistImplTest {
 
     private final List<EmailAddress> stored = new ArrayList<>();
     private final List<Instant> dates = new ArrayList<>();
-    private final Waitlist waitlist = new WaitlistImpl((email, consentedAt) -> {
-        stored.add(email);
-        dates.add(consentedAt);
+    private final List<EmailAddress> removed = new ArrayList<>();
+    private final Waitlist waitlist = new WaitlistImpl(new WaitlistStore() {
+        @Override
+        public void add(EmailAddress email, Instant consentedAt) {
+            stored.add(email);
+            dates.add(consentedAt);
+        }
+
+        @Override
+        public void remove(EmailAddress email) {
+            removed.add(email);
+        }
     }, Clock.fixed(NOW, ZoneOffset.UTC));
 
     @Test
@@ -31,6 +41,15 @@ class WaitlistImplTest {
 
         assertThat(stored).containsExactly(new EmailAddress("ada@acme.africa"));
         assertThat(dates).containsExactly(NOW);
+    }
+
+    @Test
+    @DisplayName("anyone can take an address off the list; a malformed one is refused")
+    void leaves() {
+        waitlist.leave(" ada@acme.africa ");
+
+        assertThat(removed).containsExactly(new EmailAddress("ada@acme.africa"));
+        assertThatThrownBy(() -> waitlist.leave("nope")).isInstanceOf(BadRequestException.class);
     }
 
     @Test

@@ -5,12 +5,12 @@ import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.stereotype.Component;
 
-/** Recruiters have no account in the V2: signing up needs none. */
+/** Recruiters have no account in the V2: signing up or leaving needs none. */
 @Component
 class WaitlistRoutes implements SecurityCustomizer {
 
     @Override
     public void customize(HttpSecurity http) throws Exception {
-        http.authorizeHttpRequests(routes -> routes.requestMatchers(HttpMethod.POST, "/api/waitlist").permitAll());
+        http.authorizeHttpRequests(routes -> routes.requestMatchers(HttpMethod.POST, "/api/waitlist", "/api/waitlist/removal").permitAll());
     }
 }
