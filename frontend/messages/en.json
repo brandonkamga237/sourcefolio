@@ -12,7 +12,11 @@
     "publish": "Publish my profile",
     "rankings": "Rankings",
     "myProfile": "My profile",
-    "map": "Map"
+    "map": "Map",
+    "home": "Home",
+    "explore": "Explore",
+    "recruiters": "Recruiters",
+    "mapLink": "The map"
   },
   "language": {
     "label": "Language",
@@ -341,5 +345,13 @@
       "honest": "These profiles measure public open source contribution, not a person's total worth. Work on private code does not show here.",
       "rankings": "See the rankings"
     }
+  },
+  "footer": {
+    "product": "Product",
+    "project": "Project",
+    "preferences": "Preferences",
+    "method": "The method",
+    "source": "Source code",
+    "honest": "SourceFolio only reads public GitHub data. A profile measures public open source contribution, not a person's worth."
   }
 }

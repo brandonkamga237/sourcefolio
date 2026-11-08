@@ -23,15 +23,15 @@ export async function ProjectStars({ locale, compact }: ProjectStarsProps) {
       rel="noopener noreferrer"
       aria-label={label}
       title={label}
-      className="press flex h-11 items-stretch overflow-hidden rounded-full border border-line bg-surface text-sm font-semibold text-ink transition-colors duration-150 hover:border-ink-muted"
+      className="press flex h-11 w-fit items-stretch overflow-hidden rounded-control border border-line bg-surface text-[13px] font-medium text-ink transition-colors duration-150 hover:bg-surface-raised lg:h-9"
     >
       <span aria-hidden="true" className={`flex min-w-0 items-center gap-2 ${compact ? "pr-2 pl-3" : "flex-1 pr-2 pl-4"}`}>
         <IconGithub className="size-[18px] shrink-0" />
         {compact ? null : <span className="truncate">{t("badge")}</span>}
       </span>
       {count === null ? null : (
-        <span aria-hidden="true" className="flex shrink-0 items-center gap-1 border-l border-line bg-surface-sunken px-3 font-mono tabular-nums">
-          <IconStar className="size-4 fill-star text-star" />
+        <span aria-hidden="true" className="flex shrink-0 items-center gap-1 border-l border-line px-3 tabular-nums">
+          <IconStar className="size-3.5 fill-star text-star" />
           {count}
         </span>
       )}

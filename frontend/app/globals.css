@@ -230,10 +230,6 @@
   }
 }
 
-@utility backdrop {
-  background-color: var(--color-canvas);
-}
-
 /* Slow drift for decorative shapes; a second shape takes another delay so they never move as one. */
 @utility drift {
   animation: float 6s ease-in-out infinite;
@@ -354,15 +350,5 @@
 
   &:hover {
     text-decoration-color: currentColor;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  *,
-  ::before,
-  ::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
   }
 }

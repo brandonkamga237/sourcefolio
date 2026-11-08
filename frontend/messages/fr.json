@@ -12,7 +12,11 @@
     "publish": "Publier ma fiche",
     "rankings": "Classements",
     "myProfile": "Ma fiche",
-    "map": "Carte"
+    "map": "Carte",
+    "home": "Accueil",
+    "explore": "Explorer",
+    "recruiters": "Recruteurs",
+    "mapLink": "La carte"
   },
   "language": {
     "label": "Langue",
@@ -341,5 +345,13 @@
       "honest": "Ces fiches mesurent la contribution open source publique, pas la valeur totale d’une personne. Le travail sur du code privé n’y apparaît pas.",
       "rankings": "Voir les classements"
     }
+  },
+  "footer": {
+    "product": "Produit",
+    "project": "Projet",
+    "preferences": "Préférences",
+    "method": "La méthode",
+    "source": "Code source",
+    "honest": "SourceFolio lit uniquement des données GitHub publiques. Une fiche mesure la contribution open source publique, pas la valeur d’une personne."
   }
 }
