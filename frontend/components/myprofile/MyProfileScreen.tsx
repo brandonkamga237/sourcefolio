@@ -146,3 +146,18 @@ export async function MyProfileScreen({ locale }: MyProfileScreenProps) {
     </div>
   );
 }
+
+export function MyProfileScreenSkeleton() {
+  return (
+    <div aria-hidden="true" className="grid items-start gap-6 lg:grid-cols-[minmax(0,1fr)_340px]">
+      <div className="flex flex-col gap-4">
+        <div className="flex items-center gap-3">
+          <div className="size-12 animate-pulse rounded-full bg-surface-sunken" />
+          <div className="h-6 w-40 animate-pulse rounded bg-surface-sunken" />
+        </div>
+        <div className="h-48 animate-pulse rounded-card bg-surface-sunken" />
+      </div>
+      <div className="h-40 animate-pulse rounded-card bg-surface-sunken" />
+    </div>
+  );
+}
