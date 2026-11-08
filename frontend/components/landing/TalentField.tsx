@@ -34,7 +34,7 @@ interface TalentFieldProps {
 type Rhythm = "" | "steady" | "regular" | "occasional";
 
 const LEVEL = ["bg-level-0", "bg-level-1", "bg-level-2", "bg-level-3", "bg-level-4"] as const;
-const select = "h-11 min-w-0 rounded-control font-normal border border-line bg-surface px-2 text-[16px] lg:text-[14px]";
+const label = "flex flex-col gap-1.5 text-[13px] text-ink-muted";
 
 function levelOf(activeMonths: number): number {
   if (activeMonths >= 10) return 4;
@@ -65,23 +65,23 @@ export function TalentField({ locale, talents, labels }: TalentFieldProps) {
   return (
     <div className="flex flex-col gap-4">
       <div className="grid gap-2 sm:grid-cols-3">
-        <label className="flex flex-col gap-1 text-[13px] font-semibold">
+        <label className={label}>
           {labels.language}
-          <select value={language} onChange={(event) => setLanguage(event.target.value)} className={select}>
+          <select value={language} onChange={(event) => setLanguage(event.target.value)} className="field">
             <option value="">{labels.allLanguages}</option>
             {languages.map((name) => <option key={name}>{name}</option>)}
           </select>
         </label>
-        <label className="flex flex-col gap-1 text-[13px] font-semibold">
+        <label className={label}>
           {labels.city}
-          <select value={city} onChange={(event) => setCity(event.target.value)} className={select}>
+          <select value={city} onChange={(event) => setCity(event.target.value)} className="field">
             <option value="">{labels.allCities}</option>
             {cities.map((name) => <option key={name}>{name}</option>)}
           </select>
         </label>
-        <label className="flex flex-col gap-1 text-[13px] font-semibold">
+        <label className={label}>
           {labels.rhythm}
-          <select value={rhythm} onChange={(event) => setRhythm(event.target.value as Rhythm)} className={select}>
+          <select value={rhythm} onChange={(event) => setRhythm(event.target.value as Rhythm)} className="field">
             <option value="">{labels.allRhythms}</option>
             <option value="steady">{labels.steady}</option>
             <option value="regular">{labels.regular}</option>
@@ -100,7 +100,7 @@ export function TalentField({ locale, talents, labels }: TalentFieldProps) {
             const name = `${talent.login} · ${labels.months.replace("{active}", String(talent.activeMonths))}`;
             return (
               <li key={talent.login}>
-                <Link href={localizedPath(locale, `/u/${talent.login}`)} aria-label={name} title={name} className={`block size-11 rounded-[6px] outline-offset-1 hover:opacity-75 ${LEVEL[levelOf(talent.activeMonths)]}`} />
+                <Link href={localizedPath(locale, `/u/${talent.login}`)} aria-label={name} title={name} className={`block size-11 rounded-[6px] outline-offset-1 transition-transform duration-150 hover:-translate-y-0.5 ${LEVEL[levelOf(talent.activeMonths)]}`} />
               </li>
             );
           })}

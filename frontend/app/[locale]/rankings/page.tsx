@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { Suspense } from "react";
+import { ExploreHeader } from "@/components/rankings/ExploreHeader";
 import { RankingFilters } from "@/components/rankings/RankingFilters";
 import { RankingTable } from "@/components/rankings/RankingTable";
 import { JsonLd } from "@/components/seo/JsonLd";
@@ -55,27 +56,24 @@ async function Ranking({ locale, searchParams }: { locale: Locale; searchParams:
     <div className="flex flex-col gap-5">
       <JsonLd data={{ "@context": "https://schema.org", "@type": "CollectionPage", name: t("title"), description: t("lead"), url: `${site}/${locale}/rankings`, inLanguage: locale }} />
       <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
-        <div className="flex flex-col gap-1.5">
-          <span className="text-[13px] font-semibold">{t("sortBy")}</span>
-          {/* Links, not buttons: each ranking has its own address, shareable and indexable. */}
-          <nav aria-label={t("sortBy")} className="-mx-4 overflow-x-auto px-4 lg:mx-0 lg:px-0">
-            <ul className="flex w-max gap-1 rounded-segment border border-line bg-surface-raised p-1">
-              {RANKING_SORTS.map((option) => (
-                <li key={option}>
-                  <Link
-                    href={href(locale, { sort: option === "regularity" ? null : option, country, language })}
-                    aria-current={option === sort ? "page" : undefined}
-                    className={`flex min-h-10 items-center rounded-control px-3.5 text-[14px] whitespace-nowrap ${
-                      option === sort ? "border border-line bg-surface font-semibold text-ink shadow-sm" : "text-ink-soft hover:text-ink"
-                    }`}
-                  >
-                    {t(`sort.${option}`)}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </nav>
-        </div>
+        {/* Links, not buttons: each ranking has its own address, shareable and indexable. */}
+        <nav aria-label={t("sortBy")} className="-mx-4 overflow-x-auto px-4 lg:mx-0 lg:px-0">
+          <ul className="flex w-max gap-5 border-b border-line">
+            {RANKING_SORTS.map((option) => (
+              <li key={option}>
+                <Link
+                  href={href(locale, { sort: option === "regularity" ? null : option, country, language })}
+                  aria-current={option === sort ? "page" : undefined}
+                  className={`-mb-px flex min-h-11 items-center border-b-2 text-[14px] whitespace-nowrap transition-colors duration-150 ${
+                    option === sort ? "border-tab-active font-medium text-ink" : "border-transparent text-ink-muted hover:text-ink"
+                  }`}
+                >
+                  {t(`sort.${option}`)}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </nav>
         <RankingFilters
           country={country}
           language={language}
@@ -85,15 +83,13 @@ async function Ranking({ locale, searchParams }: { locale: Locale; searchParams:
         />
       </div>
 
-      <div className="flex flex-col gap-1 border-t border-line pt-4 text-[13px]">
-        <p><strong>{t("count", { count: page.total })}</strong> · {t(`measures.${sort}`)}</p>
-      </div>
+      <p className="text-[13px] text-ink-muted"><span className="font-medium text-ink">{t("count", { count: page.total })}</span> · {t(`measures.${sort}`)}</p>
 
       {page.items.length === 0 ? (
-        <div className="flex flex-col items-start gap-3 rounded-card border border-line bg-surface p-5">
-          <p className="text-[15px] font-semibold">{t("empty")}</p>
-          <p className="text-[14px] text-ink-muted">{t("emptyLead")}</p>
-          <Link href={localizedPath(locale, "/me")} className="press flex h-11 items-center rounded-control bg-cta px-4 text-[14px] font-semibold text-cta-ink">
+        <div className="flex flex-col items-start gap-3 rounded-card bg-surface-sunken p-6">
+          <p className="text-[16px] font-medium">{t("empty")}</p>
+          <p className="text-[14px] text-ink-soft">{t("emptyLead")}</p>
+          <Link href={localizedPath(locale, "/me")} className="btn btn-primary">
             {t("publishMine")}
           </Link>
         </div>
@@ -103,12 +99,12 @@ async function Ranking({ locale, searchParams }: { locale: Locale; searchParams:
 
       <div className="flex flex-wrap items-center gap-3">
         {page.nextCursor ? (
-          <Link href={href(locale, { sort: sort === "regularity" ? null : sort, country, language, cursor: page.nextCursor })} className="press flex h-11 items-center rounded-control border border-line bg-surface px-4 text-[14px] font-semibold">
+          <Link href={href(locale, { sort: sort === "regularity" ? null : sort, country, language, cursor: page.nextCursor })} className="btn btn-secondary">
             {t("more")}
           </Link>
         ) : null}
         {cursor ? (
-          <Link href={href(locale, { sort: sort === "regularity" ? null : sort, country, language })} className="text-[14px] text-accent hover:underline">
+          <Link href={href(locale, { sort: sort === "regularity" ? null : sort, country, language })} className="link text-[14px]">
             {t("backToTop")}
           </Link>
         ) : null}
@@ -123,11 +119,8 @@ export default async function RankingsPage({ params, searchParams }: PageProps<"
   setRequestLocale(locale);
   const t = await getTranslations({ locale, namespace: "rankings" });
   return (
-    <div className="mx-auto flex w-full max-w-6xl flex-col gap-6 px-4 py-6 lg:px-8 lg:py-10">
-      <header className="flex flex-col gap-2">
-        <h1 className="font-display text-[30px] leading-tight font-semibold lg:text-[36px]">{t("title")}</h1>
-        <p className="max-w-2xl text-[15px] leading-relaxed text-ink-soft">{t("lead")}</p>
-      </header>
+    <div className="wrap flex flex-col gap-8 py-8 lg:gap-10 lg:py-14">
+      <ExploreHeader locale={locale} current="rankings" lead={t("lead")} />
       <Suspense fallback={<div className="h-96 animate-pulse rounded-card bg-surface-sunken" />}>
         <Ranking locale={locale} searchParams={searchParams} />
       </Suspense>

@@ -10,8 +10,7 @@ interface RankingFiltersProps {
   labels: { country: string; allCountries: string; language: string; allLanguages: string };
 }
 
-const select =
-  "min-h-11 w-full rounded-control border border-line bg-surface px-3 text-[15px] text-ink outline-none focus:border-accent focus:ring-2 focus:ring-accent-line";
+const label = "flex flex-col gap-1.5 text-[13px] text-ink-muted";
 
 /** Country and language: each change reloads the ranking from its first page. */
 export function RankingFilters({ country, language, countries, languages, labels }: RankingFiltersProps) {
@@ -29,19 +28,19 @@ export function RankingFilters({ country, language, countries, languages, labels
   }
 
   return (
-    <div className="grid grid-cols-2 gap-3 sm:w-[420px]">
-      <label className="flex flex-col gap-1 text-[13px] font-semibold">
+    <div className="grid grid-cols-2 gap-3 lg:w-[400px]">
+      <label className={label}>
         {labels.country}
-        <select value={country ?? ""} onChange={(event) => set("country", event.target.value)} className={select}>
+        <select value={country ?? ""} onChange={(event) => set("country", event.target.value)} className="field">
           <option value="">{labels.allCountries}</option>
           {countries.map((option) => (
             <option key={option.value} value={option.value}>{option.label}</option>
           ))}
         </select>
       </label>
-      <label className="flex flex-col gap-1 text-[13px] font-semibold">
+      <label className={label}>
         {labels.language}
-        <select value={language ?? ""} onChange={(event) => set("language", event.target.value)} className={select}>
+        <select value={language ?? ""} onChange={(event) => set("language", event.target.value)} className="field">
           <option value="">{labels.allLanguages}</option>
           {languages.map((option) => (
             <option key={option.value} value={option.value}>{option.label}</option>

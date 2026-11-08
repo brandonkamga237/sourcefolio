@@ -220,11 +220,6 @@
     "unavailable": "The map cannot be loaded right now. Try again in a moment."
   },
   "landing": {
-    "switch": {
-      "label": "Who it is for",
-      "tech": "I am a tech profile",
-      "recruit": "I am hiring"
-    },
     "hero": {
       "title": "From open source to opportunity.",
       "lead": "Your public contributions become a profile recruiters can read and verify. Developer, sysadmin, DevOps, data, mobile, QA, security: every tech profile belongs here.",
@@ -278,11 +273,6 @@
         "title": "Publish your profile",
         "body": "You decide when it goes public, and you can take it down at any time."
       }
-    },
-    "recruit": {
-      "title": "Hiring?",
-      "body": "Discover talent by what they have actually built, and join the waitlist for recruiter access.",
-      "link": "Go to the recruiter page"
     },
     "method": {
       "title": "The method",
@@ -340,7 +330,8 @@
     },
     "hero": {
       "title": "Stop reading CVs.",
-      "lead": "Find tech profiles by what they have actually built. Every figure links to its proof on GitHub."
+      "lead": "Find tech profiles by what they have actually built. Every figure links to its proof on GitHub.",
+      "tech": "I am a tech profile"
     },
     "waitlist": {
       "title": "Recruiter access: coming soon",
@@ -378,6 +369,21 @@
       "unavailable": "The talent field cannot be loaded right now. Try again in a moment.",
       "honest": "These profiles measure public open source contribution, not a person's total worth. Work on private code does not show here.",
       "rankings": "See the rankings"
+    },
+    "read": {
+      "title": "What a profile tells you, with the proof attached.",
+      "regularity": {
+        "title": "The rhythm",
+        "body": "How many of the last 12 months were active, and when."
+      },
+      "accepted": {
+        "title": "Accepted work",
+        "body": "The pull requests other teams reviewed and merged."
+      },
+      "languages": {
+        "title": "The languages",
+        "body": "What the person really writes, measured on their public repositories."
+      }
     }
   },
   "footer": {

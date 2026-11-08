@@ -220,11 +220,6 @@
     "unavailable": "La carte ne peut pas être chargée pour l’instant. Réessaie dans un moment."
   },
   "landing": {
-    "switch": {
-      "label": "Pour qui",
-      "tech": "Je suis un profil tech",
-      "recruit": "Je recrute"
-    },
     "hero": {
       "title": "De l’open source à l’opportunité.",
       "lead": "Tes contributions publiques deviennent une fiche que les recruteurs peuvent lire et vérifier. Développeur, sysadmin, DevOps, data, mobile, QA, sécurité : chaque profil tech y a sa place.",
@@ -278,11 +273,6 @@
         "title": "Publie ta fiche",
         "body": "Tu décides quand elle devient publique, et tu peux la retirer à tout moment."
       }
-    },
-    "recruit": {
-      "title": "Tu recrutes ?",
-      "body": "Découvre les talents par ce qu’ils ont réellement construit, et rejoins la liste d’attente de l’accès recruteur.",
-      "link": "Voir l’espace recruteurs"
     },
     "method": {
       "title": "La méthode",
@@ -340,7 +330,8 @@
     },
     "hero": {
       "title": "Ne lisez plus de CV.",
-      "lead": "Trouvez des profils tech par ce qu’ils ont réellement construit. Chaque chiffre renvoie à sa preuve sur GitHub."
+      "lead": "Trouvez des profils tech par ce qu’ils ont réellement construit. Chaque chiffre renvoie à sa preuve sur GitHub.",
+      "tech": "Je suis un profil tech"
     },
     "waitlist": {
       "title": "Accès recruteur : bientôt",
@@ -378,6 +369,21 @@
       "unavailable": "Le champ de talents ne peut pas être chargé pour l’instant. Réessayez dans un moment.",
       "honest": "Ces fiches mesurent la contribution open source publique, pas la valeur totale d’une personne. Le travail sur du code privé n’y apparaît pas.",
       "rankings": "Voir les classements"
+    },
+    "read": {
+      "title": "Ce qu’une fiche vous apprend, preuves à l’appui.",
+      "regularity": {
+        "title": "Le rythme",
+        "body": "Combien de mois actifs sur les 12 derniers, et à quel moment."
+      },
+      "accepted": {
+        "title": "Le travail accepté",
+        "body": "Les pull requests que d’autres équipes ont relues puis fusionnées."
+      },
+      "languages": {
+        "title": "Les langages",
+        "body": "Ce que la personne écrit réellement, mesuré sur ses dépôts publics."
+      }
     }
   },
   "footer": {
