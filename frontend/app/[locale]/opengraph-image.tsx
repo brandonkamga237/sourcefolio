@@ -20,7 +20,7 @@ export default async function OpenGraphImage({ params }: { params: Promise<{ loc
         <div style={{ display: "flex", flexDirection: "column", justifyContent: "space-between", width: 620 }}>
           <OgLogo />
           <div style={{ display: "flex", flexDirection: "column", gap: 26 }}>
-            <div style={{ fontFamily: "Bricolage", fontSize: 76, lineHeight: 1.0, letterSpacing: -3.5 }}>{t("brand.tagline")}</div>
+            <div style={{ fontWeight: 600, fontSize: 76, lineHeight: 1.0, letterSpacing: -3.5 }}>{t("brand.tagline")}</div>
             <div style={{ fontSize: 30, lineHeight: 1.35, color: og.body }}>{t("og.lead")}</div>
           </div>
           <div style={{ display: "flex", alignItems: "center", gap: 14, fontSize: 26, color: og.accent }}>

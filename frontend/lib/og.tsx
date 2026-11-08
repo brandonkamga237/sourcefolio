@@ -3,15 +3,15 @@ import { join } from "node:path";
 import { landSquares, MAP_COLUMNS, MAP_ROWS, squaresPath } from "@/lib/map";
 
 // Share images (WhatsApp, LinkedIn, X) are drawn by next/og, which only reads static fonts: the
-// site's own two faces, as WOFF files served from public/og. Read once per server process.
-let fonts: Promise<{ name: string; data: Buffer; weight: 500 | 700; style: "normal" }[]> | null = null;
+// site's own face in two weights, as WOFF files served from public/og. Read once per server process.
+let fonts: Promise<{ name: string; data: Buffer; weight: 500 | 600; style: "normal" }[]> | null = null;
 
 export function ogFonts() {
   fonts ??= Promise.all([
-    readFile(join(process.cwd(), "public/og/bricolage-700.woff")),
+    readFile(join(process.cwd(), "public/og/geist-600.woff")),
     readFile(join(process.cwd(), "public/og/geist-500.woff")),
   ]).then(([display, body]) => [
-    { name: "Bricolage", data: display, weight: 700 as const, style: "normal" as const },
+    { name: "Geist", data: display, weight: 600 as const, style: "normal" as const },
     { name: "Geist", data: body, weight: 500 as const, style: "normal" as const },
   ]);
   return fonts;
@@ -40,7 +40,7 @@ export function OgLogo() {
         <rect x="2" y="13" width="9" height="9" rx="2" />
         <rect x="13" y="13" width="9" height="9" rx="2" />
       </svg>
-      <div style={{ fontFamily: "Bricolage", fontSize: 40, letterSpacing: -1.5, color: og.ink }}>sourcefolio</div>
+      <div style={{ fontWeight: 600, fontSize: 38, letterSpacing: -1.5, color: og.ink }}>sourcefolio</div>
     </div>
   );
 }

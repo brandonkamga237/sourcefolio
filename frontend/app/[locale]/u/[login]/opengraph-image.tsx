@@ -62,12 +62,12 @@ export default async function OpenGraphImage({ params }: { params: Promise<{ loc
           {avatar ? (
             <img src={avatar} alt="" width={180} height={180} style={{ borderRadius: 90 }} />
           ) : (
-            <div style={{ display: "flex", alignItems: "center", justifyContent: "center", width: 180, height: 180, borderRadius: 24, background: og.levels[3], color: og.canvas, fontFamily: "Bricolage", fontSize: 96 }}>
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "center", width: 180, height: 180, borderRadius: 24, background: og.levels[3], color: og.canvas, fontWeight: 600, fontSize: 96 }}>
               {card.login.charAt(0).toUpperCase()}
             </div>
           )}
           <div style={{ display: "flex", flexDirection: "column", gap: 10, flex: 1 }}>
-            <div style={{ fontFamily: "Bricolage", fontSize: 68, lineHeight: 1.05, letterSpacing: -2 }}>{name}</div>
+            <div style={{ fontWeight: 600, fontSize: 68, lineHeight: 1.05, letterSpacing: -2 }}>{name}</div>
             <div style={{ fontSize: 32, color: og.muted }}>{place}</div>
           </div>
         </div>
