@@ -402,5 +402,45 @@
       },
       "honest": "La fiche mesure la contribution open source publique, pas la valeur d’une personne. Un excellent ingénieur qui travaille sur du code privé peut y paraître discret."
     }
+  },
+  "recruiters": {
+    "meta": {
+      "title": "Recruter par les preuves"
+    },
+    "hero": {
+      "title": "Ne lisez plus de CV.",
+      "lead": "Trouvez des profils tech par ce qu’ils ont réellement construit. Chaque chiffre renvoie à sa preuve sur GitHub."
+    },
+    "waitlist": {
+      "title": "Accès recruteur : bientôt",
+      "lead": "L’accès n’est pas encore ouvert. Laissez votre e-mail professionnel, on vous écrit dès qu’il l’est.",
+      "email": "E-mail professionnel",
+      "placeholder": "vous@entreprise.com",
+      "consent": "J’accepte que SourceFolio conserve cet e-mail pour me contacter au sujet de l’accès recruteur.",
+      "submit": "Rejoindre la liste d’attente",
+      "sending": "Envoi…",
+      "done": "C’est noté. On vous écrit dès que l’accès est ouvert.",
+      "failed": "L’inscription n’a pas abouti. Réessayez dans un moment."
+    },
+    "field": {
+      "title": "Le champ de talents",
+      "lead": "Un carré par fiche publiée, d’autant plus foncé que le rythme de contribution est soutenu. Ouvrez un carré pour lire la fiche.",
+      "language": "Langage",
+      "allLanguages": "Tous les langages",
+      "city": "Ville",
+      "allCities": "Toutes les villes",
+      "rhythm": "Rythme",
+      "allRhythms": "Tous les rythmes",
+      "steady": "Très régulier (10 mois et plus)",
+      "regular": "Régulier (6 à 9 mois)",
+      "occasional": "Occasionnel (moins de 6 mois)",
+      "shown": "Profils affichés : {count} sur {total}",
+      "noMatch": "Aucun profil ne correspond à ces filtres.",
+      "months": "{active} mois actifs sur 12",
+      "empty": "Le champ se remplit à chaque fiche publiée. Aucune n’est encore en ligne.",
+      "unavailable": "Le champ de talents ne peut pas être chargé pour l’instant. Réessayez dans un moment.",
+      "honest": "Ces fiches mesurent la contribution open source publique, pas la valeur totale d’une personne. Le travail sur du code privé n’y apparaît pas.",
+      "rankings": "Voir les classements"
+    }
   }
 }

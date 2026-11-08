@@ -402,5 +402,45 @@
       },
       "honest": "The profile measures public open source contribution, not a person's worth. An excellent engineer working on private code may look quiet here."
     }
+  },
+  "recruiters": {
+    "meta": {
+      "title": "Hire on proof"
+    },
+    "hero": {
+      "title": "Stop reading CVs.",
+      "lead": "Find tech profiles by what they have actually built. Every figure links to its proof on GitHub."
+    },
+    "waitlist": {
+      "title": "Recruiter access: coming soon",
+      "lead": "Access is not open yet. Leave your work email and we will write as soon as it is.",
+      "email": "Work email",
+      "placeholder": "you@company.com",
+      "consent": "I agree that SourceFolio keeps this email to contact me about recruiter access.",
+      "submit": "Join the waitlist",
+      "sending": "Sending…",
+      "done": "Noted. We will write as soon as access opens.",
+      "failed": "The sign-up did not go through. Try again in a moment."
+    },
+    "field": {
+      "title": "The talent field",
+      "lead": "One square per published profile, darker as the contribution rhythm gets steadier. Open a square to read the profile.",
+      "language": "Language",
+      "allLanguages": "All languages",
+      "city": "City",
+      "allCities": "All cities",
+      "rhythm": "Rhythm",
+      "allRhythms": "All rhythms",
+      "steady": "Very steady (10 months or more)",
+      "regular": "Regular (6 to 9 months)",
+      "occasional": "Occasional (under 6 months)",
+      "shown": "Profiles shown: {count} of {total}",
+      "noMatch": "No profile matches these filters.",
+      "months": "{active} active months out of 12",
+      "empty": "The field fills up with each published profile. None is online yet.",
+      "unavailable": "The talent field cannot be loaded right now. Try again in a moment.",
+      "honest": "These profiles measure public open source contribution, not a person's total worth. Work on private code does not show here.",
+      "rankings": "See the rankings"
+    }
   }
 }
