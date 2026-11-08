@@ -29,6 +29,9 @@
   --color-cta-hover: #1a7f37;
   --color-cta-ink: #ffffff;
 
+  /* The underline of the current tab, as GitHub draws it. */
+  --color-tab-active: #fd8c73;
+
   --color-success: #1a7f37;
   --color-success-ink: #116329;
 
@@ -78,6 +81,8 @@
       --color-accent-line: #1f3a5f;
       --color-cta: #238636;
       --color-cta-hover: #29903b;
+    --color-tab-active: #f78166;
+      --color-tab-active: #f78166;
       --color-success: #3fb950;
       --color-success-ink: #56d364;
       --color-danger: #f85149;
@@ -111,6 +116,7 @@
     --color-accent-line: #1f3a5f;
     --color-cta: #238636;
     --color-cta-hover: #29903b;
+    --color-tab-active: #f78166;
     --color-success: #3fb950;
     --color-success-ink: #56d364;
     --color-danger: #f85149;

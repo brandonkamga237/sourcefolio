@@ -11,11 +11,13 @@
     "label": "Navigation principale",
     "discover": "Découvrir",
     "me": "Moi",
-    "publish": "Publier ton portfolio",
+    "publish": "Publier ma fiche",
     "ranking": "Classement",
-    "publishShort": "Publier",
+    "publishShort": "Ma fiche",
     "unreadOne": "{count} nouveau retour",
-    "unreadOther": "{count} nouveaux retours"
+    "unreadOther": "{count} nouveaux retours",
+    "rankings": "Classements",
+    "myProfile": "Ma fiche"
   },
   "language": {
     "label": "Langue",
@@ -558,5 +560,48 @@
     "copied": "Lien copié",
     "preview": "Aperçu de ta fiche",
     "shownNotRanked": "Ville, bio et LinkedIn sont affichés mais n'entrent jamais dans les classements."
+  },
+  "rankings": {
+    "title": "Classements",
+    "lead": "Choisis un critère, filtre par pays et par langage. Chaque classement dit exactement ce qu'il mesure, rien de plus.",
+    "sortBy": "Trier par",
+    "sort": {
+      "regularity": "Régularité",
+      "contributions": "Contributions",
+      "stars": "Étoiles",
+      "external": "PR externes",
+      "seniority": "Ancienneté"
+    },
+    "measures": {
+      "regularity": "Mois actifs sur les 12 derniers, puis nombre de contributions publiques.",
+      "contributions": "Contributions publiques sur les 12 derniers mois.",
+      "stars": "Étoiles reçues sur les dépôts publics possédés.",
+      "external": "Pull requests acceptées dans les projets des autres.",
+      "seniority": "Date de création du compte GitHub, le plus ancien d'abord."
+    },
+    "country": "Pays",
+    "allCountries": "Tous les pays",
+    "language": "Langage",
+    "allLanguages": "Tous les langages",
+    "apply": "Appliquer",
+    "count": "{count, plural, =0 {Aucun profil} one {# profil} other {# profils}}",
+    "columns": {
+      "position": "#",
+      "profile": "Profil",
+      "regularity": "Régularité",
+      "contributions": "Contributions",
+      "stars": "Étoiles reçues",
+      "external": "PR externes",
+      "since": "Actif depuis",
+      "languages": "Langages"
+    },
+    "monthsActive": "{active}/12",
+    "more": "Voir la suite",
+    "backToTop": "Revenir au début",
+    "empty": "Aucune fiche publiée ne correspond pour l'instant.",
+    "emptyLead": "Les classements se remplissent à mesure que les profils tech publient leur fiche.",
+    "publishMine": "Publier ma fiche",
+    "unavailable": "Le classement est indisponible pour le moment. Réessaie dans un instant.",
+    "honest": "Un classement mesure la contribution open source publique, pas la valeur d'une personne."
   }
 }
