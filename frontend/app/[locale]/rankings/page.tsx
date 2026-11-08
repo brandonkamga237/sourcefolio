@@ -4,6 +4,7 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 import { Suspense } from "react";
 import { RankingFilters } from "@/components/rankings/RankingFilters";
 import { RankingTable } from "@/components/rankings/RankingTable";
+import { JsonLd } from "@/components/seo/JsonLd";
 import { localizedPath } from "@/i18n/paths";
 import { toLocale, type Locale } from "@/i18n/routing";
 import { countryName } from "@/lib/countries";
@@ -49,8 +50,10 @@ async function Ranking({ locale, searchParams }: { locale: Locale; searchParams:
     return <p role="alert" className="rounded-card border border-line bg-surface p-4 text-[14px]">{t("unavailable")}</p>;
   }
 
+  const site = process.env.SITE_URL ?? "http://localhost:3000";
   return (
     <div className="flex flex-col gap-5">
+      <JsonLd data={{ "@context": "https://schema.org", "@type": "CollectionPage", name: t("title"), description: t("lead"), url: `${site}/${locale}/rankings`, inLanguage: locale }} />
       <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
         <div className="flex flex-col gap-1.5">
           <span className="text-[13px] font-semibold">{t("sortBy")}</span>
