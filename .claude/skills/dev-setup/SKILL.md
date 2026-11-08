@@ -1,6 +1,6 @@
 ---
 name: dev-setup
-description: Start the SourceFolio development environment (PostgreSQL, RustFS for S3, Mailpit, backend, frontend) or work out why it will not start, including GitHub sign-in locally and Playwright screenshots. Use when asked to run the project locally, or when a service refuses to come up.
+description: Start the SourceFolio development environment (PostgreSQL, Mailpit, backend, frontend) or work out why it will not start, including GitHub sign-in locally. Use when asked to run the project locally, or when a service refuses to come up.
 ---
 
 # Running SourceFolio locally
@@ -48,18 +48,9 @@ cd backend && ./mvnw spring-boot:run
 The only scope requested is `read:user`. Without these variables the backend starts, and every
 public page works; only sign-in fails.
 
-## Playwright screenshots
-
-Running the backend outside Docker, Playwright downloads Chromium on first use into
-`~/.cache/ms-playwright`. On a bare Linux machine it may need system libraries:
-```
-cd backend && ./mvnw exec:java -Dexec.mainClass=com.microsoft.playwright.CLI -Dexec.args="install-deps chromium"
-```
-In the backend image Chromium and its libraries are already installed.
-
 ## Common failures
 
-**`port is already allocated` (5432 / 9000 / 9001 / 1025 / 8025)**
+**`port is already allocated` (5432 / 1025 / 8025)**
 Another project holds the port. Find it:
 ```
 docker ps --filter "publish=5432"
