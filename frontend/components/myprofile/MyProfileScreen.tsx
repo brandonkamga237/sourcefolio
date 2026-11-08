@@ -27,11 +27,11 @@ export async function MyProfileScreen({ locale }: MyProfileScreenProps) {
 
   if (!member) {
     return (
-      <section aria-labelledby="my-profile-visitor" className="flex max-w-2xl flex-col items-start gap-6 py-10 lg:py-20">
-        <h1 id="my-profile-visitor" className="text-[40px] leading-[1.05] font-semibold tracking-[-0.035em] lg:text-[56px]">
+      <section aria-labelledby="my-profile-visitor" className="flex max-w-4xl flex-col items-start gap-7 py-10 lg:py-24">
+        <h1 id="my-profile-visitor" className="text-[48px] leading-[1.02] font-semibold tracking-[-0.04em] lg:text-[80px]">
           {t("myProfile.visitorTitle")}
         </h1>
-        <p className="text-[17px] leading-relaxed text-ink-soft">{t("myProfile.visitorLead")}</p>
+        <p className="text-[19px] leading-relaxed text-ink-soft lg:text-[22px]">{t("myProfile.visitorLead")}</p>
         <GitHubSignIn label={t("auth.signInWithGithub")} permission={t("auth.permission")} returnTo={localizedPath(locale, "/me")} />
       </section>
     );
@@ -68,11 +68,11 @@ export async function MyProfileScreen({ locale }: MyProfileScreenProps) {
       {ready && answers ? (
         <>
           <header className="flex flex-col gap-2">
-            <h1 className="text-[32px] leading-[1.1] font-semibold tracking-[-0.03em] lg:text-[40px]">{t("myProfile.readyTitle", { login })}</h1>
-            <p className="text-[16px] text-ink-soft">{m("readyLead")}</p>
+            <h1 className="text-[40px] leading-[1.05] font-semibold tracking-[-0.035em] lg:text-[64px]">{t("myProfile.readyTitle", { login })}</h1>
+            <p className="text-[18px] text-ink-soft lg:text-[20px]">{m("readyLead")}</p>
           </header>
 
-          <div className="grid items-start gap-10 lg:grid-cols-[minmax(0,380px)_minmax(0,1fr)] lg:gap-14">
+          <div className="grid items-start gap-10 lg:grid-cols-[minmax(0,420px)_minmax(0,1fr)] lg:gap-14">
             <div className="flex flex-col gap-8 lg:sticky lg:top-24">
               <CompletionForm
                 country={answers.country}
@@ -102,7 +102,7 @@ export async function MyProfileScreen({ locale }: MyProfileScreenProps) {
               />
             </div>
             <section aria-label={m("preview")} className="flex min-w-0 flex-col gap-3">
-              <p className="text-[13px] text-ink-muted">{m("preview")}</p>
+              <p className="text-[16px] text-ink-muted">{m("preview")}</p>
               <div className="rounded-panel border border-line bg-surface p-5 lg:p-8">
                 <ProfileView
                   login={login}
@@ -114,7 +114,7 @@ export async function MyProfileScreen({ locale }: MyProfileScreenProps) {
                   indicators={indicators}
                 />
               </div>
-              <p className="text-[12px] text-ink-muted">{m("shownNotRanked")}</p>
+              <p className="text-[15px] text-ink-muted">{m("shownNotRanked")}</p>
             </section>
           </div>
         </>

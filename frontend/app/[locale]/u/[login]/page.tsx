@@ -47,7 +47,7 @@ export default async function PublicProfilePage({ params }: PageProps<"/[locale]
   const card = await getPublicProfile(login);
   if (!card) notFound();
   return (
-    <div className="mx-auto w-full max-w-4xl px-4 py-8 lg:px-8 lg:py-14">
+    <div className="wrap py-6 lg:py-10">
       <JsonLd data={structuredData(card)} />
       <ProfileView
         login={card.login}

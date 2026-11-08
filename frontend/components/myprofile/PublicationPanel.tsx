@@ -41,15 +41,15 @@ export function PublicationPanel({ published, canPublish, publicUrl, labels }: P
 
   return (
     <section aria-labelledby="visibility-title" className="flex flex-col gap-3">
-      <h2 id="visibility-title" className="text-[13px] text-ink-muted">{labels.visibility}</h2>
-      <div className={"flex flex-col gap-1 rounded-card bg-surface-sunken p-4"}>
-        <p className="text-[15px] font-medium">{published ? labels.publicTitle : labels.privateTitle}</p>
-        <p className="text-[13px] text-ink-muted">{published ? labels.publicLead : labels.privateLead}</p>
+      <h2 id="visibility-title" className="text-[15px] text-ink-muted">{labels.visibility}</h2>
+      <div className={"glow-card flex flex-col gap-1 p-5"}>
+        <p className="text-[20px] font-semibold">{published ? labels.publicTitle : labels.privateTitle}</p>
+        <p className="text-[15px] text-ink-muted">{published ? labels.publicLead : labels.privateLead}</p>
       </div>
       {published ? (
         <div className="flex flex-col gap-2">
-          <p className="text-[13px] text-ink-muted">{labels.publicLink}</p>
-          <a href={publicUrl} className="link truncate text-[14px]">{publicUrl.replace(/^https?:\/\//, "")}</a>
+          <p className="text-[15px] text-ink-muted">{labels.publicLink}</p>
+          <a href={publicUrl} className="link truncate text-[16px]">{publicUrl.replace(/^https?:\/\//, "")}</a>
           <div className="flex flex-wrap gap-2">
             <button type="button" onClick={() => void copy()} className="btn btn-primary">
               {copied ? labels.copied : labels.copy}
@@ -65,14 +65,14 @@ export function PublicationPanel({ published, canPublish, publicUrl, labels }: P
             type="button"
             onClick={() => void toggle()}
             disabled={busy || !canPublish}
-            className="btn btn-primary min-h-12 text-[15px]"
+            className="btn btn-primary min-h-14 text-[17px]"
           >
             {busy ? labels.publishing : labels.publish}
           </button>
-          {!canPublish ? <p className="text-[13px] text-ink-muted">{labels.needCountry}</p> : null}
+          {!canPublish ? <p className="text-[15px] text-ink-muted">{labels.needCountry}</p> : null}
         </div>
       )}
-      {error ? <p role="alert" className="text-[13px] text-danger">{error}</p> : null}
+      {error ? <p role="alert" className="text-[15px] text-danger">{error}</p> : null}
     </section>
   );
 }

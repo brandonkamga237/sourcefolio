@@ -63,7 +63,7 @@ export function CompletionForm({ country, city, bio, githubBio, linkedIn, countr
   };
 
   const hint = (field: string, text: string) => (
-    <p className={`text-[12px] ${errors[field] ? "text-danger" : "text-ink-muted"}`} role={errors[field] ? "alert" : undefined}>
+    <p className={`text-[14px] ${errors[field] ? "text-danger" : "text-ink-muted"}`} role={errors[field] ? "alert" : undefined}>
       {errors[field] ?? text}
       {status(field) ? <span className="ml-2 text-ink-muted">· {status(field)}</span> : null}
     </p>
@@ -72,7 +72,7 @@ export function CompletionForm({ country, city, bio, githubBio, linkedIn, countr
   return (
     <div className="flex flex-col gap-5">
       <div className="flex flex-col gap-1.5">
-        <label htmlFor="country" className="text-[14px] font-medium">
+        <label htmlFor="country" className="text-[16px] font-semibold">
           {labels.country} <span className="text-danger">*</span>
         </label>
         <select
@@ -90,7 +90,7 @@ export function CompletionForm({ country, city, bio, githubBio, linkedIn, countr
       </div>
 
       <div className="flex flex-col gap-1.5">
-        <label htmlFor="city" className="text-[14px] font-medium">
+        <label htmlFor="city" className="text-[16px] font-semibold">
           {labels.city} <span className="font-normal text-ink-muted">({labels.optional})</span>
         </label>
         <input
@@ -106,8 +106,8 @@ export function CompletionForm({ country, city, bio, githubBio, linkedIn, countr
 
       <div className="flex flex-col gap-1.5">
         <div className="flex items-center justify-between gap-2">
-          <label htmlFor="bio" className="text-[14px] font-medium">{labels.bio}</label>
-          {imported ? <span className="rounded-full border border-line px-2 py-0.5 text-[12px] text-ink-muted">{labels.bioImported}</span> : null}
+          <label htmlFor="bio" className="text-[16px] font-semibold">{labels.bio}</label>
+          {imported ? <span className="rounded-full border border-line px-2 py-0.5 text-[14px] text-ink-muted">{labels.bioImported}</span> : null}
         </div>
         <textarea
           id="bio"
@@ -122,7 +122,7 @@ export function CompletionForm({ country, city, bio, githubBio, linkedIn, countr
       </div>
 
       <div className="flex flex-col gap-1.5">
-        <label htmlFor="linkedin" className="text-[14px] font-medium">
+        <label htmlFor="linkedin" className="text-[16px] font-semibold">
           {labels.linkedIn} <span className="font-normal text-ink-muted">({labels.optional})</span>
         </label>
         <div className="flex">

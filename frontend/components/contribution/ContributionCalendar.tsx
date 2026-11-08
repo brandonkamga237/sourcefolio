@@ -29,29 +29,29 @@ export async function ContributionCalendar({ calendar, total, proofUrl }: Contri
   });
 
   return (
-    <section aria-labelledby="calendar-title" className="flex flex-col gap-3">
+    <section aria-labelledby="calendar-title" className="glow-card flex flex-col gap-5 p-6 @xl:p-8">
       <div className="flex flex-wrap items-baseline justify-between gap-2">
-        <h2 id="calendar-title" className="text-[16px] font-medium">{t("calendarTitle", { count: total })}</h2>
-        <a href={proofUrl} target="_blank" rel="noopener noreferrer" className="link text-[13px]">
+        <h2 id="calendar-title" className="text-[24px] font-semibold tracking-[-0.02em]">{t("calendarTitle", { count: total })}</h2>
+        <a href={proofUrl} target="_blank" rel="noopener noreferrer" className="link text-[16px]">
           {t("viewOnGitHub")}
         </a>
       </div>
       {/* direction rtl on the scroller opens it on its right end, the latest weeks */}
-      <div className="overflow-x-auto [direction:rtl]">
+      <div data-wipe="" className="overflow-x-auto [direction:rtl]">
         <div className="inline-flex flex-col gap-1 [direction:ltr]" aria-hidden="true">
-          <div className="grid gap-[3px] text-[11px] text-ink-muted" style={{ gridTemplateColumns: `repeat(${weeks.length}, 11px)` }}>
+          <div className="grid gap-[3px] text-[13px] text-ink-muted" style={{ gridTemplateColumns: `repeat(${weeks.length}, 13px)` }}>
             {months.map((label, index) => (
               <span key={index} className="h-4 overflow-visible whitespace-nowrap">{label}</span>
             ))}
           </div>
-          <div className="grid grid-flow-col grid-rows-7 gap-[3px]" style={{ gridTemplateColumns: `repeat(${weeks.length}, 11px)` }}>
+          <div className="grid grid-flow-col grid-rows-7 gap-[3px]" style={{ gridTemplateColumns: `repeat(${weeks.length}, 13px)` }}>
             {weeks.flatMap((week, column) =>
               Array.from({ length: 7 }, (_, row) => {
                 const day = week[row];
                 return (
                   <span
                     key={`${column}-${row}`}
-                    className={`size-[11px] rounded-[2px] ${day ? LEVEL[day.level] : ""}`}
+                    className={`size-[13px] rounded-[3px] ${day ? LEVEL[day.level] : ""}`}
                   />
                 );
               }),
@@ -59,12 +59,12 @@ export async function ContributionCalendar({ calendar, total, proofUrl }: Contri
           </div>
         </div>
       </div>
-      <div className="flex flex-wrap items-center justify-between gap-2 text-[12px] text-ink-muted">
+      <div className="flex flex-wrap items-center justify-between gap-2 text-[14px] text-ink-muted">
         <span>{total === 0 ? t("calendarEmpty") : null}</span>
         <span className="flex items-center gap-1">
           {t("less")}
           {LEVEL.map((shade) => (
-            <span key={shade} aria-hidden="true" className={`size-[11px] rounded-[2px] ${shade}`} />
+            <span key={shade} aria-hidden="true" className={`size-[13px] rounded-[3px] ${shade}`} />
           ))}
           {t("more")}
         </span>

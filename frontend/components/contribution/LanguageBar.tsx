@@ -20,18 +20,18 @@ export async function LanguageBar({ languages, proofUrl }: LanguageBarProps) {
   ];
 
   return (
-    <section aria-labelledby="languages-title" className="flex flex-col gap-3">
+    <section aria-labelledby="languages-title" className="glow-card flex flex-col gap-5 p-6 @xl:p-8">
       <div className="flex items-baseline justify-between gap-2">
-        <h2 id="languages-title" className="text-[16px] font-medium">{t("languages")}</h2>
-        <a href={proofUrl} target="_blank" rel="noopener noreferrer" className="link text-[13px]">
+        <h2 id="languages-title" className="text-[24px] font-semibold tracking-[-0.02em]">{t("languages")}</h2>
+        <a href={proofUrl} target="_blank" rel="noopener noreferrer" className="link text-[16px]">
           {t("viewOnGitHub")}
         </a>
       </div>
       {total === 0 ? (
-        <p className="text-[13px] text-ink-muted">{t("noLanguages")}</p>
+        <p className="text-[16px] text-ink-muted">{t("noLanguages")}</p>
       ) : (
         <>
-          <div className="flex h-2 overflow-hidden rounded-full bg-surface-sunken" aria-hidden="true">
+          <div className="flex h-3 overflow-hidden rounded-full bg-surface-sunken" aria-hidden="true">
             {parts.map((part) => (
               <span
                 key={part.name}
@@ -40,7 +40,7 @@ export async function LanguageBar({ languages, proofUrl }: LanguageBarProps) {
               />
             ))}
           </div>
-          <ul className="flex flex-wrap gap-x-4 gap-y-1 text-[13px]">
+          <ul className="flex flex-wrap gap-x-4 gap-y-1 text-[16px]">
             {parts.map((part) => (
               <li key={part.name} className="flex items-center gap-1.5">
                 <span
@@ -53,7 +53,7 @@ export async function LanguageBar({ languages, proofUrl }: LanguageBarProps) {
               </li>
             ))}
           </ul>
-          <p className="text-[12px] text-ink-muted">{t("languagesNote")}</p>
+          <p className="text-[14px] text-ink-muted">{t("languagesNote")}</p>
         </>
       )}
     </section>

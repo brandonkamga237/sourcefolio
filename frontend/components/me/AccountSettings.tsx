@@ -15,7 +15,7 @@ export async function AccountSettings({ locale, login }: AccountSettingsProps) {
   const t = await getTranslations({ locale });
   return (
     <details className="group/account border-t border-line-soft [&_summary::-webkit-details-marker]:hidden">
-      <summary className="flex h-12 cursor-pointer list-none items-center justify-between gap-3 text-[14px] text-ink-muted select-none">
+      <summary className="flex h-14 cursor-pointer list-none items-center justify-between gap-3 text-[16px] text-ink-muted select-none">
         {t("me.accountTitle")}
         <span aria-hidden="true" className="size-2 rotate-45 border-r-2 border-b-2 border-ink-muted transition-transform duration-200 group-open/account:-rotate-135" />
       </summary>
@@ -23,7 +23,7 @@ export async function AccountSettings({ locale, login }: AccountSettingsProps) {
         <MePreferences locale={locale} />
         <SignOutButton label={t("account.signOut")} failedMessage={t("account.signOutFailed")} />
         <div className="flex flex-col gap-2 border-t border-line-soft pt-4">
-          <p className="text-[13px] leading-normal text-ink-muted">{t("account.deleteLead")}</p>
+          <p className="text-[15px] leading-normal text-ink-muted">{t("account.deleteLead")}</p>
           <DeleteAccount
             login={login}
             homeHref={localizedPath(locale, "/")}
