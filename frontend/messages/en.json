@@ -12,7 +12,8 @@
     "me": "Me",
     "publish": "Publish my profile",
     "rankings": "Rankings",
-    "myProfile": "My profile"
+    "myProfile": "My profile",
+    "map": "Map"
   },
   "language": {
     "label": "Language",
@@ -23,11 +24,6 @@
     "skipToContent": "Skip to content"
   },
   "pages": {
-    "me": {
-      "title": "Me",
-      "account": "Account",
-      "accountHint": "Sign in to publish your portfolio, get feedback and follow its visits."
-    },
     "profile": {
       "metaTitle": "{name} · open source profile",
       "metaDescription": "What {name} has built in open source: regularity, contributions, languages and projects, every figure checkable on GitHub."
@@ -46,7 +42,7 @@
   "notFound": {
     "title": "Page not found",
     "body": "This address leads to no profile. It may have changed or been removed.",
-    "back": "Back to the rankings"
+    "back": "Back to home"
   },
   "account": {
     "signedInAs": "Signed in as {login}",
@@ -312,5 +308,139 @@
     "publishMine": "Publish my profile",
     "unavailable": "The ranking is unavailable right now. Try again in a moment.",
     "honest": "A ranking measures public open source contribution, not a person's worth."
+  },
+  "map": {
+    "title": "The map",
+    "lead": "Each square shows how many profiles are published in an African city. Tap a city to see the rankings of its country.",
+    "picture": "Mosaic of Africa: {count, plural, =0 {no published profile yet} one {# published profile} other {# published profiles}}.",
+    "legendFew": "Few",
+    "legendMany": "Many",
+    "count": "{count, plural, =0 {No published profile yet} one {# published profile} other {# published profiles}}",
+    "emptyLead": "The map fills up with each published profile. Yours can light your city's first square.",
+    "publishMine": "Publish my profile",
+    "unplaced": "{count, plural, one {# profile has no city placed on the map.} other {# profiles have no city placed on the map.}}",
+    "tapHint": "Each member gives their own city. It places a profile on the map and never enters a ranking.",
+    "unavailable": "The map cannot be loaded right now. Try again in a moment."
+  },
+  "landing": {
+    "switch": {
+      "label": "Who it is for",
+      "tech": "I am a tech profile",
+      "recruit": "I am hiring"
+    },
+    "hero": {
+      "title": "From open source to opportunity.",
+      "lead": "Your public contributions become a profile recruiters can read and verify. Developer, sysadmin, DevOps, data, mobile, QA, security: every tech profile belongs here."
+    },
+    "form": {
+      "field": "Your GitHub username",
+      "placeholder": "your-username",
+      "submit": "See my profile",
+      "checking": "Searching…",
+      "invalid": "This is not a valid GitHub username.",
+      "missing": "No profile under this name yet.",
+      "signIn": "Create it with GitHub",
+      "failed": "We cannot check right now. Try again in a moment."
+    },
+    "map": {
+      "picture": "Mosaic of Africa: each square shows a city's published profiles.",
+      "explore": "Explore the map"
+    },
+    "problem": {
+      "title": "A CV tells. Your code shows.",
+      "body": "Many tech profiles build in public without anyone noticing, and recruiters have no time to read repositories. The profile turns that work into plain facts anyone can check."
+    },
+    "profile": {
+      "title": "A profile where every figure has its proof.",
+      "lead": "Six indicators read from your public GitHub data. Every figure links to the GitHub page that shows it. Nothing is public until you choose to publish.",
+      "example": "Example",
+      "exampleLogin": "your-username",
+      "months": "{active} active months out of 12",
+      "contributions": "{count, plural, one {{formatted} public contribution} other {{formatted} public contributions}}"
+    },
+    "path": {
+      "title": "An empty calendar is a starting point.",
+      "lead": "Your profile exists from your first contribution. No points, no streaks to keep.",
+      "find": {
+        "title": "Find a project",
+        "body": "A tool you already use, documentation to improve."
+      },
+      "first": {
+        "title": "Offer a first contribution",
+        "body": "A clear issue, a small pull request."
+      },
+      "accepted": {
+        "title": "Get it accepted",
+        "body": "Each contribution accepted elsewhere shows on your profile."
+      },
+      "publish": {
+        "title": "Publish your profile",
+        "body": "You decide when it goes public, and you can take it down at any time."
+      }
+    },
+    "recruit": {
+      "title": "Hiring?",
+      "body": "Discover talent by what they have actually built, and join the waitlist for recruiter access.",
+      "link": "Go to the recruiter page"
+    },
+    "method": {
+      "title": "The method",
+      "readsTitle": "What we read",
+      "reads": {
+        "contributions": "Your public contributions over the last 12 months",
+        "seniority": "The creation date of your GitHub account",
+        "stars": "The stars of your public repositories and your followers",
+        "languages": "The languages of your public repositories",
+        "external": "Your pull requests accepted in other people's projects"
+      },
+      "notReadsTitle": "What we do not read",
+      "notReads": {
+        "private": "Your private repositories",
+        "linkedin": "LinkedIn: we only show the link you give",
+        "strangers": "People who have not signed up",
+        "score": "No overall score: each ranking sorts on one criterion"
+      },
+      "honest": "The profile measures public open source contribution, not a person's worth. An excellent engineer working on private code may look quiet here."
+    }
+  },
+  "recruiters": {
+    "meta": {
+      "title": "Hire on proof"
+    },
+    "hero": {
+      "title": "Stop reading CVs.",
+      "lead": "Find tech profiles by what they have actually built. Every figure links to its proof on GitHub."
+    },
+    "waitlist": {
+      "title": "Recruiter access: coming soon",
+      "lead": "Access is not open yet. Leave your work email and we will write as soon as it is.",
+      "email": "Work email",
+      "placeholder": "you@company.com",
+      "consent": "I agree that SourceFolio keeps this email to contact me about recruiter access.",
+      "submit": "Join the waitlist",
+      "sending": "Sending…",
+      "done": "Noted. We will write as soon as access opens.",
+      "failed": "The sign-up did not go through. Try again in a moment."
+    },
+    "field": {
+      "title": "The talent field",
+      "lead": "One square per published profile, darker as the contribution rhythm gets steadier. Open a square to read the profile.",
+      "language": "Language",
+      "allLanguages": "All languages",
+      "city": "City",
+      "allCities": "All cities",
+      "rhythm": "Rhythm",
+      "allRhythms": "All rhythms",
+      "steady": "Very steady (10 months or more)",
+      "regular": "Regular (6 to 9 months)",
+      "occasional": "Occasional (under 6 months)",
+      "shown": "Profiles shown: {count} of {total}",
+      "noMatch": "No profile matches these filters.",
+      "months": "{active} active months out of 12",
+      "empty": "The field fills up with each published profile. None is online yet.",
+      "unavailable": "The talent field cannot be loaded right now. Try again in a moment.",
+      "honest": "These profiles measure public open source contribution, not a person's total worth. Work on private code does not show here.",
+      "rankings": "See the rankings"
+    }
   }
 }

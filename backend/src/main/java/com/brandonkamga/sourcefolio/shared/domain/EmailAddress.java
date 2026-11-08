@@ -1,14 +1,10 @@
-package com.brandonkamga.sourcefolio.account.domain.model;
+package com.brandonkamga.sourcefolio.shared.domain;
 
 import java.util.Objects;
 import java.util.Optional;
 import java.util.regex.Pattern;
 
-/**
- * Where to warn a member before their portfolio is removed. Checked for shape only: the address
- * is optional and never used to identify anyone, so a typo costs the member a warning, nothing
- * more.
- */
+/** Checked for shape only: confirming that an address is really reachable takes an email. */
 public record EmailAddress(String value) {
 
     private static final int MAX_LENGTH = 320;

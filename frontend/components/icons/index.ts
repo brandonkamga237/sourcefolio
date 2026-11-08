@@ -12,6 +12,7 @@ export { default as IconFilters } from "./Filters";
 export { default as IconGithub } from "./Github";
 export { default as IconHeart } from "./Heart";
 export { default as IconLogoMark } from "./LogoMark";
+export { default as IconMap } from "./Map";
 export { default as IconMe } from "./Me";
 export { default as IconPortfolio } from "./Portfolio";
 export { default as IconRanking } from "./Ranking";

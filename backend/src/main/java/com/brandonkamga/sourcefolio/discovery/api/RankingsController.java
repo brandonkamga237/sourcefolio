@@ -1,9 +1,11 @@
 package com.brandonkamga.sourcefolio.discovery.api;
 
+import com.brandonkamga.sourcefolio.discovery.api.dto.CityCountResponse;
 import com.brandonkamga.sourcefolio.discovery.api.dto.RankingFacetsResponse;
 import com.brandonkamga.sourcefolio.discovery.api.dto.RankingsResponse;
 import com.brandonkamga.sourcefolio.discovery.application.Rankings;
 import io.swagger.v3.oas.annotations.Operation;
+import java.util.List;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -30,5 +32,11 @@ class RankingsController {
     @Operation(operationId = "listRankingFacets")
     RankingFacetsResponse facets(@RequestParam(required = false) String country, @RequestParam(required = false) String language) {
         return RankingFacetsResponse.of(rankings.listFacets(country, language));
+    }
+
+    @GetMapping("/api/rankings/cities")
+    @Operation(operationId = "listRankingCities")
+    List<CityCountResponse> cities() {
+        return rankings.listCityCounts().stream().map(CityCountResponse::of).toList();
     }
 }

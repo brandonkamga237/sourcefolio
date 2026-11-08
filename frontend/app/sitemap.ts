@@ -12,13 +12,13 @@ function bothLanguages(site: string, path: string): Entry[] {
   return (["fr", "en"] as const).map((locale) => ({ url: languages[locale], alternates: { languages } }));
 }
 
-// Public pages only: the rankings and every published profile, each in both languages. Read per
+// Public pages only: the landings, the rankings, the map and every published profile, each in both languages. Read per
 // request, like robots.txt, so it follows new publications; a published profile is always ranked.
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   await connection();
   const site = process.env.SITE_URL ?? "http://localhost:3000";
   const api = process.env.API_INTERNAL_URL ?? "http://localhost:8080";
-  const entries: MetadataRoute.Sitemap = bothLanguages(site, "/rankings");
+  const entries: MetadataRoute.Sitemap = ["", "/recruiters", "/rankings", "/map"].flatMap((path) => bothLanguages(site, path));
 
   let cursor: string | null = null;
   for (let page = 0; page < MAX_PAGES; page++) {

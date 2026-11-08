@@ -11,6 +11,6 @@ class RankingRoutes implements SecurityCustomizer {
 
     @Override
     public void customize(HttpSecurity http) throws Exception {
-        http.authorizeHttpRequests(routes -> routes.requestMatchers(HttpMethod.GET, "/api/rankings", "/api/rankings/facets").permitAll());
+        http.authorizeHttpRequests(routes -> routes.requestMatchers(HttpMethod.GET, "/api/rankings", "/api/rankings/facets", "/api/rankings/cities").permitAll());
     }
 }

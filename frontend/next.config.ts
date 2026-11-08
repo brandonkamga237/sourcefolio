@@ -23,8 +23,6 @@ const nextConfig: NextConfig = {
   // The browser stays on one origin, as in production behind Traefik.
   async redirects() {
     return [
-      // Temporary: the landing page takes this address back.
-      { source: "/:locale(fr|en)", destination: "/:locale/rankings", permanent: false },
       { source: "/:locale(fr|en)/:page(ranking|recent|search)", destination: "/:locale/rankings", permanent: true },
       { source: "/:locale(fr|en)/me/portfolio", destination: "/:locale/me", permanent: true },
     ];

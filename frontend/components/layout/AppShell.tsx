@@ -19,7 +19,7 @@ interface AppShellProps {
 export async function AppShell({ children }: AppShellProps) {
   const t = await getTranslations();
   const locale = toLocale(await getLocale());
-  const labels = { label: t("nav.label"), rankings: t("nav.rankings"), myProfile: t("nav.myProfile") };
+  const labels = { label: t("nav.label"), rankings: t("nav.rankings"), map: t("nav.map"), myProfile: t("nav.myProfile") };
 
   return (
     <div className="flex min-h-dvh flex-col">

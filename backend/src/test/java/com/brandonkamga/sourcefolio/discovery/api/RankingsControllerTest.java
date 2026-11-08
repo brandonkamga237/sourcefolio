@@ -1,6 +1,7 @@
 package com.brandonkamga.sourcefolio.discovery.api;
 
 import com.brandonkamga.sourcefolio.discovery.application.Rankings;
+import com.brandonkamga.sourcefolio.discovery.domain.model.CityCount;
 import com.brandonkamga.sourcefolio.discovery.domain.model.RankingFacets;
 import com.brandonkamga.sourcefolio.discovery.domain.model.RankingPage;
 import com.brandonkamga.sourcefolio.discovery.domain.model.RankingRow;
@@ -61,6 +62,19 @@ class RankingsControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.countries[0].value").value("NG"))
                 .andExpect(jsonPath("$.countries[0].count").value(4));
+    }
+
+    @Test
+    @DisplayName("city counts are public, and a profile without a city stays counted")
+    void cities() throws Exception {
+        when(rankings.listCityCounts()).thenReturn(List.of(new CityCount("CM", "Douala", 3), new CityCount("SN", null, 1)));
+
+        mvc.perform(get("/api/rankings/cities"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].country").value("CM"))
+                .andExpect(jsonPath("$[0].city").value("Douala"))
+                .andExpect(jsonPath("$[0].count").value(3))
+                .andExpect(jsonPath("$[1].city").doesNotExist());
     }
 
     @Test
