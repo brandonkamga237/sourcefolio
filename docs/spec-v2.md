@@ -151,6 +151,8 @@ ou du continent, pour ne pas transformer chaque fiche en rang.
 - Le nom (SourceFolio est provisoire).
 - Les vraies preuves de la landing avant lancement : de vraies fiches, de vrais retours.
 - Suppression définitive des tables portfolio (et des fichiers S3 associés).
+  En attendant, `showcase` et `storage` ne servent plus qu'à une chose : effacer les aperçus
+  d'un membre quand il supprime son compte, car les clés étrangères n'atteignent pas le bucket.
 
 ## Critères d'acceptation
 
