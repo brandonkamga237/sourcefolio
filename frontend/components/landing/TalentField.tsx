@@ -34,7 +34,7 @@ interface TalentFieldProps {
 type Rhythm = "" | "steady" | "regular" | "occasional";
 
 const LEVEL = ["bg-level-0", "bg-level-1", "bg-level-2", "bg-level-3", "bg-level-4"] as const;
-const select = "h-11 min-w-0 rounded-control border border-line bg-surface px-2 text-[16px] lg:text-[14px]";
+const select = "h-11 min-w-0 rounded-control font-normal border border-line bg-surface px-2 text-[16px] lg:text-[14px]";
 
 function levelOf(activeMonths: number): number {
   if (activeMonths >= 10) return 4;

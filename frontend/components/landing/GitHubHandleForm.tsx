@@ -52,7 +52,7 @@ export function GitHubHandleForm({ locale, labels }: GitHubHandleFormProps) {
   return (
     <form onSubmit={submit} className="flex flex-col gap-3">
       <div className="flex flex-col gap-2 sm:flex-row">
-        <label className="flex h-12 min-w-0 flex-1 items-center rounded-control border border-line bg-surface px-3 focus-within:outline-2 focus-within:outline-accent">
+        <label className="flex h-12 w-full min-w-0 items-center sm:flex-1 rounded-control border border-line bg-surface px-3 focus-within:outline-2 focus-within:outline-accent">
           <span className="sr-only">{labels.field}</span>
           <span aria-hidden="true" className="font-mono text-[14px] text-ink-muted">github.com/</span>
           <input

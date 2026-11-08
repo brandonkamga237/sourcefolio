@@ -36,7 +36,7 @@ async function CityMap({ locale }: { locale: Locale }) {
   const { cities, unplaced, total } = placeCounts(counts);
 
   return (
-    <div className="grid items-start gap-8 lg:grid-cols-[minmax(0,1fr)_340px]">
+    <div className="grid items-start justify-between gap-8 lg:grid-cols-[minmax(0,560px)_340px]">
       <div className="flex flex-col gap-3">
         <AfricaMosaic locale={locale} cities={cities} label={t("picture", { count: total })} />
         <div className="flex items-center gap-2 text-[12px] text-ink-muted">
