@@ -5,7 +5,7 @@ export default function manifest(): MetadataRoute.Manifest {
   return {
     name: "SourceFolio",
     short_name: "SourceFolio",
-    description: "Portfolios you can read the code of. Des portfolios dont tu peux lire le code.",
+    description: "From open source to opportunity. De l'open source à l'opportunité.",
     start_url: "/",
     display: "standalone",
     background_color: "#ffffff",

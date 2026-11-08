@@ -4,7 +4,7 @@ import com.brandonkamga.sourcefolio.discovery.application.Rankings;
 import com.brandonkamga.sourcefolio.discovery.domain.model.RankingFacets;
 import com.brandonkamga.sourcefolio.discovery.domain.model.RankingPage;
 import com.brandonkamga.sourcefolio.discovery.domain.model.RankingRow;
-import com.brandonkamga.sourcefolio.discovery.infra.security.CatalogRoutesTestConfig;
+import com.brandonkamga.sourcefolio.discovery.infra.security.RankingRoutesTestConfig;
 import com.brandonkamga.sourcefolio.shared.exception.BadRequestException;
 import com.brandonkamga.sourcefolio.shared.security.SecurityTestConfig;
 import java.time.Instant;
@@ -24,7 +24,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(RankingsController.class)
-@Import({SecurityTestConfig.class, CatalogRoutesTestConfig.class})
+@Import({SecurityTestConfig.class, RankingRoutesTestConfig.class})
 class RankingsControllerTest {
 
     @Autowired

@@ -2,7 +2,7 @@
 # SourceFolio — Production Stack
 # =============================================================================
 #
-# Services: PostgreSQL · Backend (Spring Boot, JobRunr workers, Playwright) ·
+# Services: PostgreSQL · Backend (Spring Boot, JobRunr workers) ·
 #           Frontend (Next.js) · monitoring (Prometheus, Grafana, Loki, Alloy, exporters)
 # The VPS is shared with lescracks: machine-level metrics (node-exporter, cAdvisor) come from its
 # stack, not from this one.
@@ -46,8 +46,6 @@ services:
     container_name: sourcefolio-backend
     restart: unless-stopped
     env_file: .env
-    # Chromium needs more than Docker's 64 MB default for /dev/shm.
-    shm_size: 1gb
     depends_on:
       postgres:
         condition: service_healthy

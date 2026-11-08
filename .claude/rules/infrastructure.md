@@ -28,8 +28,6 @@ paths:
   change
 - The frontend image is built per public origin: `SITE_URL` is a build argument (GitHub
   variable `SITE_URL` in `deploy.yml`) because Next.js writes it into the prerendered pages
-- The backend image carries Chromium for Playwright; keep its version in step with the
-  `com.microsoft.playwright` dependency
 - CI (`.github/workflows/ci.yml`) gates every PR; `release.yml` (release-please) tags versions;
   `deploy.yml` ships a tag to the VPS, and a rollback is a manual run of it with an earlier tag
 - Production is checked read-only with the `release-verifier` subagent; server details stay out

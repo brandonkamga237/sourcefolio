@@ -1,4 +1,4 @@
-// Asked by the proxy before a showcase or profile page renders: the page streams, and a
+// Asked by the proxy before a profile page renders: the page streams, and a
 // not-found found after the first bytes can no longer change the status, so a missing page
 // would answer 200. One small call per address, remembered for a minute so a shared link costs
 // one call.
