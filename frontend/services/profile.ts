@@ -2,8 +2,7 @@ import { serverGet } from "@/lib/api/server";
 
 import type { Profile } from "./profile-types";
 
-export type { Profile, Specialty } from "./profile-types";
-export { MAX_SPECIALTIES, SPECIALTIES } from "./profile-types";
+export type { Profile } from "./profile-types";
 
 export interface MyAnswers extends Profile {
   /** The alert address, null when the member gave none. */
