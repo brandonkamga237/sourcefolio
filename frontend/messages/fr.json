@@ -227,7 +227,8 @@
     },
     "hero": {
       "title": "De l’open source à l’opportunité.",
-      "lead": "Tes contributions publiques deviennent une fiche que les recruteurs peuvent lire et vérifier. Développeur, sysadmin, DevOps, data, mobile, QA, sécurité : chaque profil tech y a sa place."
+      "lead": "Tes contributions publiques deviennent une fiche que les recruteurs peuvent lire et vérifier. Développeur, sysadmin, DevOps, data, mobile, QA, sécurité : chaque profil tech y a sa place.",
+      "recruit": "Vous recrutez ?"
     },
     "form": {
       "field": "Ton identifiant GitHub",
@@ -241,19 +242,22 @@
     },
     "map": {
       "picture": "Mosaïque de l’Afrique : chaque carré montre les fiches publiées d’une ville.",
-      "explore": "Explorer la carte"
+      "explore": "Explorer la carte",
+      "title": "Toute l’Afrique, carré par carré.",
+      "lead": "Chaque carré montre les fiches publiées d’une ville. Plus il est vert, plus elles sont nombreuses."
     },
     "problem": {
       "title": "Un CV raconte. Ton code montre.",
       "body": "Beaucoup de profils tech construisent en public sans que personne ne le voie, et les recruteurs n’ont pas le temps de lire des dépôts. La fiche traduit ce travail en faits simples, que chacun peut vérifier."
     },
     "profile": {
-      "title": "Une fiche où chaque chiffre a sa preuve.",
-      "lead": "Six indicateurs lus sur tes données GitHub publiques. Chaque chiffre renvoie à la page GitHub qui le montre. Rien n’est public tant que tu n’as pas choisi de publier.",
+      "title": "Six faits, chacun avec sa preuve.",
+      "lead": "Lus sur tes données GitHub publiques. Chaque chiffre renvoie à la page GitHub qui le montre, et rien n’est public tant que tu n’as pas choisi de publier.",
       "example": "Exemple",
       "exampleLogin": "ton-pseudo",
       "months": "{active}/12 mois actifs",
-      "contributions": "{count, plural, one {{formatted} contribution publique} other {{formatted} contributions publiques}}"
+      "contributions": "{count, plural, one {{formatted} contribution publique} other {{formatted} contributions publiques}}",
+      "all": "Voir tous les classements"
     },
     "path": {
       "title": "Un calendrier vide est un point de départ.",
@@ -298,6 +302,36 @@
         "score": "Aucun score global : chaque classement trie sur un seul critère"
       },
       "honest": "La fiche mesure la contribution open source publique, pas la valeur d’une personne. Un excellent ingénieur qui travaille sur du code privé peut y paraître discret."
+    },
+    "indicators": {
+      "seniority": {
+        "title": "Ancienneté",
+        "body": "La date de création de ton compte GitHub."
+      },
+      "volume": {
+        "title": "Contributions",
+        "body": "Commits, pull requests, issues et revues publics sur 12 mois."
+      },
+      "regularity": {
+        "title": "Régularité",
+        "body": "Le nombre de mois actifs sur les 12 derniers."
+      },
+      "stars": {
+        "title": "Étoiles et followers",
+        "body": "Les étoiles de tes dépôts publics, forks exclus."
+      },
+      "languages": {
+        "title": "Langages",
+        "body": "La répartition du code de tes dépôts publics."
+      },
+      "external": {
+        "title": "Contributions acceptées",
+        "body": "Tes pull requests fusionnées dans les projets des autres."
+      }
+    },
+    "close": {
+      "title": "Ton travail est déjà public. Rends-le lisible.",
+      "body": "Connecte-toi avec GitHub, regarde ta fiche en privé, publie si tu veux."
     }
   },
   "recruiters": {

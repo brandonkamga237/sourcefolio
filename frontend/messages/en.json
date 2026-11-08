@@ -227,7 +227,8 @@
     },
     "hero": {
       "title": "From open source to opportunity.",
-      "lead": "Your public contributions become a profile recruiters can read and verify. Developer, sysadmin, DevOps, data, mobile, QA, security: every tech profile belongs here."
+      "lead": "Your public contributions become a profile recruiters can read and verify. Developer, sysadmin, DevOps, data, mobile, QA, security: every tech profile belongs here.",
+      "recruit": "Hiring?"
     },
     "form": {
       "field": "Your GitHub username",
@@ -241,19 +242,22 @@
     },
     "map": {
       "picture": "Mosaic of Africa: each square shows a city's published profiles.",
-      "explore": "Explore the map"
+      "explore": "Explore the map",
+      "title": "All of Africa, square by square.",
+      "lead": "Each square shows a city's published profiles. The greener it is, the more there are."
     },
     "problem": {
       "title": "A CV tells. Your code shows.",
       "body": "Many tech profiles build in public without anyone noticing, and recruiters have no time to read repositories. The profile turns that work into plain facts anyone can check."
     },
     "profile": {
-      "title": "A profile where every figure has its proof.",
-      "lead": "Six indicators read from your public GitHub data. Every figure links to the GitHub page that shows it. Nothing is public until you choose to publish.",
+      "title": "Six facts, each with its proof.",
+      "lead": "Read from your public GitHub data. Every figure links to the GitHub page that shows it, and nothing is public until you choose to publish.",
       "example": "Example",
       "exampleLogin": "your-username",
       "months": "{active}/12 active months",
-      "contributions": "{count, plural, one {{formatted} public contribution} other {{formatted} public contributions}}"
+      "contributions": "{count, plural, one {{formatted} public contribution} other {{formatted} public contributions}}",
+      "all": "See all the rankings"
     },
     "path": {
       "title": "An empty calendar is a starting point.",
@@ -298,6 +302,36 @@
         "score": "No overall score: each ranking sorts on one criterion"
       },
       "honest": "The profile measures public open source contribution, not a person's worth. An excellent engineer working on private code may look quiet here."
+    },
+    "indicators": {
+      "seniority": {
+        "title": "Seniority",
+        "body": "The creation date of your GitHub account."
+      },
+      "volume": {
+        "title": "Contributions",
+        "body": "Public commits, pull requests, issues and reviews over 12 months."
+      },
+      "regularity": {
+        "title": "Regularity",
+        "body": "How many of the last 12 months were active."
+      },
+      "stars": {
+        "title": "Stars and followers",
+        "body": "The stars of your public repositories, forks excluded."
+      },
+      "languages": {
+        "title": "Languages",
+        "body": "How the code of your public repositories divides."
+      },
+      "external": {
+        "title": "Accepted contributions",
+        "body": "Your pull requests merged in other people's projects."
+      }
+    },
+    "close": {
+      "title": "Your work is already public. Make it readable.",
+      "body": "Sign in with GitHub, see your profile in private, publish if you want to."
     }
   },
   "recruiters": {

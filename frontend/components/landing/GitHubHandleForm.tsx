@@ -52,9 +52,9 @@ export function GitHubHandleForm({ locale, labels }: GitHubHandleFormProps) {
   return (
     <form onSubmit={submit} className="flex flex-col gap-3">
       <div className="flex flex-col gap-2 sm:flex-row">
-        <label className="flex h-12 w-full min-w-0 items-center sm:flex-1 rounded-control border border-line bg-surface px-3 focus-within:outline-2 focus-within:outline-accent">
+        <label className="flex h-12 w-full min-w-0 items-center sm:flex-1 rounded-control border border-line bg-surface px-3 transition-[border-color,box-shadow] duration-150 focus-within:border-ink-muted focus-within:shadow-[0_0_0_3px_var(--color-line-soft)]">
           <span className="sr-only">{labels.field}</span>
-          <span aria-hidden="true" className="font-mono text-[14px] text-ink-muted">github.com/</span>
+          <span aria-hidden="true" className="text-[15px] text-ink-muted">github.com/</span>
           <input
             value={value}
             onChange={(event) => {
@@ -65,10 +65,10 @@ export function GitHubHandleForm({ locale, labels }: GitHubHandleFormProps) {
             autoCapitalize="none"
             autoCorrect="off"
             spellCheck={false}
-            className="h-full min-w-0 flex-1 bg-transparent font-mono text-[16px] outline-none"
+            className="h-full min-w-0 flex-1 bg-transparent text-[16px] outline-none"
           />
         </label>
-        <button type="submit" disabled={state === "checking"} className="press flex h-12 items-center justify-center rounded-control bg-cta px-5 text-[15px] font-semibold text-cta-ink hover:bg-cta-hover disabled:opacity-70">
+        <button type="submit" disabled={state === "checking"} className="btn btn-primary min-h-12 px-5 text-[15px]">
           {state === "checking" ? labels.checking : labels.submit}
         </button>
       </div>
@@ -78,7 +78,7 @@ export function GitHubHandleForm({ locale, labels }: GitHubHandleFormProps) {
         {state === "missing" ? (
           <p className="flex flex-wrap items-center gap-x-2 text-[14px] text-ink-soft">
             {labels.missing}
-            <a href={`/oauth2/authorization/github?returnTo=${returnTo}`} className="flex min-h-11 items-center font-semibold text-accent hover:underline">
+            <a href={`/oauth2/authorization/github?returnTo=${returnTo}`} className="link flex min-h-11 items-center">
               {labels.signIn}
             </a>
           </p>

@@ -1,3 +1,5 @@
+import { IconGithub } from "@/components/icons";
+
 interface GitHubSignInProps {
   label: string;
   permission: string;
@@ -9,14 +11,12 @@ interface GitHubSignInProps {
 // backend (/oauth2 is routed to it in development and in production).
 export function GitHubSignIn({ label, permission, returnTo }: GitHubSignInProps) {
   return (
-    <div className="flex flex-col gap-2">
-      <a
-        href={`/oauth2/authorization/github?returnTo=${encodeURIComponent(returnTo)}`}
-        className="press flex h-[46px] items-center justify-center rounded-control bg-ink px-5 text-[15px] font-semibold text-ink-inverse"
-      >
+    <div className="flex flex-col items-start gap-2">
+      <a href={`/oauth2/authorization/github?returnTo=${encodeURIComponent(returnTo)}`} className="btn btn-primary min-h-12 px-5 text-[15px]">
+        <IconGithub aria-hidden="true" className="size-[18px]" />
         {label}
       </a>
-      <p className="text-center text-[13px] text-ink-muted">{permission}</p>
+      <p className="text-[13px] text-ink-muted">{permission}</p>
     </div>
   );
 }
