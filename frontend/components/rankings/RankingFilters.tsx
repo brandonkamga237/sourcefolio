@@ -10,7 +10,7 @@ interface RankingFiltersProps {
   labels: { country: string; allCountries: string; language: string; allLanguages: string };
 }
 
-const label = "flex flex-col gap-1.5 text-[13px] text-ink-muted";
+const label = "flex flex-col gap-1.5 text-[15px] text-ink-muted";
 
 /** Country and language: each change reloads the ranking from its first page. */
 export function RankingFilters({ country, language, countries, languages, labels }: RankingFiltersProps) {
@@ -28,7 +28,7 @@ export function RankingFilters({ country, language, countries, languages, labels
   }
 
   return (
-    <div className="grid grid-cols-2 gap-3 lg:w-[400px]">
+    <div className="grid grid-cols-2 gap-3 lg:w-[460px]">
       <label className={label}>
         {labels.country}
         <select value={country ?? ""} onChange={(event) => set("country", event.target.value)} className="field">

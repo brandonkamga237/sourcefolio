@@ -64,7 +64,7 @@ async function Ranking({ locale, searchParams }: { locale: Locale; searchParams:
                 <Link
                   href={href(locale, { sort: option === "regularity" ? null : option, country, language })}
                   aria-current={option === sort ? "page" : undefined}
-                  className={`-mb-px flex min-h-11 items-center border-b-2 text-[14px] whitespace-nowrap transition-colors duration-150 ${
+                  className={`-mb-px flex min-h-12 items-center border-b-2 text-[16px] whitespace-nowrap transition-colors duration-150 ${
                     option === sort ? "border-tab-active font-medium text-ink" : "border-transparent text-ink-muted hover:text-ink"
                   }`}
                 >
@@ -83,7 +83,7 @@ async function Ranking({ locale, searchParams }: { locale: Locale; searchParams:
         />
       </div>
 
-      <p className="text-[13px] text-ink-muted"><span className="font-medium text-ink">{t("count", { count: page.total })}</span> · {t(`measures.${sort}`)}</p>
+      <p className="text-[16px] text-ink-muted"><span className="font-semibold text-ink">{t("count", { count: page.total })}</span> · {t(`measures.${sort}`)}</p>
 
       {page.items.length === 0 ? (
         <div className="flex flex-col items-start gap-3 rounded-card bg-surface-sunken p-6">
@@ -94,7 +94,7 @@ async function Ranking({ locale, searchParams }: { locale: Locale; searchParams:
           </Link>
         </div>
       ) : (
-        <RankingTable rows={page.items} sort={sort} />
+        <RankingTable rows={page.items} sort={sort} podium={!cursor} />
       )}
 
       <div className="flex flex-wrap items-center gap-3">
@@ -109,7 +109,7 @@ async function Ranking({ locale, searchParams }: { locale: Locale; searchParams:
           </Link>
         ) : null}
       </div>
-      <p className="text-[12px] text-ink-muted">{t("honest")}</p>
+      <p className="text-[15px] leading-relaxed text-ink-muted">{t("honest")}</p>
     </div>
   );
 }
@@ -119,7 +119,7 @@ export default async function RankingsPage({ params, searchParams }: PageProps<"
   setRequestLocale(locale);
   const t = await getTranslations({ locale, namespace: "rankings" });
   return (
-    <div className="wrap flex flex-col gap-8 py-8 lg:gap-10 lg:py-14">
+    <div className="wrap flex flex-col gap-10 py-10 lg:gap-14 lg:py-20">
       <ExploreHeader locale={locale} current="rankings" lead={t("lead")} />
       <Suspense fallback={<div className="h-96 animate-pulse rounded-card bg-surface-sunken" />}>
         <Ranking locale={locale} searchParams={searchParams} />
