@@ -2,6 +2,7 @@ package com.brandonkamga.sourcefolio.discovery.infra.persistence;
 
 import com.brandonkamga.sourcefolio.account.domain.model.User;
 import com.brandonkamga.sourcefolio.account.domain.port.UserStore;
+import com.brandonkamga.sourcefolio.discovery.domain.model.CityCount;
 import com.brandonkamga.sourcefolio.discovery.domain.model.RankingFacets;
 import com.brandonkamga.sourcefolio.discovery.domain.model.RankingFilter;
 import com.brandonkamga.sourcefolio.discovery.domain.model.RankingPage;
@@ -112,5 +113,21 @@ class JpaRankingStoreIT extends PostgresIT {
         RankingFacets malawi = store.facets(new RankingFilter("MW", null));
         assertThat(malawi.languages()).contains(new RankingFacets.Count("Rust", 2), new RankingFacets.Count("Go", 1));
         assertThat(malawi.countries()).contains(new RankingFacets.Count("MW", 2), new RankingFacets.Count("BW", 1));
+    }
+
+    @Test
+    @DisplayName("city counts cover listed profiles only, grouped per country and city, a missing city included")
+    void cityCounts() {
+        UUID first = listed(unique("c1"), "LS", 1, 1, 0, 0, "2020-01-01T00:00:00Z", List.of());
+        UUID second = listed(unique("c2"), "LS", 1, 1, 0, 0, "2020-01-01T00:00:00Z", List.of());
+        UUID withoutCity = listed(unique("c3"), "LS", 1, 1, 0, 0, "2020-01-01T00:00:00Z", List.of());
+        UUID unpublished = listed(unique("c4"), "LS", 1, 1, 0, 0, "2020-01-01T00:00:00Z", List.of());
+        store.saveProfile(first, "LS", "Maseru", true);
+        store.saveProfile(second, "LS", "Maseru", true);
+        store.saveProfile(withoutCity, "LS", null, true);
+        store.saveProfile(unpublished, "LS", "Teyateyaneng", false);
+
+        assertThat(store.cityCounts()).filteredOn(count -> "LS".equals(count.countryCode()))
+                .containsExactlyInAnyOrder(new CityCount("LS", "Maseru", 2), new CityCount("LS", null, 1));
     }
 }

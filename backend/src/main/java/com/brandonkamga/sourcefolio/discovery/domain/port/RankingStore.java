@@ -1,5 +1,6 @@
 package com.brandonkamga.sourcefolio.discovery.domain.port;
 
+import com.brandonkamga.sourcefolio.discovery.domain.model.CityCount;
 import com.brandonkamga.sourcefolio.discovery.domain.model.RankingFacets;
 import com.brandonkamga.sourcefolio.discovery.domain.model.RankingFilter;
 import com.brandonkamga.sourcefolio.discovery.domain.model.RankingPage;
@@ -20,4 +21,7 @@ public interface RankingStore {
     RankingPage page(RankingFilter filter, RankingSort sort, String cursor, int size);
 
     RankingFacets facets(RankingFilter filter);
+
+    /** Listed profiles per country and city, most first; bounded, so free text cannot flood the map. */
+    List<CityCount> cityCounts();
 }

@@ -1,5 +1,6 @@
 package com.brandonkamga.sourcefolio.discovery.infra.persistence;
 
+import com.brandonkamga.sourcefolio.discovery.domain.model.CityCount;
 import com.brandonkamga.sourcefolio.discovery.domain.model.RankingFacets;
 import com.brandonkamga.sourcefolio.discovery.domain.model.RankingFilter;
 import com.brandonkamga.sourcefolio.discovery.domain.model.RankingPage;
@@ -165,6 +166,17 @@ class JpaRankingStore implements RankingStore {
         return new RankingFacets(
                 countries.stream().map(row -> new RankingFacets.Count(row[0].toString().strip(), ((Number) row[1]).longValue())).toList(),
                 languages.stream().map(row -> new RankingFacets.Count((String) row[0], ((Number) row[1]).longValue())).toList());
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<CityCount> cityCounts() {
+        @SuppressWarnings("unchecked")
+        List<Object[]> found = bindFilter(entityManager.createNativeQuery(
+                "SELECT country_code, city, count(*) FROM ranking_entries WHERE " + LISTED + " AND country_code IS NOT NULL"
+                        + " GROUP BY country_code, city ORDER BY count(*) DESC, country_code, city LIMIT 2000"), new RankingFilter(null, null))
+                .getResultList();
+        return found.stream().map(row -> new CityCount(row[0].toString().strip(), (String) row[1], ((Number) row[2]).longValue())).toList();
     }
 
     private static Query bindFilter(Query query, RankingFilter filter) {

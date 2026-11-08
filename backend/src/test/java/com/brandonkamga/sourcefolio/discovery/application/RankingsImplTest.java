@@ -1,5 +1,6 @@
 package com.brandonkamga.sourcefolio.discovery.application;
 
+import com.brandonkamga.sourcefolio.discovery.domain.model.CityCount;
 import com.brandonkamga.sourcefolio.discovery.domain.model.RankingFacets;
 import com.brandonkamga.sourcefolio.discovery.domain.model.RankingFilter;
 import com.brandonkamga.sourcefolio.discovery.domain.model.RankingPage;
@@ -43,6 +44,11 @@ class RankingsImplTest {
         public RankingFacets facets(RankingFilter filter) {
             asked.add(new Object[] {filter});
             return new RankingFacets(List.of(), List.of());
+        }
+
+        @Override
+        public List<CityCount> cityCounts() {
+            return List.of();
         }
     };
     private final RankingsImpl rankings = new RankingsImpl(store);
