@@ -1,6 +1,6 @@
 package com.brandonkamga.sourcefolio.account.application;
 
-import com.brandonkamga.sourcefolio.account.domain.model.EmailAddress;
+import com.brandonkamga.sourcefolio.shared.domain.EmailAddress;
 import com.brandonkamga.sourcefolio.account.domain.model.User;
 import com.brandonkamga.sourcefolio.account.domain.model.UserId;
 import com.brandonkamga.sourcefolio.account.domain.port.UserStore;

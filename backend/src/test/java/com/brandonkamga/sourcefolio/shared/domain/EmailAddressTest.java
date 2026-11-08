@@ -1,4 +1,4 @@
-package com.brandonkamga.sourcefolio.account.domain.model;
+package com.brandonkamga.sourcefolio.shared.domain;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
