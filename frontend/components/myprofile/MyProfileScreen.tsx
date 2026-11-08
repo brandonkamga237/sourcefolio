@@ -1,4 +1,4 @@
-import { getFormatter, getTranslations } from "next-intl/server";
+import { getTranslations } from "next-intl/server";
 import { GitHubSignIn } from "@/components/auth/GitHubSignIn";
 import { AccountSettings } from "@/components/me/AccountSettings";
 import { ProfileView } from "@/components/contribution/ProfileView";
@@ -23,20 +23,15 @@ interface MyProfileScreenProps {
  * the very page visitors will see. Reads the session, so it renders inside a Suspense boundary.
  */
 export async function MyProfileScreen({ locale }: MyProfileScreenProps) {
-  const [t, m, format, member] = await Promise.all([
-    getTranslations({ locale }),
-    getTranslations({ locale, namespace: "myProfile" }),
-    getFormatter({ locale }),
-    getMe(),
-  ]);
+  const [t, m, member] = await Promise.all([getTranslations({ locale }), getTranslations({ locale, namespace: "myProfile" }), getMe()]);
 
   if (!member) {
     return (
-      <section aria-labelledby="my-profile-visitor" className="mx-auto flex max-w-xl flex-col gap-5 py-6">
-        <h1 id="my-profile-visitor" className="font-display text-[28px] leading-tight font-semibold lg:text-[36px]">
+      <section aria-labelledby="my-profile-visitor" className="flex max-w-2xl flex-col items-start gap-6 py-10 lg:py-20">
+        <h1 id="my-profile-visitor" className="text-[40px] leading-[1.05] font-semibold tracking-[-0.035em] lg:text-[56px]">
           {t("myProfile.visitorTitle")}
         </h1>
-        <p className="text-[16px] leading-relaxed text-ink-soft">{t("myProfile.visitorLead")}</p>
+        <p className="text-[17px] leading-relaxed text-ink-soft">{t("myProfile.visitorLead")}</p>
         <GitHubSignIn label={t("auth.signInWithGithub")} permission={t("auth.permission")} returnTo={localizedPath(locale, "/me")} />
       </section>
     );
@@ -50,7 +45,7 @@ export async function MyProfileScreen({ locale }: MyProfileScreenProps) {
   const site = process.env.SITE_URL ?? "http://localhost:3000";
 
   return (
-    <div className="flex flex-col gap-6">
+    <div className="flex flex-col gap-8">
       <Steps
         label={m("stepsLabel")}
         steps={[
@@ -72,28 +67,13 @@ export async function MyProfileScreen({ locale }: MyProfileScreenProps) {
 
       {ready && answers ? (
         <>
-          <section className="flex flex-col gap-3 rounded-card border border-success bg-surface p-5 sm:flex-row sm:items-center sm:justify-between">
-            <div className="flex flex-col gap-1">
-              <h1 className="font-display text-[20px] font-semibold">{t("myProfile.readyTitle", { login })}</h1>
-              <p className="text-[14px] text-ink-muted">{m("readyLead")}</p>
-            </div>
-            <dl className="flex flex-wrap gap-x-5 gap-y-1 text-[13px] text-ink-muted">
-              {[
-                [t("profileCard.seniorityValue", { year: new Date(indicators.accountCreatedAt).getUTCFullYear() }), t("profileCard.seniority")],
-                [t("profileCard.regularityValue", { active: indicators.activeMonths }), t("profileCard.regularity")],
-                [format.number(indicators.publicContributions), t("profileCard.volume")],
-                [format.number(indicators.stars), t("profileCard.stars")],
-              ].map(([value, label]) => (
-                <div key={label} className="flex gap-1">
-                  <dt className="sr-only">{label}</dt>
-                  <dd><strong className="text-ink">{value}</strong> {label.toLowerCase()}</dd>
-                </div>
-              ))}
-            </dl>
-          </section>
+          <header className="flex flex-col gap-2">
+            <h1 className="text-[32px] leading-[1.1] font-semibold tracking-[-0.03em] lg:text-[40px]">{t("myProfile.readyTitle", { login })}</h1>
+            <p className="text-[16px] text-ink-soft">{m("readyLead")}</p>
+          </header>
 
-          <div className="grid items-start gap-8 lg:grid-cols-[minmax(0,420px)_1fr]">
-            <div className="flex flex-col gap-8">
+          <div className="grid items-start gap-10 lg:grid-cols-[minmax(0,380px)_minmax(0,1fr)] lg:gap-14">
+            <div className="flex flex-col gap-8 lg:sticky lg:top-24">
               <CompletionForm
                 country={answers.country}
                 city={answers.city}
@@ -122,8 +102,8 @@ export async function MyProfileScreen({ locale }: MyProfileScreenProps) {
               />
             </div>
             <section aria-label={m("preview")} className="flex min-w-0 flex-col gap-3">
-              <p className="text-[13px] font-semibold text-ink-muted">{m("preview")}</p>
-              <div className="rounded-panel border border-line p-4 lg:p-6">
+              <p className="text-[13px] text-ink-muted">{m("preview")}</p>
+              <div className="rounded-panel border border-line bg-surface p-5 lg:p-8">
                 <ProfileView
                   login={login}
                   name={indicators.name}

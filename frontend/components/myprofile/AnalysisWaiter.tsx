@@ -60,10 +60,10 @@ export function AnalysisWaiter({ status, refreshing, labels }: AnalysisWaiterPro
 
   if (failed) {
     return (
-      <div role="alert" className="flex flex-col gap-3 rounded-card border border-line bg-surface p-5">
-        <p className="text-[16px] font-semibold">{labels.failedTitle}</p>
+      <div role="alert" className="flex flex-col items-start gap-3 rounded-card bg-surface-sunken p-6">
+        <p className="text-[17px] font-medium">{labels.failedTitle}</p>
         <p className="text-[14px] text-ink-muted">{labels.failedLead}</p>
-        <button type="button" onClick={() => void retry()} className="press h-11 self-start rounded-control border border-line bg-surface-raised px-4 text-[14px] font-semibold">
+        <button type="button" onClick={() => void retry()} className="btn btn-secondary">
           {labels.retry}
         </button>
       </div>
@@ -77,8 +77,8 @@ export function AnalysisWaiter({ status, refreshing, labels }: AnalysisWaiterPro
   if (!waiting) return null;
 
   return (
-    <div role="status" className="flex flex-col gap-4 rounded-card border border-line bg-surface p-5">
-      <p className="text-[16px] font-semibold">{labels.title}</p>
+    <div role="status" className="flex flex-col gap-4 rounded-card bg-surface-sunken p-6">
+      <p className="text-[17px] font-medium">{labels.title}</p>
       <p className="text-[14px] text-ink-muted">{labels.lead}</p>
       {/* A row of squares lighting up one after the other: the reading in progress. */}
       <div aria-hidden="true" className="flex gap-[3px]">

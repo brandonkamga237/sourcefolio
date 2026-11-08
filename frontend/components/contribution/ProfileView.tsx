@@ -22,57 +22,50 @@ interface ProfileViewProps {
   actions?: ReactNode;
 }
 
+const external = "link text-[14px]";
+
 /**
- * A profile: who the person is in their own words on the left, what GitHub proves on the right.
- * The same view serves the public page and the member's private preview.
+ * A profile reads like one document: who the person is in their own words, then what GitHub
+ * proves. The same view serves the public page and the member's private preview.
  */
 export async function ProfileView({ login, name, country, city, bio, linkedInUrl, indicators, actions }: ProfileViewProps) {
   const [t, format, locale] = await Promise.all([getTranslations("profileCard"), getFormatter(), getLocale()]);
   const place = [city, country ? countryName(country, locale) : null].filter(Boolean).join(", ");
 
   return (
-    <div className="@container">
-      <div className="grid gap-6 @4xl:grid-cols-[260px_1fr] @4xl:gap-8">
-        <aside className="flex flex-col gap-4">
-          <div className="flex items-center gap-4 @4xl:flex-col @4xl:items-start">
-            <Avatar login={login} size={96} className="@4xl:size-[200px]! @4xl:text-[48px]!" />
-            <div className="flex min-w-0 flex-col">
-              {name ? <h1 className="font-display text-[24px] leading-tight font-semibold">{name}</h1> : null}
-              <p className={name ? "text-[18px] text-ink-muted" : "font-display text-[24px] font-semibold"}>{login}</p>
-            </div>
+    <article className="@container flex flex-col gap-10">
+      <header className="flex flex-col gap-5 @xl:flex-row @xl:items-start">
+        <Avatar login={login} size={80} />
+        <div className="flex min-w-0 flex-1 flex-col gap-3">
+          <div className="flex flex-col gap-1">
+            <h1 className="text-[32px] leading-[1.1] font-semibold tracking-[-0.03em] @xl:text-[40px]">{name ?? login}</h1>
+            <p className="text-[15px] text-ink-muted">{[name ? login : null, place].filter(Boolean).join(" · ")}</p>
           </div>
-          {bio ? <p className="text-[15px] leading-relaxed text-ink-body">{bio}</p> : null}
-          <ul className="flex flex-col gap-2 text-[14px]">
-            {place ? <li className="text-ink-soft">{place}</li> : null}
+          {bio ? <p className="max-w-2xl text-[16px] leading-relaxed text-ink-body">{bio}</p> : null}
+          <ul className="flex flex-wrap gap-x-5 gap-y-1">
+            <li>
+              <a href={indicators.proofs.profile} target="_blank" rel="noopener noreferrer" className={external}>{t("github", { login })}</a>
+            </li>
             {linkedInUrl ? (
               <li>
-                <a href={linkedInUrl} target="_blank" rel="noopener noreferrer" className="text-accent hover:underline">
-                  {linkedInUrl.replace("https://www.", "")}
-                </a>
+                <a href={linkedInUrl} target="_blank" rel="noopener noreferrer" className={external}>{linkedInUrl.replace("https://www.", "")}</a>
               </li>
             ) : null}
-            <li>
-              <a href={indicators.proofs.profile} target="_blank" rel="noopener noreferrer" className="text-accent hover:underline">
-                {t("github", { login })}
-              </a>
-            </li>
           </ul>
           {actions}
-          <div className="flex flex-col gap-1 border-t border-line pt-3 text-[12px] leading-snug text-ink-muted">
-            <p>{t("analyzedOn", { date: format.dateTime(new Date(indicators.analyzedAt), { dateStyle: "long" }) })}</p>
-            <p>{t("publicOnly")}</p>
-          </div>
-        </aside>
-        <div className="@container flex min-w-0 flex-col gap-4">
-          <IndicatorCards indicators={indicators} />
-          <ContributionCalendar calendar={indicators.calendar} total={indicators.publicContributions} proofUrl={indicators.proofs.profile} />
-          <div className="grid gap-4 @3xl:grid-cols-2">
-            <LanguageBar languages={indicators.languages} proofUrl={indicators.proofs.repositories} />
-            <ExternalProjects projects={indicators.externalProjects} />
-          </div>
-          <TopRepositories repositories={indicators.topRepositories} />
         </div>
+      </header>
+      <IndicatorCards indicators={indicators} />
+      <ContributionCalendar calendar={indicators.calendar} total={indicators.publicContributions} proofUrl={indicators.proofs.profile} />
+      <div className="grid gap-10 @3xl:grid-cols-2">
+        <LanguageBar languages={indicators.languages} proofUrl={indicators.proofs.repositories} />
+        <ExternalProjects projects={indicators.externalProjects} />
       </div>
-    </div>
+      <TopRepositories repositories={indicators.topRepositories} />
+      <footer className="flex flex-col gap-1 border-t border-line-soft pt-4 text-[13px] leading-relaxed text-ink-muted">
+        <p>{t("analyzedOn", { date: format.dateTime(new Date(indicators.analyzedAt), { dateStyle: "long" }) })}</p>
+        <p>{t("publicOnly")}</p>
+      </footer>
+    </article>
   );
 }

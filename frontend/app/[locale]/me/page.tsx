@@ -18,7 +18,7 @@ export default async function MePage({ params }: PageProps<"/[locale]/me">) {
   const locale = toLocale((await params).locale);
   setRequestLocale(locale);
   return (
-    <div className="mx-auto w-full max-w-6xl px-4 py-5 lg:px-8 lg:py-7">
+    <div className="wrap py-8 lg:py-12">
       <Suspense fallback={<MyProfileScreenSkeleton />}>
         <MyProfileScreen locale={locale} />
       </Suspense>

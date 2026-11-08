@@ -23,16 +23,12 @@ export const ogSize = { width: 1200, height: 630 };
 export const og = {
   canvas: "#ffffff",
   surface: "#ffffff",
-  ink: "#1f2328",
-  body: "#1f2328",
-  muted: "#59636e",
-  line: "#d1d9e0",
-  accent: "#0969da",
-  accentSoft: "#ddf4ff",
-  accentLine: "#b6e3ff",
-  success: "#1a7f37",
-  star: "#bf8700",
-  levels: ["#eff2f5", "#aceebb", "#4ac26b", "#2da44e", "#116329"],
+  ink: "#0a0a0a",
+  body: "#171717",
+  muted: "#6b6b6b",
+  line: "#e4e4e7",
+  accent: "#047857",
+  levels: ["#efeff1", "#a7f3d0", "#34d399", "#059669", "#065f46"],
 };
 
 export function OgLogo() {

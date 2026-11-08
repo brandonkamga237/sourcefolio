@@ -50,18 +50,18 @@ export async function IndicatorCards({ indicators }: IndicatorCardsProps) {
   ];
 
   return (
-    <ul className="grid grid-cols-2 gap-3 @xl:grid-cols-3 @5xl:grid-cols-5">
+    <ul className="grid grid-cols-2 gap-px overflow-hidden rounded-card border border-line bg-line @3xl:grid-cols-5">
       {cards.map((card) => (
-        <li key={card.label}>
+        <li key={card.label} className="last:col-span-2 @3xl:last:col-span-1">
           <a
             href={card.proof}
             target="_blank"
             rel="noopener noreferrer"
             aria-label={`${card.label} ${card.value}. ${t("proof")}`}
-            className="flex h-full min-h-[44px] flex-col gap-1 rounded-card border border-line bg-surface p-4 transition-colors hover:border-accent"
+            className="flex h-full min-h-11 flex-col gap-1 bg-canvas p-4 transition-colors duration-150 hover:bg-surface-raised"
           >
             <span className="text-[13px] text-ink-muted">{card.label}</span>
-            <span className="font-display text-[22px] leading-tight font-semibold whitespace-nowrap">{card.value}</span>
+            <span className="text-[24px] leading-tight font-semibold tracking-[-0.02em] whitespace-nowrap tabular-nums">{card.value}</span>
             <span className="text-[12px] leading-snug text-ink-muted">{card.hint}</span>
           </a>
         </li>

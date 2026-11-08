@@ -14,12 +14,12 @@ interface AccountSettingsProps {
 export async function AccountSettings({ locale, login }: AccountSettingsProps) {
   const t = await getTranslations({ locale });
   return (
-    <details className="group/account rounded-card border border-line bg-surface [&_summary::-webkit-details-marker]:hidden">
-      <summary className="flex h-12 cursor-pointer list-none items-center justify-between gap-3 px-4 text-sm font-semibold select-none">
+    <details className="group/account border-t border-line-soft [&_summary::-webkit-details-marker]:hidden">
+      <summary className="flex h-12 cursor-pointer list-none items-center justify-between gap-3 text-[14px] text-ink-muted select-none">
         {t("me.accountTitle")}
         <span aria-hidden="true" className="size-2 rotate-45 border-r-2 border-b-2 border-ink-muted transition-transform duration-200 group-open/account:-rotate-135" />
       </summary>
-      <div className="flex flex-col gap-4 border-t border-line-soft p-4">
+      <div className="flex flex-col gap-4 pb-4">
         <MePreferences locale={locale} />
         <SignOutButton label={t("account.signOut")} failedMessage={t("account.signOutFailed")} />
         <div className="flex flex-col gap-2 border-t border-line-soft pt-4">

@@ -41,20 +41,20 @@ export function PublicationPanel({ published, canPublish, publicUrl, labels }: P
 
   return (
     <section aria-labelledby="visibility-title" className="flex flex-col gap-3">
-      <h2 id="visibility-title" className="text-[14px] font-semibold">{labels.visibility}</h2>
-      <div className={`flex flex-col gap-1 rounded-card border p-4 ${published ? "border-success bg-surface" : "border-line bg-surface-raised"}`}>
-        <p className="text-[15px] font-semibold">{published ? labels.publicTitle : labels.privateTitle}</p>
+      <h2 id="visibility-title" className="text-[13px] text-ink-muted">{labels.visibility}</h2>
+      <div className={"flex flex-col gap-1 rounded-card bg-surface-sunken p-4"}>
+        <p className="text-[15px] font-medium">{published ? labels.publicTitle : labels.privateTitle}</p>
         <p className="text-[13px] text-ink-muted">{published ? labels.publicLead : labels.privateLead}</p>
       </div>
       {published ? (
         <div className="flex flex-col gap-2">
           <p className="text-[13px] text-ink-muted">{labels.publicLink}</p>
-          <a href={publicUrl} className="truncate text-[14px] text-accent hover:underline">{publicUrl.replace(/^https?:\/\//, "")}</a>
+          <a href={publicUrl} className="link truncate text-[14px]">{publicUrl.replace(/^https?:\/\//, "")}</a>
           <div className="flex flex-wrap gap-2">
-            <button type="button" onClick={() => void copy()} className="press h-11 rounded-control bg-cta px-4 text-[14px] font-semibold text-cta-ink hover:bg-cta-hover">
+            <button type="button" onClick={() => void copy()} className="btn btn-primary">
               {copied ? labels.copied : labels.copy}
             </button>
-            <button type="button" onClick={() => void toggle()} disabled={busy} className="press h-11 rounded-control border border-line px-4 text-[14px] font-semibold text-ink-muted disabled:opacity-60">
+            <button type="button" onClick={() => void toggle()} disabled={busy} className="btn btn-secondary">
               {busy ? labels.unpublishing : labels.unpublish}
             </button>
           </div>
@@ -65,7 +65,7 @@ export function PublicationPanel({ published, canPublish, publicUrl, labels }: P
             type="button"
             onClick={() => void toggle()}
             disabled={busy || !canPublish}
-            className="press h-12 rounded-control bg-cta px-5 text-[15px] font-semibold text-cta-ink hover:bg-cta-hover disabled:opacity-50"
+            className="btn btn-primary min-h-12 text-[15px]"
           >
             {busy ? labels.publishing : labels.publish}
           </button>

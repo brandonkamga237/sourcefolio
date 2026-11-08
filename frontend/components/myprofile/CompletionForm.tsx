@@ -26,9 +26,6 @@ interface CompletionFormProps {
 
 type FieldState = "idle" | "saving" | "saved" | "failed";
 
-const input =
-  "w-full min-h-11 rounded-control border border-line bg-surface px-3 py-2 text-[16px] text-ink outline-none focus:border-accent focus:ring-2 focus:ring-accent-line";
-
 /**
  * The few things only the member can give. Each field is saved on its own when it changes, and
  * the page re-renders so the preview follows; the main action of the screen stays "Publish".
@@ -75,14 +72,14 @@ export function CompletionForm({ country, city, bio, githubBio, linkedIn, countr
   return (
     <div className="flex flex-col gap-5">
       <div className="flex flex-col gap-1.5">
-        <label htmlFor="country" className="text-[14px] font-semibold">
+        <label htmlFor="country" className="text-[14px] font-medium">
           {labels.country} <span className="text-danger">*</span>
         </label>
         <select
           id="country"
           defaultValue={country ?? ""}
           onChange={(event) => event.target.value && void save("country", () => answerCountry(event.target.value))}
-          className={input}
+          className="field"
         >
           <option value="" disabled>{labels.countryPlaceholder}</option>
           {countries.map((option) => (
@@ -93,7 +90,7 @@ export function CompletionForm({ country, city, bio, githubBio, linkedIn, countr
       </div>
 
       <div className="flex flex-col gap-1.5">
-        <label htmlFor="city" className="text-[14px] font-semibold">
+        <label htmlFor="city" className="text-[14px] font-medium">
           {labels.city} <span className="font-normal text-ink-muted">({labels.optional})</span>
         </label>
         <input
@@ -102,14 +99,14 @@ export function CompletionForm({ country, city, bio, githubBio, linkedIn, countr
           maxLength={MAX_CITY}
           autoComplete="address-level2"
           onBlur={(event) => event.target.value !== (city ?? "") && void save("city", () => answerCity(event.target.value || null))}
-          className={input}
+          className="field"
         />
         {hint("city", labels.cityHint)}
       </div>
 
       <div className="flex flex-col gap-1.5">
         <div className="flex items-center justify-between gap-2">
-          <label htmlFor="bio" className="text-[14px] font-semibold">{labels.bio}</label>
+          <label htmlFor="bio" className="text-[14px] font-medium">{labels.bio}</label>
           {imported ? <span className="rounded-full border border-line px-2 py-0.5 text-[12px] text-ink-muted">{labels.bioImported}</span> : null}
         </div>
         <textarea
@@ -119,17 +116,17 @@ export function CompletionForm({ country, city, bio, githubBio, linkedIn, countr
           rows={3}
           onChange={(event) => setBioDraft(event.target.value)}
           onBlur={() => bioDraft !== (bio ?? "") && void save("bio", () => answerBio(bioDraft || null))}
-          className={`${input} resize-y`}
+          className="field resize-y py-2"
         />
         {hint("bio", labels.bioHint.replace("{count}", String(bioDraft.length)))}
       </div>
 
       <div className="flex flex-col gap-1.5">
-        <label htmlFor="linkedin" className="text-[14px] font-semibold">
+        <label htmlFor="linkedin" className="text-[14px] font-medium">
           {labels.linkedIn} <span className="font-normal text-ink-muted">({labels.optional})</span>
         </label>
         <div className="flex">
-          <span className="flex items-center rounded-l-control border border-r-0 border-line bg-surface-raised px-3 text-[14px] text-ink-muted">
+          <span className="flex items-center rounded-l-control border border-r-0 border-line bg-surface-sunken px-3 text-[14px] text-ink-muted">
             linkedin.com/in/
           </span>
           <input
@@ -139,7 +136,7 @@ export function CompletionForm({ country, city, bio, githubBio, linkedIn, countr
             autoCapitalize="none"
             autoCorrect="off"
             onBlur={(event) => event.target.value !== (linkedIn ?? "") && void save("linkedin", () => answerLinkedIn(event.target.value || null))}
-            className={`${input} rounded-l-none`}
+            className="field rounded-l-none"
           />
         </div>
         {hint("linkedin", labels.linkedInHint)}

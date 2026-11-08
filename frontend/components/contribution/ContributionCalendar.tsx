@@ -29,10 +29,10 @@ export async function ContributionCalendar({ calendar, total, proofUrl }: Contri
   });
 
   return (
-    <section aria-labelledby="calendar-title" className="flex flex-col gap-3 rounded-card border border-line bg-surface p-4">
+    <section aria-labelledby="calendar-title" className="flex flex-col gap-3">
       <div className="flex flex-wrap items-baseline justify-between gap-2">
-        <h2 id="calendar-title" className="text-[15px] font-semibold">{t("calendarTitle", { count: total })}</h2>
-        <a href={proofUrl} target="_blank" rel="noopener noreferrer" className="text-[13px] text-accent hover:underline">
+        <h2 id="calendar-title" className="text-[16px] font-medium">{t("calendarTitle", { count: total })}</h2>
+        <a href={proofUrl} target="_blank" rel="noopener noreferrer" className="link text-[13px]">
           {t("viewOnGitHub")}
         </a>
       </div>

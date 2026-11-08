@@ -20,10 +20,10 @@ export async function LanguageBar({ languages, proofUrl }: LanguageBarProps) {
   ];
 
   return (
-    <section aria-labelledby="languages-title" className="flex flex-col gap-3 rounded-card border border-line bg-surface p-4">
+    <section aria-labelledby="languages-title" className="flex flex-col gap-3">
       <div className="flex items-baseline justify-between gap-2">
-        <h2 id="languages-title" className="text-[15px] font-semibold">{t("languages")}</h2>
-        <a href={proofUrl} target="_blank" rel="noopener noreferrer" className="text-[13px] text-accent hover:underline">
+        <h2 id="languages-title" className="text-[16px] font-medium">{t("languages")}</h2>
+        <a href={proofUrl} target="_blank" rel="noopener noreferrer" className="link text-[13px]">
           {t("viewOnGitHub")}
         </a>
       </div>
@@ -48,7 +48,7 @@ export async function LanguageBar({ languages, proofUrl }: LanguageBarProps) {
                   className={`size-2.5 rounded-full ${part.color ? "" : "bg-ink-muted"}`}
                   style={part.color ? { backgroundColor: part.color } : undefined}
                 />
-                <span className="font-semibold">{part.name}</span>
+                <span className="font-medium">{part.name}</span>
                 <span className="text-ink-muted">{format.number(part.bytes / total, { style: "percent", maximumFractionDigits: 0 })}</span>
               </li>
             ))}
