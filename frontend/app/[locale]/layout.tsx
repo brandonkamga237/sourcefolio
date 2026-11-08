@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Mona_Sans } from "next/font/google";
+import { Geist } from "next/font/google";
 import { notFound } from "next/navigation";
 import { hasLocale } from "next-intl";
 import { getTranslations, setRequestLocale } from "next-intl/server";
@@ -10,12 +10,10 @@ import { ThemeKeeper } from "@/components/theme/ThemeKeeper";
 import { routing, toLocale } from "@/i18n/routing";
 import "../globals.css";
 
-// Headings only; the body and the figures use the system fonts, as GitHub does, so a low-end
-// phone downloads one font file.
-const mona = Mona_Sans({
-  variable: "--font-mona",
+// One variable file for the whole interface, so a low-end phone downloads a single font.
+const geist = Geist({
+  variable: "--font-geist",
   subsets: ["latin", "latin-ext"],
-  weight: ["600", "700"],
 });
 
 export function generateStaticParams() {
@@ -28,7 +26,7 @@ export const viewport: Viewport = {
   viewportFit: "cover",
   themeColor: [
     { media: "(prefers-color-scheme: light)", color: "#ffffff" },
-    { media: "(prefers-color-scheme: dark)", color: "#0d1117" },
+    { media: "(prefers-color-scheme: dark)", color: "#0a0a0a" },
   ],
 };
 
@@ -59,14 +57,14 @@ export default async function LocaleLayout({ children, params }: LayoutProps<"/[
   return (
     <html
       lang={locale}
-      className={`${mona.variable} h-full antialiased`}
+      className={`${geist.variable} h-full antialiased`}
       // The boot script may set data-theme before React hydrates.
       suppressHydrationWarning
     >
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeBootScript }} />
       </head>
-      <body className="backdrop min-h-full">
+      <body className="min-h-full">
         <ThemeKeeper />
         <QueryProvider>
           <AppShell>{children}</AppShell>

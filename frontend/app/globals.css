@@ -1,133 +1,135 @@
 @import "tailwindcss";
 
-/* GitHub Primer palette (docs/spec-v2.md, "green square" concept). Components only use these
-   names, so the dark theme is the second block below and nothing else. The level-0..4 greens
-   are the shades of GitHub's contribution calendar: the square is the unit of the interface. */
+/* Neutral ground, one accent: green belongs to the data. The level-0..4 greens are the shades of
+   the contribution square, the unit of the interface. Components only use these names, so a
+   theme is one block of variables and nothing else. */
 @theme {
   --color-canvas: #ffffff;
   --color-surface: #ffffff;
-  --color-surface-raised: #f6f8fa;
-  --color-surface-sunken: #eff2f5;
-
-  --color-ink: #1f2328;
-  --color-ink-body: #1f2328;
-  --color-ink-soft: #3d444d;
-  --color-ink-muted: #59636e;
+  --color-surface-raised: #fafafa;
+  --color-surface-sunken: #f4f4f5;
+  --color-ink: #0a0a0a;
+  --color-ink-body: #171717;
+  --color-ink-soft: #404040;
+  --color-ink-muted: #6b6b6b;
   --color-ink-inverse: #ffffff;
-
-  --color-line: #d1d9e0;
-  --color-line-soft: #e6eaef;
-
-  --color-accent: #0969da;
-  --color-accent-hover: #0550ae;
-  --color-accent-ink: #0969da;
-  --color-accent-soft: #ddf4ff;
-  --color-accent-line: #b6e3ff;
-
-  /* The main call to action, GitHub's green button. */
-  --color-cta: #1f883d;
-  --color-cta-hover: #1a7f37;
+  --color-line: #e4e4e7;
+  --color-line-soft: #f0f0f1;
+  --color-accent: #047857;
+  --color-accent-hover: #065f46;
+  --color-accent-ink: #047857;
+  --color-accent-soft: #ecfdf5;
+  --color-accent-line: #a7f3d0;
+  --color-cta: #0a0a0a;
+  --color-cta-hover: #27272a;
   --color-cta-ink: #ffffff;
+  --color-tab-active: #0a0a0a;
+  --color-success: #047857;
+  --color-success-ink: #065f46;
+  --color-danger: #b91c1c;
+  --color-danger-soft: #fef2f2;
+  --color-like: #b91c1c;
+  --color-star: #b45309;
+  --color-level-0: #efeff1;
+  --color-level-1: #a7f3d0;
+  --color-level-2: #34d399;
+  --color-level-3: #059669;
+  --color-level-4: #065f46;
 
-  /* The underline of the current tab, as GitHub draws it. */
-  --color-tab-active: #fd8c73;
+  --radius-tag: 6px;
+  --radius-segment: 8px;
+  --radius-control: 8px;
+  --radius-card: 12px;
+  --radius-panel: 16px;
 
-  --color-success: #1a7f37;
-  --color-success-ink: #116329;
-
-  --color-danger: #d1242f;
-  --color-danger-soft: #ffebe9;
-
-  --color-like: #cf222e;
-  --color-star: #bf8700;
-
-  --color-level-0: #eff2f5;
-  --color-level-1: #aceebb;
-  --color-level-2: #4ac26b;
-  --color-level-3: #2da44e;
-  --color-level-4: #116329;
-
-  --radius-tag: 4px;
-  --radius-segment: 6px;
-  --radius-control: 6px;
-  --radius-card: 8px;
-  --radius-panel: 12px;
-
-  --font-display: var(--font-mona), -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif;
+  --font-display: var(--font-geist), -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-sans: var(--font-geist), -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif;
   --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
 }
 
-/* Dark theme: Primer dark. It follows the system unless the member picked a theme
-   (data-theme on <html>). */
+/* The dark theme follows the system unless the member picked one (data-theme on <html>). The
+   band repeats it so one section of a light page can sit on the dark ground. */
 @layer base {
   @media (prefers-color-scheme: dark) {
     :root:not([data-theme="light"]) {
-      --color-canvas: #0d1117;
-      --color-surface: #0d1117;
-      --color-surface-raised: #151b23;
-      --color-surface-sunken: #1c232c;
-      --color-ink: #f0f6fc;
-      --color-ink-body: #f0f6fc;
-      --color-ink-soft: #d1d7e0;
-      --color-ink-muted: #9198a1;
-      --color-ink-inverse: #0d1117;
-      --color-line: #3d444d;
-      --color-line-soft: #262c36;
-      --color-accent: #4493f8;
-      --color-accent-hover: #6cb6ff;
-      --color-accent-ink: #4493f8;
-      --color-accent-soft: #121d2f;
-      --color-accent-line: #1f3a5f;
-      --color-cta: #238636;
-      --color-cta-hover: #29903b;
-    --color-tab-active: #f78166;
-      --color-tab-active: #f78166;
-      --color-success: #3fb950;
-      --color-success-ink: #56d364;
-      --color-danger: #f85149;
-      --color-danger-soft: #2d1215;
-      --color-like: #ff7b72;
-      --color-star: #e3b341;
-      --color-level-0: #1c2128;
-      --color-level-1: #033a16;
-      --color-level-2: #196c2e;
-      --color-level-3: #2ea043;
-      --color-level-4: #56d364;
+      --color-canvas: #0a0a0a;
+      --color-surface: #0f0f10;
+      --color-surface-raised: #141415;
+      --color-surface-sunken: #1c1c1e;
+      --color-ink: #fafafa;
+      --color-ink-body: #ededed;
+      --color-ink-soft: #c4c4c8;
+      --color-ink-muted: #94949c;
+      --color-ink-inverse: #0a0a0a;
+      --color-line: #27272a;
+      --color-line-soft: #1c1c1f;
+      --color-accent: #34d399;
+      --color-accent-hover: #6ee7b7;
+      --color-accent-ink: #34d399;
+      --color-accent-soft: #052e24;
+      --color-accent-line: #065f46;
+      --color-cta: #fafafa;
+      --color-cta-hover: #e4e4e7;
+      --color-cta-ink: #0a0a0a;
+      --color-tab-active: #fafafa;
+      --color-success: #34d399;
+      --color-success-ink: #6ee7b7;
+      --color-danger: #f87171;
+      --color-danger-soft: #2a1215;
+      --color-like: #f87171;
+      --color-star: #fbbf24;
+      --color-level-0: #1c1c1f;
+      --color-level-1: #064e3b;
+      --color-level-2: #047857;
+      --color-level-3: #10b981;
+      --color-level-4: #6ee7b7;
     }
   }
 
-  :root[data-theme="dark"] {
-    --color-canvas: #0d1117;
-    --color-surface: #0d1117;
-    --color-surface-raised: #151b23;
-    --color-surface-sunken: #1c232c;
-    --color-ink: #f0f6fc;
-    --color-ink-body: #f0f6fc;
-    --color-ink-soft: #d1d7e0;
-    --color-ink-muted: #9198a1;
-    --color-ink-inverse: #0d1117;
-    --color-line: #3d444d;
-    --color-line-soft: #262c36;
-    --color-accent: #4493f8;
-    --color-accent-hover: #6cb6ff;
-    --color-accent-ink: #4493f8;
-    --color-accent-soft: #121d2f;
-    --color-accent-line: #1f3a5f;
-    --color-cta: #238636;
-    --color-cta-hover: #29903b;
-    --color-tab-active: #f78166;
-    --color-success: #3fb950;
-    --color-success-ink: #56d364;
-    --color-danger: #f85149;
-    --color-danger-soft: #2d1215;
-    --color-like: #ff7b72;
-    --color-star: #e3b341;
-    --color-level-0: #1c2128;
-    --color-level-1: #033a16;
-    --color-level-2: #196c2e;
-    --color-level-3: #2ea043;
-    --color-level-4: #56d364;
+  :root[data-theme="dark"],
+  .dark-band {
+    --color-canvas: #0a0a0a;
+    --color-surface: #0f0f10;
+    --color-surface-raised: #141415;
+    --color-surface-sunken: #1c1c1e;
+    --color-ink: #fafafa;
+    --color-ink-body: #ededed;
+    --color-ink-soft: #c4c4c8;
+    --color-ink-muted: #94949c;
+    --color-ink-inverse: #0a0a0a;
+    --color-line: #27272a;
+    --color-line-soft: #1c1c1f;
+    --color-accent: #34d399;
+    --color-accent-hover: #6ee7b7;
+    --color-accent-ink: #34d399;
+    --color-accent-soft: #052e24;
+    --color-accent-line: #065f46;
+    --color-cta: #fafafa;
+    --color-cta-hover: #e4e4e7;
+    --color-cta-ink: #0a0a0a;
+    --color-tab-active: #fafafa;
+    --color-success: #34d399;
+    --color-success-ink: #6ee7b7;
+    --color-danger: #f87171;
+    --color-danger-soft: #2a1215;
+    --color-like: #f87171;
+    --color-star: #fbbf24;
+    --color-level-0: #1c1c1f;
+    --color-level-1: #064e3b;
+    --color-level-2: #047857;
+    --color-level-3: #10b981;
+    --color-level-4: #6ee7b7;
+  }
+
+  .dark-band {
+    background-color: var(--color-canvas);
+    color: var(--color-ink);
+  }
+
+  h1,
+  h2,
+  h3 {
+    text-wrap: balance;
   }
 
   html {
@@ -228,8 +230,6 @@
   }
 }
 
-/* The page background: the plain canvas of GitHub. The green squares carry the identity, so
-   the background stays quiet. */
 @utility backdrop {
   background-color: var(--color-canvas);
 }
@@ -258,5 +258,111 @@
     /* Loops (float, blink) stop instead of flickering at 1 ms. */
     animation-iteration-count: 1 !important;
     transition-duration: 1ms !important;
+  }
+}
+
+/* The page's one column: every section starts and ends on the same two lines. */
+@utility wrap {
+  margin-inline: auto;
+  width: 100%;
+  max-width: 72rem;
+  padding-inline: 1rem;
+
+  @media (width >= 64rem) {
+    padding-inline: 2rem;
+  }
+}
+
+/* One button family. 44px on a phone; a pointer can do with less. */
+@utility btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: 2.75rem;
+  padding-inline: 1rem;
+  border-radius: var(--radius-control);
+  font-size: 0.875rem;
+  font-weight: 500;
+  white-space: nowrap;
+  transition: background-color 150ms, border-color 150ms, color 150ms, transform 160ms var(--ease-out-soft);
+
+  &:active:not(:disabled) {
+    transform: scale(0.98);
+  }
+
+  &:disabled {
+    opacity: 0.55;
+  }
+
+  @media (width >= 64rem) {
+    min-height: 2.5rem;
+  }
+}
+
+@utility btn-primary {
+  background-color: var(--color-cta);
+  color: var(--color-cta-ink);
+
+  &:hover:not(:disabled) {
+    background-color: var(--color-cta-hover);
+  }
+}
+
+@utility btn-secondary {
+  border: 1px solid var(--color-line);
+  background-color: var(--color-surface);
+  color: var(--color-ink);
+
+  &:hover:not(:disabled) {
+    background-color: var(--color-surface-raised);
+  }
+}
+
+/* Every input and select. 16px so a phone does not zoom on focus. */
+@utility field {
+  width: 100%;
+  min-height: 2.75rem;
+  padding-inline: 0.75rem;
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-control);
+  background-color: var(--color-surface);
+  color: var(--color-ink);
+  font-size: 1rem;
+  font-weight: 400;
+  outline: none;
+  transition: border-color 150ms, box-shadow 150ms;
+
+  &:focus {
+    border-color: var(--color-ink-muted);
+    box-shadow: 0 0 0 3px var(--color-line-soft);
+  }
+
+  @media (width >= 64rem) {
+    font-size: 0.875rem;
+  }
+}
+
+/* A text link that draws its underline. */
+@utility link {
+  color: var(--color-ink);
+  font-weight: 500;
+  text-decoration-line: underline;
+  text-decoration-color: var(--color-line);
+  text-underline-offset: 3px;
+  transition: text-decoration-color 150ms;
+
+  &:hover {
+    text-decoration-color: currentColor;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  ::before,
+  ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
   }
 }
