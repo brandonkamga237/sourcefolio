@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 
 /** Rankings are open to every visitor, account or not. */
 @Component
-class CatalogRoutes implements SecurityCustomizer {
+class RankingRoutes implements SecurityCustomizer {
 
     @Override
     public void customize(HttpSecurity http) throws Exception {

@@ -5,6 +5,6 @@ import org.springframework.context.annotation.Import;
 
 /** The package-private route customizer, for @WebMvcTest slices in other packages. */
 @TestConfiguration
-@Import(CatalogRoutes.class)
-public class CatalogRoutesTestConfig {
+@Import(RankingRoutes.class)
+public class RankingRoutesTestConfig {
 }
