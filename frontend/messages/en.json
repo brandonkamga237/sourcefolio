@@ -1,21 +1,16 @@
 {
   "meta": {
-    "title": "SourceFolio — portfolios you can read the code of",
-    "description": "Discover developer portfolios that are online and whose code is public, by country, specialty and technology."
+    "title": "SourceFolio — from open source to opportunity",
+    "description": "Turn your public open source contributions into a profile recruiters can read and trust. For every tech profile."
   },
   "brand": {
     "wordmark": "sourcefolio",
-    "tagline": "Portfolios you can read the code of."
+    "tagline": "From open source to opportunity."
   },
   "nav": {
     "label": "Main navigation",
-    "discover": "Discover",
     "me": "Me",
     "publish": "Publish my profile",
-    "ranking": "Ranking",
-    "publishShort": "My profile",
-    "unreadOne": "{count} new piece of feedback",
-    "unreadOther": "{count} new pieces of feedback",
     "rankings": "Rankings",
     "myProfile": "My profile"
   },
@@ -28,18 +23,6 @@
     "skipToContent": "Skip to content"
   },
   "pages": {
-    "search": {
-      "title": "Search"
-    },
-    "portfolio": {
-      "title": "My portfolio",
-      "visitorTitle": "Publish your portfolio",
-      "visitorLead": "Sign in with GitHub: we look for your portfolio among your public repositories and you publish it in one click.",
-      "stepsLabel": "How it works",
-      "step1": "You sign in with GitHub.",
-      "step2": "We find your portfolio among your public repositories.",
-      "step3": "You confirm, it is published. In under a minute."
-    },
     "me": {
       "title": "Me",
       "account": "Account",
@@ -62,151 +45,22 @@
   },
   "notFound": {
     "title": "Page not found",
-    "body": "This address leads to no portfolio. It may have moved or been removed.",
-    "back": "Back to Discover"
+    "body": "This address leads to no profile. It may have changed or been removed.",
+    "back": "Back to the rankings"
   },
   "account": {
     "signedInAs": "Signed in as {login}",
     "signOut": "Sign out",
     "signOutFailed": "Signing out failed. Try again.",
     "delete": "Delete my account",
-    "deleteLead": "Deletes your account, your portfolio, your profile answers and the likes you gave. It is immediate and final.",
+    "deleteLead": "Deletes your account, your profile and your profile answers. It is immediate and final.",
     "deleteFailed": "Your account could not be deleted. Try again.",
     "deleteDialog": {
       "title": "Delete your account?",
-      "description": "Your account, your portfolio and its likes, your profile answers and the likes you gave are deleted right away. This cannot be undone.",
+      "description": "Your account, your profile and your profile answers are deleted right away. This cannot be undone.",
       "confirm": "Delete for good",
       "pending": "Deleting…",
       "typeToConfirm": "Type your username {word} to confirm"
-    }
-  },
-  "detection": {
-    "searching": "Looking for your portfolio in your public repositories…",
-    "visitSite": "Visit the site",
-    "viewCode": "View the code",
-    "reason": {
-      "USER_PAGES": "Your GitHub Pages site",
-      "NAMED_REPOSITORY": "A repository named “{name}”",
-      "HOMEPAGE": "The site set in one of your repositories",
-      "PROJECT_PAGES": "A project published with GitHub Pages"
-    },
-    "publish": "Yes, it’s my portfolio: publish",
-    "publishThis": "This is the one: publish",
-    "publishing": "Checking your site…",
-    "publishFailed": "Publishing did not go through. Try again in a moment.",
-    "lastSearch": "Last search {ago}",
-    "rescan": "Search again",
-    "rescanning": "Searching…",
-    "rescanFailed": "The search could not start. Try again in a moment.",
-    "missingTitle": "Your portfolio is not in the list?",
-    "missingLead": "Pick its repository. To know the site is yours, we read the address set on GitHub: only the repository’s owner can change it.",
-    "searchRepositories": "Search a repository",
-    "noRepositoryMatch": "No repository matches.",
-    "noRepositories": "The last search found no other public repository. Run it again if you just created one.",
-    "showAll": "Show all {count} repositories",
-    "pick": "This one",
-    "stepsTitle": "To publish {repository}:",
-    "step1": "Open the repository on GitHub, then tap the gear next to “About”.",
-    "step2": "Paste your site’s address into “Website”, then “Save changes”.",
-    "step3": "Come back here and tap “Search again”: your portfolio will show at the top, ready to publish.",
-    "openOnGithub": "Open the repository on GitHub",
-    "pickTitle": "Pick your portfolio’s repository",
-    "pickLeadFound": "We spotted these sites in your public repositories. Publish the right one: it shows in Discover at once.",
-    "pickLeadNone": "No site spotted automatically. Pick your repository from the list, we guide you.",
-    "otherRepositories": "Your repositories"
-  },
-  "myShowcase": {
-    "status": {
-      "PUBLISHED": "Published",
-      "UNAVAILABLE": "Temporarily unavailable",
-      "NEEDS_FIX": "Needs a fix",
-      "REMOVED": "Removed"
-    },
-    "publishedOn": "Published on {date, date, long}",
-    "visitSite": "Visit the site",
-    "viewCode": "View the code",
-    "share": "Share",
-    "shareTitle": "My portfolio on SourceFolio: {site}",
-    "shareCopied": "Link copied. Paste it anywhere.",
-    "viewPage": "My page"
-  },
-  "showcasePage": {
-    "metaTitle": "{site}, {login}’s portfolio",
-    "metaDescription": "{login}’s portfolio and the code that builds it, on SourceFolio.",
-    "publishedOn": "Published on {date, date, long}",
-    "visitSite": "Visit the site",
-    "viewCode": "View the code",
-    "banner": {
-      "UNAVAILABLE": "This portfolio is unavailable for now: its site no longer answers. It comes back as soon as it does.",
-      "NEEDS_FIX": "This portfolio is waiting for a fix from its author."
-    },
-    "ctaTitle": "Show your code too",
-    "ctaLead": "Sign in with GitHub, we find your portfolio and you publish it in one click.",
-    "ctaLink": "Publish my portfolio",
-    "ogBy": "by {login}",
-    "ogTagline": "A portfolio you can read the code of",
-    "ogStars": "{formatted} {count, plural, one {star} other {stars}} on GitHub",
-    "byLogin": "by {login}",
-    "seeProfile": "See profile"
-  },
-  "catalog": {
-    "sort": {
-      "label": "Catalogue order",
-      "discover": "Discover",
-      "recent": "Recent"
-    },
-    "loadMore": "Show more portfolios",
-    "loading": "Loading…",
-    "loadFailed": "The next portfolios could not be loaded. Try again in a moment.",
-    "unavailable": "The catalogue is not answering right now. Try again in a moment.",
-    "emptyTitle": "No portfolio published yet",
-    "emptyLead": "Yours can be the first: sign in with GitHub, we find it and you publish it in one click.",
-    "emptyLink": "Publish my portfolio",
-    "count": "{count, plural, one {# portfolio} other {# portfolios}}",
-    "orderShuffled": "shuffled today",
-    "orderRecent": "newest first",
-    "panel": {
-      "close": "Close the panel",
-      "visitSite": "Visit the site",
-      "viewCode": "Code",
-      "openPage": "Open the full page",
-      "sourceRepo": "Source repository",
-      "publishedOn": "Published on {date}",
-      "previous": "Previous portfolio (left arrow)",
-      "next": "Next portfolio (right arrow)",
-      "position": "{current} of {total}",
-      "statLikes": "likes",
-      "statStars": "GitHub stars",
-      "statPublished": "published",
-      "share": "Share",
-      "shareTitle": "{login}’s portfolio on SourceFolio",
-      "clone": "git clone",
-      "copied": "Copied",
-      "githubProfile": "GitHub",
-      "projectTitle": "The project",
-      "projectLanguages": "Repository languages",
-      "projectUpdated": "Code updated {when}",
-      "statFeedback": "feedback"
-    },
-    "feedTitle": "Portfolios",
-    "recentTitle": "Latest published",
-    "intro": {
-      "lead": "Open a portfolio, visit the site, then read the code that runs it.",
-      "cta": "Publish mine",
-      "close": "Hide this message"
-    },
-    "search": {
-      "placeholder": "Search a name, a site, a headline…",
-      "country": "Country",
-      "anyCountry": "All countries",
-      "language": "Stack",
-      "anyLanguage": "Any stack",
-      "clear": "Clear filters",
-      "filters": "Filters",
-      "noMatchTitle": "No portfolio matches",
-      "noMatchLead": "Try other words, or remove a filter.",
-      "role": "Role",
-      "anyRole": "Any role"
     }
   },
   "profile": {
@@ -298,102 +152,14 @@
     "research": "Research"
   },
   "me": {
-    "portfolioTitle": "My portfolio",
     "preferencesTitle": "Preferences",
-    "accountTitle": "Account and preferences",
-    "overview": {
-      "likes": "likes received",
-      "stars": "GitHub stars",
-      "rank": "in the ranking",
-      "unranked": "not ranked yet",
-      "days": "days online",
-      "publicProfile": "My public profile",
-      "noCountry": "Country not given"
-    },
-    "received": {
-      "title": "Feedback received",
-      "empty": "No feedback yet. Share your link: visitors can tell you what works and what could work better.",
-      "fresh": "New",
-      "unreadOne": "{count} new",
-      "unreadOther": "{count} new"
-    }
-  },
-  "ranking": {
-    "title": "Ranking",
-    "lead": "The portfolios the community likes most.",
-    "empty": "The ranking appears with the first likes. Open a portfolio you like and like it.",
-    "likes": "{count, plural, one {# like} other {# likes}}",
-    "unavailable": "The ranking is not answering right now. Try again in a moment."
-  },
-  "likes": {
-    "like": "Like this portfolio ({count})",
-    "unlike": "Take back my like ({count})",
-    "failed": "Your like could not be saved. Try again.",
-    "own": "This is your portfolio: {count} like(s)",
-    "countOne": "{count} like",
-    "countOther": "{count} likes"
-  },
-  "preview": {
-    "title": "Your card preview",
-    "lead": "What visitors see in the catalogue. Without an image, your card shows your site’s name.",
-    "imageLabel": "Image",
-    "imageHint": "JPEG, PNG or WebP, 5 MB at most",
-    "videoLabel": "Short video (optional)",
-    "videoHint": "MP4, 15 s and 8 MB at most, played on hover",
-    "choose": "Choose",
-    "change": "Change",
-    "remove": "Remove",
-    "sending": "Sending…",
-    "tooBig": "This file is too large: 5 MB at most for an image, 8 MB for a video.",
-    "failed": "The upload did not go through. Try again in a moment."
-  },
-  "journey": {
-    "title": "Your portfolio on SourceFolio",
-    "doneTitle": "All set",
-    "progress": "{done} of {total} steps",
-    "stateDone": "Done:",
-    "stateTodo": "To do:",
-    "steps": {
-      "account": "GitHub",
-      "publish": "Published",
-      "preview": "Image",
-      "profile": "Profile"
-    },
-    "next": {
-      "publish": "Pick your portfolio’s repository: it shows up in Discover as soon as it is published.",
-      "preview": "Add an image (and a short video if you like): it is what your card shows.",
-      "profile": "Tell us your country and specialty so people find you more easily."
-    },
-    "actions": {
-      "publish": "Pick my repository",
-      "preview": "Add an image",
-      "profile": "Complete my profile"
-    },
-    "doneLead": "Your portfolio is live. Share the link to get visits and likes.",
-    "dismiss": "Hide this card"
+    "accountTitle": "Account and preferences"
   },
   "common": {
     "cancel": "Cancel"
   },
-  "manage": {
-    "change": "Change portfolio",
-    "withdraw": "Withdraw my portfolio",
-    "failed": "Your portfolio could not be withdrawn. Try again.",
-    "changeDialog": {
-      "title": "Change portfolio?",
-      "description": "Your current portfolio leaves the catalogue with its likes. You then pick another repository to publish.",
-      "confirm": "Withdraw and pick another",
-      "pending": "Withdrawing…"
-    },
-    "withdrawDialog": {
-      "title": "Withdraw your portfolio?",
-      "description": "It leaves Discover and the Ranking, its page no longer exists and its likes are deleted. You can publish one again later.",
-      "confirm": "Withdraw my portfolio",
-      "pending": "Withdrawing…"
-    }
-  },
   "og": {
-    "lead": "Open a portfolio, visit the site, then read the code that runs it."
+    "lead": "Your public contributions, in one profile recruiters can read and verify."
   },
   "stars": {
     "repository": "{count, plural, =0 {No stars} one {# star} other {# stars}} on GitHub",
@@ -403,24 +169,6 @@
     "other": "{count} stars on GitHub",
     "badge": "GitHub"
   },
-  "member": {
-    "open": "See {login}’s profile",
-    "close": "Close",
-    "loading": "Loading…",
-    "failed": "This profile could not be loaded. Try again.",
-    "since": "Since {date}",
-    "likesOne": "{count} like received",
-    "likesOther": "{count} likes received",
-    "specialtiesTitle": "Specialties",
-    "noSpecialty": "Specialties not given yet",
-    "noCountry": "Country not given",
-    "portfolioTitle": "Their portfolio",
-    "openPage": "Open the page",
-    "visitSite": "Visit the site",
-    "viewCode": "View the code",
-    "githubProfile": "GitHub profile",
-    "roleClaim": "Says they are {role}"
-  },
   "specialtyGroup": {
     "dev": "Development",
     "data": "Data and AI",
@@ -429,45 +177,6 @@
     "craft": "Quality and open source",
     "sectors": "Industries",
     "roles": "Roles and involvement"
-  },
-  "feedback": {
-    "title": "Feedback",
-    "lead": "Say what works and what could work better. A specific note helps more than a “Nice!”.",
-    "angleLabel": "Angle (optional)",
-    "angles": {
-      "DESIGN": "Design",
-      "CLARITY": "Clarity",
-      "PERFORMANCE": "Performance",
-      "MOBILE": "Mobile",
-      "CODE": "Code"
-    },
-    "bodyLabel": "Your feedback",
-    "placeholder": "E.g. the page loads fast, but the contact link is hard to find on a phone.",
-    "counter": "{count} / {max}",
-    "missingOne": "{count} more character",
-    "missingOther": "{count} more characters",
-    "submit": "Send my feedback",
-    "sending": "Sending…",
-    "signInHint": "You will sign in with GitHub; your text is kept.",
-    "posted": "Thanks, your feedback is published.",
-    "failed": "Your feedback could not be sent. Try again.",
-    "own": "This is your portfolio: visitors’ feedback shows up here.",
-    "empty": "No feedback yet. Be the first to leave some.",
-    "emptyOwn": "No feedback yet. Share your link to get some.",
-    "loadFailed": "Feedback is not answering right now. Try again in a moment.",
-    "more": "See more feedback",
-    "you": "you",
-    "justNow": "just now",
-    "remove": "Remove",
-    "confirmRemove": "Remove for good",
-    "cancel": "Cancel",
-    "removeFailed": "This feedback could not be removed. Try again.",
-    "writtenIn": {
-      "fr": "Written in French",
-      "en": "Written in English"
-    },
-    "countOne": "{count} piece of feedback",
-    "countOther": "{count} pieces of feedback"
   },
   "role": {
     "frontend": "Frontend",

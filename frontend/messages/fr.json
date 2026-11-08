@@ -1,21 +1,16 @@
 {
   "meta": {
-    "title": "SourceFolio — des portfolios dont tu peux lire le code",
-    "description": "Découvre des portfolios de développeurs en ligne dont le code est public, par pays, spécialité et technologie."
+    "title": "SourceFolio — de l’open source à l’opportunité",
+    "description": "Transforme tes contributions open source publiques en une fiche que les recruteurs peuvent lire et croire. Pour tous les profils tech."
   },
   "brand": {
     "wordmark": "sourcefolio",
-    "tagline": "Des portfolios dont tu peux lire le code."
+    "tagline": "De l’open source à l’opportunité."
   },
   "nav": {
     "label": "Navigation principale",
-    "discover": "Découvrir",
     "me": "Moi",
     "publish": "Publier ma fiche",
-    "ranking": "Classement",
-    "publishShort": "Ma fiche",
-    "unreadOne": "{count} nouveau retour",
-    "unreadOther": "{count} nouveaux retours",
     "rankings": "Classements",
     "myProfile": "Ma fiche"
   },
@@ -28,18 +23,6 @@
     "skipToContent": "Aller au contenu"
   },
   "pages": {
-    "search": {
-      "title": "Rechercher"
-    },
-    "portfolio": {
-      "title": "Mon portfolio",
-      "visitorTitle": "Publie ton portfolio",
-      "visitorLead": "Connecte-toi avec GitHub : on cherche ton portfolio dans tes dépôts publics et tu le publies en un clic.",
-      "stepsLabel": "Comment ça marche",
-      "step1": "Tu te connectes avec GitHub.",
-      "step2": "On trouve ton portfolio parmi tes dépôts publics.",
-      "step3": "Tu confirmes, il est publié. En moins d’une minute."
-    },
     "me": {
       "title": "Moi",
       "account": "Compte",
@@ -62,151 +45,22 @@
   },
   "notFound": {
     "title": "Page introuvable",
-    "body": "Cette adresse ne mène à aucun portfolio. Il a peut-être changé d’adresse ou été retiré.",
-    "back": "Revenir à Découvrir"
+    "body": "Cette adresse ne mène à aucune fiche. Elle a peut-être changé ou été retirée.",
+    "back": "Revenir aux classements"
   },
   "account": {
     "signedInAs": "Connecté en tant que {login}",
     "signOut": "Se déconnecter",
     "signOutFailed": "La déconnexion a échoué. Réessaie.",
     "delete": "Supprimer mon compte",
-    "deleteLead": "Supprime ton compte, ton portfolio, tes réponses de profil et les likes que tu as donnés. C’est immédiat et définitif.",
+    "deleteLead": "Supprime ton compte, ta fiche et tes réponses de profil. C’est immédiat et définitif.",
     "deleteFailed": "Ton compte n’a pas pu être supprimé. Réessaie.",
     "deleteDialog": {
       "title": "Supprimer ton compte ?",
-      "description": "Ton compte, ton portfolio et ses likes, tes réponses de profil et les likes que tu as donnés sont supprimés tout de suite. On ne peut pas revenir en arrière.",
+      "description": "Ton compte, ta fiche et tes réponses de profil sont supprimés tout de suite. On ne peut pas revenir en arrière.",
       "confirm": "Supprimer définitivement",
       "pending": "Suppression…",
       "typeToConfirm": "Tape ton identifiant {word} pour confirmer"
-    }
-  },
-  "detection": {
-    "searching": "On cherche ton portfolio dans tes dépôts publics…",
-    "visitSite": "Voir le site",
-    "viewCode": "Voir le code",
-    "reason": {
-      "USER_PAGES": "Ton site GitHub Pages",
-      "NAMED_REPOSITORY": "Un dépôt nommé « {name} »",
-      "HOMEPAGE": "Le site indiqué dans un de tes dépôts",
-      "PROJECT_PAGES": "Un projet publié avec GitHub Pages"
-    },
-    "publish": "Oui, c’est mon portfolio : publier",
-    "publishThis": "C’est celui-ci : publier",
-    "publishing": "On vérifie ton site…",
-    "publishFailed": "La publication n’a pas abouti. Réessaie dans un instant.",
-    "lastSearch": "Dernière recherche {ago}",
-    "rescan": "Rechercher à nouveau",
-    "rescanning": "Recherche en cours…",
-    "rescanFailed": "La recherche n’a pas pu être lancée. Réessaie dans un instant.",
-    "missingTitle": "Ton portfolio n’est pas dans la liste ?",
-    "missingLead": "Choisis son dépôt. Pour savoir que le site est bien à toi, on lit l’adresse indiquée sur GitHub : seul le propriétaire du dépôt peut la changer.",
-    "searchRepositories": "Chercher un dépôt",
-    "noRepositoryMatch": "Aucun dépôt ne correspond.",
-    "noRepositories": "La dernière recherche n’a trouvé aucun autre dépôt public. Relance-la si tu viens d’en créer un.",
-    "showAll": "Afficher les {count} dépôts",
-    "pick": "C’est celui-ci",
-    "stepsTitle": "Pour publier {repository} :",
-    "step1": "Ouvre le dépôt sur GitHub, puis touche la roue dentée à côté de « About ».",
-    "step2": "Colle l’adresse de ton site dans « Website », puis « Save changes ».",
-    "step3": "Reviens ici et touche « Rechercher à nouveau » : ton portfolio apparaîtra en haut, prêt à publier.",
-    "openOnGithub": "Ouvrir le dépôt sur GitHub",
-    "pickTitle": "Choisis le dépôt de ton portfolio",
-    "pickLeadFound": "On a repéré ces sites dans tes dépôts publics. Publie le bon : il apparaît aussitôt dans Découvrir.",
-    "pickLeadNone": "Aucun site repéré automatiquement. Choisis ton dépôt dans la liste, on te guide.",
-    "otherRepositories": "Tes dépôts"
-  },
-  "myShowcase": {
-    "status": {
-      "PUBLISHED": "Publié",
-      "UNAVAILABLE": "Indisponible temporairement",
-      "NEEDS_FIX": "À corriger",
-      "REMOVED": "Retiré"
-    },
-    "publishedOn": "Publié le {date, date, long}",
-    "visitSite": "Voir le site",
-    "viewCode": "Voir le code",
-    "share": "Partager",
-    "shareTitle": "Mon portfolio sur SourceFolio : {site}",
-    "shareCopied": "Lien copié. Colle-le où tu veux.",
-    "viewPage": "Ma fiche"
-  },
-  "showcasePage": {
-    "metaTitle": "{site}, le portfolio de {login}",
-    "metaDescription": "Le portfolio de {login} et le code qui le construit, sur SourceFolio.",
-    "publishedOn": "Publié le {date, date, long}",
-    "visitSite": "Voir le site",
-    "viewCode": "Voir le code",
-    "banner": {
-      "UNAVAILABLE": "Ce portfolio est indisponible pour le moment : son site ne répond plus. Il reviendra dès qu’il répondra.",
-      "NEEDS_FIX": "Ce portfolio attend une correction de son auteur."
-    },
-    "ctaTitle": "Toi aussi, montre ton code",
-    "ctaLead": "Connecte-toi avec GitHub, on trouve ton portfolio et tu le publies en un clic.",
-    "ctaLink": "Publier mon portfolio",
-    "ogBy": "par {login}",
-    "ogTagline": "Un portfolio dont tu peux lire le code",
-    "ogStars": "{formatted} {count, plural, one {étoile} other {étoiles}} sur GitHub",
-    "byLogin": "par {login}",
-    "seeProfile": "Voir le profil"
-  },
-  "catalog": {
-    "sort": {
-      "label": "Ordre du catalogue",
-      "discover": "Découvrir",
-      "recent": "Récents"
-    },
-    "loadMore": "Voir plus de portfolios",
-    "loading": "Chargement…",
-    "loadFailed": "La suite n’a pas pu être chargée. Réessaie dans un instant.",
-    "unavailable": "Le catalogue ne répond pas pour le moment. Réessaie dans un instant.",
-    "emptyTitle": "Aucun portfolio publié pour l’instant",
-    "emptyLead": "Le tien peut être le premier : connecte-toi avec GitHub, on le trouve et tu le publies en un clic.",
-    "emptyLink": "Publier mon portfolio",
-    "count": "{count, plural, one {# portfolio} other {# portfolios}}",
-    "orderShuffled": "mélangés aujourd’hui",
-    "orderRecent": "les plus récents d’abord",
-    "panel": {
-      "close": "Fermer le panneau",
-      "visitSite": "Voir le site",
-      "viewCode": "Code",
-      "openPage": "Ouvrir la fiche complète",
-      "sourceRepo": "Dépôt source",
-      "publishedOn": "Publié le {date}",
-      "previous": "Portfolio précédent (flèche gauche)",
-      "next": "Portfolio suivant (flèche droite)",
-      "position": "{current} sur {total}",
-      "statLikes": "appréciations",
-      "statStars": "étoiles GitHub",
-      "statPublished": "publié",
-      "share": "Partager",
-      "shareTitle": "Le portfolio de {login} sur SourceFolio",
-      "clone": "git clone",
-      "copied": "Copié",
-      "githubProfile": "GitHub",
-      "projectTitle": "Le projet",
-      "projectLanguages": "Technologies du dépôt",
-      "projectUpdated": "Code mis à jour {when}",
-      "statFeedback": "retours"
-    },
-    "feedTitle": "Les portfolios",
-    "recentTitle": "Les derniers publiés",
-    "intro": {
-      "lead": "Ouvre un portfolio, visite le site, puis lis le code qui le fait tourner.",
-      "cta": "Publier le mien",
-      "close": "Masquer ce message"
-    },
-    "search": {
-      "placeholder": "Chercher un nom, un site, un titre…",
-      "country": "Pays",
-      "anyCountry": "Tous les pays",
-      "language": "Stack",
-      "anyLanguage": "Toutes les stacks",
-      "clear": "Effacer les filtres",
-      "filters": "Filtres",
-      "noMatchTitle": "Aucun portfolio ne correspond",
-      "noMatchLead": "Essaie d’autres mots, ou retire un filtre.",
-      "role": "Rôle",
-      "anyRole": "Tous les rôles"
     }
   },
   "profile": {
@@ -298,102 +152,14 @@
     "research": "Recherche"
   },
   "me": {
-    "portfolioTitle": "Mon portfolio",
     "preferencesTitle": "Préférences",
-    "accountTitle": "Compte et préférences",
-    "overview": {
-      "likes": "appréciations reçues",
-      "stars": "étoiles GitHub",
-      "rank": "au classement",
-      "unranked": "pas encore classé",
-      "days": "jours en ligne",
-      "publicProfile": "Mon profil public",
-      "noCountry": "Pays non renseigné"
-    },
-    "received": {
-      "title": "Retours reçus",
-      "empty": "Pas encore de retour. Partage ton lien : les visiteurs pourront te dire ce qui marche et ce qui pourrait mieux marcher.",
-      "fresh": "Nouveau",
-      "unreadOne": "{count} nouveau",
-      "unreadOther": "{count} nouveaux"
-    }
-  },
-  "ranking": {
-    "title": "Classement",
-    "lead": "Les portfolios les plus appréciés par la communauté.",
-    "empty": "Le classement apparaît avec les premières appréciations. Ouvre un portfolio qui te plaît et apprécie-le.",
-    "likes": "{count, plural, one {# appréciation} other {# appréciations}}",
-    "unavailable": "Le classement ne répond pas pour le moment. Réessaie dans un instant."
-  },
-  "likes": {
-    "like": "Apprécier ce portfolio ({count})",
-    "unlike": "Retirer mon appréciation ({count})",
-    "failed": "Ton appréciation n’a pas pu être enregistrée. Réessaie.",
-    "own": "C’est ton portfolio : {count} appréciation(s)",
-    "countOne": "{count} appréciation",
-    "countOther": "{count} appréciations"
-  },
-  "preview": {
-    "title": "Aperçu de ta carte",
-    "lead": "Ce que les visiteurs voient dans le catalogue. Sans image, ta carte affiche le nom de ton site.",
-    "imageLabel": "Image",
-    "imageHint": "JPEG, PNG ou WebP, 5 Mo maximum",
-    "videoLabel": "Vidéo courte (facultative)",
-    "videoHint": "MP4, 15 s et 8 Mo maximum, lue au survol",
-    "choose": "Choisir",
-    "change": "Changer",
-    "remove": "Retirer",
-    "sending": "Envoi…",
-    "tooBig": "Ce fichier est trop lourd : 5 Mo maximum pour une image, 8 Mo pour une vidéo.",
-    "failed": "L’envoi n’a pas abouti. Réessaie dans un instant."
-  },
-  "journey": {
-    "title": "Ton portfolio sur SourceFolio",
-    "doneTitle": "Tout est prêt",
-    "progress": "{done} étapes sur {total}",
-    "stateDone": "Fait :",
-    "stateTodo": "À faire :",
-    "steps": {
-      "account": "GitHub",
-      "publish": "Publication",
-      "preview": "Image",
-      "profile": "Profil"
-    },
-    "next": {
-      "publish": "Choisis le dépôt de ton portfolio : il apparaît dans Découvrir dès qu’il est publié.",
-      "preview": "Ajoute une image (et une courte vidéo si tu veux) : c’est ce que montre ta carte.",
-      "profile": "Indique ton pays et ta spécialité pour qu’on te trouve plus facilement."
-    },
-    "actions": {
-      "publish": "Choisir mon dépôt",
-      "preview": "Ajouter une image",
-      "profile": "Compléter mon profil"
-    },
-    "doneLead": "Ton portfolio est en ligne. Partage le lien pour recevoir des visites et des likes.",
-    "dismiss": "Masquer cette carte"
+    "accountTitle": "Compte et préférences"
   },
   "common": {
     "cancel": "Annuler"
   },
-  "manage": {
-    "change": "Changer de portfolio",
-    "withdraw": "Retirer mon portfolio",
-    "failed": "Ton portfolio n’a pas pu être retiré. Réessaie.",
-    "changeDialog": {
-      "title": "Changer de portfolio ?",
-      "description": "Ton portfolio actuel est retiré du catalogue avec ses likes. Tu choisis ensuite un autre dépôt à publier.",
-      "confirm": "Retirer et choisir un autre dépôt",
-      "pending": "Retrait…"
-    },
-    "withdrawDialog": {
-      "title": "Retirer ton portfolio ?",
-      "description": "Il disparaît de Découvrir et du Classement, sa fiche n’existe plus et ses likes sont supprimés. Tu pourras en publier un à nouveau.",
-      "confirm": "Retirer mon portfolio",
-      "pending": "Retrait…"
-    }
-  },
   "og": {
-    "lead": "Ouvre un portfolio, visite le site, puis lis le code qui le fait tourner."
+    "lead": "Tes contributions publiques, en une fiche que les recruteurs peuvent lire et vérifier."
   },
   "stars": {
     "repository": "{count, plural, =0 {Aucune étoile} one {# étoile} other {# étoiles}} sur GitHub",
@@ -403,24 +169,6 @@
     "other": "{count} étoiles sur GitHub",
     "badge": "GitHub"
   },
-  "member": {
-    "open": "Voir le profil de {login}",
-    "close": "Fermer",
-    "loading": "Chargement…",
-    "failed": "Ce profil n’a pas pu être chargé. Réessaie.",
-    "since": "Depuis {date}",
-    "likesOne": "{count} appréciation reçue",
-    "likesOther": "{count} appréciations reçues",
-    "specialtiesTitle": "Spécialités",
-    "noSpecialty": "Spécialités pas encore renseignées",
-    "noCountry": "Pays non renseigné",
-    "portfolioTitle": "Son portfolio",
-    "openPage": "Voir la fiche",
-    "visitSite": "Voir le site",
-    "viewCode": "Voir le code",
-    "githubProfile": "Profil GitHub",
-    "roleClaim": "Se déclare {role}"
-  },
   "specialtyGroup": {
     "dev": "Développement",
     "data": "Data et IA",
@@ -429,45 +177,6 @@
     "craft": "Qualité et open source",
     "sectors": "Secteurs",
     "roles": "Rôles et engagements"
-  },
-  "feedback": {
-    "title": "Retours",
-    "lead": "Dis ce qui marche et ce qui pourrait marcher mieux. Un retour précis aide plus qu’un « Bravo ».",
-    "angleLabel": "Angle (facultatif)",
-    "angles": {
-      "DESIGN": "Design",
-      "CLARITY": "Clarté",
-      "PERFORMANCE": "Performance",
-      "MOBILE": "Mobile",
-      "CODE": "Code"
-    },
-    "bodyLabel": "Ton retour",
-    "placeholder": "Ex. : la page charge vite, mais le lien de contact est difficile à trouver sur téléphone.",
-    "counter": "{count} / {max}",
-    "missingOne": "Encore {count} caractère",
-    "missingOther": "Encore {count} caractères",
-    "submit": "Envoyer mon retour",
-    "sending": "Envoi…",
-    "signInHint": "Il te faudra te connecter avec GitHub ; ton texte est gardé.",
-    "posted": "Merci, ton retour est publié.",
-    "failed": "Ton retour n’a pas pu être envoyé. Réessaie.",
-    "own": "C’est ton portfolio : les retours des visiteurs apparaissent ici.",
-    "empty": "Pas encore de retour. Sois le premier à en laisser un.",
-    "emptyOwn": "Pas encore de retour. Partage ton lien pour en recevoir.",
-    "loadFailed": "Les retours ne répondent pas pour le moment. Réessaie dans un instant.",
-    "more": "Voir plus de retours",
-    "you": "toi",
-    "justNow": "à l’instant",
-    "remove": "Retirer",
-    "confirmRemove": "Retirer pour de bon",
-    "cancel": "Annuler",
-    "removeFailed": "Ce retour n’a pas pu être retiré. Réessaie.",
-    "writtenIn": {
-      "fr": "Écrit en français",
-      "en": "Écrit en anglais"
-    },
-    "countOne": "{count} retour",
-    "countOther": "{count} retours"
   },
   "role": {
     "frontend": "Frontend",
