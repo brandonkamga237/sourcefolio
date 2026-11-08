@@ -1,13 +1,8 @@
 package com.brandonkamga.sourcefolio.showcase.application;
 
-import com.brandonkamga.sourcefolio.shared.exception.NotFoundException;
-import com.brandonkamga.sourcefolio.showcase.domain.model.PreviewMedia;
-import com.brandonkamga.sourcefolio.showcase.domain.model.Showcase;
 import com.brandonkamga.sourcefolio.showcase.domain.port.ShowcaseStore;
 import java.util.List;
-import java.util.Objects;
 import java.util.UUID;
-import java.util.stream.Stream;
 
 public class ShowcaseRemovalImpl implements ShowcaseRemoval {
 
@@ -19,24 +14,13 @@ public class ShowcaseRemovalImpl implements ShowcaseRemoval {
         this.events = events;
     }
 
-    @Override
-    public void withdraw(UUID memberId) {
-        if (remove(memberId).isEmpty()) {
-            throw new NotFoundException("showcase.none");
-        }
-    }
-
+    // The files are not deleted here: storage is a network call, made once the deletion is
+    // committed (ShowcaseRemoved), so a rollback never leaves a member without their images.
     @Override
     public void removeAllOf(UUID memberId) {
-        remove(memberId);
-    }
-
-    // The files are not deleted here: storage is a network call, made once the removal is
-    // committed (ShowcaseRemoved), so a rollback never leaves a showcase without its images.
-    private List<Showcase> remove(UUID memberId) {
-        List<Showcase> removed = showcases.deleteAllByOwner(memberId);
-        removed.forEach(showcase -> events.showcaseRemoved(new ShowcaseRemoved(showcase.id().value(),
-                Stream.of(showcase.previewImage(), showcase.previewVideo()).filter(Objects::nonNull).map(PreviewMedia::key).toList())));
-        return removed;
+        List<String> keys = showcases.findMediaKeysByOwner(memberId);
+        if (!keys.isEmpty()) {
+            events.showcaseRemoved(new ShowcaseRemoved(memberId, keys));
+        }
     }
 }

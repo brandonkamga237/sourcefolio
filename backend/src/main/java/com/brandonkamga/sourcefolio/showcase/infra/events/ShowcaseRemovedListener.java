@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.event.TransactionPhase;
 import org.springframework.transaction.event.TransactionalEventListener;
 
-/** Deletes a removed showcase's preview files once the removal is committed. */
+/** Deletes a departing member's preview files once the account deletion is committed. */
 @Component
 class ShowcaseRemovedListener {
 
@@ -20,14 +20,14 @@ class ShowcaseRemovedListener {
         this.media = media;
     }
 
-    // A file left behind costs a few kilobytes and has no showcase pointing to it any more.
+    // One failure must not stop the other files: the account is already gone.
     @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT, fallbackExecution = true)
     void on(ShowcaseRemoved event) {
         for (String key : event.mediaKeys()) {
             try {
                 media.delete(key);
             } catch (RuntimeException failure) {
-                log.warn("Preview file {} of removed showcase {} not deleted", key, event.showcaseId(), failure);
+                log.warn("Preview file {} of deleted member {} not deleted", key, event.memberId(), failure);
             }
         }
     }
