@@ -23,4 +23,9 @@ public class WaitlistImpl implements Waitlist {
         EmailAddress email = EmailAddress.parse(command.email()).orElseThrow(() -> new BadRequestException("waitlist.email-invalid"));
         store.add(email, clock.instant());
     }
+
+    @Override
+    public void leave(String email) {
+        store.remove(EmailAddress.parse(email).orElseThrow(() -> new BadRequestException("waitlist.email-invalid")));
+    }
 }

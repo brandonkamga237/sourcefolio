@@ -7,4 +7,6 @@ public interface WaitlistStore {
 
     /** An address already listed, whatever its capitals, keeps its first consent date. */
     void add(EmailAddress email, Instant consentedAt);
+
+    void remove(EmailAddress email);
 }

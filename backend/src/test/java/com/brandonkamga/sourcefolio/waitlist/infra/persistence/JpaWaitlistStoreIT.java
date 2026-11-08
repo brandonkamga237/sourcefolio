@@ -36,5 +36,8 @@ class JpaWaitlistStoreIT extends PostgresIT {
         List<Instant> dates = jdbc.query("SELECT consented_at FROM waitlist_signups WHERE lower(email) = ?",
                 (row, index) -> row.getObject(1, Timestamp.class).toInstant(), local + "@acme.africa");
         assertThat(dates).containsExactly(first);
+
+        store.remove(new EmailAddress(local.toUpperCase() + "@acme.AFRICA"));
+        assertThat(jdbc.queryForObject("SELECT count(*) FROM waitlist_signups WHERE lower(email) = ?", Long.class, local + "@acme.africa")).isZero();
     }
 }

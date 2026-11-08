@@ -42,6 +42,15 @@ class WaitlistControllerTest {
     }
 
     @Test
+    @DisplayName("a visitor takes an address off the list without an account")
+    void leaves() throws Exception {
+        mvc.perform(post("/api/waitlist/removal").with(csrf()).contentType(MediaType.APPLICATION_JSON).content("{\"email\":\"ada@acme.africa\"}"))
+                .andExpect(status().isNoContent());
+
+        verify(waitlist).leave("ada@acme.africa");
+    }
+
+    @Test
     @DisplayName("a refusal is a 400 in the visitor's language")
     void refusal() throws Exception {
         doThrow(new BadRequestException("waitlist.email-invalid")).when(waitlist).join(new JoinWaitlist("nope", true));
