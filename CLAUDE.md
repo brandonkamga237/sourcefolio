@@ -7,7 +7,7 @@ African; the map shows it rather than the copy repeating it. The name is provisi
 spec: `docs/spec-v2.md` (it replaces `docs/spec-v1.md`, the former portfolio catalogue, which is
 being removed from the product).
 
-Monorepo: `backend/` (Spring Boot 4, Java 21, PostgreSQL, JPA, Flyway, JobRunr, Playwright) and
+Monorepo: `backend/` (Spring Boot 4, Java 21, PostgreSQL, JPA, Flyway, JobRunr) and
 `frontend/` (Next.js App Router, React, TypeScript, Tailwind, Radix, TanStack Query, next-intl,
 Serwist PWA).
 

@@ -98,7 +98,7 @@
 			<scope>runtime</scope>
 		</dependency>
 
-		<!-- Background work: checks, screenshots, GitHub sync. Stores its jobs in PostgreSQL. -->
+		<!-- Background work: GitHub analyses. Stores its jobs in PostgreSQL. -->
 		<dependency>
 			<groupId>org.jobrunr</groupId>
 			<artifactId>jobrunr-spring-boot-4-starter</artifactId>
