@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { ProfileView } from "@/components/contribution/ProfileView";
+import { JsonLd } from "@/components/seo/JsonLd";
 import { toLocale } from "@/i18n/routing";
 import { getPublicProfile } from "@/services/public-profiles";
 import type { ProfileCard } from "@/services/contribution-types";
@@ -27,9 +28,8 @@ export async function generateMetadata({ params }: PageProps<"/[locale]/u/[login
   };
 }
 
-// "<" escaped so a value can never close the script element.
-function jsonLd(card: ProfileCard): string {
-  return JSON.stringify({
+function structuredData(card: ProfileCard) {
+  return {
     "@context": "https://schema.org",
     "@type": "ProfilePage",
     mainEntity: {
@@ -38,7 +38,7 @@ function jsonLd(card: ProfileCard): string {
       alternateName: card.login,
       sameAs: [card.indicators.proofs.profile, ...(card.linkedInUrl ? [card.linkedInUrl] : [])],
     },
-  }).replace(/</g, "\\u003c");
+  };
 }
 
 export default async function PublicProfilePage({ params }: PageProps<"/[locale]/u/[login]">) {
@@ -48,7 +48,7 @@ export default async function PublicProfilePage({ params }: PageProps<"/[locale]
   if (!card) notFound();
   return (
     <div className="mx-auto w-full max-w-6xl px-4 py-6 lg:px-8 lg:py-10">
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd(card) }} />
+      <JsonLd data={structuredData(card)} />
       <ProfileView
         login={card.login}
         name={card.name}

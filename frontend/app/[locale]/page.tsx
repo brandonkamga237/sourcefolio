@@ -6,6 +6,7 @@ import { GitHubHandleForm } from "@/components/landing/GitHubHandleForm";
 import { LandingSwitch } from "@/components/landing/LandingSwitch";
 import { ProfilePreviews } from "@/components/landing/ProfilePreviews";
 import { AfricaMosaic } from "@/components/map/AfricaMosaic";
+import { JsonLd } from "@/components/seo/JsonLd";
 import { localizedPath } from "@/i18n/paths";
 import { toLocale, type Locale } from "@/i18n/routing";
 import { placeCounts, type PlacedMap } from "@/lib/map";
@@ -40,10 +41,11 @@ async function HeroMap({ locale }: { locale: Locale }) {
 export default async function LandingPage({ params }: PageProps<"/[locale]">) {
   const locale = toLocale((await params).locale);
   setRequestLocale(locale);
-  const t = await getTranslations({ locale, namespace: "landing" });
+  const [t, meta] = await Promise.all([getTranslations({ locale, namespace: "landing" }), getTranslations({ locale, namespace: "meta" })]);
 
   return (
     <div className="mx-auto flex w-full max-w-6xl flex-col gap-14 px-4 py-6 lg:gap-20 lg:px-8 lg:py-10">
+      <JsonLd data={{ "@context": "https://schema.org", "@type": "WebSite", name: "SourceFolio", url: `${process.env.SITE_URL ?? "http://localhost:3000"}/${locale}`, description: meta("description"), inLanguage: locale }} />
       <section className="grid items-center gap-8 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)]">
         <div className="flex min-w-0 flex-col gap-5">
           <LandingSwitch locale={locale} current="tech" />

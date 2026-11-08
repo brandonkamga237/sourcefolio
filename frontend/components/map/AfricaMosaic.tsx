@@ -1,6 +1,6 @@
 import { localizedPath } from "@/i18n/paths";
 import type { Locale } from "@/i18n/routing";
-import { landSquares, levelOf, MAP_COLUMNS, MAP_ROWS, type MapLevel, type PlacedCity } from "@/lib/map";
+import { landSquares, levelOf, MAP_COLUMNS, MAP_ROWS, squaresPath, type MapLevel, type PlacedCity } from "@/lib/map";
 
 interface AfricaMosaicProps {
   locale: Locale;
@@ -17,12 +17,6 @@ const LEVEL_CLASS: Record<0 | MapLevel, string> = {
   3: "fill-level-3 stroke-level-3",
   4: "fill-level-4 stroke-level-4",
 };
-
-// A 7-unit square with a 2-unit round stroke draws as a 9-unit square with soft corners, in one
-// path per level: some 700 squares stay a few KB instead of 700 DOM nodes on a low-end phone.
-function squaresPath(squares: readonly (readonly [number, number])[]): string {
-  return squares.map(([column, row]) => `M${column * UNIT + 1.5} ${row * UNIT + 1.5}h7v7h-7z`).join("");
-}
 
 function nameOf({ city }: PlacedCity, locale: Locale): string {
   return locale === "en" ? (city.nameEn ?? city.name) : city.name;

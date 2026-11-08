@@ -60,5 +60,11 @@ export function landSquares(): [number, number][] {
   return AFRICA_ROWS.flatMap((line, row) => [...line].flatMap((cell, column): [number, number][] => (cell === "#" ? [[column, row]] : [])));
 }
 
+// A 7-unit square with a 2-unit round stroke draws as a 9-unit square with soft corners, in one
+// path per level: some 700 squares stay a few KB instead of 700 DOM nodes on a low-end phone.
+export function squaresPath(squares: readonly (readonly [number, number])[]): string {
+  return squares.map(([column, row]) => `M${column * 10 + 1.5} ${row * 10 + 1.5}h7v7h-7z`).join("");
+}
+
 export const MAP_COLUMNS = AFRICA_ROWS[0].length;
 export const MAP_ROWS = AFRICA_ROWS.length;
