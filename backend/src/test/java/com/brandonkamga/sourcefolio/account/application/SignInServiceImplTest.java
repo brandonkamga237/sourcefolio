@@ -28,11 +28,6 @@ class SignInServiceImplTest {
         public void memberSignedIn(MemberSignedIn event) {
             published.add(event);
         }
-
-        @Override
-        public void memberDeleting(MemberDeleting event) {
-            throw new AssertionError("signing in deletes nothing");
-        }
     };
     private final SignInService signIn = new SignInServiceImpl(users, identities, events, Clock.fixed(NOW, ZoneOffset.UTC));
 

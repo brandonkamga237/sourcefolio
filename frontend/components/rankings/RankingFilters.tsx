@@ -1,0 +1,53 @@
+"use client";
+
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+
+interface RankingFiltersProps {
+  country: string | null;
+  language: string | null;
+  countries: { value: string; label: string }[];
+  languages: { value: string; label: string }[];
+  labels: { country: string; allCountries: string; language: string; allLanguages: string };
+}
+
+const select =
+  "min-h-11 w-full rounded-control border border-line bg-surface px-3 text-[15px] text-ink outline-none focus:border-accent focus:ring-2 focus:ring-accent-line";
+
+/** Country and language: each change reloads the ranking from its first page. */
+export function RankingFilters({ country, language, countries, languages, labels }: RankingFiltersProps) {
+  const router = useRouter();
+  const pathname = usePathname();
+  const params = useSearchParams();
+
+  function set(key: "country" | "language", value: string) {
+    const next = new URLSearchParams(params.toString());
+    if (value) next.set(key, value);
+    else next.delete(key);
+    next.delete("cursor");
+    const query = next.toString();
+    router.push(query ? `${pathname}?${query}` : pathname);
+  }
+
+  return (
+    <div className="grid grid-cols-2 gap-3 sm:w-[420px]">
+      <label className="flex flex-col gap-1 text-[13px] font-semibold">
+        {labels.country}
+        <select value={country ?? ""} onChange={(event) => set("country", event.target.value)} className={select}>
+          <option value="">{labels.allCountries}</option>
+          {countries.map((option) => (
+            <option key={option.value} value={option.value}>{option.label}</option>
+          ))}
+        </select>
+      </label>
+      <label className="flex flex-col gap-1 text-[13px] font-semibold">
+        {labels.language}
+        <select value={language ?? ""} onChange={(event) => set("language", event.target.value)} className={select}>
+          <option value="">{labels.allLanguages}</option>
+          {languages.map((option) => (
+            <option key={option.value} value={option.value}>{option.label}</option>
+          ))}
+        </select>
+      </label>
+    </div>
+  );
+}

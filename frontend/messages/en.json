@@ -1,21 +1,18 @@
 {
   "meta": {
-    "title": "SourceFolio — portfolios you can read the code of",
-    "description": "Discover developer portfolios that are online and whose code is public, by country, specialty and technology."
+    "title": "SourceFolio — from open source to opportunity",
+    "description": "Turn your public open source contributions into a profile recruiters can read and trust. For every tech profile."
   },
   "brand": {
     "wordmark": "sourcefolio",
-    "tagline": "Portfolios you can read the code of."
+    "tagline": "From open source to opportunity."
   },
   "nav": {
     "label": "Main navigation",
-    "discover": "Discover",
-    "me": "Me",
-    "publish": "Publish your portfolio",
-    "ranking": "Ranking",
-    "publishShort": "Publish",
-    "unreadOne": "{count} new piece of feedback",
-    "unreadOther": "{count} new pieces of feedback"
+    "publish": "Publish my profile",
+    "rankings": "Rankings",
+    "myProfile": "My profile",
+    "map": "Map"
   },
   "language": {
     "label": "Language",
@@ -26,22 +23,9 @@
     "skipToContent": "Skip to content"
   },
   "pages": {
-    "search": {
-      "title": "Search"
-    },
-    "portfolio": {
-      "title": "My portfolio",
-      "visitorTitle": "Publish your portfolio",
-      "visitorLead": "Sign in with GitHub: we look for your portfolio among your public repositories and you publish it in one click.",
-      "stepsLabel": "How it works",
-      "step1": "You sign in with GitHub.",
-      "step2": "We find your portfolio among your public repositories.",
-      "step3": "You confirm, it is published. In under a minute."
-    },
-    "me": {
-      "title": "Me",
-      "account": "Account",
-      "accountHint": "Sign in to publish your portfolio, get feedback and follow its visits."
+    "profile": {
+      "metaTitle": "{name} · open source profile",
+      "metaDescription": "What {name} has built in open source: regularity, contributions, languages and projects, every figure checkable on GitHub."
     }
   },
   "auth": {
@@ -56,338 +40,38 @@
   },
   "notFound": {
     "title": "Page not found",
-    "body": "This address leads to no portfolio. It may have moved or been removed.",
-    "back": "Back to Discover"
+    "body": "This address leads to no profile. It may have changed or been removed.",
+    "back": "Back to home"
   },
   "account": {
-    "signedInAs": "Signed in as {login}",
     "signOut": "Sign out",
     "signOutFailed": "Signing out failed. Try again.",
     "delete": "Delete my account",
-    "deleteLead": "Deletes your account, your portfolio, your profile answers and the likes you gave. It is immediate and final.",
+    "deleteLead": "Deletes your account, your profile and your profile answers. It is immediate and final.",
     "deleteFailed": "Your account could not be deleted. Try again.",
     "deleteDialog": {
       "title": "Delete your account?",
-      "description": "Your account, your portfolio and its likes, your profile answers and the likes you gave are deleted right away. This cannot be undone.",
+      "description": "Your account, your profile and your profile answers are deleted right away. This cannot be undone.",
       "confirm": "Delete for good",
       "pending": "Deleting…",
       "typeToConfirm": "Type your username {word} to confirm"
     }
   },
-  "detection": {
-    "searching": "Looking for your portfolio in your public repositories…",
-    "visitSite": "Visit the site",
-    "viewCode": "View the code",
-    "reason": {
-      "USER_PAGES": "Your GitHub Pages site",
-      "NAMED_REPOSITORY": "A repository named “{name}”",
-      "HOMEPAGE": "The site set in one of your repositories",
-      "PROJECT_PAGES": "A project published with GitHub Pages"
-    },
-    "publish": "Yes, it’s my portfolio: publish",
-    "publishThis": "This is the one: publish",
-    "publishing": "Checking your site…",
-    "publishFailed": "Publishing did not go through. Try again in a moment.",
-    "lastSearch": "Last search {ago}",
-    "rescan": "Search again",
-    "rescanning": "Searching…",
-    "rescanFailed": "The search could not start. Try again in a moment.",
-    "missingTitle": "Your portfolio is not in the list?",
-    "missingLead": "Pick its repository. To know the site is yours, we read the address set on GitHub: only the repository’s owner can change it.",
-    "searchRepositories": "Search a repository",
-    "noRepositoryMatch": "No repository matches.",
-    "noRepositories": "The last search found no other public repository. Run it again if you just created one.",
-    "showAll": "Show all {count} repositories",
-    "pick": "This one",
-    "stepsTitle": "To publish {repository}:",
-    "step1": "Open the repository on GitHub, then tap the gear next to “About”.",
-    "step2": "Paste your site’s address into “Website”, then “Save changes”.",
-    "step3": "Come back here and tap “Search again”: your portfolio will show at the top, ready to publish.",
-    "openOnGithub": "Open the repository on GitHub",
-    "pickTitle": "Pick your portfolio’s repository",
-    "pickLeadFound": "We spotted these sites in your public repositories. Publish the right one: it shows in Discover at once.",
-    "pickLeadNone": "No site spotted automatically. Pick your repository from the list, we guide you.",
-    "otherRepositories": "Your repositories"
-  },
-  "myShowcase": {
-    "status": {
-      "PUBLISHED": "Published",
-      "UNAVAILABLE": "Temporarily unavailable",
-      "NEEDS_FIX": "Needs a fix",
-      "REMOVED": "Removed"
-    },
-    "publishedOn": "Published on {date, date, long}",
-    "visitSite": "Visit the site",
-    "viewCode": "View the code",
-    "share": "Share",
-    "shareTitle": "My portfolio on SourceFolio: {site}",
-    "shareCopied": "Link copied. Paste it anywhere.",
-    "viewPage": "My page"
-  },
-  "showcasePage": {
-    "metaTitle": "{site}, {login}’s portfolio",
-    "metaDescription": "{login}’s portfolio and the code that builds it, on SourceFolio.",
-    "publishedOn": "Published on {date, date, long}",
-    "visitSite": "Visit the site",
-    "viewCode": "View the code",
-    "banner": {
-      "UNAVAILABLE": "This portfolio is unavailable for now: its site no longer answers. It comes back as soon as it does.",
-      "NEEDS_FIX": "This portfolio is waiting for a fix from its author."
-    },
-    "ctaTitle": "Show your code too",
-    "ctaLead": "Sign in with GitHub, we find your portfolio and you publish it in one click.",
-    "ctaLink": "Publish my portfolio",
-    "ogBy": "by {login}",
-    "ogTagline": "A portfolio you can read the code of",
-    "ogStars": "{formatted} {count, plural, one {star} other {stars}} on GitHub",
-    "byLogin": "by {login}",
-    "seeProfile": "See profile"
-  },
-  "catalog": {
-    "sort": {
-      "label": "Catalogue order",
-      "discover": "Discover",
-      "recent": "Recent"
-    },
-    "loadMore": "Show more portfolios",
-    "loading": "Loading…",
-    "loadFailed": "The next portfolios could not be loaded. Try again in a moment.",
-    "unavailable": "The catalogue is not answering right now. Try again in a moment.",
-    "emptyTitle": "No portfolio published yet",
-    "emptyLead": "Yours can be the first: sign in with GitHub, we find it and you publish it in one click.",
-    "emptyLink": "Publish my portfolio",
-    "count": "{count, plural, one {# portfolio} other {# portfolios}}",
-    "orderShuffled": "shuffled today",
-    "orderRecent": "newest first",
-    "panel": {
-      "close": "Close the panel",
-      "visitSite": "Visit the site",
-      "viewCode": "Code",
-      "openPage": "Open the full page",
-      "sourceRepo": "Source repository",
-      "publishedOn": "Published on {date}",
-      "previous": "Previous portfolio (left arrow)",
-      "next": "Next portfolio (right arrow)",
-      "position": "{current} of {total}",
-      "statLikes": "likes",
-      "statStars": "GitHub stars",
-      "statPublished": "published",
-      "share": "Share",
-      "shareTitle": "{login}’s portfolio on SourceFolio",
-      "clone": "git clone",
-      "copied": "Copied",
-      "githubProfile": "GitHub",
-      "projectTitle": "The project",
-      "projectLanguages": "Repository languages",
-      "projectUpdated": "Code updated {when}",
-      "statFeedback": "feedback"
-    },
-    "feedTitle": "Portfolios",
-    "recentTitle": "Latest published",
-    "intro": {
-      "lead": "Open a portfolio, visit the site, then read the code that runs it.",
-      "cta": "Publish mine",
-      "close": "Hide this message"
-    },
-    "search": {
-      "placeholder": "Search a name, a site, a headline…",
-      "country": "Country",
-      "anyCountry": "All countries",
-      "language": "Stack",
-      "anyLanguage": "Any stack",
-      "clear": "Clear filters",
-      "filters": "Filters",
-      "noMatchTitle": "No portfolio matches",
-      "noMatchLead": "Try other words, or remove a filter.",
-      "role": "Role",
-      "anyRole": "Any role"
-    }
-  },
-  "profile": {
-    "signInHint": "Sign in with GitHub to complete your profile.",
-    "unavailable": "Your profile cannot be loaded right now. Try again in a moment.",
-    "progress": "Question {current} of {total}",
-    "countryTitle": "Which country do you live in?",
-    "countryPlaceholder": "Choose your country",
-    "specialtyTitle": "Your interests",
-    "emailTitle": "Your email, to hear about it if your site goes down",
-    "emailHint": "Optional. It is never shown or shared.",
-    "next": "Continue",
-    "skip": "Skip",
-    "saving": "Saving…",
-    "failed": "Your answer could not be saved. Try again.",
-    "summaryTitle": "My profile",
-    "countryLabel": "Country",
-    "specialtyLabel": "Interests",
-    "emailLabel": "Alert email",
-    "notGiven": "Not given",
-    "edit": "Edit",
-    "done": "Back to Me",
-    "reminder": "Add your country and specialty: two questions, ten seconds.",
-    "reminderLink": "Complete my profile",
-    "specialtyHint": "Up to four, in order of priority: tap the most important first.",
-    "headlineTitle": "Your headline",
-    "headlineHint": "One line in your own words, shown under your name: what you do, what you are looking for.",
-    "headlinePlaceholder": "E.g. Front-end React developer in Lagos",
-    "headlineCounter": "{count}/{max}",
-    "headlineLabel": "Headline",
-    "searchPlaceholder": "Search an interest",
-    "noMatch": "No interest matches.",
-    "selectionEmpty": "Your picks show here, in order.",
-    "removeChoice": "Remove {name}",
-    "roleTitle": "Your main role",
-    "roleHint": "What you do day to day, just one. It shows as your own claim, next to the languages your code shows.",
-    "roleLabel": "Role"
-  },
-  "specialty": {
-    "frontend": "Frontend",
-    "backend": "Backend",
-    "fullstack": "Full-stack",
-    "mobile": "Mobile",
-    "devops": "DevOps",
-    "data-ai": "Data / AI",
-    "game": "Games",
-    "embedded": "Embedded",
-    "security": "Security",
-    "other": "Other",
-    "desktop": "Desktop",
-    "api": "APIs",
-    "web3": "Web3 / blockchain",
-    "low-code": "Low-code / no-code",
-    "machine-learning": "Machine learning",
-    "data-engineering": "Data engineering",
-    "data-analysis": "Data analysis",
-    "computer-vision": "Computer vision",
-    "nlp": "Natural language",
-    "generative-ai": "Generative AI",
-    "cloud": "Cloud",
-    "sre": "SRE",
-    "networking": "Networking",
-    "database": "Databases",
-    "ui-design": "UI design",
-    "ux-design": "UX design",
-    "product": "Product",
-    "design-systems": "Design systems",
-    "motion-design": "Motion design",
-    "accessibility": "Accessibility",
-    "creative-coding": "Creative coding",
-    "testing": "Testing and quality",
-    "performance": "Performance",
-    "open-source": "Open source",
-    "documentation": "Documentation",
-    "fintech": "Fintech",
-    "healthtech": "Health",
-    "edtech": "Education",
-    "ecommerce": "E-commerce",
-    "agritech": "Agritech",
-    "iot": "Internet of things",
-    "robotics": "Robotics",
-    "ar-vr": "AR / VR",
-    "tech-lead": "Tech lead",
-    "freelance": "Freelance",
-    "teaching": "Teaching",
-    "devrel": "DevRel",
-    "community": "Community",
-    "entrepreneurship": "Entrepreneurship",
-    "research": "Research"
-  },
   "me": {
-    "portfolioTitle": "My portfolio",
     "preferencesTitle": "Preferences",
-    "accountTitle": "Account and preferences",
-    "overview": {
-      "likes": "likes received",
-      "stars": "GitHub stars",
-      "rank": "in the ranking",
-      "unranked": "not ranked yet",
-      "days": "days online",
-      "publicProfile": "My public profile",
-      "noCountry": "Country not given"
-    },
-    "received": {
-      "title": "Feedback received",
-      "empty": "No feedback yet. Share your link: visitors can tell you what works and what could work better.",
-      "fresh": "New",
-      "unreadOne": "{count} new",
-      "unreadOther": "{count} new"
-    }
-  },
-  "ranking": {
-    "title": "Ranking",
-    "lead": "The portfolios the community likes most.",
-    "empty": "The ranking appears with the first likes. Open a portfolio you like and like it.",
-    "likes": "{count, plural, one {# like} other {# likes}}",
-    "unavailable": "The ranking is not answering right now. Try again in a moment."
-  },
-  "likes": {
-    "like": "Like this portfolio ({count})",
-    "unlike": "Take back my like ({count})",
-    "failed": "Your like could not be saved. Try again.",
-    "own": "This is your portfolio: {count} like(s)",
-    "countOne": "{count} like",
-    "countOther": "{count} likes"
-  },
-  "preview": {
-    "title": "Your card preview",
-    "lead": "What visitors see in the catalogue. Without an image, your card shows your site’s name.",
-    "imageLabel": "Image",
-    "imageHint": "JPEG, PNG or WebP, 5 MB at most",
-    "videoLabel": "Short video (optional)",
-    "videoHint": "MP4, 15 s and 8 MB at most, played on hover",
-    "choose": "Choose",
-    "change": "Change",
-    "remove": "Remove",
-    "sending": "Sending…",
-    "tooBig": "This file is too large: 5 MB at most for an image, 8 MB for a video.",
-    "failed": "The upload did not go through. Try again in a moment."
-  },
-  "journey": {
-    "title": "Your portfolio on SourceFolio",
-    "doneTitle": "All set",
-    "progress": "{done} of {total} steps",
-    "stateDone": "Done:",
-    "stateTodo": "To do:",
-    "steps": {
-      "account": "GitHub",
-      "publish": "Published",
-      "preview": "Image",
-      "profile": "Profile"
-    },
-    "next": {
-      "publish": "Pick your portfolio’s repository: it shows up in Discover as soon as it is published.",
-      "preview": "Add an image (and a short video if you like): it is what your card shows.",
-      "profile": "Tell us your country and specialty so people find you more easily."
-    },
-    "actions": {
-      "publish": "Pick my repository",
-      "preview": "Add an image",
-      "profile": "Complete my profile"
-    },
-    "doneLead": "Your portfolio is live. Share the link to get visits and likes.",
-    "dismiss": "Hide this card"
+    "accountTitle": "Account and preferences"
   },
   "common": {
     "cancel": "Cancel"
   },
-  "manage": {
-    "change": "Change portfolio",
-    "withdraw": "Withdraw my portfolio",
-    "failed": "Your portfolio could not be withdrawn. Try again.",
-    "changeDialog": {
-      "title": "Change portfolio?",
-      "description": "Your current portfolio leaves the catalogue with its likes. You then pick another repository to publish.",
-      "confirm": "Withdraw and pick another",
-      "pending": "Withdrawing…"
-    },
-    "withdrawDialog": {
-      "title": "Withdraw your portfolio?",
-      "description": "It leaves Discover and the Ranking, its page no longer exists and its likes are deleted. You can publish one again later.",
-      "confirm": "Withdraw my portfolio",
-      "pending": "Withdrawing…"
-    }
-  },
   "og": {
-    "lead": "Open a portfolio, visit the site, then read the code that runs it."
+    "lead": "Your public contributions, in one profile recruiters can read and verify.",
+    "profile": {
+      "months": "{active}/12 active months",
+      "contributions": "{count, plural, one {{formatted} contribution} other {{formatted} contributions}}",
+      "stars": "{count, plural, one {{formatted} star} other {{formatted} stars}}",
+      "source": "Public GitHub data"
+    }
   },
   "stars": {
     "repository": "{count, plural, =0 {No stars} one {# star} other {# stars}} on GitHub",
@@ -397,84 +81,265 @@
     "other": "{count} stars on GitHub",
     "badge": "GitHub"
   },
-  "member": {
-    "open": "See {login}’s profile",
-    "close": "Close",
-    "loading": "Loading…",
-    "failed": "This profile could not be loaded. Try again.",
-    "since": "Since {date}",
-    "likesOne": "{count} like received",
-    "likesOther": "{count} likes received",
-    "specialtiesTitle": "Specialties",
-    "noSpecialty": "Specialties not given yet",
-    "noCountry": "Country not given",
-    "portfolioTitle": "Their portfolio",
-    "openPage": "Open the page",
-    "visitSite": "Visit the site",
-    "viewCode": "View the code",
-    "githubProfile": "GitHub profile",
-    "roleClaim": "Says they are {role}"
+  "profileCard": {
+    "seniority": "Seniority",
+    "seniorityValue": "Since {year}",
+    "seniorityHint": "GitHub account created in {month}",
+    "regularity": "Regularity",
+    "regularityValue": "{active} / 12 months",
+    "regularityHint": "Months with at least one contribution",
+    "volume": "Contributions",
+    "volumeHint": "Public, over the last 12 months",
+    "stars": "Stars received",
+    "starsHint": "{followers, plural, =0 {No followers} one {# follower} other {# followers}}",
+    "elsewhere": "External PRs",
+    "elsewhereHint": "{projects, plural, =0 {No project yet} one {Merged in # project} other {Merged in # projects}}",
+    "calendarTitle": "{count, plural, =0 {No public contributions in the last 12 months} one {# contribution in the last 12 months} other {# contributions in the last 12 months}}",
+    "calendarEmpty": "An empty calendar is not a failure: it is a starting point.",
+    "viewOnGitHub": "View on GitHub",
+    "less": "Less",
+    "more": "More",
+    "languages": "Languages",
+    "languagesNote": "From public repositories, forks excluded.",
+    "otherLanguages": "Other",
+    "noLanguages": "No public code yet.",
+    "elsewhereTitle": "Contributions to other people's projects",
+    "mergedCount": "{count, plural, one {# merged PR} other {# merged PRs}}",
+    "noElsewhere": "No pull request merged elsewhere yet. A documentation fix is enough to start.",
+    "topRepositories": "Most starred repositories",
+    "analyzedOn": "Public GitHub data, analysed on {date}.",
+    "publicOnly": "This profile measures public open source contribution, not a person's total worth.",
+    "github": "github.com/{login}",
+    "proof": "Proof on GitHub"
   },
-  "specialtyGroup": {
-    "dev": "Development",
-    "data": "Data and AI",
-    "infra": "Infrastructure and security",
-    "design": "Design and product",
-    "craft": "Quality and open source",
-    "sectors": "Industries",
-    "roles": "Roles and involvement"
+  "myProfile": {
+    "title": "My profile",
+    "visitorTitle": "Your public contributions already say what you can do.",
+    "visitorLead": "Sign in with GitHub: we read your public data and you see your profile privately. Nothing is published without your consent.",
+    "stepSignIn": "GitHub sign-in",
+    "stepAnalysis": "Analysis",
+    "stepComplete": "Complete",
+    "stepPublish": "Publish",
+    "stepsLabel": "Steps of your profile",
+    "analysingTitle": "Reading your public GitHub data…",
+    "analysingLead": "Repositories, contributions, languages and pull requests merged elsewhere. A few seconds.",
+    "failedTitle": "GitHub does not recognise this account right now.",
+    "failedLead": "Try again in a moment. If your GitHub username changed, sign in again.",
+    "retry": "Run the analysis again",
+    "readyTitle": "Your analysis is ready, {login}.",
+    "readyLead": "A few details are left that only you can give.",
+    "refreshing": "Reading GitHub again…",
+    "country": "Country",
+    "countryHint": "Decides which rankings you appear in.",
+    "countryPlaceholder": "Pick your country",
+    "city": "City",
+    "optional": "optional",
+    "cityHint": "Only used to place a point on the map. Never your exact location.",
+    "bio": "Bio",
+    "bioImported": "Imported from GitHub",
+    "bioHint": "{count} / 160 characters · editable at any time",
+    "linkedIn": "LinkedIn profile",
+    "linkedInHint": "Only the link to your profile. We read nothing on LinkedIn.",
+    "saving": "Saving…",
+    "saved": "Saved",
+    "failed": "Not saved, try again.",
+    "visibility": "Profile visibility",
+    "privateTitle": "Private",
+    "privateLead": "Only you can see it. It appears in no ranking and not on the map.",
+    "publicTitle": "Public",
+    "publicLead": "Visible to everyone, in the rankings and on the map.",
+    "publish": "Publish my profile",
+    "publishing": "Publishing…",
+    "unpublish": "Make it private",
+    "unpublishing": "…",
+    "needCountry": "Pick your country to be able to publish.",
+    "publicLink": "Your public profile",
+    "copy": "Copy the link",
+    "copied": "Link copied",
+    "preview": "Preview of your profile",
+    "shownNotRanked": "City, bio and LinkedIn are shown but never enter a ranking."
   },
-  "feedback": {
-    "title": "Feedback",
-    "lead": "Say what works and what could work better. A specific note helps more than a “Nice!”.",
-    "angleLabel": "Angle (optional)",
-    "angles": {
-      "DESIGN": "Design",
-      "CLARITY": "Clarity",
-      "PERFORMANCE": "Performance",
-      "MOBILE": "Mobile",
-      "CODE": "Code"
+  "rankings": {
+    "title": "Rankings",
+    "lead": "Pick a criterion, filter by country and language. Each ranking says exactly what it measures, nothing more.",
+    "sortBy": "Sort by",
+    "sort": {
+      "regularity": "Regularity",
+      "contributions": "Contributions",
+      "stars": "Stars",
+      "external": "External PRs",
+      "seniority": "Seniority"
     },
-    "bodyLabel": "Your feedback",
-    "placeholder": "E.g. the page loads fast, but the contact link is hard to find on a phone.",
-    "counter": "{count} / {max}",
-    "missingOne": "{count} more character",
-    "missingOther": "{count} more characters",
-    "submit": "Send my feedback",
-    "sending": "Sending…",
-    "signInHint": "You will sign in with GitHub; your text is kept.",
-    "posted": "Thanks, your feedback is published.",
-    "failed": "Your feedback could not be sent. Try again.",
-    "own": "This is your portfolio: visitors’ feedback shows up here.",
-    "empty": "No feedback yet. Be the first to leave some.",
-    "emptyOwn": "No feedback yet. Share your link to get some.",
-    "loadFailed": "Feedback is not answering right now. Try again in a moment.",
-    "more": "See more feedback",
-    "you": "you",
-    "justNow": "just now",
-    "remove": "Remove",
-    "confirmRemove": "Remove for good",
-    "cancel": "Cancel",
-    "removeFailed": "This feedback could not be removed. Try again.",
-    "writtenIn": {
-      "fr": "Written in French",
-      "en": "Written in English"
+    "measures": {
+      "regularity": "Active months out of the last 12, then public contributions.",
+      "contributions": "Public contributions over the last 12 months.",
+      "stars": "Stars received on owned public repositories.",
+      "external": "Pull requests merged in other people's projects.",
+      "seniority": "GitHub account creation date, oldest first."
     },
-    "countOne": "{count} piece of feedback",
-    "countOther": "{count} pieces of feedback"
+    "country": "Country",
+    "allCountries": "All countries",
+    "language": "Language",
+    "allLanguages": "All languages",
+    "apply": "Apply",
+    "count": "{count, plural, =0 {No profiles} one {# profile} other {# profiles}}",
+    "columns": {
+      "position": "#",
+      "profile": "Profile",
+      "regularity": "Regularity",
+      "contributions": "Contributions",
+      "stars": "Stars received",
+      "external": "External PRs",
+      "since": "Active since",
+      "languages": "Languages"
+    },
+    "monthsActive": "{active}/12",
+    "more": "Show more",
+    "backToTop": "Back to the top",
+    "empty": "No published profile matches yet.",
+    "emptyLead": "Rankings fill up as tech profiles publish theirs.",
+    "publishMine": "Publish my profile",
+    "unavailable": "The ranking is unavailable right now. Try again in a moment.",
+    "honest": "A ranking measures public open source contribution, not a person's worth."
   },
-  "role": {
-    "frontend": "Frontend",
-    "backend": "Backend",
-    "fullstack": "Full-stack",
-    "mobile": "Mobile",
-    "devops": "DevOps / SRE",
-    "data-ai": "Data / AI",
-    "security": "Security",
-    "design": "UI/UX design",
-    "qa": "QA / testing",
-    "game": "Game development",
-    "embedded": "Embedded / IoT",
-    "learning": "Learning"
+  "map": {
+    "title": "The map",
+    "lead": "Each square shows how many profiles are published in an African city. Tap a city to see the rankings of its country.",
+    "picture": "Mosaic of Africa: {count, plural, =0 {no published profile yet} one {# published profile} other {# published profiles}}.",
+    "legendFew": "Few",
+    "legendMany": "Many",
+    "count": "{count, plural, =0 {No published profile yet} one {# published profile} other {# published profiles}}",
+    "emptyLead": "The map fills up with each published profile. Yours can light your city's first square.",
+    "publishMine": "Publish my profile",
+    "unplaced": "{count, plural, one {# profile has no city placed on the map.} other {# profiles have no city placed on the map.}}",
+    "tapHint": "Each member gives their own city. It places a profile on the map and never enters a ranking.",
+    "unavailable": "The map cannot be loaded right now. Try again in a moment."
+  },
+  "landing": {
+    "switch": {
+      "label": "Who it is for",
+      "tech": "I am a tech profile",
+      "recruit": "I am hiring"
+    },
+    "hero": {
+      "title": "From open source to opportunity.",
+      "lead": "Your public contributions become a profile recruiters can read and verify. Developer, sysadmin, DevOps, data, mobile, QA, security: every tech profile belongs here."
+    },
+    "form": {
+      "field": "Your GitHub username",
+      "placeholder": "your-username",
+      "submit": "See my profile",
+      "checking": "Searching…",
+      "invalid": "This is not a valid GitHub username.",
+      "missing": "No profile under this name yet.",
+      "signIn": "Create it with GitHub",
+      "failed": "We cannot check right now. Try again in a moment."
+    },
+    "map": {
+      "picture": "Mosaic of Africa: each square shows a city's published profiles.",
+      "explore": "Explore the map"
+    },
+    "problem": {
+      "title": "A CV tells. Your code shows.",
+      "body": "Many tech profiles build in public without anyone noticing, and recruiters have no time to read repositories. The profile turns that work into plain facts anyone can check."
+    },
+    "profile": {
+      "title": "A profile where every figure has its proof.",
+      "lead": "Six indicators read from your public GitHub data. Every figure links to the GitHub page that shows it. Nothing is public until you choose to publish.",
+      "example": "Example",
+      "exampleLogin": "your-username",
+      "months": "{active}/12 active months",
+      "contributions": "{count, plural, one {{formatted} public contribution} other {{formatted} public contributions}}"
+    },
+    "path": {
+      "title": "An empty calendar is a starting point.",
+      "lead": "Your profile exists from your first contribution. No points, no streaks to keep.",
+      "find": {
+        "title": "Find a project",
+        "body": "A tool you already use, documentation to improve."
+      },
+      "first": {
+        "title": "Offer a first contribution",
+        "body": "A clear issue, a small pull request."
+      },
+      "accepted": {
+        "title": "Get it accepted",
+        "body": "Each contribution accepted elsewhere shows on your profile."
+      },
+      "publish": {
+        "title": "Publish your profile",
+        "body": "You decide when it goes public, and you can take it down at any time."
+      }
+    },
+    "recruit": {
+      "title": "Hiring?",
+      "body": "Discover talent by what they have actually built, and join the waitlist for recruiter access.",
+      "link": "Go to the recruiter page"
+    },
+    "method": {
+      "title": "The method",
+      "readsTitle": "What we read",
+      "reads": {
+        "contributions": "Your public contributions over the last 12 months",
+        "seniority": "The creation date of your GitHub account",
+        "stars": "The stars of your public repositories and your followers",
+        "languages": "The languages of your public repositories",
+        "external": "Your pull requests accepted in other people's projects"
+      },
+      "notReadsTitle": "What we do not read",
+      "notReads": {
+        "private": "Your private repositories",
+        "linkedin": "LinkedIn: we only show the link you give",
+        "strangers": "People who have not signed up",
+        "score": "No overall score: each ranking sorts on one criterion"
+      },
+      "honest": "The profile measures public open source contribution, not a person's worth. An excellent engineer working on private code may look quiet here."
+    }
+  },
+  "recruiters": {
+    "meta": {
+      "title": "Hire on proof"
+    },
+    "hero": {
+      "title": "Stop reading CVs.",
+      "lead": "Find tech profiles by what they have actually built. Every figure links to its proof on GitHub."
+    },
+    "waitlist": {
+      "title": "Recruiter access: coming soon",
+      "lead": "Access is not open yet. Leave your work email and we will write as soon as it is.",
+      "email": "Work email",
+      "placeholder": "you@company.com",
+      "consent": "I agree that SourceFolio keeps this email to contact me about recruiter access. I can remove it at any time, below.",
+      "submit": "Join the waitlist",
+      "sending": "Sending…",
+      "done": "Noted. We will write as soon as access opens.",
+      "failed": "The sign-up did not go through. Try again in a moment.",
+      "leave": {
+        "summary": "Remove my email from the list",
+        "submit": "Remove",
+        "done": "Done: this address is no longer on the list.",
+        "failed": "The removal did not go through. Try again in a moment."
+      }
+    },
+    "field": {
+      "title": "The talent field",
+      "lead": "One square per published profile, darker as the contribution rhythm gets steadier. Open a square to read the profile.",
+      "language": "Language",
+      "allLanguages": "All languages",
+      "city": "City",
+      "allCities": "All cities",
+      "rhythm": "Rhythm",
+      "allRhythms": "All rhythms",
+      "steady": "Very steady (10 months or more)",
+      "regular": "Regular (6 to 9 months)",
+      "occasional": "Occasional (under 6 months)",
+      "shown": "Profiles shown: {count} of {total}",
+      "noMatch": "No profile matches these filters.",
+      "months": "{active}/12 active months",
+      "empty": "The field fills up with each published profile. None is online yet.",
+      "unavailable": "The talent field cannot be loaded right now. Try again in a moment.",
+      "honest": "These profiles measure public open source contribution, not a person's total worth. Work on private code does not show here.",
+      "rankings": "See the rankings"
+    }
   }
 }

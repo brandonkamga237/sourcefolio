@@ -1,5 +1,6 @@
 package com.brandonkamga.sourcefolio.account.domain.model;
 
+import com.brandonkamga.sourcefolio.shared.domain.EmailAddress;
 import com.brandonkamga.sourcefolio.shared.domain.Language;
 
 import java.time.Instant;

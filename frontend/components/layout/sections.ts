@@ -1,31 +1,26 @@
 import type { ComponentType, SVGProps } from "react";
-import { IconDiscover, IconDiscoverActive, IconMe, IconRanking, IconRankingActive } from "@/components/icons";
+import { IconMap, IconMe, IconRanking, IconRankingActive } from "@/components/icons";
 
 type Icon = ComponentType<SVGProps<SVGSVGElement>>;
 
 export interface Section {
-  key: "discover" | "ranking" | "me";
-  href: "/" | "/ranking" | "/me";
+  key: "rankings" | "map" | "myProfile";
+  href: "/rankings" | "/map" | "/me";
   icon: Icon;
   activeIcon: Icon;
 }
 
-export type SectionLabels = Record<Section["key"], string> & {
-  label: string;
-  /** Contains {count}: the author's new feedback, announced on the Me tab. */
-  unread: { one: string; other: string };
-};
+export type SectionLabels = Record<Section["key"], string> & { label: string };
 
-// The three tabs of the spec, in the same order in the sidebar and in the bottom bar.
+// The sections of docs/spec-v2.md, in the same order in the top bar and in the bottom tabs.
 export const sections: readonly Section[] = [
-  { key: "discover", href: "/", icon: IconDiscover, activeIcon: IconDiscoverActive },
-  { key: "ranking", href: "/ranking", icon: IconRanking, activeIcon: IconRankingActive },
-  { key: "me", href: "/me", icon: IconMe, activeIcon: IconMe },
+  { key: "rankings", href: "/rankings", icon: IconRanking, activeIcon: IconRankingActive },
+  { key: "map", href: "/map", icon: IconMap, activeIcon: IconMap },
+  { key: "myProfile", href: "/me", icon: IconMe, activeIcon: IconMe },
 ];
 
-// Discover also owns its Recent order and the showcase pages a visitor opens from it; Me owns
-// everything under /me (portfolio, profile questions).
+// Rankings also own the profiles a visitor opens from them; My profile owns everything under /me.
 export function isActive(section: Section, pathname: string): boolean {
-  if (section.href === "/") return pathname === "/" || pathname === "/recent" || pathname.startsWith("/p/");
+  if (section.key === "rankings") return pathname === "/rankings" || pathname.startsWith("/u/");
   return pathname === section.href || pathname.startsWith(`${section.href}/`);
 }

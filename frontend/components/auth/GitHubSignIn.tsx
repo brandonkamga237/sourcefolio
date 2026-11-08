@@ -1,7 +1,7 @@
 interface GitHubSignInProps {
   label: string;
   permission: string;
-  /** The page to come back to once signed in, with its locale: Me, so the member picks their portfolio right away. */
+  /** The page to come back to once signed in, with its locale: My profile, where the analysis starts. */
   returnTo: string;
 }
 

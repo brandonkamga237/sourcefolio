@@ -7,6 +7,4 @@ package com.brandonkamga.sourcefolio.account.application;
 public interface AccountEvents {
 
     void memberSignedIn(MemberSignedIn event);
-
-    void memberDeleting(MemberDeleting event);
 }

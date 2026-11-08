@@ -2,7 +2,11 @@
 
 import Image from "next/image";
 import { useState } from "react";
-import { avatarUrl } from "@/services/members";
+
+/** GitHub serves every account's public avatar at this address; no token, no extra scope. */
+function avatarUrl(login: string, size: number): string {
+  return `https://github.com/${encodeURIComponent(login)}.png?size=${size}`;
+}
 
 interface AvatarProps {
   login: string;

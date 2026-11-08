@@ -1,18 +1,21 @@
 # SourceFolio
 
-A catalogue of developer portfolios that are online and whose code is public: you can see the
-site and read how it is built. Promise: "Des portfolios dont tu peux lire le code" / "Portfolios
-you can read the code of". The name is provisional. Product spec: `docs/spec-v1.md`.
+A platform that turns the public GitHub contributions of tech profiles (developers, SWE,
+sysadmins, DevOps, data, mobile, QA, security) into a profile recruiters can read and trust.
+Promise: "De l'open source à l'opportunité" / "From open source to opportunity". The audience is
+African; the map shows it rather than the copy repeating it. The name is provisional. Product
+spec: `docs/spec-v2.md` (it replaces `docs/spec-v1.md`, the former portfolio catalogue, removed
+from the product with its data).
 
-Monorepo: `backend/` (Spring Boot 4, Java 21, PostgreSQL, JPA, Flyway, JobRunr, Playwright) and
+Monorepo: `backend/` (Spring Boot 4, Java 21, PostgreSQL, JPA, Flyway, JobRunr) and
 `frontend/` (Next.js App Router, React, TypeScript, Tailwind, Radix, TanStack Query, next-intl,
 Serwist PWA).
 
 ## Layout
 
 - `backend/src/main/java/com/brandonkamga/sourcefolio/<module>/`: one package per business
-  capability (`account`, `profile`, `showcase`, `checkup`, `discovery`, `taxonomy`,
-  `engagement`, `notification`, `moderation`, `storage`). `shared/` holds cross-cutting code only
+  capability (`account`, `profile`, `contribution`, `discovery`, `waitlist`). `shared/` holds
+  cross-cutting code only
 - `backend/src/main/resources/db/migration/`: Flyway migrations `V{n}__description.sql`
 - `frontend/` (no `src/`, `@/` points at its root): `app/[locale]/` (routes), `components/` (`ui/` Radix primitives, `icons/`
   generated from `icons/*.svg`), `services/` (every API call), `hooks/`, `lib/`, `i18n/`;
@@ -24,7 +27,7 @@ Serwist PWA).
 
 | Where | Command | What |
 | --- | --- | --- |
-| root | `docker compose up -d` | PostgreSQL, RustFS (S3) and Mailpit for development, no `.env` needed |
+| root | `docker compose up -d` | PostgreSQL and Mailpit for development, no `.env` needed |
 | `backend/` | `./mvnw spring-boot:run` | API on :8080, profile `dev` |
 | `backend/` | `./mvnw test` | unit tests and `@WebMvcTest` slices, no Docker |
 | `backend/` | `./mvnw verify` | also the `*IT` suite on PostgreSQL via Testcontainers (Docker) |
@@ -47,14 +50,22 @@ these names, because CI, the skills and the agents call them.
   translation key blocks the release
 - Mobile first: about 90 % of first visits come from a phone, often through a WhatsApp link.
   Touch targets are 44 px minimum, contrast AA, light and dark themes
-- The product builds habits through usefulness (stats, feedback, health alerts) and one public
-  ranking: the Ranking tab orders published showcases by likes, and like counts are public. No
-  streaks or points. Discover is never sorted by popularity
+- Nothing is public without the member's explicit "Publish"; unpublishing takes effect at once
+- Every figure on a profile links to the GitHub page that proves it. The profile measures
+  public open source contribution, not a person's total worth, and says so
+- Rankings sort on one factual indicator at a time and state what they measure; no combined
+  score, no streaks, no points. Hand-entered fields (bio, LinkedIn, city) never enter a ranking.
+  A beginner must feel welcome: an empty calendar is a starting point, not a zero to display
+- On-screen copy says "tech profile" / "profil tech" where the context is general, so that a
+  sysadmin or a DevOps recognises themselves, not only "developer"
+- Visual language: GitHub Primer palette (light, dark, system) and the "green square" concept:
+  the contribution square is the unit of the interface (logo, Africa map mosaic, beginner path,
+  talent field)
 - One main action per screen; the rest is progressive disclosure
 - Comments explain why, never what. No file headers, no generated javadoc, no commented-out code
 - Icons and the logo come from our own pack (`frontend/icons/*.svg` → SVGR): never Lucide,
   Heroicons or any icon library
-- The current controllers, DTOs and migrations are the truth for what exists; `docs/spec-v1.md`
+- The current controllers, DTOs and migrations are the truth for what exists; `docs/spec-v2.md`
   is the truth for what is intended. When a document disagrees with the code, say so
 - Backend, frontend and infrastructure conventions load from `.claude/rules/` when you work in
   those files
@@ -78,33 +89,33 @@ these names, because CI, the skills and the agents call them.
 
 ## Never
 
-- `git push --force`, committing `.env`, hardcoding S3 keys, the GitHub OAuth secret or any token
+- `git push --force`, committing `.env`, hardcoding the GitHub OAuth secret or any token
 - Editing a Flyway migration that is already merged: add the next `V{n}` instead
 - Asking GitHub for more than the public profile (`read:user`): no `repo`, no `read:org`
-- Sorting Discover by popularity: likes rank showcases in the Ranking tab only
-- Translating member content automatically (bios, comments) in V1
-- Embedding a portfolio in an iframe: external sites open in a new tab, and the click is counted
+- Calling the GitHub API with anything but the dedicated server token (secret, never in the
+  repository); the sign-in token is not stored for API calls
+- Collecting people who have not signed up, reading LinkedIn, or reading private repositories
+- Translating member content automatically (bios) in V2
+- Showing illustration data without a visible "Example" label: no fake testimonials, logos,
+  figures or profiles
 - Inventing data the backend does not provide
 
 ## Vocabulary
 
-- **Showcase**: what a member publishes; in V1 always `kind = portfolio`. One published
-  showcase per member (business rule, not a schema limit)
-- **Source repo**: the public repository a showcase is built from; same repo means same
-  showcase when the URL changes
-- **Check**: one verification of a showcase (HTTP status, response time, content fingerprint,
-  health report, mobile and desktop screenshots)
-- **Lifecycle**: `PUBLISHED` → `UNAVAILABLE` (3 failures in 24 h, hidden from the catalogue) →
-  `NEEDS_FIX` (14 days) → `REMOVED` (21 days); back to `PUBLISHED` as soon as the site answers.
-  A radical content change or a parked domain goes straight to `NEEDS_FIX`
-- **Health report** (bilan de santé): private to the author, never a public score
-- **Feedback** (retour): a comment with an optional angle (`DESIGN`, `CLARITY`, `PERFORMANCE`,
-  `MOBILE`, `CODE`) and 10 to 1 000 characters
-- **Discover**: the feed, shuffled once a day, one card in five reserved for showcases younger
-  than 14 days. **Recent** is its only other sort
-- **Ranking** (Classement): published showcases ordered by likes, counts shown
-- **Preview**: the image (and optional short video) a card shows; the author's upload, or the
-  automatic screenshot of the site when there is none
+- **Tech profile** (profil tech): a member, whatever their job (developer, SWE, sysadmin,
+  DevOps, data, mobile, QA, security). Signs in with GitHub
+- **Analysis**: one reading of a member's public GitHub data, producing a snapshot of the six
+  indicators with its date. Runs at sign-in (at most hourly) and weekly
+- **Indicators**: seniority, volume (public contributions over 12 months), regularity (active
+  months out of 12), stars and followers, languages, contributions accepted elsewhere (merged
+  pull requests in repositories the member does not own). Definitions in `docs/spec-v2.md`
+- **Profile** (fiche): the page built from the latest snapshot plus the hand-entered fields;
+  private preview first, public only once published, at a stable address
+- **Ranking** (Classement): published profiles sorted by one indicator, filtered by country and
+  language
+- **Map** (Carte): the mosaic of Africa where each square shows the density of published
+  profiles, by city; tapping a city opens the rankings of its country
+- **Waitlist**: recruiters leave a work e-mail; no recruiter account in V2
 
 ## Where to look
 

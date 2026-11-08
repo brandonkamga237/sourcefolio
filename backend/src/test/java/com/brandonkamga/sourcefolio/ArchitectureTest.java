@@ -43,12 +43,12 @@ class ArchitectureTest {
     }
 
     @Test
-    @DisplayName("domain and use cases are plain Java: no framework, persistence, web, job or browser library")
+    @DisplayName("domain and use cases are plain Java: no framework, persistence, web or job library")
     void coreIsPlainJava() {
         noClasses().that().resideInAnyPackage(ROOT + "..domain..", ROOT + "..application..", ROOT + ".shared.exception..")
                 .should().dependOnClassesThat().resideInAnyPackage(
                         "org.springframework..", "jakarta.persistence..", "jakarta.servlet..", "org.hibernate..",
-                        "org.jobrunr..", "com.microsoft.playwright..", "software.amazon..", "io.micrometer..",
+                        "org.jobrunr..", "io.micrometer..",
                         "tools.jackson..", ROOT + "..infra..", ROOT + "..api..")
                 .because("the core declares ports, and adapters in infra implement them")
                 .allowEmptyShould(true)
