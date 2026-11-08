@@ -33,13 +33,13 @@ export function WaitlistForm({ labels }: WaitlistFormProps) {
   }
 
   if (done) {
-    return <p role="status" className="rounded-card bg-surface-sunken p-4 text-[15px] font-medium">{labels.done}</p>;
+    return <p role="status" className="rounded-card bg-surface-sunken p-5 text-[17px] font-medium">{labels.done}</p>;
   }
 
   return (
     <form onSubmit={submit} className="flex flex-col gap-3">
       <label className="flex flex-col gap-1.5">
-        <span className="text-[13px] text-ink-muted">{labels.email}</span>
+        <span className="text-[15px] text-ink-muted">{labels.email}</span>
         <input
           type="email"
           required
@@ -50,11 +50,11 @@ export function WaitlistForm({ labels }: WaitlistFormProps) {
           className="field"
         />
       </label>
-      <label className="flex min-h-11 items-start gap-3 text-[14px] leading-snug text-ink-soft">
+      <label className="flex min-h-11 items-start gap-3 text-[15px] leading-snug text-ink-soft">
         <input type="checkbox" required checked={consent} onChange={(event) => setConsent(event.target.checked)} className="mt-0.5 size-5 shrink-0 accent-[var(--color-ink)]" />
         <span>{labels.consent}</span>
       </label>
-      <button type="submit" disabled={pending} className="btn btn-primary min-h-12 text-[15px]">
+      <button type="submit" disabled={pending} className="btn btn-primary min-h-14 text-[17px]">
         {pending ? labels.sending : labels.submit}
       </button>
       {error ? <p role="alert" className="text-[14px] text-danger">{error}</p> : null}

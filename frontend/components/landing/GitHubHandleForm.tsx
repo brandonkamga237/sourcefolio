@@ -52,9 +52,9 @@ export function GitHubHandleForm({ locale, labels }: GitHubHandleFormProps) {
   return (
     <form onSubmit={submit} className="flex flex-col gap-3">
       <div className="flex flex-col gap-2 sm:flex-row">
-        <label className="flex h-12 w-full min-w-0 items-center sm:flex-1 rounded-control border border-line bg-surface px-3 transition-[border-color,box-shadow] duration-150 focus-within:border-ink-muted focus-within:shadow-[0_0_0_3px_var(--color-line-soft)]">
+        <label className="flex h-14 w-full min-w-0 items-center sm:flex-1 rounded-control border border-line bg-surface px-3 transition-[border-color,box-shadow] duration-150 focus-within:border-ink-muted focus-within:shadow-[0_0_0_3px_var(--color-line-soft)]">
           <span className="sr-only">{labels.field}</span>
-          <span aria-hidden="true" className="text-[15px] text-ink-muted">github.com/</span>
+          <span aria-hidden="true" className="text-[17px] text-ink-muted">github.com/</span>
           <input
             value={value}
             onChange={(event) => {
@@ -65,10 +65,10 @@ export function GitHubHandleForm({ locale, labels }: GitHubHandleFormProps) {
             autoCapitalize="none"
             autoCorrect="off"
             spellCheck={false}
-            className="h-full min-w-0 flex-1 bg-transparent text-[16px] outline-none"
+            className="h-full min-w-0 flex-1 bg-transparent text-[17px] outline-none"
           />
         </label>
-        <button type="submit" disabled={state === "checking"} className="btn btn-primary min-h-12 px-5 text-[15px]">
+        <button type="submit" disabled={state === "checking"} className="btn btn-primary min-h-14 px-7 text-[17px]">
           {state === "checking" ? labels.checking : labels.submit}
         </button>
       </div>

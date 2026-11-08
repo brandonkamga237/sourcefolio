@@ -1,11 +1,13 @@
 import type { ReactNode } from "react";
 import { getLocale, getTranslations } from "next-intl/server";
+import { ScrollEffects } from "@/components/motion/ScrollEffects";
 import { toLocale } from "@/i18n/routing";
 import { BottomTabs } from "./BottomTabs";
 import { Footer } from "./Footer";
 import { HeaderNav } from "./HeaderNav";
 import { Logo } from "./Logo";
 import { PublishLink } from "./PublishLink";
+import { SiteHeader } from "./SiteHeader";
 
 interface AppShellProps {
   children: ReactNode;
@@ -30,25 +32,26 @@ export async function AppShell({ children }: AppShellProps) {
         {t("a11y.skipToContent")}
       </a>
 
-      <header className="sticky top-0 z-30 border-b border-line-soft bg-canvas/85 backdrop-blur-md">
-        <div className="wrap flex h-14 items-center gap-6 lg:h-16">
+      <SiteHeader>
+        <div className="wrap flex h-16 items-center gap-8 lg:h-[72px]">
           <Logo />
           <HeaderNav locale={locale} labels={labels} />
           <div className="ml-auto">
             <PublishLink locale={locale} label={t("nav.publish")} className="btn btn-primary" />
           </div>
         </div>
-      </header>
+      </SiteHeader>
 
       <main id="content" className="min-w-0 flex-1">
         {children}
       </main>
 
-      <div className="pb-[calc(3.5rem+env(safe-area-inset-bottom))] lg:pb-0">
+      <div className="dark-band pb-[calc(3.5rem+env(safe-area-inset-bottom))] lg:pb-0">
         <Footer locale={locale} />
       </div>
 
       <BottomTabs locale={locale} labels={labels} />
+      <ScrollEffects />
     </div>
   );
 }

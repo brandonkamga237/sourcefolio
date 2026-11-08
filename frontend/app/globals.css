@@ -6,35 +6,36 @@
 @theme {
   --color-canvas: #ffffff;
   --color-surface: #ffffff;
-  --color-surface-raised: #fafafa;
-  --color-surface-sunken: #f4f4f5;
-  --color-ink: #0a0a0a;
-  --color-ink-body: #171717;
-  --color-ink-soft: #404040;
-  --color-ink-muted: #6b6b6b;
+  --color-surface-raised: #f6f8fa;
+  --color-surface-sunken: #eff2f5;
+  --color-ink: #1f2328;
+  --color-ink-body: #1f2328;
+  --color-ink-soft: #3d444d;
+  --color-ink-muted: #59636e;
   --color-ink-inverse: #ffffff;
-  --color-line: #e4e4e7;
-  --color-line-soft: #f0f0f1;
-  --color-accent: #047857;
-  --color-accent-hover: #065f46;
-  --color-accent-ink: #047857;
-  --color-accent-soft: #ecfdf5;
-  --color-accent-line: #a7f3d0;
-  --color-cta: #0a0a0a;
-  --color-cta-hover: #27272a;
+  --color-line: #d1d9e0;
+  --color-line-soft: #e6eaef;
+  --color-accent: #0969da;
+  --color-accent-hover: #0550ae;
+  --color-accent-ink: #0969da;
+  --color-accent-soft: #ddf4ff;
+  --color-accent-line: #b6e3ff;
+  --color-cta: #1f883d;
+  --color-cta-hover: #1a7f37;
   --color-cta-ink: #ffffff;
-  --color-tab-active: #0a0a0a;
-  --color-success: #047857;
-  --color-success-ink: #065f46;
-  --color-danger: #b91c1c;
-  --color-danger-soft: #fef2f2;
-  --color-like: #b91c1c;
-  --color-star: #b45309;
-  --color-level-0: #efeff1;
-  --color-level-1: #a7f3d0;
-  --color-level-2: #34d399;
-  --color-level-3: #059669;
-  --color-level-4: #065f46;
+  --color-tab-active: #fd8c73;
+  --color-success: #1a7f37;
+  --color-success-ink: #116329;
+  --color-danger: #d1242f;
+  --color-danger-soft: #ffebe9;
+  --color-like: #cf222e;
+  --color-star: #bf8700;
+  --color-level-0: #ebedf0;
+  --color-level-1: #9be9a8;
+  --color-level-2: #40c463;
+  --color-level-3: #30a14e;
+  --color-level-4: #216e39;
+  --color-glow: rgba(31,136,61,0.10);
 
   --radius-tag: 6px;
   --radius-segment: 8px;
@@ -52,73 +53,75 @@
 @layer base {
   @media (prefers-color-scheme: dark) {
     :root:not([data-theme="light"]) {
-      --color-canvas: #0a0a0a;
-      --color-surface: #0f0f10;
-      --color-surface-raised: #141415;
-      --color-surface-sunken: #1c1c1e;
-      --color-ink: #fafafa;
-      --color-ink-body: #ededed;
-      --color-ink-soft: #c4c4c8;
-      --color-ink-muted: #94949c;
-      --color-ink-inverse: #0a0a0a;
-      --color-line: #27272a;
-      --color-line-soft: #1c1c1f;
-      --color-accent: #34d399;
-      --color-accent-hover: #6ee7b7;
-      --color-accent-ink: #34d399;
-      --color-accent-soft: #052e24;
-      --color-accent-line: #065f46;
-      --color-cta: #fafafa;
-      --color-cta-hover: #e4e4e7;
-      --color-cta-ink: #0a0a0a;
-      --color-tab-active: #fafafa;
-      --color-success: #34d399;
-      --color-success-ink: #6ee7b7;
-      --color-danger: #f87171;
-      --color-danger-soft: #2a1215;
-      --color-like: #f87171;
-      --color-star: #fbbf24;
-      --color-level-0: #1c1c1f;
-      --color-level-1: #064e3b;
-      --color-level-2: #047857;
-      --color-level-3: #10b981;
-      --color-level-4: #6ee7b7;
+      --color-canvas: #0a0e17;
+      --color-surface: #0f1521;
+      --color-surface-raised: #131a27;
+      --color-surface-sunken: #1a2232;
+      --color-ink: #f0f6fc;
+      --color-ink-body: #e6edf3;
+      --color-ink-soft: #c3ccd6;
+      --color-ink-muted: #8b96a5;
+      --color-ink-inverse: #0a0e17;
+      --color-line: #2a3446;
+      --color-line-soft: #1c2534;
+      --color-accent: #58a6ff;
+      --color-accent-hover: #79c0ff;
+      --color-accent-ink: #58a6ff;
+      --color-accent-soft: #0f2545;
+      --color-accent-line: #1f4b80;
+      --color-cta: #238636;
+      --color-cta-hover: #2ea043;
+      --color-cta-ink: #ffffff;
+      --color-tab-active: #f78166;
+      --color-success: #3fb950;
+      --color-success-ink: #56d364;
+      --color-danger: #f85149;
+      --color-danger-soft: #2d1215;
+      --color-like: #ff7b72;
+      --color-star: #e3b341;
+      --color-level-0: #172030;
+      --color-level-1: #0e4429;
+      --color-level-2: #006d32;
+      --color-level-3: #26a641;
+      --color-level-4: #39d353;
+      --color-glow: rgba(57,211,83,0.13);
     }
   }
 
   :root[data-theme="dark"],
   .dark-band {
-    --color-canvas: #0a0a0a;
-    --color-surface: #0f0f10;
-    --color-surface-raised: #141415;
-    --color-surface-sunken: #1c1c1e;
-    --color-ink: #fafafa;
-    --color-ink-body: #ededed;
-    --color-ink-soft: #c4c4c8;
-    --color-ink-muted: #94949c;
-    --color-ink-inverse: #0a0a0a;
-    --color-line: #27272a;
-    --color-line-soft: #1c1c1f;
-    --color-accent: #34d399;
-    --color-accent-hover: #6ee7b7;
-    --color-accent-ink: #34d399;
-    --color-accent-soft: #052e24;
-    --color-accent-line: #065f46;
-    --color-cta: #fafafa;
-    --color-cta-hover: #e4e4e7;
-    --color-cta-ink: #0a0a0a;
-    --color-tab-active: #fafafa;
-    --color-success: #34d399;
-    --color-success-ink: #6ee7b7;
-    --color-danger: #f87171;
-    --color-danger-soft: #2a1215;
-    --color-like: #f87171;
-    --color-star: #fbbf24;
-    --color-level-0: #1c1c1f;
-    --color-level-1: #064e3b;
-    --color-level-2: #047857;
-    --color-level-3: #10b981;
-    --color-level-4: #6ee7b7;
+    --color-canvas: #0a0e17;
+    --color-surface: #0f1521;
+    --color-surface-raised: #131a27;
+    --color-surface-sunken: #1a2232;
+    --color-ink: #f0f6fc;
+    --color-ink-body: #e6edf3;
+    --color-ink-soft: #c3ccd6;
+    --color-ink-muted: #8b96a5;
+    --color-ink-inverse: #0a0e17;
+    --color-line: #2a3446;
+    --color-line-soft: #1c2534;
+    --color-accent: #58a6ff;
+    --color-accent-hover: #79c0ff;
+    --color-accent-ink: #58a6ff;
+    --color-accent-soft: #0f2545;
+    --color-accent-line: #1f4b80;
+    --color-cta: #238636;
+    --color-cta-hover: #2ea043;
+    --color-cta-ink: #ffffff;
+    --color-tab-active: #f78166;
+    --color-success: #3fb950;
+    --color-success-ink: #56d364;
+    --color-danger: #f85149;
+    --color-danger-soft: #2d1215;
+    --color-like: #ff7b72;
+    --color-star: #e3b341;
+    --color-level-0: #172030;
+    --color-level-1: #0e4429;
+    --color-level-2: #006d32;
+    --color-level-3: #26a641;
+    --color-level-4: #39d353;
+    --color-glow: rgba(57,211,83,0.13);
   }
 
   .dark-band {
@@ -261,7 +264,7 @@
 @utility wrap {
   margin-inline: auto;
   width: 100%;
-  max-width: 72rem;
+  max-width: 80rem;
   padding-inline: 1rem;
 
   @media (width >= 64rem) {
@@ -275,11 +278,11 @@
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
-  min-height: 2.75rem;
-  padding-inline: 1rem;
+  min-height: 3rem;
+  padding-inline: 1.25rem;
   border-radius: var(--radius-control);
-  font-size: 0.875rem;
-  font-weight: 500;
+  font-size: 1rem;
+  font-weight: 600;
   white-space: nowrap;
   transition: background-color 150ms, border-color 150ms, color 150ms, transform 160ms var(--ease-out-soft);
 
@@ -291,9 +294,6 @@
     opacity: 0.55;
   }
 
-  @media (width >= 64rem) {
-    min-height: 2.5rem;
-  }
 }
 
 @utility btn-primary {
@@ -318,8 +318,8 @@
 /* Every input and select. 16px so a phone does not zoom on focus. */
 @utility field {
   width: 100%;
-  min-height: 2.75rem;
-  padding-inline: 0.75rem;
+  min-height: 3rem;
+  padding-inline: 0.875rem;
   border: 1px solid var(--color-line);
   border-radius: var(--radius-control);
   background-color: var(--color-surface);
@@ -330,12 +330,8 @@
   transition: border-color 150ms, box-shadow 150ms;
 
   &:focus {
-    border-color: var(--color-ink-muted);
-    box-shadow: 0 0 0 3px var(--color-line-soft);
-  }
-
-  @media (width >= 64rem) {
-    font-size: 0.875rem;
+    border-color: var(--color-accent);
+    box-shadow: 0 0 0 3px var(--color-accent-soft);
   }
 }
 
@@ -351,4 +347,34 @@
   &:hover {
     text-decoration-color: currentColor;
   }
+}
+
+/* A card lit from where the pointer is; ScrollEffects writes --x and --y. */
+@utility glow-card {
+  position: relative;
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-panel);
+  background:
+    radial-gradient(420px circle at var(--x, 50%) var(--y, -20%), var(--color-glow), transparent 65%),
+    var(--color-surface);
+  transition: border-color 200ms, transform 240ms var(--ease-out-soft);
+
+  &:hover {
+    border-color: var(--color-ink-muted);
+    transform: translateY(-3px);
+  }
+}
+
+@utility text-gradient {
+  background-image: linear-gradient(95deg, var(--color-ink) 10%, var(--color-level-4) 55%, var(--color-accent) 95%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* The colour behind a hero: two soft lights, never a picture to download. */
+@utility hero-lights {
+  background-image:
+    radial-gradient(60rem 36rem at 78% 12%, rgba(38, 166, 65, 0.22), transparent 65%),
+    radial-gradient(48rem 30rem at 8% 88%, rgba(56, 139, 253, 0.2), transparent 68%);
 }

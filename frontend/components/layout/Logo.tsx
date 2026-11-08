@@ -9,8 +9,8 @@ export async function Logo() {
   const locale = toLocale(await getLocale());
   return (
     <Link href={localizedPath(locale, "/")} className="flex h-11 items-center gap-2 rounded-control">
-      <IconLogoMark aria-hidden="true" className="size-5 text-level-3" />
-      <span className="text-[17px] font-semibold tracking-[-0.02em]">{t("wordmark")}</span>
+      <IconLogoMark aria-hidden="true" className="size-6 text-level-3" />
+      <span className="text-[20px] font-semibold tracking-[-0.025em]">{t("wordmark")}</span>
     </Link>
   );
 }

@@ -9,8 +9,8 @@ import { Logo } from "./Logo";
 import { ProjectStars } from "./ProjectStars";
 
 const column = "flex flex-col gap-1";
-const heading = "py-1 text-[13px] text-ink-muted";
-const item = "flex min-h-11 items-center text-[14px] text-ink-soft transition-colors duration-150 hover:text-ink lg:min-h-8";
+const heading = "py-1 text-[15px] font-medium text-ink";
+const item = "flex min-h-11 items-center text-[16px] text-ink-muted transition-colors duration-150 hover:text-ink lg:min-h-9";
 
 /** What a page has no room for: the way to everything, the language and the theme. */
 export async function Footer({ locale }: { locale: Locale }) {
@@ -22,11 +22,11 @@ export async function Footer({ locale }: { locale: Locale }) {
   ];
 
   return (
-    <footer className="mt-20 border-t border-line lg:mt-28">
-      <div className="wrap grid gap-10 py-10 lg:grid-cols-[minmax(0,1.5fr)_1fr_1fr_minmax(0,1.2fr)] lg:py-14">
+    <footer className="border-t border-line">
+      <div className="wrap grid gap-10 py-14 lg:grid-cols-[minmax(0,1.5fr)_1fr_1fr_minmax(0,1.2fr)] lg:py-20">
         <div className="flex flex-col items-start gap-2">
           <Logo />
-          <p className="max-w-xs text-[13px] leading-relaxed text-ink-muted">{t("footer.honest")}</p>
+          <p className="max-w-sm text-[15px] leading-relaxed text-ink-muted">{t("footer.honest")}</p>
         </div>
         <nav aria-label={t("footer.product")} className={column}>
           <p className={heading}>{t("footer.product")}</p>

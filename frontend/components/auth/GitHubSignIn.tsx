@@ -12,11 +12,11 @@ interface GitHubSignInProps {
 export function GitHubSignIn({ label, permission, returnTo }: GitHubSignInProps) {
   return (
     <div className="flex flex-col items-start gap-2">
-      <a href={`/oauth2/authorization/github?returnTo=${encodeURIComponent(returnTo)}`} className="btn btn-primary min-h-12 px-5 text-[15px]">
-        <IconGithub aria-hidden="true" className="size-[18px]" />
+      <a href={`/oauth2/authorization/github?returnTo=${encodeURIComponent(returnTo)}`} className="btn btn-primary min-h-14 px-7 text-[17px]">
+        <IconGithub aria-hidden="true" className="size-5" />
         {label}
       </a>
-      <p className="text-[13px] text-ink-muted">{permission}</p>
+      <p className="text-[15px] text-ink-muted">{permission}</p>
     </div>
   );
 }

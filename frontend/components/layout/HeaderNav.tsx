@@ -22,7 +22,7 @@ export function HeaderNav({ locale, labels }: HeaderNavProps) {
             key={section.key}
             href={localizedPath(locale, section.href)}
             aria-current={active ? "page" : undefined}
-            className={`flex h-9 items-center rounded-control px-3 text-[14px] transition-colors duration-150 ${
+            className={`flex h-11 items-center rounded-control px-4 text-[16px] transition-colors duration-150 ${
               active ? "font-medium text-ink" : "text-ink-muted hover:bg-surface-sunken hover:text-ink"
             }`}
           >

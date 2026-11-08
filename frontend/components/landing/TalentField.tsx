@@ -34,7 +34,7 @@ interface TalentFieldProps {
 type Rhythm = "" | "steady" | "regular" | "occasional";
 
 const LEVEL = ["bg-level-0", "bg-level-1", "bg-level-2", "bg-level-3", "bg-level-4"] as const;
-const label = "flex flex-col gap-1.5 text-[13px] text-ink-muted";
+const label = "flex flex-col gap-2 text-[15px] text-ink-muted";
 
 function levelOf(activeMonths: number): number {
   if (activeMonths >= 10) return 4;
@@ -89,18 +89,18 @@ export function TalentField({ locale, talents, labels }: TalentFieldProps) {
           </select>
         </label>
       </div>
-      <p aria-live="polite" className="text-[13px] text-ink-muted">
+      <p aria-live="polite" className="text-[16px] text-ink-muted">
         {labels.shown.replace("{count}", String(shown.length)).replace("{total}", String(talents.length))}
       </p>
       {shown.length === 0 ? (
-        <p className="text-[14px] text-ink-soft">{labels.noMatch}</p>
+        <p className="text-[17px] text-ink-soft">{labels.noMatch}</p>
       ) : (
-        <ul className="flex flex-wrap gap-1.5">
+        <ul className="flex flex-wrap gap-2">
           {shown.map((talent) => {
             const name = `${talent.login} · ${labels.months.replace("{active}", String(talent.activeMonths))}`;
             return (
               <li key={talent.login}>
-                <Link href={localizedPath(locale, `/u/${talent.login}`)} aria-label={name} title={name} className={`block size-11 rounded-[6px] outline-offset-1 transition-transform duration-150 hover:-translate-y-0.5 ${LEVEL[levelOf(talent.activeMonths)]}`} />
+                <Link href={localizedPath(locale, `/u/${talent.login}`)} aria-label={name} title={name} className={`block size-14 rounded-[9px] lg:size-[72px] lg:rounded-[11px] outline-offset-1 transition-transform duration-150 hover:-translate-y-0.5 ${LEVEL[levelOf(talent.activeMonths)]}`} />
               </li>
             );
           })}

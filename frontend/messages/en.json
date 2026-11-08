@@ -322,6 +322,12 @@
     "close": {
       "title": "Your work is already public. Make it readable.",
       "body": "Sign in with GitHub, see your profile in private, publish if you want to."
+    },
+    "stats": {
+      "profiles": "{count, plural, one {published profile} other {published profiles}}",
+      "cities": "cities on the map",
+      "countries": "countries covered",
+      "indicators": "verifiable indicators"
     }
   },
   "recruiters": {

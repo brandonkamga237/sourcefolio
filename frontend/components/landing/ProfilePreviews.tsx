@@ -21,23 +21,23 @@ export async function ProfilePreviews({ locale }: { locale: Locale }) {
   if (rows.length === 0) return null;
 
   return (
-    <div className="flex flex-col gap-3">
+    <div data-reveal="" className="flex flex-col gap-4">
       <ul className="divide-y divide-line-soft border-y border-line-soft">
         {rows.map((row) => (
           <li key={row.login}>
-            <Link href={localizedPath(locale, `/u/${row.login}`)} className="flex min-h-16 items-center gap-3 py-3 transition-colors duration-150 hover:bg-surface-raised">
-              <Avatar login={row.login} size={36} />
+            <Link href={localizedPath(locale, `/u/${row.login}`)} className="flex min-h-20 items-center gap-4 py-4 transition-colors duration-150 hover:bg-surface-raised">
+              <Avatar login={row.login} size={48} />
               <span className="flex min-w-0 flex-1 flex-col">
-                <span className="truncate text-[15px] font-medium">{row.login}</span>
-                <span className="truncate text-[13px] text-ink-muted">{[row.city, row.country ? countryName(row.country, locale) : null].filter(Boolean).join(" · ")}</span>
+                <span className="truncate text-[19px] font-semibold">{row.login}</span>
+                <span className="truncate text-[15px] text-ink-muted">{[row.city, row.country ? countryName(row.country, locale) : null].filter(Boolean).join(" · ")}</span>
               </span>
               <span className="hidden sm:block"><RegularityStrip months={row.months} /></span>
-              <span className="w-28 shrink-0 text-right text-[13px] text-ink-muted tabular-nums">{t("months", { active: row.activeMonths })}</span>
+              <span className="w-32 shrink-0 text-right text-[15px] text-ink-muted tabular-nums">{t("months", { active: row.activeMonths })}</span>
             </Link>
           </li>
         ))}
       </ul>
-      <Link href={localizedPath(locale, "/rankings")} className="link flex min-h-11 w-fit items-center text-[14px]">{t("all")}</Link>
+      <Link href={localizedPath(locale, "/rankings")} className="link flex min-h-11 w-fit items-center text-[16px]">{t("all")}</Link>
     </div>
   );
 }

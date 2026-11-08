@@ -322,6 +322,12 @@
     "close": {
       "title": "Ton travail est déjà public. Rends-le lisible.",
       "body": "Connecte-toi avec GitHub, regarde ta fiche en privé, publie si tu veux."
+    },
+    "stats": {
+      "profiles": "{count, plural, =0 {fiche publiée} one {fiche publiée} other {fiches publiées}}",
+      "cities": "villes sur la carte",
+      "countries": "pays couverts",
+      "indicators": "indicateurs vérifiables"
     }
   },
   "recruiters": {

@@ -56,6 +56,25 @@ export function levelOf(count: number): MapLevel {
   return 1;
 }
 
+export interface FieldCity {
+  column: number;
+  row: number;
+  country: string;
+  level: MapLevel;
+}
+
+/** One entry per square: cities that share a square add up, and the square opens the busiest one's country. */
+export function fieldCities(cities: readonly PlacedCity[]): FieldCity[] {
+  const bySquare = new Map<string, FieldCity & { count: number }>();
+  for (const { city, count } of cities) {
+    const key = `${city.column}:${city.row}`;
+    const known = bySquare.get(key);
+    const total = (known?.count ?? 0) + count;
+    bySquare.set(key, { column: city.column, row: city.row, country: known?.country ?? city.country, count: total, level: levelOf(total) });
+  }
+  return [...bySquare.values()].map(({ column, row, country, level }) => ({ column, row, country, level }));
+}
+
 export function landSquares(): [number, number][] {
   return AFRICA_ROWS.flatMap((line, row) => [...line].flatMap((cell, column): [number, number][] => (cell === "#" ? [[column, row]] : [])));
 }

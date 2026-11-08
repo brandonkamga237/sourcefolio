@@ -32,7 +32,7 @@ export function WaitlistLeaveForm({ labels }: WaitlistLeaveFormProps) {
   }
 
   return (
-    <details className="text-[14px]">
+    <details className="text-[15px]">
       <summary className="flex min-h-11 cursor-pointer items-center text-ink-muted hover:text-ink">{labels.summary}</summary>
       {done ? (
         <p role="status" className="py-2 text-ink-soft">{labels.done}</p>
