@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, type FormEvent } from "react";
+import { Button } from "@/components/ui/Button";
 import { joinWaitlist } from "@/services/waitlist";
 
 interface WaitlistFormProps {
@@ -47,16 +48,14 @@ export function WaitlistForm({ labels }: WaitlistFormProps) {
           value={email}
           onChange={(event) => setEmail(event.target.value)}
           placeholder={labels.placeholder}
-          className="h-12 rounded-control border border-line bg-surface px-3 text-[16px] focus-visible:outline-2 focus-visible:outline-accent"
+          className="field"
         />
       </label>
       <label className="flex min-h-11 items-start gap-3 text-[14px] leading-snug text-ink-soft">
         <input type="checkbox" required checked={consent} onChange={(event) => setConsent(event.target.checked)} className="mt-0.5 size-5 shrink-0 accent-[var(--color-cta)]" />
         <span>{labels.consent}</span>
       </label>
-      <button type="submit" disabled={pending} className="press flex h-12 items-center justify-center rounded-control bg-cta px-5 text-[15px] font-semibold text-cta-ink hover:bg-cta-hover disabled:opacity-70">
-        {pending ? labels.sending : labels.submit}
-      </button>
+      <Button type="submit" status={pending ? "busy" : "idle"} className="min-h-12">{labels.submit}</Button>
       {error ? <p role="alert" className="text-[14px] text-danger">{error}</p> : null}
     </form>
   );

@@ -17,23 +17,18 @@ export function LanguageSwitch({ current, label, names }: LanguageSwitchProps) {
   const pathname = withoutLocale(usePathname());
 
   return (
-    <div role="group" aria-label={label} className="flex w-max overflow-hidden rounded-control border border-line">
-      {routing.locales.map((locale) => {
-        const active = locale === current;
-        return (
-          <Link
-            key={locale}
-            href={localizedPath(locale, pathname)}
-            hrefLang={locale}
-            aria-current={active ? "true" : undefined}
-            className={`flex h-10 min-w-11 items-center justify-center px-3 text-[13px] font-semibold ${
-              active ? "bg-surface text-ink" : "bg-surface-raised text-ink-muted hover:text-ink"
-            }`}
-          >
-            {names[locale]}
-          </Link>
-        );
-      })}
+    <div role="group" aria-label={label} className="flex">
+      {routing.locales.map((locale) => (
+        <Link
+          key={locale}
+          href={localizedPath(locale, pathname)}
+          hrefLang={locale}
+          aria-current={locale === current ? "true" : undefined}
+          className={`flex size-11 items-center justify-center rounded-control text-[13px] transition-colors duration-(--dur-1) lg:w-9 ${locale === current ? "font-semibold text-ink" : "text-ink-muted hover:text-ink"}`}
+        >
+          {names[locale]}
+        </Link>
+      ))}
     </div>
   );
 }

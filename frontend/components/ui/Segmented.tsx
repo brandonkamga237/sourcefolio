@@ -4,17 +4,19 @@ interface SegmentedProps {
   label: string;
   options: readonly { key: string; label: string; href: string }[];
   current: string;
+  /** Set when the choice changes page: the browser then glides the pill from one to the other. */
+  transitionName?: string;
 }
 
 /** Equal columns, so the pill only ever translates. Each option is a real address. */
-export function Segmented({ label, options, current }: SegmentedProps) {
+export function Segmented({ label, options, current, transitionName }: SegmentedProps) {
   const index = options.findIndex((option) => option.key === current);
   return (
     <nav aria-label={label} className="relative grid w-fit auto-cols-fr grid-flow-col rounded-control border border-line bg-surface-raised p-0.5">
       <span
         aria-hidden="true"
         className="absolute inset-y-0.5 left-0.5 rounded-[5px] border border-line bg-canvas shadow-sm transition-transform duration-(--dur-3) ease-spring"
-        style={{ width: `calc((100% - 4px) / ${options.length})`, transform: `translateX(${index * 100}%)` }}
+        style={{ width: `calc((100% - 4px) / ${options.length})`, transform: `translateX(${index * 100}%)`, viewTransitionName: transitionName }}
       />
       {options.map((option) => (
         <Link
