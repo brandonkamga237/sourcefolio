@@ -1,4 +1,5 @@
 import { getFormatter, getTranslations } from "next-intl/server";
+import { weeksOf } from "@/lib/calendar";
 import type { ContributionDay } from "@/services/contribution-types";
 
 interface ContributionCalendarProps {
@@ -8,17 +9,6 @@ interface ContributionCalendarProps {
 }
 
 const LEVEL = ["bg-level-0", "bg-level-1", "bg-level-2", "bg-level-3", "bg-level-4"] as const;
-
-// GitHub's weeks start on Sunday; the first one is often partial, padded with empty cells so
-// every column is a week.
-function weeksOf(calendar: ContributionDay[]): (ContributionDay | null)[][] {
-  if (calendar.length === 0) return [];
-  const padding = new Date(`${calendar[0].date}T00:00:00Z`).getUTCDay();
-  const cells: (ContributionDay | null)[] = [...Array<null>(padding).fill(null), ...calendar];
-  const weeks: (ContributionDay | null)[][] = [];
-  for (let start = 0; start < cells.length; start += 7) weeks.push(cells.slice(start, start + 7));
-  return weeks;
-}
 
 /**
  * The contribution calendar as GitHub draws it: one square a day, five shades. On a phone it

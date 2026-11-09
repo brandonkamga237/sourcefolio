@@ -1,6 +1,7 @@
 package com.brandonkamga.sourcefolio.discovery.application;
 
 import com.brandonkamga.sourcefolio.discovery.domain.model.CityCount;
+import com.brandonkamga.sourcefolio.discovery.domain.model.ProjectCount;
 import com.brandonkamga.sourcefolio.discovery.domain.model.RankingFacets;
 import com.brandonkamga.sourcefolio.discovery.domain.model.RankingPage;
 import java.util.List;
@@ -14,4 +15,6 @@ public interface Rankings {
     RankingFacets listFacets(String country, String language);
 
     List<CityCount> listCityCounts();
+
+    List<ProjectCount> listAcceptedProjects();
 }

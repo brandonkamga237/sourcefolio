@@ -12,7 +12,10 @@
     "publish": "Publish my profile",
     "rankings": "Rankings",
     "myProfile": "My profile",
-    "map": "Map"
+    "map": "Map",
+    "home": "Home",
+    "recruiters": "For recruiters",
+    "me": "Me"
   },
   "language": {
     "label": "Language",
@@ -340,6 +343,105 @@
       "unavailable": "The talent field cannot be loaded right now. Try again in a moment.",
       "honest": "These profiles measure public open source contribution, not a person's total worth. Work on private code does not show here.",
       "rankings": "See the rankings"
+    }
+  },
+  "home": {
+    "example": "Example",
+    "switch": {
+      "label": "Who it is for",
+      "tech": "I am a tech profile",
+      "recruit": "I am hiring"
+    },
+    "hero": {
+      "tech": {
+        "title": "From open source to opportunity.",
+        "lead": "Your public contributions become a profile recruiters can verify."
+      },
+      "recruit": {
+        "title": "Stop reading CVs.",
+        "lead": "Find tech profiles by what they have actually built."
+      }
+    },
+    "field": {
+      "field": "GitHub username",
+      "placeholder": "your-username",
+      "submit": "See the profile",
+      "invalid": "This is not a valid GitHub username.",
+      "missing": "This profile is not published yet.",
+      "failed": "We cannot check right now. Try again in a moment."
+    },
+    "proof": {
+      "title": "Contributions accepted at",
+      "pause": "Pause the scrolling",
+      "play": "Resume the scrolling"
+    },
+    "problem": {
+      "title": "A CV tells. Your code shows.",
+      "cv": "What you say",
+      "profile": "What your code shows"
+    },
+    "anatomy": {
+      "title": "Every figure leads to its proof.",
+      "merged": "accepted PRs",
+      "joined": "On GitHub since"
+    },
+    "steps": {
+      "title": "Four steps, at your own pace.",
+      "find": "Find a project",
+      "propose": "Offer a contribution",
+      "accept": "Get it accepted",
+      "publish": "Publish your profile",
+      "merged": "PR accepted",
+      "published": "Published"
+    },
+    "globe": {
+      "title": "Contributing from everywhere.",
+      "picture": "Globe of published profiles",
+      "open": "See the rankings",
+      "profiles": "{count, plural, one {# profile} other {# profiles}}"
+    },
+    "rankings": {
+      "title": "One criterion at a time.",
+      "all": "See all the rankings"
+    },
+    "recruit": {
+      "title": "Explore by proof."
+    },
+    "transparency": "What we read, what we do not.",
+    "faq": {
+      "title": "Questions",
+      "what": {
+        "q": "What does a profile measure?",
+        "a": "Six indicators read from your public GitHub data. It measures public open source contribution, not a person's worth."
+      },
+      "private": {
+        "q": "Is my profile public as soon as I sign in?",
+        "a": "No. It stays private until you publish it, and you can unpublish it at any time."
+      },
+      "score": {
+        "q": "Is there an overall score?",
+        "a": "No. Each ranking sorts on one criterion and says what it measures."
+      },
+      "beginner": {
+        "q": "I have no contribution yet.",
+        "a": "That is a starting point. Your profile exists from your first contribution."
+      },
+      "remove": {
+        "q": "Can I delete my account?",
+        "a": "Yes, at any time from your profile. Deletion is immediate."
+      }
+    },
+    "close": {
+      "tech": "Your work is already public. Make it readable.",
+      "recruit": "Hear from us when it opens."
+    },
+    "footer": {
+      "explore": "Explore",
+      "product": "Product",
+      "trust": "Trust",
+      "transparency": "What we read",
+      "faq": "Questions",
+      "honest": "A profile measures public open source contribution, not a person's worth."
     }
   }
 }

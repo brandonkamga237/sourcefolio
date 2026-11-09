@@ -66,3 +66,13 @@ export async function getRankingFacets(country: string | null, language: string 
   if (!response.ok) throw new Error(`GET /api/rankings/facets answered ${response.status}`);
   return (await response.json()) as RankingFacets;
 }
+
+/** Repositories where published profiles have merged pull requests, the most shared first. */
+export async function getAcceptedProjects(): Promise<string[]> {
+  "use cache";
+  cacheLife("minutes");
+  const api = process.env.API_INTERNAL_URL ?? "http://localhost:8080";
+  const response = await fetch(`${api}/api/rankings/projects`, { headers: { accept: "application/json" } });
+  if (!response.ok) throw new Error(`GET /api/rankings/projects answered ${response.status}`);
+  return ((await response.json()) as { repository: string }[]).map((project) => project.repository);
+}

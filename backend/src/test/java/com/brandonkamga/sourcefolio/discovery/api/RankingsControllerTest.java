@@ -2,6 +2,7 @@ package com.brandonkamga.sourcefolio.discovery.api;
 
 import com.brandonkamga.sourcefolio.discovery.application.Rankings;
 import com.brandonkamga.sourcefolio.discovery.domain.model.CityCount;
+import com.brandonkamga.sourcefolio.discovery.domain.model.ProjectCount;
 import com.brandonkamga.sourcefolio.discovery.domain.model.RankingFacets;
 import com.brandonkamga.sourcefolio.discovery.domain.model.RankingPage;
 import com.brandonkamga.sourcefolio.discovery.domain.model.RankingRow;
@@ -75,6 +76,17 @@ class RankingsControllerTest {
                 .andExpect(jsonPath("$[0].city").value("Douala"))
                 .andExpect(jsonPath("$[0].count").value(3))
                 .andExpect(jsonPath("$[1].city").doesNotExist());
+    }
+
+    @Test
+    @DisplayName("accepted projects are public")
+    void projects() throws Exception {
+        when(rankings.listAcceptedProjects()).thenReturn(List.of(new ProjectCount("acme/payments", 3)));
+
+        mvc.perform(get("/api/rankings/projects"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].repository").value("acme/payments"))
+                .andExpect(jsonPath("$[0].contributors").value(3));
     }
 
     @Test

@@ -9,10 +9,13 @@
   },
   "nav": {
     "label": "Navigation principale",
-    "publish": "Publier ma fiche",
+    "publish": "Publier mon profil",
     "rankings": "Classements",
     "myProfile": "Ma fiche",
-    "map": "Carte"
+    "map": "Carte",
+    "home": "Accueil",
+    "recruiters": "Pour les recruteurs",
+    "me": "Moi"
   },
   "language": {
     "label": "Langue",
@@ -340,6 +343,105 @@
       "unavailable": "Le champ de talents ne peut pas être chargé pour l’instant. Réessayez dans un moment.",
       "honest": "Ces fiches mesurent la contribution open source publique, pas la valeur totale d’une personne. Le travail sur du code privé n’y apparaît pas.",
       "rankings": "Voir les classements"
+    }
+  },
+  "home": {
+    "example": "Exemple",
+    "switch": {
+      "label": "Pour qui",
+      "tech": "Je suis un profil tech",
+      "recruit": "Je recrute"
+    },
+    "hero": {
+      "tech": {
+        "title": "De l’open source à l’opportunité.",
+        "lead": "Tes contributions publiques deviennent un profil que les recruteurs peuvent vérifier."
+      },
+      "recruit": {
+        "title": "Ne lisez plus de CV.",
+        "lead": "Trouvez des profils tech par ce qu’ils ont réellement construit."
+      }
+    },
+    "field": {
+      "field": "Identifiant GitHub",
+      "placeholder": "ton-pseudo",
+      "submit": "Voir le profil",
+      "invalid": "Ce n’est pas un identifiant GitHub valide.",
+      "missing": "Ce profil n’est pas encore publié.",
+      "failed": "Vérification impossible pour l’instant. Réessaie dans un moment."
+    },
+    "proof": {
+      "title": "Contributions acceptées chez",
+      "pause": "Mettre en pause le défilement",
+      "play": "Relancer le défilement"
+    },
+    "problem": {
+      "title": "Un CV raconte. Ton code montre.",
+      "cv": "Ce que tu racontes",
+      "profile": "Ce que ton code montre"
+    },
+    "anatomy": {
+      "title": "Chaque chiffre mène à sa preuve.",
+      "merged": "PR acceptées",
+      "joined": "Sur GitHub depuis"
+    },
+    "steps": {
+      "title": "Quatre étapes, à ton rythme.",
+      "find": "Trouve un projet",
+      "propose": "Propose une contribution",
+      "accept": "Fais-la accepter",
+      "publish": "Publie ton profil",
+      "merged": "PR acceptée",
+      "published": "Publié"
+    },
+    "globe": {
+      "title": "On contribue depuis partout.",
+      "picture": "Globe des profils publiés",
+      "open": "Voir les classements",
+      "profiles": "{count, plural, one {# profil} other {# profils}}"
+    },
+    "rankings": {
+      "title": "Un critère à la fois.",
+      "all": "Voir tous les classements"
+    },
+    "recruit": {
+      "title": "Explorez par les preuves."
+    },
+    "transparency": "Ce qu’on lit, ce qu’on ne lit pas.",
+    "faq": {
+      "title": "Questions fréquentes",
+      "what": {
+        "q": "Que mesure un profil ?",
+        "a": "Six indicateurs lus sur tes données GitHub publiques. Il mesure la contribution open source publique, pas la valeur d’une personne."
+      },
+      "private": {
+        "q": "Mon profil est-il public dès la connexion ?",
+        "a": "Non. Il reste privé jusqu’à ce que tu le publies, et tu peux le dépublier à tout moment."
+      },
+      "score": {
+        "q": "Y a-t-il un score global ?",
+        "a": "Non. Chaque classement trie sur un seul critère et dit ce qu’il mesure."
+      },
+      "beginner": {
+        "q": "Je n’ai encore aucune contribution.",
+        "a": "C’est un point de départ. Ton profil existe dès ta première contribution."
+      },
+      "remove": {
+        "q": "Puis-je supprimer mon compte ?",
+        "a": "Oui, à tout moment depuis ton profil. La suppression est immédiate."
+      }
+    },
+    "close": {
+      "tech": "Ton travail est déjà public. Rends-le lisible.",
+      "recruit": "Soyez prévenu à l’ouverture."
+    },
+    "footer": {
+      "explore": "Explorer",
+      "product": "Produit",
+      "trust": "Confiance",
+      "transparency": "Ce qu’on lit",
+      "faq": "Questions",
+      "honest": "Un profil mesure la contribution open source publique, pas la valeur d’une personne."
     }
   }
 }

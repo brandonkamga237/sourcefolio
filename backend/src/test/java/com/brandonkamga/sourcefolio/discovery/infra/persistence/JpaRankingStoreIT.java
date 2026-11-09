@@ -3,6 +3,7 @@ package com.brandonkamga.sourcefolio.discovery.infra.persistence;
 import com.brandonkamga.sourcefolio.account.domain.model.User;
 import com.brandonkamga.sourcefolio.account.domain.port.UserStore;
 import com.brandonkamga.sourcefolio.discovery.domain.model.CityCount;
+import com.brandonkamga.sourcefolio.discovery.domain.model.ProjectCount;
 import com.brandonkamga.sourcefolio.discovery.domain.model.RankingFacets;
 import com.brandonkamga.sourcefolio.discovery.domain.model.RankingFilter;
 import com.brandonkamga.sourcefolio.discovery.domain.model.RankingPage;
@@ -37,7 +38,7 @@ class JpaRankingStoreIT extends PostgresIT {
                         List<String> languages) {
         UUID member = users.save(User.register(Language.FR, NOW)).id().value();
         store.saveIndicators(member, login, null, NOW, Instant.parse(created), contributions, activeMonths,
-                List.of(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11), stars, 3, merged, languages);
+                List.of(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11), stars, 3, merged, languages, List.of());
         store.saveProfile(member, country, "Ville", true);
         return member;
     }
@@ -57,7 +58,7 @@ class JpaRankingStoreIT extends PostgresIT {
         listed(b, country, 12, 1200, 50, 9, "2015-01-01T00:00:00Z", List.of("Go", "Jupyter Notebook"));
         listed(c, country, 8, 3000, 1, 0, "2021-01-01T00:00:00Z", List.of("PHP"));
         UUID privateOne = users.save(User.register(Language.FR, NOW)).id().value();
-        store.saveIndicators(privateOne, unique("p"), null, NOW, NOW, 99999, 12, List.of(), 999, 0, 99, List.of("PHP"));
+        store.saveIndicators(privateOne, unique("p"), null, NOW, NOW, 99999, 12, List.of(), 999, 0, 99, List.of("PHP"), List.of("secret/hidden"));
         store.saveProfile(privateOne, country, null, false);
         UUID notAnalysed = users.save(User.register(Language.FR, NOW)).id().value();
         store.saveProfile(notAnalysed, country, null, true);
@@ -129,5 +130,20 @@ class JpaRankingStoreIT extends PostgresIT {
 
         assertThat(store.cityCounts()).filteredOn(count -> "LS".equals(count.countryCode()))
                 .containsExactlyInAnyOrder(new CityCount("LS", "Maseru", 2), new CityCount("LS", null, 1));
+    }
+
+    @Test
+    @DisplayName("accepted projects count listed profiles only, the most shared first")
+    void acceptedProjects() {
+        UUID first = listed(unique("p1"), "TG", 1, 1, 0, 0, "2020-01-01T00:00:00Z", List.of());
+        UUID second = listed(unique("p2"), "TG", 1, 1, 0, 0, "2020-01-01T00:00:00Z", List.of());
+        store.saveIndicators(first, unique("p1"), null, NOW, NOW, 1, 1, List.of(), 0, 0, 2, List.of(), List.of("acme/shared", "acme/solo"));
+        store.saveIndicators(second, unique("p2"), null, NOW, NOW, 1, 1, List.of(), 0, 0, 1, List.of(), List.of("acme/shared"));
+        UUID hidden = users.save(User.register(Language.FR, NOW)).id().value();
+        store.saveIndicators(hidden, unique("p3"), null, NOW, NOW, 1, 1, List.of(), 0, 0, 1, List.of(), List.of("acme/private-only"));
+        store.saveProfile(hidden, "TG", null, false);
+
+        assertThat(store.acceptedProjects()).contains(new ProjectCount("acme/shared", 2), new ProjectCount("acme/solo", 1))
+                .extracting(ProjectCount::repository).doesNotContain("acme/private-only");
     }
 }

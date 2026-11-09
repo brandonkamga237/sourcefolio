@@ -1,6 +1,7 @@
 package com.brandonkamga.sourcefolio.discovery.api;
 
 import com.brandonkamga.sourcefolio.discovery.api.dto.CityCountResponse;
+import com.brandonkamga.sourcefolio.discovery.api.dto.ProjectCountResponse;
 import com.brandonkamga.sourcefolio.discovery.api.dto.RankingFacetsResponse;
 import com.brandonkamga.sourcefolio.discovery.api.dto.RankingsResponse;
 import com.brandonkamga.sourcefolio.discovery.application.Rankings;
@@ -32,6 +33,12 @@ class RankingsController {
     @Operation(operationId = "listRankingFacets")
     RankingFacetsResponse facets(@RequestParam(required = false) String country, @RequestParam(required = false) String language) {
         return RankingFacetsResponse.of(rankings.listFacets(country, language));
+    }
+
+    @GetMapping("/api/rankings/projects")
+    @Operation(operationId = "listAcceptedProjects")
+    List<ProjectCountResponse> projects() {
+        return rankings.listAcceptedProjects().stream().map(ProjectCountResponse::of).toList();
     }
 
     @GetMapping("/api/rankings/cities")

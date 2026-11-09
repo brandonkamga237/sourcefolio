@@ -1,6 +1,7 @@
 package com.brandonkamga.sourcefolio.discovery.application;
 
 import com.brandonkamga.sourcefolio.discovery.domain.model.CityCount;
+import com.brandonkamga.sourcefolio.discovery.domain.model.ProjectCount;
 import com.brandonkamga.sourcefolio.discovery.domain.model.RankingFacets;
 import com.brandonkamga.sourcefolio.discovery.domain.model.RankingFilter;
 import com.brandonkamga.sourcefolio.discovery.domain.model.RankingPage;
@@ -24,7 +25,7 @@ class RankingsImplTest {
         @Override
         public void saveIndicators(UUID memberId, String login, String name, Instant analyzedAt, Instant accountCreatedAt,
                                    int publicContributions, int activeMonths, List<Integer> months, int stars, int followers,
-                                   int mergedPullRequestsElsewhere, List<String> languages) {
+                                   int mergedPullRequestsElsewhere, List<String> languages, List<String> externalRepositories) {
         }
 
         @Override
@@ -48,6 +49,11 @@ class RankingsImplTest {
 
         @Override
         public List<CityCount> cityCounts() {
+            return List.of();
+        }
+
+        @Override
+        public List<ProjectCount> acceptedProjects() {
             return List.of();
         }
     };

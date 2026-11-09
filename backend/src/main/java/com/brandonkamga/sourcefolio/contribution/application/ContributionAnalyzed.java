@@ -11,10 +11,11 @@ import java.util.UUID;
  */
 public record ContributionAnalyzed(UUID memberId, String login, String name, Instant analyzedAt, Instant accountCreatedAt,
                                    int publicContributions, int activeMonths, List<Integer> months, int stars, int followers,
-                                   int mergedPullRequestsElsewhere, List<String> languages) {
+                                   int mergedPullRequestsElsewhere, List<String> languages, List<String> externalRepositories) {
 
     public ContributionAnalyzed {
         months = List.copyOf(months);
         languages = List.copyOf(languages);
+        externalRepositories = List.copyOf(externalRepositories);
     }
 }

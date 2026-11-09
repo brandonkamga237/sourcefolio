@@ -19,10 +19,11 @@ for (const [name, route] of ROUTES) {
   for (const locale of LOCALES) {
     for (const colorScheme of THEMES) {
       for (const [device, width, height] of VIEWPORTS) {
-        test(`${name} ${locale} ${colorScheme} ${device}`, async ({ page }, info) => {
+        test(`${name} ${locale} ${colorScheme} ${device}`, async ({ browser, baseURL }, info) => {
           test.skip(name === "profile" && process.env.STUB_EMPTY === "1", "no profile exists when nothing is published");
-          await page.setViewportSize({ width, height });
-          await page.emulateMedia({ colorScheme });
+          // A phone's real pixel density: dot-based drawings read very differently at 1x.
+          const context = await browser.newContext({ baseURL, viewport: { width, height }, colorScheme, deviceScaleFactor: device === "mobile" ? 2 : 1 });
+          const page = await context.newPage();
           await page.goto(`/${locale}${route === "/" ? "" : route}`);
           await page.waitForLoadState("networkidle");
           const total = await page.evaluate(() => document.documentElement.scrollHeight);
@@ -32,9 +33,10 @@ for (const [name, route] of ROUTES) {
           }
           await page.evaluate(() => window.scrollTo(0, 0));
           await page.waitForTimeout(400);
-          await page.screenshot({ path: `e2e/.shots/${process.env.STUB_EMPTY === "1" ? "empty-" : ""}${name}-${locale}-${colorScheme}-${device}.jpg`, type: "jpeg", quality: 70, fullPage: true });
+          await page.screenshot({ path: `e2e/.shots/${process.env.STUB_EMPTY === "1" ? "empty-" : ""}${name}-${locale}-${colorScheme}-${device}.jpg`, type: "jpeg", quality: 70, fullPage: true, scale: "css" });
           const overflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
           expect(overflow, `${info.title} overflows sideways`).toBeLessThanOrEqual(0);
+          await context.close();
         });
       }
     }

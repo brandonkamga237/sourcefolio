@@ -3,6 +3,7 @@ package com.brandonkamga.sourcefolio.contribution.application;
 import com.brandonkamga.sourcefolio.contribution.domain.model.ContributionRecord;
 import com.brandonkamga.sourcefolio.contribution.domain.model.ContributionSnapshot;
 import com.brandonkamga.sourcefolio.contribution.domain.model.GitHubActivity;
+import com.brandonkamga.sourcefolio.contribution.domain.model.ExternalProject;
 import com.brandonkamga.sourcefolio.contribution.domain.model.LanguageBytes;
 import com.brandonkamga.sourcefolio.contribution.domain.model.MonthActivity;
 import com.brandonkamga.sourcefolio.contribution.domain.port.ActivitySource;
@@ -69,7 +70,8 @@ public class ContributionAnalysisImpl implements ContributionAnalysis {
                 snapshot.name(), snapshot.analyzedAt(), snapshot.accountCreatedAt(), snapshot.publicContributions(),
                 snapshot.activeMonths(), snapshot.months().stream().map(MonthActivity::contributions).toList(), snapshot.stars(),
                 snapshot.followers(), snapshot.mergedPullRequestsElsewhere(),
-                snapshot.languages().stream().map(LanguageBytes::name).limit(LANGUAGES_RANKED).toList())));
+                snapshot.languages().stream().map(LanguageBytes::name).limit(LANGUAGES_RANKED).toList(),
+                snapshot.externalProjects().stream().map(ExternalProject::nameWithOwner).toList())));
     }
 
     // Marking each row as asked for before queueing keeps the next sweep from picking it again

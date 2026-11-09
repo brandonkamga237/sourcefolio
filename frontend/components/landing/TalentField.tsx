@@ -15,6 +15,8 @@ export interface Talent {
 interface TalentFieldProps {
   locale: Locale;
   talents: Talent[];
+  /** Fictional talents open nothing. */
+  example?: boolean;
   labels: {
     language: string;
     allLanguages: string;
@@ -51,7 +53,7 @@ function matchesRhythm(rhythm: Rhythm, activeMonths: number): boolean {
 }
 
 /** One square a profile, as dark as its rhythm. Filters work on the profiles already on the page. */
-export function TalentField({ locale, talents, labels }: TalentFieldProps) {
+export function TalentField({ locale, talents, example = false, labels }: TalentFieldProps) {
   const [language, setLanguage] = useState("");
   const [city, setCity] = useState("");
   const [rhythm, setRhythm] = useState<Rhythm>("");
@@ -100,7 +102,7 @@ export function TalentField({ locale, talents, labels }: TalentFieldProps) {
             const name = `${talent.login} · ${labels.months.replace("{active}", String(talent.activeMonths))}`;
             return (
               <li key={talent.login}>
-                <Link href={localizedPath(locale, `/u/${talent.login}`)} aria-label={name} title={name} className={`block size-11 rounded-[6px] outline-offset-1 hover:opacity-75 ${LEVEL[levelOf(talent.activeMonths)]}`} />
+                {example ? <span title={name} className={`block size-11 rounded-[6px] ${LEVEL[levelOf(talent.activeMonths)]}`} /> : <Link href={localizedPath(locale, `/u/${talent.login}`)} aria-label={name} title={name} className={`block size-11 rounded-[6px] outline-offset-1 transition-transform duration-(--dur-1) hover:-translate-y-0.5 ${LEVEL[levelOf(talent.activeMonths)]}`} />}
               </li>
             );
           })}
