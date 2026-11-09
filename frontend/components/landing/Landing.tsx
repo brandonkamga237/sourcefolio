@@ -10,7 +10,8 @@ import { localizedPath } from "@/i18n/paths";
 import type { Locale } from "@/i18n/routing";
 import { countryName } from "@/lib/countries";
 import { EXAMPLE_CITIES, EXAMPLE_PROFILE, EXAMPLE_PROJECTS, EXAMPLE_ROWS } from "@/lib/examples";
-import { normalizeCity, placeCounts } from "@/lib/map";
+import { globeCities } from "@/lib/globe";
+import { placeCounts } from "@/lib/map";
 import type { ProfileCard } from "@/services/contribution-types";
 import { getCityCounts } from "@/services/map";
 import { getPublicProfile } from "@/services/public-profiles";
@@ -116,16 +117,7 @@ async function Body({ locale, audience }: { locale: Locale; audience: Audience }
     },
   }));
   const placed = placeCounts(data.cities);
-  const globeCities = placed.cities.map(({ city, count }, index) => ({
-    id: `city${index}`,
-    latitude: 38 - 2 * (city.row + 0.5),
-    longitude: -18 + 2 * (city.column + 0.5),
-    label: `${locale === "en" ? (city.nameEn ?? city.name) : city.name}, ${countryName(city.country, locale)}`,
-    count: t("globe.profiles", { count }),
-    size: Math.min(0.09, 0.035 + count * 0.006),
-    country: city.country,
-    login: data.rows.find((row) => row.country === city.country && row.city && normalizeCity(row.city) === normalizeCity(city.name))?.login ?? null,
-  }));
+  const points = globeCities(placed.cities, data.rows, locale, (count) => t("globe.profiles", { count }));
 
   const hero = (
     <HeroBuild
@@ -165,7 +157,7 @@ async function Body({ locale, audience }: { locale: Locale; audience: Audience }
             ))}
           </ul>
         </div>
-        <GlobeLazy locale={locale} cities={globeCities} example={data.citiesExample} label={t("globe.picture")} open={t("globe.open")} fallback={<AfricaMosaic locale={locale} cities={placed.cities} label={t("globe.picture")} />} />
+        <GlobeLazy locale={locale} cities={points} example={data.citiesExample} label={t("globe.picture")} open={t("globe.open")} fallback={<AfricaMosaic locale={locale} cities={placed.cities} label={t("globe.picture")} />} />
       </div>
     </section>
   );

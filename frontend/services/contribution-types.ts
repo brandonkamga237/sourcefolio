@@ -75,6 +75,8 @@ export interface ProfileCard {
   /** ISO 3166-1 alpha-2. */
   country: string;
   city: string | null;
+  /** A slug from the sector list; null until declared. */
+  sector?: string | null;
   bio: string | null;
   linkedInUrl: string | null;
   indicators: Indicators;

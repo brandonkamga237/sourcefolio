@@ -30,3 +30,8 @@ export function publishProfile(): Promise<ClientResult<Profile>> {
 export function unpublishProfile(): Promise<ClientResult<Profile>> {
   return clientDelete<Profile>("/api/me/profile/publication");
 }
+
+/** The declared sector, kept among the specialties the API already stores. */
+export function answerSector(sector: string): Promise<ClientResult<Profile>> {
+  return clientPut<Profile>("/api/me/profile/specialties", { specialties: [sector] });
+}

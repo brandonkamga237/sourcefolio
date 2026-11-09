@@ -10,11 +10,12 @@ export interface CityCount {
 }
 
 /** Published profiles per city, the same for every visitor: cached briefly. */
-export async function getCityCounts(): Promise<CityCount[]> {
+export async function getCityCounts(country: string | null = null, language: string | null = null): Promise<CityCount[]> {
   "use cache";
   cacheLife("minutes");
   const api = process.env.API_INTERNAL_URL ?? "http://localhost:8080";
-  const response = await fetch(`${api}/api/rankings/cities`, { headers: { accept: "application/json" } });
+  const query = new URLSearchParams({ ...(country ? { country } : {}), ...(language ? { language } : {}) }).toString();
+  const response = await fetch(`${api}/api/rankings/cities${query ? `?${query}` : ""}`, { headers: { accept: "application/json" } });
   if (!response.ok) throw new Error(`GET /api/rankings/cities answered ${response.status}`);
   return (await response.json()) as CityCount[];
 }
