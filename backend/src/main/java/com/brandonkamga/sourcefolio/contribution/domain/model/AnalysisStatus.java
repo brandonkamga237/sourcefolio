@@ -5,6 +5,6 @@ public enum AnalysisStatus {
     PENDING,
     /** A snapshot exists; it may be refreshing. */
     READY,
-    /** GitHub did not know the login, and no earlier snapshot exists. */
+    /** No snapshot exists, and GitHub did not know the login or the reading never came back. */
     FAILED
 }
