@@ -27,3 +27,20 @@ export function storedTheme(): Theme {
     return "system";
   }
 }
+
+/** Reveals the new theme from the control that asked for it; a plain switch where the API or motion is off. */
+export function changeTheme(theme: Theme, origin?: { x: number; y: number }): void {
+  const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (!document.startViewTransition || reduced) {
+    applyTheme(theme);
+    return;
+  }
+  const root = document.documentElement;
+  if (origin) {
+    root.style.setProperty("--vt-x", `${origin.x}px`);
+    root.style.setProperty("--vt-y", `${origin.y}px`);
+  }
+  root.classList.add("theme-switching");
+  void document.startViewTransition(() => applyTheme(theme)).finished.finally(() => root.classList.remove("theme-switching"));
+}
+

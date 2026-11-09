@@ -19,3 +19,8 @@ Thumbs.db
 .claude/settings.local.json
 CLAUDE.local.md
 .claude/*.local.md
+
+# Playwright
+frontend/test-results/
+frontend/playwright-report/
+frontend/e2e/.shots/

@@ -1,0 +1,3 @@
+import type { SVGProps } from "react";
+const SvgCommit = (props: SVGProps<SVGSVGElement>) => <svg xmlns="http://www.w3.org/2000/svg" width={24} height={24} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.75} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" focusable="false" {...props}><rect x={8.5} y={8.5} width={7} height={7} rx={1.5} /><path d="M2.5 12h6M15.5 12h6" /></svg>;
+export default SvgCommit;

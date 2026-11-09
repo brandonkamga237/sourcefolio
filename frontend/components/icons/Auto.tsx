@@ -1,0 +1,3 @@
+import type { SVGProps } from "react";
+const SvgAuto = (props: SVGProps<SVGSVGElement>) => <svg xmlns="http://www.w3.org/2000/svg" width={24} height={24} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.75} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" focusable="false" {...props}><rect x={3.5} y={4.5} width={17} height={12} rx={2} /><path d="M12 4.5v12M8.5 20.5h7" /></svg>;
+export default SvgAuto;
