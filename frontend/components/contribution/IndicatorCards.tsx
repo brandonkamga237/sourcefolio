@@ -52,10 +52,10 @@ export async function IndicatorCards({ indicators }: IndicatorCardsProps) {
   return (
     <ul className="grid grid-cols-2 gap-3 @3xl:grid-cols-5">
       {cards.map((card) => (
-        <li key={card.label} className="last:col-span-2 @3xl:last:col-span-1">
+        <li key={card.label} className="min-w-0 last:col-span-2 @3xl:last:col-span-1">
           <a href={card.proof} target="_blank" rel="noopener noreferrer" aria-label={`${card.label} ${card.value}. ${t("proof")}`} className="spotlight flex h-full min-h-11 flex-col gap-1.5 rounded-card border border-line bg-surface p-4 transition-colors duration-(--dur-2) hover:border-accent">
             <span className="text-[14px] text-ink-muted">{card.label}</span>
-            <span className="font-mono text-[26px] leading-tight font-semibold whitespace-nowrap tabular-nums">{card.value}</span>
+            <span className="font-mono text-[20px] leading-tight font-semibold tabular-nums @3xl:text-[26px]">{card.value}</span>
             <span className="text-[13px] leading-snug text-ink-muted">{card.hint}</span>
             <span className="proof mt-auto truncate pt-1">{card.proof.replace(/^https?:\/\//, "").split("?")[0]}</span>
           </a>
