@@ -3,7 +3,10 @@ import { notFound } from "next/navigation";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { ProfileView } from "@/components/contribution/ProfileView";
 import { JsonLd } from "@/components/seo/JsonLd";
+import { BackToRankings } from "@/components/layout/BackToRankings";
+import { CopyButton } from "@/components/ui/CopyButton";
 import { toLocale } from "@/i18n/routing";
+import type { Sector } from "@/lib/globe";
 import { getPublicProfile } from "@/services/public-profiles";
 import type { ProfileCard } from "@/services/contribution-types";
 
@@ -43,17 +46,21 @@ function structuredData(card: ProfileCard) {
 
 export default async function PublicProfilePage({ params }: PageProps<"/[locale]/u/[login]">) {
   const { locale: raw, login } = await params;
-  setRequestLocale(toLocale(raw));
-  const card = await getPublicProfile(login);
+  const locale = toLocale(raw);
+  setRequestLocale(locale);
+  const [nav, my, card] = await Promise.all([getTranslations({ locale, namespace: "nav" }), getTranslations({ locale, namespace: "myProfile" }), getPublicProfile(login)]);
   if (!card) notFound();
   return (
-    <div className="mx-auto w-full max-w-6xl px-4 py-6 lg:px-8 lg:py-10">
+    <div className="wrap flex flex-col gap-4 py-6 lg:py-10">
+      <BackToRankings locale={locale} label={nav("rankings")} />
       <JsonLd data={structuredData(card)} />
       <ProfileView
         login={card.login}
         name={card.name}
         country={card.country}
         city={card.city}
+        sector={card.sector ? my(`sectors.${card.sector as Sector}`) : null}
+        actions={<CopyButton value={`${process.env.SITE_URL ?? "http://localhost:3000"}/${locale}/u/${card.login}`} label={my("copy")} copied={my("copied")} />}
         bio={card.bio}
         linkedInUrl={card.linkedInUrl}
         indicators={card.indicators}

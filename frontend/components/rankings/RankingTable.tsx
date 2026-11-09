@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { getFormatter, getLocale, getTranslations } from "next-intl/server";
+import { ViewTransition } from "react";
 import { Avatar } from "@/components/members/Avatar";
 import { localizedPath } from "@/i18n/paths";
 import { toLocale } from "@/i18n/routing";
@@ -25,44 +26,44 @@ export async function RankingTable({ rows, sort }: RankingTableProps) {
 
   return (
     <>
-      <div className="hidden overflow-hidden rounded-card border border-line lg:block">
-        <table className="w-full text-left text-[14px]">
-          <thead className="bg-surface-raised text-[13px] text-ink-muted">
+      <div className="hidden lg:block">
+        <table className="w-full text-left text-[15px]">
+          <thead className="border-b border-line text-[14px] text-ink-muted">
             <tr>
-              <th scope="col" className="w-12 px-4 py-3 font-semibold">{t("columns.position")}</th>
-              <th scope="col" className="px-4 py-3 font-semibold">{t("columns.profile")}</th>
-              <th scope="col" className="px-4 py-3 font-semibold">{t("columns.regularity")}</th>
-              <th scope="col" className="px-4 py-3 font-semibold">{t("columns.contributions")}</th>
-              <th scope="col" className="px-4 py-3 font-semibold">{t("columns.stars")}</th>
-              <th scope="col" className="px-4 py-3 font-semibold">{t("columns.external")}</th>
-              <th scope="col" className="px-4 py-3 font-semibold">{t("columns.since")}</th>
-              <th scope="col" className="px-4 py-3 font-semibold">{t("columns.languages")}</th>
+              <th scope="col" className="w-12 px-3 py-3.5 font-semibold">{t("columns.position")}</th>
+              <th scope="col" className="px-3 py-3.5 font-semibold">{t("columns.profile")}</th>
+              <th scope="col" className="px-3 py-3.5 font-semibold">{t("columns.regularity")}</th>
+              <th scope="col" className="px-3 py-3.5 font-semibold">{t("columns.contributions")}</th>
+              <th scope="col" className="px-3 py-3.5 font-semibold">{t("columns.stars")}</th>
+              <th scope="col" className="px-3 py-3.5 font-semibold">{t("columns.external")}</th>
+              <th scope="col" className="px-3 py-3.5 font-semibold">{t("columns.since")}</th>
+              <th scope="col" className="px-3 py-3.5 font-semibold">{t("columns.languages")}</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-line-soft">
             {rows.map((row) => (
               <tr key={row.login} className="hover:bg-surface-raised">
-                <td className="px-4 py-3 text-ink-muted tabular-nums">{row.position}</td>
-                <td className="px-4 py-3">
+                <td className="px-3 py-3.5 text-ink-muted tabular-nums">{row.position}</td>
+                <td className="px-3 py-3.5">
                   <Link href={localizedPath(locale, `/u/${row.login}`)} className="flex items-center gap-3">
-                    <Avatar login={row.login} size={32} />
+                    <ViewTransition name={`avatar-${row.login}`}><Avatar login={row.login} size={40} /></ViewTransition>
                     <span className="flex min-w-0 flex-col">
-                      <span className="truncate font-semibold text-accent">{row.login}</span>
-                      <span className="truncate text-[12px] text-ink-muted">{place(row)}</span>
+                      <span className="truncate font-semibold">{row.login}</span>
+                      <span className="truncate text-[14px] text-ink-muted">{place(row)}</span>
                     </span>
                   </Link>
                 </td>
-                <td className={`px-4 py-3 ${sorted("regularity")}`}>
+                <td className={`px-3 py-3.5 ${sorted("regularity")}`}>
                   <span className="flex items-center gap-2">
                     <RegularityStrip months={row.months} />
                     <span className="tabular-nums">{t("monthsActive", { active: row.activeMonths })}</span>
                   </span>
                 </td>
-                <td className={`px-4 py-3 tabular-nums ${sorted("contributions")}`}>{format.number(row.publicContributions)}</td>
-                <td className={`px-4 py-3 tabular-nums ${sorted("stars")}`}>{format.number(row.stars)}</td>
-                <td className={`px-4 py-3 tabular-nums ${sorted("external")}`}>{format.number(row.mergedPullRequestsElsewhere)}</td>
-                <td className={`px-4 py-3 tabular-nums ${sorted("seniority")}`}>{year(row)}</td>
-                <td className="px-4 py-3 text-[13px] text-ink-soft">{row.languages.slice(0, 2).join(" · ")}</td>
+                <td className={`px-3 py-3.5 tabular-nums ${sorted("contributions")}`}>{format.number(row.publicContributions)}</td>
+                <td className={`px-3 py-3.5 tabular-nums ${sorted("stars")}`}>{format.number(row.stars)}</td>
+                <td className={`px-3 py-3.5 tabular-nums ${sorted("external")}`}>{format.number(row.mergedPullRequestsElsewhere)}</td>
+                <td className={`px-3 py-3.5 tabular-nums ${sorted("seniority")}`}>{year(row)}</td>
+                <td className="px-3 py-3.5 text-[13px] text-ink-soft">{row.languages.slice(0, 2).join(" · ")}</td>
               </tr>
             ))}
           </tbody>
@@ -77,8 +78,8 @@ export async function RankingTable({ rows, sort }: RankingTableProps) {
                 <span className="w-7 shrink-0 text-[14px] text-ink-muted tabular-nums">{row.position}</span>
                 <Avatar login={row.login} size={36} />
                 <span className="flex min-w-0 flex-col">
-                  <span className="truncate text-[15px] font-semibold text-accent">{row.login}</span>
-                  <span className="truncate text-[12px] text-ink-muted">{place(row)}</span>
+                  <span className="truncate text-[16px] font-semibold">{row.login}</span>
+                  <span className="truncate text-[14px] text-ink-muted">{place(row)}</span>
                 </span>
               </span>
               <span className="flex items-center gap-2 pl-10 text-[13px]">

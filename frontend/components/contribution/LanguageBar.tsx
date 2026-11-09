@@ -20,15 +20,15 @@ export async function LanguageBar({ languages, proofUrl }: LanguageBarProps) {
   ];
 
   return (
-    <section aria-labelledby="languages-title" className="flex flex-col gap-3 rounded-card border border-line bg-surface p-4">
+    <section aria-labelledby="languages-title" className="flex flex-col gap-3 border-t border-line pt-5">
       <div className="flex items-baseline justify-between gap-2">
-        <h2 id="languages-title" className="text-[15px] font-semibold">{t("languages")}</h2>
-        <a href={proofUrl} target="_blank" rel="noopener noreferrer" className="text-[13px] text-accent hover:underline">
+        <h2 id="languages-title" className="t-h3">{t("languages")}</h2>
+        <a href={proofUrl} target="_blank" rel="noopener noreferrer" className="text-[15px] text-accent hover:underline">
           {t("viewOnGitHub")}
         </a>
       </div>
       {total === 0 ? (
-        <p className="text-[13px] text-ink-muted">{t("noLanguages")}</p>
+        <p className="text-[15px] text-ink-muted">{t("noLanguages")}</p>
       ) : (
         <>
           <div className="flex h-2 overflow-hidden rounded-full bg-surface-sunken" aria-hidden="true">
@@ -40,7 +40,7 @@ export async function LanguageBar({ languages, proofUrl }: LanguageBarProps) {
               />
             ))}
           </div>
-          <ul className="flex flex-wrap gap-x-4 gap-y-1 text-[13px]">
+          <ul className="flex flex-wrap gap-x-4 gap-y-1 text-[15px]">
             {parts.map((part) => (
               <li key={part.name} className="flex items-center gap-1.5">
                 <span
@@ -53,7 +53,7 @@ export async function LanguageBar({ languages, proofUrl }: LanguageBarProps) {
               </li>
             ))}
           </ul>
-          <p className="text-[12px] text-ink-muted">{t("languagesNote")}</p>
+          <p className="text-[14px] text-ink-muted">{t("languagesNote")}</p>
         </>
       )}
     </section>
