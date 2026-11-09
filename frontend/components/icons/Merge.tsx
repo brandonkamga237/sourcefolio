@@ -1,0 +1,3 @@
+import type { SVGProps } from "react";
+const SvgMerge = (props: SVGProps<SVGSVGElement>) => <svg xmlns="http://www.w3.org/2000/svg" width={24} height={24} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.75} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" focusable="false" {...props}><rect x={4.5} y={3} width={5} height={5} rx={1.2} /><rect x={4.5} y={16} width={5} height={5} rx={1.2} /><rect x={15} y={9.5} width={5} height={5} rx={1.2} /><path d="M7 8v8M7 8c0 3 3.5 4 8 4" /></svg>;
+export default SvgMerge;

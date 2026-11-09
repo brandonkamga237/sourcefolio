@@ -1,0 +1,3 @@
+import type { SVGProps } from "react";
+const SvgEye = (props: SVGProps<SVGSVGElement>) => <svg xmlns="http://www.w3.org/2000/svg" width={24} height={24} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.75} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" focusable="false" {...props}><path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12z" /><rect x={9.5} y={9.5} width={5} height={5} rx={1.2} /></svg>;
+export default SvgEye;
