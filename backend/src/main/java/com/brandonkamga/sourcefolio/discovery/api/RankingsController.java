@@ -43,7 +43,7 @@ class RankingsController {
 
     @GetMapping("/api/rankings/cities")
     @Operation(operationId = "listRankingCities")
-    List<CityCountResponse> cities() {
-        return rankings.listCityCounts().stream().map(CityCountResponse::of).toList();
+    List<CityCountResponse> cities(@RequestParam(required = false) String country, @RequestParam(required = false) String language) {
+        return rankings.listCityCounts(country, language).stream().map(CityCountResponse::of).toList();
     }
 }

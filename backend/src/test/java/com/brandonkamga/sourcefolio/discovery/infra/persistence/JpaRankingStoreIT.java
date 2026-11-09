@@ -128,7 +128,7 @@ class JpaRankingStoreIT extends PostgresIT {
         store.saveProfile(withoutCity, "LS", null, true);
         store.saveProfile(unpublished, "LS", "Teyateyaneng", false);
 
-        assertThat(store.cityCounts()).filteredOn(count -> "LS".equals(count.countryCode()))
+        assertThat(store.cityCounts(new RankingFilter(null, null))).filteredOn(count -> "LS".equals(count.countryCode()))
                 .containsExactlyInAnyOrder(new CityCount("LS", "Maseru", 2), new CityCount("LS", null, 1));
     }
 

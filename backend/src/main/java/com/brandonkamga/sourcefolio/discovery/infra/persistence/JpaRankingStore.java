@@ -174,11 +174,11 @@ class JpaRankingStore implements RankingStore {
 
     @Override
     @Transactional(readOnly = true)
-    public List<CityCount> cityCounts() {
+    public List<CityCount> cityCounts(RankingFilter filter) {
         @SuppressWarnings("unchecked")
         List<Object[]> found = bindFilter(entityManager.createNativeQuery(
                 "SELECT country_code, city, count(*) FROM ranking_entries WHERE " + LISTED + " AND country_code IS NOT NULL"
-                        + " GROUP BY country_code, city ORDER BY count(*) DESC, country_code, city LIMIT 2000"), new RankingFilter(null, null))
+                        + " GROUP BY country_code, city ORDER BY count(*) DESC, country_code, city LIMIT 2000"), filter)
                 .getResultList();
         return found.stream().map(row -> new CityCount(row[0].toString().strip(), (String) row[1], ((Number) row[2]).longValue())).toList();
     }
