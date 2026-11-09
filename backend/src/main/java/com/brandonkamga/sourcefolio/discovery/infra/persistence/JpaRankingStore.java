@@ -1,6 +1,7 @@
 package com.brandonkamga.sourcefolio.discovery.infra.persistence;
 
 import com.brandonkamga.sourcefolio.discovery.domain.model.CityCount;
+import com.brandonkamga.sourcefolio.discovery.domain.model.ProjectCount;
 import com.brandonkamga.sourcefolio.discovery.domain.model.RankingFacets;
 import com.brandonkamga.sourcefolio.discovery.domain.model.RankingFilter;
 import com.brandonkamga.sourcefolio.discovery.domain.model.RankingPage;
@@ -59,17 +60,19 @@ class JpaRankingStore implements RankingStore {
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void saveIndicators(UUID memberId, String login, String name, Instant analyzedAt, Instant accountCreatedAt,
                                int publicContributions, int activeMonths, List<Integer> months, int stars, int followers,
-                               int mergedPullRequestsElsewhere, List<String> languages) {
+                               int mergedPullRequestsElsewhere, List<String> languages, List<String> externalRepositories) {
         entityManager.createNativeQuery("""
                         INSERT INTO ranking_entries (member_id, login, name, analyzed_at, account_created_at, public_contributions,
-                                                     active_months, months, stars, followers, merged_elsewhere, languages)
+                                                     active_months, months, stars, followers, merged_elsewhere, languages, external_repositories)
                         VALUES (:member, :login, :name, :analyzedAt, :createdAt, :contributions, :activeMonths,
-                                CAST(:months AS INTEGER[]), :stars, :followers, :merged, CAST(:languages AS VARCHAR(100)[]))
+                                CAST(:months AS INTEGER[]), :stars, :followers, :merged, CAST(:languages AS VARCHAR(100)[]),
+                                CAST(:repositories AS VARCHAR(200)[]))
                         ON CONFLICT (member_id) DO UPDATE SET
                             login = EXCLUDED.login, name = EXCLUDED.name, analyzed_at = EXCLUDED.analyzed_at,
                             account_created_at = EXCLUDED.account_created_at, public_contributions = EXCLUDED.public_contributions,
                             active_months = EXCLUDED.active_months, months = EXCLUDED.months, stars = EXCLUDED.stars,
-                            followers = EXCLUDED.followers, merged_elsewhere = EXCLUDED.merged_elsewhere, languages = EXCLUDED.languages""")
+                            followers = EXCLUDED.followers, merged_elsewhere = EXCLUDED.merged_elsewhere, languages = EXCLUDED.languages,
+                            external_repositories = EXCLUDED.external_repositories""")
                 .setParameter("member", memberId)
                 .setParameter("login", login)
                 .setParameter("name", name)
@@ -82,6 +85,7 @@ class JpaRankingStore implements RankingStore {
                 .setParameter("followers", followers)
                 .setParameter("merged", mergedPullRequestsElsewhere)
                 .setParameter("languages", arrayLiteral(languages, true))
+                .setParameter("repositories", arrayLiteral(externalRepositories, true))
                 .executeUpdate();
     }
 
@@ -177,6 +181,17 @@ class JpaRankingStore implements RankingStore {
                         + " GROUP BY country_code, city ORDER BY count(*) DESC, country_code, city LIMIT 2000"), new RankingFilter(null, null))
                 .getResultList();
         return found.stream().map(row -> new CityCount(row[0].toString().strip(), (String) row[1], ((Number) row[2]).longValue())).toList();
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<ProjectCount> acceptedProjects() {
+        @SuppressWarnings("unchecked")
+        List<Object[]> found = bindFilter(entityManager.createNativeQuery(
+                "SELECT repository, count(*) FROM ranking_entries, unnest(external_repositories) AS repository WHERE " + LISTED
+                        + " GROUP BY repository ORDER BY count(*) DESC, repository LIMIT 30"), new RankingFilter(null, null))
+                .getResultList();
+        return found.stream().map(row -> new ProjectCount((String) row[0], ((Number) row[1]).longValue())).toList();
     }
 
     private static Query bindFilter(Query query, RankingFilter filter) {

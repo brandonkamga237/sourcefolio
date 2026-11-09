@@ -1,6 +1,7 @@
 package com.brandonkamga.sourcefolio.discovery.application;
 
 import com.brandonkamga.sourcefolio.discovery.domain.model.CityCount;
+import com.brandonkamga.sourcefolio.discovery.domain.model.ProjectCount;
 import com.brandonkamga.sourcefolio.discovery.domain.model.RankingFacets;
 import com.brandonkamga.sourcefolio.discovery.domain.model.RankingFilter;
 import com.brandonkamga.sourcefolio.discovery.domain.model.RankingPage;
@@ -41,6 +42,11 @@ public class RankingsImpl implements Rankings {
     @Override
     public List<CityCount> listCityCounts() {
         return store.cityCounts();
+    }
+
+    @Override
+    public List<ProjectCount> listAcceptedProjects() {
+        return store.acceptedProjects();
     }
 
     private static RankingFilter filter(String country, String language) {

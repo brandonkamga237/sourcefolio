@@ -16,7 +16,7 @@ public class RankingProjectionImpl implements RankingProjection {
     public void onAnalyzed(ContributionAnalyzed event) {
         store.saveIndicators(event.memberId(), event.login(), event.name(), event.analyzedAt(), event.accountCreatedAt(),
                 event.publicContributions(), event.activeMonths(), event.months(), event.stars(), event.followers(),
-                event.mergedPullRequestsElsewhere(), event.languages());
+                event.mergedPullRequestsElsewhere(), event.languages(), event.externalRepositories());
     }
 
     // Only what the rankings show or filter on; bio and LinkedIn stay on the profile page.
