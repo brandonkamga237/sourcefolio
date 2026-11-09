@@ -68,7 +68,7 @@ class RankingsControllerTest {
     @Test
     @DisplayName("city counts are public, and a profile without a city stays counted")
     void cities() throws Exception {
-        when(rankings.listCityCounts()).thenReturn(List.of(new CityCount("CM", "Douala", 3), new CityCount("SN", null, 1)));
+        when(rankings.listCityCounts(null, null)).thenReturn(List.of(new CityCount("CM", "Douala", 3), new CityCount("SN", null, 1)));
 
         mvc.perform(get("/api/rankings/cities"))
                 .andExpect(status().isOk())

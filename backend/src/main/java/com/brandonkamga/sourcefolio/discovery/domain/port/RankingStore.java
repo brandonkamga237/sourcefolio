@@ -24,7 +24,7 @@ public interface RankingStore {
     RankingFacets facets(RankingFilter filter);
 
     /** Listed profiles per country and city, most first; bounded, so free text cannot flood the map. */
-    List<CityCount> cityCounts();
+    List<CityCount> cityCounts(RankingFilter filter);
 
     /** Repositories where listed profiles have merged work, the most shared first; bounded. */
     List<ProjectCount> acceptedProjects();

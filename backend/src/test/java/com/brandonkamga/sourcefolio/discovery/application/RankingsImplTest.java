@@ -48,7 +48,7 @@ class RankingsImplTest {
         }
 
         @Override
-        public List<CityCount> cityCounts() {
+        public List<CityCount> cityCounts(RankingFilter filter) {
             return List.of();
         }
 

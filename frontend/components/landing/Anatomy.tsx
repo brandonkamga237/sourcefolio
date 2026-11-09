@@ -12,7 +12,7 @@ interface AnatomyProps {
   locale: Locale;
   card: ProfileCard;
   example: boolean;
-  labels: { indicators: IndicatorLabels; tablist: string; example: string; merged: string; joined: string };
+  labels: { indicators: IndicatorLabels; tablist: string; example: string; merged: string; joined: string; descriptions: Record<IndicatorKey, string> };
 }
 
 function Proof({ active, card, labels, locale }: { active: IndicatorKey; card: ProfileCard; labels: AnatomyProps["labels"]; locale: Locale }) {
@@ -22,7 +22,7 @@ function Proof({ active, card, labels, locale }: { active: IndicatorKey; card: P
     return (
       <ul className="divide-y divide-line-soft">
         {indicators.topRepositories.map((repository) => (
-          <li key={repository.name} className="flex items-center justify-between gap-3 py-2.5 text-[14px]">
+          <li key={repository.name} className="flex items-center justify-between gap-3 py-3 text-[16px]">
             <span className="truncate font-semibold text-accent">{repository.name}</span>
             <span className="flex items-center gap-1 tabular-nums text-ink-muted"><IconStar aria-hidden="true" className="size-3.5 text-star" />{repository.stars}</span>
           </li>
@@ -34,7 +34,7 @@ function Proof({ active, card, labels, locale }: { active: IndicatorKey; card: P
     return (
       <ul className="divide-y divide-line-soft">
         {indicators.externalProjects.map((project) => (
-          <li key={project.repository} className="flex items-center gap-2.5 py-2.5 text-[14px]">
+          <li key={project.repository} className="flex items-center gap-2.5 py-3 text-[16px]">
             <IconMerge aria-hidden="true" className="size-4 shrink-0 text-success" />
             <span className="min-w-0 flex-1 truncate font-mono text-[13px]">{project.repository}</span>
             <span className="text-ink-muted tabular-nums">{project.mergedPullRequests} {labels.merged}</span>
@@ -67,25 +67,26 @@ export function Anatomy({ locale, card, example, labels }: AnatomyProps) {
   }
 
   return (
-    <div className="grid items-start gap-4 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.2fr)]">
+    <div className="grid items-stretch gap-4 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)]">
       <div role="tablist" aria-orientation="vertical" aria-label={labels.tablist} onKeyDown={(event) => { if (event.key === "ArrowDown") { event.preventDefault(); move(1); } if (event.key === "ArrowUp") { event.preventDefault(); move(-1); } }} className="grid grid-cols-2 gap-2">
         {views.map((view) => {
           const selected = view.key === active;
           return (
-            <button key={view.key} type="button" role="tab" aria-selected={selected} tabIndex={selected ? 0 : -1} onClick={() => setActive(view.key)} onPointerEnter={(event) => event.pointerType === "mouse" && setActive(view.key)} className={`spotlight flex min-h-20 flex-col justify-between gap-2 rounded-card border p-3 text-left transition-colors duration-(--dur-2) ${selected ? "border-accent bg-surface" : "border-line bg-surface-raised"}`}>
-              <span className="text-[13px] text-ink-muted">{view.label}</span>
-              <span className="font-mono text-[22px] leading-none font-semibold tabular-nums">{view.count === undefined ? view.text : `${view.count}${view.suffix ?? ""}`}</span>
+            <button key={view.key} type="button" role="tab" aria-selected={selected} tabIndex={selected ? 0 : -1} onClick={() => setActive(view.key)} onPointerEnter={(event) => event.pointerType === "mouse" && setActive(view.key)} className={`spotlight flex min-h-28 flex-col gap-1.5 rounded-card border p-4 text-left transition-colors duration-(--dur-2) ${selected ? "border-accent bg-surface" : "border-line bg-surface-raised"}`}>
+              <span className="text-[15px] font-medium">{view.label}</span>
+              <span className="font-mono text-[28px] leading-none font-semibold tabular-nums">{view.count === undefined ? view.text : `${view.count}${view.suffix ?? ""}`}</span>
+              <span className="text-[14px] leading-snug text-ink-muted">{labels.descriptions[view.key]}</span>
             </button>
           );
         })}
       </div>
-      <div role="tabpanel" aria-live="polite" className="overflow-hidden rounded-panel border border-line bg-surface shadow-[var(--shadow-float)]">
+      <div role="tabpanel" aria-live="polite" className="flex flex-col overflow-hidden rounded-panel border border-line bg-surface shadow-[var(--shadow-float)]">
         <div className="flex items-center gap-2 border-b border-line bg-surface-raised px-4 py-2.5">
           <IconLock aria-hidden="true" className="size-3.5 text-ink-muted" />
           <span className="min-w-0 flex-1 truncate font-mono text-[12px] text-ink-soft">{current.proofLabel}</span>
           {example ? <ExampleTag label={labels.example} /> : current.proof ? <a href={current.proof} target="_blank" rel="noopener noreferrer" aria-label={current.proofLabel} className="flex size-11 items-center justify-center text-accent lg:size-6"><IconExternal aria-hidden="true" className="size-3.5" /></a> : null}
         </div>
-        <div key={active} className="min-h-40 p-5 animate-[toast-in_var(--dur-3)_var(--ease-enter)]"><Proof active={active} card={card} labels={labels} locale={locale} /></div>
+        <div key={active} className="flex min-h-40 flex-1 flex-col justify-center p-5 lg:p-8 animate-[toast-in_var(--dur-3)_var(--ease-enter)]"><Proof active={active} card={card} labels={labels} locale={locale} /></div>
       </div>
     </div>
   );

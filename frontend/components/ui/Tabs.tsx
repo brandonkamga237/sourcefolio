@@ -52,7 +52,7 @@ export function Tabs({ label, tabs, current, onChange }: TabsProps) {
           aria-selected={tab.key === current}
           tabIndex={tab.key === current ? 0 : -1}
           onClick={() => onChange(tab.key)}
-          className={`min-h-11 shrink-0 text-[14px] transition-colors duration-(--dur-2) ${tab.key === current ? "font-semibold text-ink" : "text-ink-muted hover:text-ink"}`}
+          className={`min-h-11 shrink-0 text-[15px] transition-colors lg:text-[16px] duration-(--dur-2) ${tab.key === current ? "font-semibold text-ink" : "text-ink-muted hover:text-ink"}`}
         >
           {tab.label}
         </button>

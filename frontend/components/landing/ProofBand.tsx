@@ -16,13 +16,13 @@ export function ProofBand({ projects, example, labels }: ProofBandProps) {
   const filled = Array.from({ length: Math.ceil(10 / Math.max(1, projects.length)) }, () => projects).flat();
   const list = (hidden: boolean) => (
     <ul aria-hidden={hidden || undefined} className="flex shrink-0 items-center gap-8 pr-8">
-      {filled.map((project, index) => <li key={index} className="font-mono text-[14px] whitespace-nowrap text-ink-soft">{project}</li>)}
+      {filled.map((project, index) => <li key={index} className="font-mono text-[15px] whitespace-nowrap lg:text-[16px] text-ink-soft">{project}</li>)}
     </ul>
   );
   return (
     <section aria-label={labels.title} className="border-y border-line bg-surface-raised">
-      <div className="wrap flex min-h-14 items-center gap-4">
-        <p className="shrink-0 text-[13px] text-ink-muted max-sm:sr-only">{labels.title}</p>
+      <div className="wrap flex min-h-16 items-center gap-4">
+        <p className="shrink-0 text-[15px] text-ink-muted max-sm:sr-only">{labels.title}</p>
         {example ? <ExampleTag label={labels.example} /> : null}
         <div className="group relative min-w-0 flex-1 overflow-hidden [mask-image:linear-gradient(90deg,transparent,black_6%,black_94%,transparent)]">
           <div className="flex w-max motion-reduce:!animate-none group-hover:[animation-play-state:paused]" style={{ animation: "marquee 48s linear infinite", animationPlayState: paused ? "paused" : "running" }}>

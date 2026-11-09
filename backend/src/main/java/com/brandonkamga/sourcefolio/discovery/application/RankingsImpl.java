@@ -40,8 +40,8 @@ public class RankingsImpl implements Rankings {
     }
 
     @Override
-    public List<CityCount> listCityCounts() {
-        return store.cityCounts();
+    public List<CityCount> listCityCounts(String country, String language) {
+        return store.cityCounts(filter(country, language));
     }
 
     @Override

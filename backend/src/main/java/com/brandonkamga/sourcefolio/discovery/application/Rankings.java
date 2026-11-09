@@ -14,7 +14,7 @@ public interface Rankings {
 
     RankingFacets listFacets(String country, String language);
 
-    List<CityCount> listCityCounts();
+    List<CityCount> listCityCounts(String country, String language);
 
     List<ProjectCount> listAcceptedProjects();
 }

@@ -38,21 +38,29 @@ export function RankingPreview({ locale, rows, example, labels }: RankingPreview
         <div className="min-w-0 flex-1"><Tabs label={labels.tabs} tabs={SORTS.map((key) => ({ key, label: labels.sort[key] }))} current={sort} onChange={(key) => setSort(key as RankingSort)} /></div>
         {example ? <div className="pb-2"><ExampleTag label={labels.example} /></div> : null}
       </div>
-      <p className="text-[14px] text-ink-muted">{labels.measures[sort]}</p>
+      <p className="text-[16px] text-ink-muted">{labels.measures[sort]}</p>
+      <div aria-hidden="true" className="hidden grid-cols-[minmax(0,2.4fr)_minmax(0,1.3fr)_repeat(4,minmax(0,1fr))] gap-3 text-[14px] text-ink-muted lg:grid">
+        <span />
+        {SORTS.map((key) => <span key={key} className={`text-right ${key === sort ? "font-semibold text-ink" : ""}`}>{labels.sort[key]}</span>)}
+      </div>
       <ol key={sort} className="divide-y divide-line border-y border-line animate-[toast-in_var(--dur-3)_var(--ease-enter)]">
         {sorted.map((row) => {
           const body = (
             <>
-              <PersonMark login={row.login} name={row.name} size={36} example={example} />
-              <span className="flex min-w-0 flex-1 flex-col">
-                <span className="truncate text-[15px] font-semibold">{row.name ?? row.login}</span>
-                <span className="truncate text-[13px] text-ink-muted">{row.place}</span>
+              <span className="flex min-w-0 items-center gap-3 max-lg:flex-1">
+                <PersonMark login={row.login} name={row.name} size={40} example={example} />
+                <span className="flex min-w-0 flex-col">
+                  <span className="truncate text-[16px] font-semibold">{row.name ?? row.login}</span>
+                  <span className="truncate text-[14px] text-ink-muted">{row.place}</span>
+                </span>
               </span>
-              <span className="hidden sm:block"><RegularityStrip months={row.months} /></span>
-              <span className="w-24 shrink-0 text-right font-mono text-[15px] font-semibold tabular-nums">{row.value[sort]}</span>
+              <span className="hidden justify-end lg:flex"><RegularityStrip months={row.months} /></span>
+              {SORTS.slice(1).map((key) => <span key={key} className={`hidden text-right font-mono text-[16px] tabular-nums lg:block ${key === sort ? "font-semibold" : "text-ink-soft"}`}>{row.value[key]}</span>)}
+              <span className="shrink-0 text-right font-mono text-[16px] font-semibold tabular-nums lg:hidden">{row.value[sort]}</span>
             </>
           );
-          return <li key={row.login}>{example ? <div className="flex min-h-16 items-center gap-3 py-2">{body}</div> : <Link href={localizedPath(locale, `/u/${row.login}`)} className="flex min-h-16 items-center gap-3 py-2 transition-colors duration-(--dur-1) hover:bg-surface-raised">{body}</Link>}</li>;
+          const line = "flex min-h-16 items-center gap-3 py-2 lg:grid lg:min-h-[72px] lg:grid-cols-[minmax(0,2.4fr)_minmax(0,1.3fr)_repeat(4,minmax(0,1fr))]";
+          return <li key={row.login}>{example ? <div className={line}>{body}</div> : <Link href={localizedPath(locale, `/u/${row.login}`)} className={`${line} transition-colors duration-(--dur-1) hover:bg-surface-raised`}>{body}</Link>}</li>;
         })}
       </ol>
       <Link href={localizedPath(locale, "/rankings")} className="flex min-h-11 w-fit items-center text-[14px] font-semibold text-accent">{labels.all}</Link>

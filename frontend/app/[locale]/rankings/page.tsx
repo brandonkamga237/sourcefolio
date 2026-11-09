@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { Suspense } from "react";
+import { RememberRanking } from "@/components/layout/BackToRankings";
 import { RankingFilters } from "@/components/rankings/RankingFilters";
 import { RankingTable } from "@/components/rankings/RankingTable";
 import { JsonLd } from "@/components/seo/JsonLd";
@@ -54,28 +55,21 @@ async function Ranking({ locale, searchParams }: { locale: Locale; searchParams:
   return (
     <div className="flex flex-col gap-5">
       <JsonLd data={{ "@context": "https://schema.org", "@type": "CollectionPage", name: t("title"), description: t("lead"), url: `${site}/${locale}/rankings`, inLanguage: locale }} />
+      <RememberRanking href={href(locale, { sort: sort === "regularity" ? null : sort, country, language, cursor })} />
       <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
-        <div className="flex flex-col gap-1.5">
-          <span className="text-[13px] font-semibold">{t("sortBy")}</span>
-          {/* Links, not buttons: each ranking has its own address, shareable and indexable. */}
-          <nav aria-label={t("sortBy")} className="-mx-4 overflow-x-auto px-4 lg:mx-0 lg:px-0">
-            <ul className="flex w-max gap-1 rounded-segment border border-line bg-surface-raised p-1">
-              {RANKING_SORTS.map((option) => (
-                <li key={option}>
-                  <Link
-                    href={href(locale, { sort: option === "regularity" ? null : option, country, language })}
-                    aria-current={option === sort ? "page" : undefined}
-                    className={`flex min-h-10 items-center rounded-control px-3.5 text-[14px] whitespace-nowrap ${
-                      option === sort ? "border border-line bg-surface font-semibold text-ink shadow-sm" : "text-ink-soft hover:text-ink"
-                    }`}
-                  >
-                    {t(`sort.${option}`)}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </nav>
-        </div>
+        {/* Links, not buttons: each ranking has its own address, shareable and indexable. */}
+        <nav aria-label={t("sortBy")} className="-mx-4 overflow-x-auto px-4 lg:mx-0 lg:px-0">
+          <ul className="flex w-max gap-6 border-b border-line">
+            {RANKING_SORTS.map((option) => (
+              <li key={option} className="relative">
+                <Link href={href(locale, { sort: option === "regularity" ? null : option, country, language })} aria-current={option === sort ? "page" : undefined} className={`flex min-h-12 items-center text-[16px] whitespace-nowrap transition-colors duration-(--dur-2) ${option === sort ? "font-semibold text-ink" : "text-ink-muted hover:text-ink"}`}>
+                  {t(`sort.${option}`)}
+                </Link>
+                {option === sort ? <span aria-hidden="true" style={{ viewTransitionName: "ranking-sort" }} className="absolute inset-x-0 -bottom-px h-0.5 bg-tab-active" /> : null}
+              </li>
+            ))}
+          </ul>
+        </nav>
         <RankingFilters
           country={country}
           language={language}
@@ -85,15 +79,13 @@ async function Ranking({ locale, searchParams }: { locale: Locale; searchParams:
         />
       </div>
 
-      <div className="flex flex-col gap-1 border-t border-line pt-4 text-[13px]">
-        <p><strong>{t("count", { count: page.total })}</strong> · {t(`measures.${sort}`)}</p>
-      </div>
+      <p className="text-[16px] text-ink-muted"><span className="font-semibold text-ink">{t("count", { count: page.total })}</span> · {t(`measures.${sort}`)}</p>
 
       {page.items.length === 0 ? (
-        <div className="flex flex-col items-start gap-3 rounded-card border border-line bg-surface p-5">
-          <p className="text-[15px] font-semibold">{t("empty")}</p>
-          <p className="text-[14px] text-ink-muted">{t("emptyLead")}</p>
-          <Link href={localizedPath(locale, "/me")} className="press flex h-11 items-center rounded-control bg-cta px-4 text-[14px] font-semibold text-cta-ink">
+        <div className="flex flex-col items-start gap-3 rounded-panel border border-line bg-surface-raised p-8">
+          <p className="t-h3">{t("empty")}</p>
+          <p className="text-[17px] text-ink-soft">{t("emptyLead")}</p>
+          <Link href={localizedPath(locale, "/me")} className="btn btn-primary">
             {t("publishMine")}
           </Link>
         </div>
@@ -103,7 +95,7 @@ async function Ranking({ locale, searchParams }: { locale: Locale; searchParams:
 
       <div className="flex flex-wrap items-center gap-3">
         {page.nextCursor ? (
-          <Link href={href(locale, { sort: sort === "regularity" ? null : sort, country, language, cursor: page.nextCursor })} className="press flex h-11 items-center rounded-control border border-line bg-surface px-4 text-[14px] font-semibold">
+          <Link href={href(locale, { sort: sort === "regularity" ? null : sort, country, language, cursor: page.nextCursor })} className="btn btn-secondary">
             {t("more")}
           </Link>
         ) : null}
@@ -113,7 +105,7 @@ async function Ranking({ locale, searchParams }: { locale: Locale; searchParams:
           </Link>
         ) : null}
       </div>
-      <p className="text-[12px] text-ink-muted">{t("honest")}</p>
+      <p className="text-[14px] text-ink-muted">{t("honest")}</p>
     </div>
   );
 }
@@ -123,10 +115,10 @@ export default async function RankingsPage({ params, searchParams }: PageProps<"
   setRequestLocale(locale);
   const t = await getTranslations({ locale, namespace: "rankings" });
   return (
-    <div className="mx-auto flex w-full max-w-6xl flex-col gap-6 px-4 py-6 lg:px-8 lg:py-10">
+    <div className="wrap flex flex-col gap-8 py-8 lg:py-12">
       <header className="flex flex-col gap-2">
-        <h1 className="font-display text-[30px] leading-tight font-semibold lg:text-[36px]">{t("title")}</h1>
-        <p className="max-w-2xl text-[15px] leading-relaxed text-ink-soft">{t("lead")}</p>
+        <h1 className="t-h2">{t("title")}</h1>
+        <p className="max-w-3xl text-[18px] leading-relaxed text-ink-soft lg:text-[20px]">{t("lead")}</p>
       </header>
       <Suspense fallback={<div className="h-96 animate-pulse rounded-card bg-surface-sunken" />}>
         <Ranking locale={locale} searchParams={searchParams} />

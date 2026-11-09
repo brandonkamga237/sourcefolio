@@ -138,7 +138,7 @@ export function Globe({ locale, cities, example, label, open, fallback }: GlobeP
   const anchored = (city: GlobeCity): CSSProperties => ({ positionAnchor: `--cobe-${city.id}`, top: "anchor(center)", left: "anchor(center)", translate: "-50% -50%", opacity: `var(--cobe-visible-${city.id}, 0)` }) as CSSProperties;
 
   return (
-    <div className="relative mx-auto aspect-square w-full max-w-[640px]">
+    <div className="relative mx-auto aspect-square w-full max-w-[720px]">
       <canvas
         ref={canvas}
         role="img"
