@@ -35,8 +35,8 @@ class ContributionServices {
     }
 
     @Bean
-    ContributionReports contributionReports(ContributionStore records, TransactionalServices transactional) {
-        return transactional.wrap(ContributionReports.class, new ContributionReportsImpl(records));
+    ContributionReports contributionReports(ContributionStore records, Clock clock, TransactionalServices transactional) {
+        return transactional.wrap(ContributionReports.class, new ContributionReportsImpl(records, clock));
     }
 
     @Bean

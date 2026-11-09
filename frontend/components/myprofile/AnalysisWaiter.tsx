@@ -22,7 +22,10 @@ const GIVE_UP_AFTER = 45;
  */
 export function AnalysisWaiter({ status, refreshing, labels }: AnalysisWaiterProps) {
   const router = useRouter();
-  const [failed, setFailed] = useState(status === "FAILED");
+  // From the server's answer, not kept at mount: a reading that fails while the page is open
+  // arrives through a refresh, which keeps this component's state.
+  const [retrying, setRetrying] = useState(false);
+  const failed = status === "FAILED" && !retrying;
   const asked = useRef(false);
   const waiting = status === "NONE" || status === "PENDING" || refreshing;
 
@@ -53,9 +56,10 @@ export function AnalysisWaiter({ status, refreshing, labels }: AnalysisWaiterPro
   }, [waiting, status, router]);
 
   async function retry() {
-    setFailed(false);
+    setRetrying(true);
     await requestMyAnalysis();
     router.refresh();
+    window.setTimeout(() => setRetrying(false), 3000);
   }
 
   if (failed) {

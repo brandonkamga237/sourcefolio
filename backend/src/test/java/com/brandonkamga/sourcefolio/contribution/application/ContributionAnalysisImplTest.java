@@ -31,7 +31,7 @@ class ContributionAnalysisImplTest {
     private final MutableClock clock = new MutableClock(NOW);
     private final List<ContributionAnalyzed> announced = new ArrayList<>();
     private final ContributionAnalysisImpl analysis = new ContributionAnalysisImpl(records, github, scheduled::add, announced::add, clock);
-    private final ContributionReportsImpl reports = new ContributionReportsImpl(records);
+    private final ContributionReportsImpl reports = new ContributionReportsImpl(records, clock);
 
     private static GitHubActivity activity(int followers) {
         return new GitHubActivity(Instant.parse("2017-03-14T08:00:00Z"), "Nkeng", null, null, followers, 40, 0,
@@ -86,6 +86,17 @@ class ContributionAnalysisImplTest {
         assertThat(scheduled).hasSize(1);
         assertThat(records.find(MEMBER)).map(ContributionRecord::login).hasValue("nkeng");
         assertThat(announced).extracting(ContributionAnalyzed::login).containsExactly("nkeng-dev", "nkeng");
+    }
+
+    @Test
+    @DisplayName("a reading that never answers ends in FAILED instead of waiting forever")
+    void readingThatNeverAnswers() {
+        analysis.requestAnalysis(MEMBER, "nkeng-dev");
+
+        clock.advance(Duration.ofMinutes(6));
+
+        assertThat(reports.findMine(MEMBER)).map(MyAnalysis::status).hasValue(AnalysisStatus.FAILED);
+        assertThat(reports.findMine(MEMBER)).map(MyAnalysis::refreshing).hasValue(false);
     }
 
     @Test

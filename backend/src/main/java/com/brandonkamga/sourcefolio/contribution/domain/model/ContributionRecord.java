@@ -16,6 +16,9 @@ public record ContributionRecord(UUID memberId, String login, Instant requestedA
     // is likely still queued.
     static final Duration FRESH_FOR = Duration.ofHours(1);
     static final Duration PENDING_FOR = Duration.ofMinutes(2);
+    // Longer than the job's retries. A reading that throws (a GitHub outage, a rate limit) records
+    // nothing, and without a limit the member would wait on an answer that is never coming.
+    static final Duration GIVEN_UP_AFTER = Duration.ofMinutes(5);
 
     public static ContributionRecord requested(UUID memberId, String login, Instant now) {
         return new ContributionRecord(memberId, login, now, null, null);
@@ -25,25 +28,32 @@ public record ContributionRecord(UUID memberId, String login, Instant requestedA
         return Optional.ofNullable(snapshot);
     }
 
-    public AnalysisStatus status() {
+    public AnalysisStatus status(Instant now) {
         if (snapshot != null) {
             return AnalysisStatus.READY;
         }
-        return failedAt != null && !failedAt.isBefore(requestedAt) ? AnalysisStatus.FAILED : AnalysisStatus.PENDING;
+        return (failedAt != null && !failedAt.isBefore(requestedAt)) || givenUp(now) ? AnalysisStatus.FAILED : AnalysisStatus.PENDING;
     }
 
-    /** True while a reading asked for has not produced anything yet. */
-    public boolean refreshing() {
-        boolean answered = (snapshot != null && !snapshot.analyzedAt().isBefore(requestedAt))
-                || (failedAt != null && !failedAt.isBefore(requestedAt));
-        return !answered;
+    /** True while a reading asked for may still produce something. */
+    public boolean refreshing(Instant now) {
+        return unanswered() && !givenUp(now);
+    }
+
+    private boolean unanswered() {
+        return !((snapshot != null && !snapshot.analyzedAt().isBefore(requestedAt))
+                || (failedAt != null && !failedAt.isBefore(requestedAt)));
+    }
+
+    private boolean givenUp(Instant now) {
+        return unanswered() && requestedAt.isBefore(now.minus(GIVEN_UP_AFTER));
     }
 
     public boolean worthReading(Instant now) {
         if (snapshot != null && snapshot.analyzedAt().isAfter(now.minus(FRESH_FOR))) {
             return false;
         }
-        return !(refreshing() && requestedAt.isAfter(now.minus(PENDING_FOR)));
+        return !(unanswered() && requestedAt.isAfter(now.minus(PENDING_FOR)));
     }
 
     public ContributionRecord askedAgain(String currentLogin, Instant now) {
