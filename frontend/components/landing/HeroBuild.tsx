@@ -28,7 +28,7 @@ export function HeroBuild({ locale, intro, initial, example, labels }: HeroBuild
   }
 
   return (
-    <section className="wrap grid items-center gap-10 pt-8 pb-14 lg:grid-cols-[minmax(0,1fr)_minmax(0,600px)] lg:gap-16 lg:py-20">
+    <section className="wrap grid items-center gap-10 pt-8 pb-14 lg:grid-cols-[minmax(0,1fr)_minmax(0,680px)] lg:gap-14 lg:py-14">
       <div className="flex min-w-0 flex-col gap-6">
         {intro}
         <HandleField locale={locale} labels={labels.handle} initial={initial.login} onFound={(found) => build(found, false)} onExample={() => build(initial, example)} />

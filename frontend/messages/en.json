@@ -408,12 +408,28 @@
     "problem": {
       "title": "A CV tells. Your code shows.",
       "cv": "What you say",
-      "profile": "What your code shows"
+      "profile": "What your code shows",
+      "lead": "A CV says what someone claims. A profile shows what was done, dated and checkable by anyone.",
+      "claim1": "Declared skills",
+      "claim2": "Stated years of experience",
+      "claim3": "Nothing to verify",
+      "fact1": "Dated contributions, month by month",
+      "fact2": "Pull requests accepted by other teams",
+      "fact3": "Every figure links to GitHub"
     },
     "anatomy": {
       "title": "Every figure leads to its proof.",
       "merged": "accepted PRs",
-      "joined": "On GitHub since"
+      "joined": "On GitHub since",
+      "lead": "Six indicators read from your public data. Choose one to see the GitHub page that proves it.",
+      "desc": {
+        "regularity": "Active months out of the last 12",
+        "volume": "Public contributions over 12 months",
+        "stars": "Received on your public repositories",
+        "external": "Merged in other people's projects",
+        "languages": "The language you write most",
+        "seniority": "Year the account was created"
+      }
     },
     "steps": {
       "title": "Four steps, at your own pace.",
@@ -422,20 +438,28 @@
       "accept": "Get it accepted",
       "publish": "Publish your profile",
       "merged": "PR accepted",
-      "published": "Published"
+      "published": "Published",
+      "lead": "An empty calendar is a starting point. Your profile exists from your first contribution.",
+      "findBody": "A tool you already use, documentation to improve.",
+      "proposeBody": "A clear issue, then a small pull request.",
+      "acceptBody": "Each accepted contribution shows on your profile.",
+      "publishBody": "You decide when it goes public, and you can take it down at any time."
     },
     "globe": {
       "title": "Contributing from everywhere.",
       "picture": "Globe of published profiles",
       "open": "See the rankings",
-      "profiles": "{count, plural, one {# profile} other {# profiles}}"
+      "profiles": "{count, plural, one {# profile} other {# profiles}}",
+      "lead": "Each point is a city where tech profiles have published. Turn the globe, touch a point to see it closer."
     },
     "rankings": {
       "title": "One criterion at a time.",
-      "all": "See all the rankings"
+      "all": "See all the rankings",
+      "lead": "No overall score. Each ranking sorts on one criterion and says exactly what it measures."
     },
     "recruit": {
-      "title": "Explore by proof."
+      "title": "Explore by proof.",
+      "lead": "Filter by language, city and rhythm. One square per published profile, darker as the rhythm gets steadier."
     },
     "transparency": "What we read, what we do not.",
     "faq": {
@@ -472,6 +496,7 @@
       "transparency": "What we read",
       "faq": "Questions",
       "honest": "A profile measures public open source contribution, not a person's worth."
-    }
+    },
+    "transparencyLead": "Public GitHub data only. Nothing is published without your consent, and you can take everything down."
   }
 }

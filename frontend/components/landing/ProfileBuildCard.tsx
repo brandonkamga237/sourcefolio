@@ -70,12 +70,12 @@ export function ProfileBuildCard({ locale, card, example, run = 0, instant = fal
   const seen = (threshold: number) => (stage >= threshold ? "opacity-100" : "translate-y-1 opacity-0");
 
   return (
-    <article data-build="" data-ready={stage > 0 ? "" : undefined} className="rounded-panel border border-line bg-surface p-5 shadow-[var(--shadow-float)] lg:p-6">
+    <article data-build="" data-ready={stage > 0 ? "" : undefined} className="rounded-panel border border-line bg-surface p-5 shadow-[var(--shadow-float)] lg:p-7">
       <div data-part="" className={`flex items-center gap-3 ${part} ${seen(IDENTITY)}`}>
         <PersonMark login={card.login} name={card.name} size={48} example={example} />
         <div className="flex min-w-0 flex-1 flex-col">
-          <span className="truncate font-display text-[20px] font-semibold">{card.name ?? card.login}</span>
-          <span className="truncate text-[14px] text-ink-muted"><span className="font-mono">{card.login}</span> · {[place, sectorName].filter(Boolean).join(" · ")}</span>
+          <span className="truncate font-display text-[20px] font-semibold lg:text-[24px]">{card.name ?? card.login}</span>
+          <span className="truncate text-[14px] text-ink-muted lg:text-[16px]"><span className="font-mono">{card.login}</span> · {[place, sectorName].filter(Boolean).join(" · ")}</span>
         </div>
         {example ? <ExampleTag label={labels.example} /> : null}
       </div>
@@ -88,13 +88,13 @@ export function ProfileBuildCard({ locale, card, example, run = 0, instant = fal
         ))}
       </svg>
 
-      <dl className="mt-5 grid grid-cols-2 gap-x-4 gap-y-4 sm:grid-cols-3">
+      <dl className="mt-5 grid grid-cols-2 gap-x-4 gap-y-4 sm:grid-cols-3 lg:gap-y-6">
         {indicators.map((indicator, index) => {
           const on = stage >= FIRST_INDICATOR + index;
           return (
             <div key={indicator.key} data-part="" className={`flex min-w-0 flex-col gap-0.5 ${part} ${on ? "opacity-100" : "translate-y-1 opacity-0"}`}>
-              <dt className="text-[13px] text-ink-muted">{indicator.label}</dt>
-              <dd className="font-mono text-[24px] leading-tight font-semibold tabular-nums">
+              <dt className="text-[13px] text-ink-muted lg:text-[15px]">{indicator.label}</dt>
+              <dd className="font-mono text-[24px] leading-tight font-semibold tabular-nums lg:text-[30px]">
                 {indicator.count === undefined ? indicator.text : <Count value={indicator.count} on={on} suffix={indicator.suffix} locale={locale} />}
               </dd>
               <dd data-part="" className={`${part} ${seen(PROOFS)}`}>

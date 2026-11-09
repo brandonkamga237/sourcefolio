@@ -1,6 +1,7 @@
 import { connection } from "next/server";
 import { getFormatter, getTranslations } from "next-intl/server";
 import { Suspense } from "react";
+import { CalendarArt } from "@/components/contribution/CalendarArt";
 import { GlobeLazy } from "@/components/globe/GlobeLazy";
 import { AfricaMosaic } from "@/components/map/AfricaMosaic";
 import { JsonLd } from "@/components/seo/JsonLd";
@@ -23,6 +24,7 @@ import { HeroBuild } from "./HeroBuild";
 import { HowItWorks } from "./HowItWorks";
 import { ProblemSplit } from "./ProblemSplit";
 import { ProofBand } from "./ProofBand";
+import { SectionHead } from "./SectionHead";
 import { RankingPreview, type PreviewRow } from "./RankingPreview";
 import { TalentField } from "./TalentField";
 import { Transparency } from "./Transparency";
@@ -32,7 +34,7 @@ import { WaitlistLeaveForm } from "./WaitlistLeaveForm";
 export type Audience = "tech" | "recruit";
 
 const FAQ = ["what", "private", "score", "beginner", "remove"] as const;
-const section = "wrap flex flex-col gap-10 py-16 lg:gap-14 lg:py-28";
+const section = "wrap flex flex-col gap-8 py-14 lg:gap-10 lg:py-20";
 
 async function safely<T>(read: Promise<T>, fallback: T, what: string): Promise<T> {
   try {
@@ -77,7 +79,7 @@ async function Intro({ locale, audience }: { locale: Locale; audience: Audience 
         ]}
       />
       <h1 className="t-display">{t(`hero.${audience}.title`)}</h1>
-      <p className="max-w-md text-[18px] leading-relaxed text-ink-soft">{t(`hero.${audience}.lead`)}</p>
+      <p className="max-w-xl text-[18px] leading-relaxed text-ink-soft lg:text-[22px]">{t(`hero.${audience}.lead`)}</p>
     </>
   );
 }
@@ -129,28 +131,29 @@ async function Body({ locale, audience }: { locale: Locale; audience: Audience }
     />
   );
   const proof = <ProofBand projects={data.projects} example={data.projectsExample} labels={{ title: t("proof.title"), pause: t("proof.pause"), play: t("proof.play"), example: t("example") }} />;
-  const problem = <ProblemSplit card={data.card} labels={{ title: t("problem.title"), cv: t("problem.cv"), profile: t("problem.profile") }} />;
+  const problem = <ProblemSplit card={data.card} labels={{ title: t("problem.title"), lead: t("problem.lead"), cv: t("problem.cv"), profile: t("problem.profile"), claims: [t("problem.claim1"), t("problem.claim2"), t("problem.claim3")], facts: [t("problem.fact1"), t("problem.fact2"), t("problem.fact3")] }} />;
   const anatomy = (
     <section className={section}>
-      <h2 className="t-h2">{t("anatomy.title")}</h2>
-      <Anatomy locale={locale} card={data.card} example={data.cardExample} labels={{ indicators, tablist: t("anatomy.title"), example: t("example"), merged: t("anatomy.merged"), joined: t("anatomy.joined") }} />
+      <SectionHead title={t("anatomy.title")} lead={t("anatomy.lead")} />
+      <Anatomy locale={locale} card={data.card} example={data.cardExample} labels={{ indicators, tablist: t("anatomy.title"), example: t("example"), merged: t("anatomy.merged"), joined: t("anatomy.joined"), descriptions: { regularity: t("anatomy.desc.regularity"), volume: t("anatomy.desc.volume"), stars: t("anatomy.desc.stars"), external: t("anatomy.desc.external"), languages: t("anatomy.desc.languages"), seniority: t("anatomy.desc.seniority") } }} />
     </section>
   );
   const steps = (
     <section className={section}>
-      <h2 className="t-h2">{t("steps.title")}</h2>
-      <HowItWorks steps={[t("steps.find"), t("steps.propose"), t("steps.accept"), t("steps.publish")]} merged={t("steps.merged")} published={t("steps.published")} />
+      <SectionHead title={t("steps.title")} lead={t("steps.lead")} />
+      <HowItWorks steps={[{ title: t("steps.find"), body: t("steps.findBody") }, { title: t("steps.propose"), body: t("steps.proposeBody") }, { title: t("steps.accept"), body: t("steps.acceptBody") }, { title: t("steps.publish"), body: t("steps.publishBody") }]} merged={t("steps.merged")} published={t("steps.published")} />
     </section>
   );
   const globe = (
     <section className="border-y border-line bg-surface-raised">
-      <div className="wrap grid items-center gap-8 py-16 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.4fr)] lg:py-20">
+      <div className="wrap grid items-center gap-8 py-14 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.15fr)] lg:gap-14 lg:py-16">
         <div className="flex flex-col items-start gap-4">
           <h2 className="t-h2">{t("globe.title")}</h2>
+          <p className="text-[18px] leading-relaxed text-ink-soft lg:text-[20px]">{t("globe.lead")}</p>
           {data.citiesExample ? <ExampleTag label={t("example")} /> : null}
-          <ul className="flex w-full max-w-sm flex-col divide-y divide-line">
+          <ul className="flex w-full flex-col divide-y divide-line">
             {placed.cities.slice(0, 5).map(({ city, count }) => (
-              <li key={`${city.country}:${city.name}`} className="flex min-h-11 items-center justify-between gap-3 text-[14px]">
+              <li key={`${city.country}:${city.name}`} className="flex min-h-12 items-center justify-between gap-3 text-[16px]">
                 <span className="truncate">{locale === "en" ? (city.nameEn ?? city.name) : city.name}</span>
                 <span className="font-mono text-ink-muted tabular-nums">{count}</span>
               </li>
@@ -163,7 +166,7 @@ async function Body({ locale, audience }: { locale: Locale; audience: Audience }
   );
   const preview = (
     <section className={section}>
-      <h2 className="t-h2">{t("rankings.title")}</h2>
+      <SectionHead title={t("rankings.title")} lead={t("rankings.lead")} />
       <RankingPreview
         locale={locale}
         rows={previewRows}
@@ -181,6 +184,7 @@ async function Body({ locale, audience }: { locale: Locale; audience: Audience }
   const transparency = (
     <Transparency
       title={t("transparency")}
+      lead={t("transparencyLead")}
       readsTitle={method("readsTitle")}
       notReadsTitle={method("notReadsTitle")}
       reads={[method("reads.contributions"), method("reads.seniority"), method("reads.stars"), method("reads.languages"), method("reads.external")]}
@@ -188,9 +192,9 @@ async function Body({ locale, audience }: { locale: Locale; audience: Audience }
     />
   );
   const faq = (
-    <section id="faq" className="wrap flex max-w-3xl scroll-mt-20 flex-col gap-8 py-16 lg:py-24">
+    <section id="faq" className="wrap grid scroll-mt-20 gap-8 py-14 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.6fr)] lg:gap-16 lg:py-20">
       <h2 className="t-h2">{t("faq.title")}</h2>
-      <Accordion items={FAQ.map((key) => ({ key, question: t(`faq.${key}.q`), answer: t(`faq.${key}.a`) }))} />
+      <Accordion firstOpen items={FAQ.map((key) => ({ key, question: t(`faq.${key}.q`), answer: t(`faq.${key}.a`) }))} />
     </section>
   );
   const waitlist = (
@@ -202,7 +206,7 @@ async function Body({ locale, audience }: { locale: Locale; audience: Audience }
   );
   const explore = (
     <section className={section}>
-      <h2 className="t-h2">{t("recruit.title")}</h2>
+      <SectionHead title={t("recruit.title")} lead={t("recruit.lead")} />
       <div className="grid items-start gap-8 lg:grid-cols-[minmax(0,1.5fr)_minmax(0,1fr)]">
         <div className="flex flex-col gap-3">
           {data.rowsExample ? <div className="w-fit"><ExampleTag label={t("example")} /></div> : null}
@@ -219,9 +223,12 @@ async function Body({ locale, audience }: { locale: Locale; audience: Audience }
   );
   const close = (
     <section className="border-t border-line bg-surface-raised">
-      <div className="wrap flex max-w-2xl flex-col gap-6 py-16 lg:py-24">
-        <h2 className="t-h2">{t(`close.${audience}`)}</h2>
-        {audience === "tech" ? <HandleField locale={locale} labels={handle} /> : <a href="#waitlist" className="btn btn-primary w-fit">{recruiters("waitlist.submit")}</a>}
+      <div className="wrap grid items-center gap-10 py-14 lg:grid-cols-2 lg:gap-16 lg:py-20">
+        <div className="flex flex-col gap-6">
+          <h2 className="t-h2">{t(`close.${audience}`)}</h2>
+          {audience === "tech" ? <HandleField locale={locale} labels={handle} /> : <a href="#waitlist" className="btn btn-primary w-fit">{recruiters("waitlist.submit")}</a>}
+        </div>
+        <CalendarArt calendar={data.card.indicators.calendar} />
       </div>
     </section>
   );
@@ -261,7 +268,7 @@ export async function Landing({ locale, audience }: { locale: Locale; audience: 
       {audience === "tech" ? <JsonLd data={{ "@context": "https://schema.org", "@type": "WebSite", name: "SourceFolio", url: `${site}/${locale}`, description: meta("description"), inLanguage: locale }} /> : null}
       <Suspense
         fallback={
-          <section className="wrap grid items-center gap-10 pt-8 pb-14 lg:grid-cols-[minmax(0,1fr)_minmax(0,600px)] lg:gap-16 lg:py-20">
+          <section className="wrap grid items-center gap-10 pt-8 pb-14 lg:grid-cols-[minmax(0,1fr)_minmax(0,680px)] lg:gap-14 lg:py-14">
             <div className="flex min-w-0 flex-col gap-6"><Intro locale={locale} audience={audience} /></div>
             <div className="h-96 animate-pulse rounded-panel bg-surface-sunken" />
           </section>
