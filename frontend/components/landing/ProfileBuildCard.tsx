@@ -16,6 +16,8 @@ interface ProfileBuildCardProps {
   example: boolean;
   /** Changing it builds the card again. */
   run?: number;
+  /** Already seen: shown whole, without building. */
+  instant?: boolean;
   labels: { indicators: IndicatorLabels; example: string };
   sectorName?: string | null;
 }
@@ -47,10 +49,11 @@ function Count({ value, on, suffix, locale }: { value: number; on: boolean; suff
 }
 
 /** A profile assembling itself from its public data: identity, year, figures, then their proofs. */
-export function ProfileBuildCard({ locale, card, example, run = 0, labels, sectorName }: ProfileBuildCardProps) {
-  const [stage, setStage] = useState(0);
+export function ProfileBuildCard({ locale, card, example, run = 0, instant = false, labels, sectorName }: ProfileBuildCardProps) {
+  const [stage, setStage] = useState(instant ? PROOFS : 0);
 
   useEffect(() => {
+    if (instant) return;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
       const timer = window.setTimeout(() => setStage(PROOFS), 0);
       return () => window.clearTimeout(timer);
@@ -59,11 +62,11 @@ export function ProfileBuildCard({ locale, card, example, run = 0, labels, secto
     const steps = [[IDENTITY, 180], [CALENDAR, 520], ...Array.from({ length: 6 }, (_, index) => [FIRST_INDICATOR + index, 1300 + index * 190]), [PROOFS, 2600]];
     const timers = steps.map(([value, delay]) => window.setTimeout(() => setStage(value), delay));
     return () => [reset, ...timers].forEach((timer) => window.clearTimeout(timer));
-  }, [run]);
+  }, [run, instant]);
 
   const weeks = weeksOf(card.indicators.calendar);
   const indicators = indicatorViews(card, labels.indicators);
-  const place = [card.city, countryName(card.country, locale)].filter(Boolean).join(" · ");
+  const place = [card.city, card.country ? countryName(card.country, locale) : null].filter(Boolean).join(" · ");
   const seen = (threshold: number) => (stage >= threshold ? "opacity-100" : "translate-y-1 opacity-0");
 
   return (
